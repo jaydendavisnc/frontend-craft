@@ -1,0 +1,105 @@
+<!doctype html>
+<!-- What makes it good: a benefits ledger that reconciles, because the three 2026 claims add up to the $412 plan money spent, which is the white part of the meter and the gap between $1,500 and the $1,088 headline. Reminders sit in the claims table as rows with empty money cells, a prior plan year opens below as its own subtotalled group, and the window runs off the card's right and bottom edges so it reads as part of a larger app. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan benefits ledger</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000; --surface:#0a0b0f; --raised:#12141c;
+  --ink:#ffffff; --ink-2:#c6c9d2; --muted:#8a8d96;
+  --accent-up:#2a4aa8;
+  --line:rgb(255 255 255/.1); --line-2:rgb(255 255 255/.18);
+  --font:'Zalando Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --rail:max(clamp(16px,6.1vw,88px),calc((100vw - 1264px)/2)); --in:16px;
+  --nav:72px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip}
+h3,p{margin:0;padding:0}
+
+.band{position:relative;padding:112px calc(var(--rail) + var(--in))}
+.band--sheets{padding-bottom:64px}
+h3{font-size:32px;font-weight:500;line-height:1.12;letter-spacing:-.022em}
+
+/* Card with a copy column; the product window is 960 by 800 and the card crops it */
+.sheet{display:grid;grid-template-columns:440px minmax(0,1fr);height:clamp(560px,calc(100svh - var(--nav) - 110px),640px);margin:0 calc(var(--in)*-1) 40px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--line-2);overflow:hidden}
+.copy{padding:56px 24px 40px 48px;display:flex;flex-direction:column;align-items:flex-start}
+.copy h3{font-size:36px}
+.copy>p{margin-top:16px;font-size:17px;line-height:1.5;color:var(--muted)}
+.ui{position:relative}
+.a{position:absolute;left:8px;top:40px;width:960px;height:800px;background:var(--raised);border-radius:8px 0 0 8px;box-shadow:0 0 0 1px var(--line);font-size:14px;line-height:1.35}
+.viewer__bar{display:flex;align-items:center;gap:16px;height:44px;padding:0 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.viewer__bar b{font-weight:500;color:var(--ink)}
+.viewer__x{margin-left:auto;margin-right:164px}
+
+.meter{height:6px;margin-top:12px;background:var(--accent-up);border-radius:2px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink)}
+.meter--l{height:10px;margin-top:16px}
+.ledger__b{padding:20px 24px;max-width:796px}
+.ledger__big{font-size:52px;line-height:1;letter-spacing:-.03em}
+.ledger__big small{margin-left:10px;font-size:15px;letter-spacing:0;color:var(--muted)}
+.cover{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px;font-size:12px;color:var(--muted)}
+.cover b{display:block;font-size:18px;font-weight:400;color:var(--ink)}
+.ledger table{width:100%;margin-top:16px;border-collapse:collapse}
+.ledger th,.ledger td{padding:9px 0;text-align:left;font-weight:400;border-top:1px solid var(--line);color:var(--ink-2)}
+.ledger thead th{font-size:12px;color:var(--muted);border-top:0}
+.ledger td:nth-child(n+3),.ledger thead th:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums}
+.ledger td:first-child{color:var(--muted);width:68px}
+.ledger__y tr:first-child td{padding-top:20px;font-weight:500;color:var(--ink);border-top-color:var(--line-2)}
+.ledger__y tr:first-child td:nth-child(2){text-align:right;font-variant-numeric:tabular-nums} /* colspan shifts the Billed cell to child 2 */
+
+@media(max-width:1180px){.sheet{grid-template-columns:360px minmax(0,1fr)}}
+@media(max-width:980px){
+  .sheet{grid-template-columns:1fr;height:auto;min-height:0}
+  .copy{padding:28px 20px 20px}
+  .ui{height:300px;overflow:hidden}
+  .a{left:16px;top:0}
+}
+@media(max-width:700px){
+  :root{--in:12px;--nav:64px}
+  .band{padding-block:72px}
+  .a{width:640px;height:640px}
+  .viewer__x{margin-right:0}
+}
+</style>
+</head>
+<body>
+<section class="band band--sheets" aria-label="Patient app">
+  <article class="sheet">
+    <div class="copy">
+      <h3>What your plan still covers</h3>
+      <p>Benefits left, by category, updated as claims clear. Reminders go out 60 and 30 days before your plan resets.</p>
+    </div>
+    <div class="ui">
+      <div class="a ledger">
+        <div class="viewer__bar"><b>2026 plan</b><span>PPO, individual</span><span class="viewer__x">Resets Dec 31</span></div>
+        <div class="ledger__b">
+          <p class="ledger__big">$1,088<small>left of $1,500</small></p>
+          <div class="meter meter--l"><i style="width:27.47%"></i></div>
+          <div class="cover"><span><b>100%</b>Preventive</span><span><b>80%</b>Fillings, root canals</span><span><b>50%</b>Crowns</span><span><b>$0</b>Deductible left</span></div>
+          <table>
+            <thead><tr><th scope="col">Date</th><th scope="col">Treatment</th><th scope="col">Billed</th><th scope="col">Plan paid</th><th scope="col">You paid</th></tr></thead>
+            <tbody>
+              <tr><td>Feb 12</td><th scope="row">D2392 Filling, #30</th><td>$290</td><td>$232</td><td>$58</td></tr>
+              <tr><td>May 14</td><th scope="row">D1110 Cleaning</th><td>$140</td><td>$140</td><td>$0</td></tr>
+              <tr><td>May 14</td><th scope="row">D0272 X-rays, two images</th><td>$40</td><td>$40</td><td>$0</td></tr>
+              <tr><td>Nov 2</td><th scope="row">Reminder sent, 60 days before reset</th><td></td><td></td><td></td></tr>
+              <tr><td>Dec 1</td><th scope="row">Reminder scheduled, 30 days before reset</th><td></td><td></td><td></td></tr>
+            </tbody>
+            <tbody class="ledger__y">
+              <tr><td colspan="2">2025 plan year</td><td>$676</td><td>$648</td><td>$28</td></tr>
+              <tr><td>Nov 13</td><th scope="row">D0120 Exam</th><td>$68</td><td>$40</td><td>$28</td></tr>
+              <tr><td>Nov 13</td><th scope="row">D1110 Cleaning</th><td>$140</td><td>$140</td><td>$0</td></tr>
+              <tr><td>Nov 13</td><th scope="row">D0274 X-rays, four images</th><td>$64</td><td>$64</td><td>$0</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{
+  "exclude": {
+    "type.display-headline/roman-italic-turn": "SKILL.md giveaway: one headline word turned italic. Marked words open 14 of 16 GPT H1s, and it arrives here as a default, not a choice. The owner rejects serif-italic flourishes.",
+    "type.display-headline/sans-with-serif-italic-insert": "SKILL.md giveaway in its most recognisable form: a serif italic word dropped into a sans headline, and the recipe repeats it through every H2.",
+    "type.section-heading/italic-turn-heading": "The recipe says to use it on every section, which is the Accent word in every heading tell, set as a serif-italic flourish.",
+    "type.display-headline/poster-anchored": "100 to 390px type is the Claude baseline failure (median H1 near 130px, max 325) and SKILL.md's oversized headline giveaway. No weight is set, so models go heavy, and the chapter says to avoid it for SaaS.",
+    "type.section-heading/poster-caps-opener": "Heavy 56 to 110px caps opening every section, often with a 36px italic serif. Two giveaways together, and no gold evidence.",
+    "type.section-heading/emblem-opener": "The chapter says it needs a commissioned drawing set, one per section. A model can only draw a thin SVG, so the result is reliably cheap.",
+    "type.eyebrow-or-label/hand-placed-label": "Tilted sticker or script note, the Hero stickers and Script font as humanity tells: CSS tilts in 11 of 16 GPT runs, script fonts in 7 of 16 Opus runs.",
+    "type.type-as-image/title-behind-object": "Needs a clean cut-out render or photo carrying its own shadow, as on Apple and Rivian. Without that asset it is a big word behind a fake object.",
+    "type.type-as-image/image-through-letters": "Needs a strong image through 200px heavy type. Without one, a model falls back to the gradient option, which is gradient text. No gold evidence.",
+    "type.type-as-image/constructed-letters": "Voxel, strand or brush lettering is artwork a page cannot generate well, and models build it as the Procedural object at poster scale tell. Mostly expressive evidence.",
+    "nav.top-bar/system-chrome-bar": "The spec only works when the whole site commits to the metaphor, which is SKILL.md's metaphor costume. The chapter calls it a gimmick as a one-off, and a dealt hand makes it a one-off.",
+    "nav.floating-pill/seamed-capsule": "Its spec says expressive consumer pages only, all evidence is expressive, and the ticket-stub seams are a costume in a default hand.",
+    "nav.sidebar-nav/desktop-icon-nav": "Site sections as desktop files is a whole-site metaphor costume by its own spec, with expressive evidence only.",
+    "nav.mobile-menu/indexed-takeover": "SKILL.md giveaway: 01, 02, 03 markers on things that are not a sequence. Menu routes have no order, and the chapter itself warns about this."
+  },
+  "downweight": {
+    "type.display-headline/crushed-tracking": {
+      "weight": 0.3,
+      "reason": "Same habit as the Crushed tracking tell: GPT headlines sit near -0.04em against gold's -0.02em. Works only in a face that can take it, and -0.06em on the wrong face fuses letters."
+    },
+    "type.display-headline/flat-accent-phrase": {
+      "weight": 0.3,
+      "reason": "SKILL.md giveaway when it arrives by default: 14 of 16 GPT H1s mark a word or phrase. Fine when the coloured words are the claim, as the false alarms allow, so it needs to be a choice."
+    },
+    "type.display-headline/marked-word": {
+      "weight": 0.3,
+      "reason": "One marked headline word is the same giveaway, and the hand-stroke option is the cheap one: the chapter says a plain stroke looks like a template component."
+    },
+    "type.display-headline/tonal-gradient-fill": {
+      "weight": 0.4,
+      "reason": "Literally gradient-filled text, a SKILL.md giveaway. Subtle enough on Resend to pass, but baselines used none in 32 runs, so a dealt hand should not be what introduces it."
+    },
+    "type.display-headline/wide-heavy-display": {
+      "weight": 0.3,
+      "reason": "Heavy display is the Claude default (800 or more in 7 of 16 runs, Frank's extended 800). No gold evidence, against a default headline weight of 400 to 600."
+    },
+    "type.section-heading/eyebrow-title-lede-stack": {
+      "weight": 0.3,
+      "reason": "Eyebrows are fine, but this recipe puts one above every section, which is the giveaway. The section opening calls this same stack the cheap version."
+    },
+    "type.section-heading/accent-word-or-line": {
+      "weight": 0.3,
+      "reason": "A coloured word repeated on section headings is the Accent word in every heading tell, and the glow option makes the cheap version easy. Fine when the hue means a product family."
+    },
+    "type.section-heading/indexed-cell-heading": {
+      "weight": 0.3,
+      "reason": "Numbered section headings become the 01, 02, 03 giveaway unless the sections are a real sequence. The chapter warns against fake numbering, and a dealt hand does not check."
+    },
+    "type.type-as-image/cropped-footer-wordmark": {
+      "weight": 0.4,
+      "reason": "Measured Claude tell: 7 of 16 Opus footers end on a giant wordmark, usually over an empty footer. Fine beside a real index, as the false alarms note."
+    },
+    "button.primary/nested-arrow-chip": {
+      "weight": 0.3,
+      "reason": "Arrows bolted on: the chapter calls it one of the cheapest ways to give a pill identity and lets the chip recur in text links, so models spread it to every action."
+    },
+    "button.primary/spectral-edge-pill": {
+      "weight": 0.2,
+      "reason": "Without colours from the page's own art this becomes, in the chapter's words, the rainbow border of a thousand AI landing pages. Models rarely have that art."
+    },
+    "button.primary/display-scale-button": {
+      "weight": 0.3,
+      "reason": "60 to 96px against a measured 34 to 44px, with no gold evidence. Opus already overshoots at 56px, and the chapter limits this to launches and games."
+    },
+    "button.text-link/serif-voice-link": {
+      "weight": 0.3,
+      "reason": "Real on galleries and agencies, but its serif or italic link voice is the flourish the owner rejects and off the default product standard. Keep it for briefs that ask."
+    },
+    "nav.floating-pill/centred-capsule": {
+      "weight": 0.3,
+      "reason": "The nav chapter names the white pill floating over a plain page from the first frame as the cheap version, and this variant holds most of the family's low scores. Listed evidence is 1 gold, 4 silver."
+    },
+    "nav.floating-pill/inset-rounded-bar": {
+      "weight": 0.5,
+      "reason": "A strong pattern, but its spec fixes 12 to 20px blur. Reflex nav glass is a measured tell, on 16 of 16 GPT runs against 11% of gold, so it should not be this easy to deal."
+    }
+  }
+}

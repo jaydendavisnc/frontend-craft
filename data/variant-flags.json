@@ -1,0 +1,355 @@
+{
+"exclude": {
+"type.display-headline/roman-italic-turn": "SKILL.md giveaway: one headline word turned italic. Marked words open 14 of 16 GPT H1s, and it arrives here as a default, not a choice. The owner rejects serif-italic flourishes.",
+"type.display-headline/sans-with-serif-italic-insert": "SKILL.md giveaway in its most recognisable form: a serif italic word dropped into a sans headline, and the recipe repeats it through every H2.",
+"type.section-heading/italic-turn-heading": "The recipe says to use it on every section, which is the Accent word in every heading tell, set as a serif-italic flourish.",
+"type.display-headline/poster-anchored": "100 to 390px type is the Claude baseline failure (median H1 near 130px, max 325) and SKILL.md's oversized headline giveaway. No weight is set, so models go heavy, and the chapter says to avoid it for SaaS.",
+"type.section-heading/poster-caps-opener": "Heavy 56 to 110px caps opening every section, often with a 36px italic serif. Two giveaways together, and no gold evidence.",
+"type.section-heading/emblem-opener": "The chapter says it needs a commissioned drawing set, one per section. A model can only draw a thin SVG, so the result is reliably cheap.",
+"type.eyebrow-or-label/hand-placed-label": "Tilted sticker or script note, the Hero stickers and Script font as humanity tells: CSS tilts in 11 of 16 GPT runs, script fonts in 7 of 16 Opus runs.",
+"type.type-as-image/title-behind-object": "Needs a clean cut-out render or photo carrying its own shadow, as on Apple and Rivian. Without that asset it is a big word behind a fake object.",
+"type.type-as-image/image-through-letters": "Needs a strong image through 200px heavy type. Without one, a model falls back to the gradient option, which is gradient text. No gold evidence.",
+"type.type-as-image/constructed-letters": "Voxel, strand or brush lettering is artwork a page cannot generate well, and models build it as the Procedural object at poster scale tell. Mostly expressive evidence.",
+"nav.top-bar/system-chrome-bar": "The spec only works when the whole site commits to the metaphor, which is SKILL.md's metaphor costume. The chapter calls it a gimmick as a one-off, and a dealt hand makes it a one-off.",
+"nav.floating-pill/seamed-capsule": "Its spec says expressive consumer pages only, all evidence is expressive, and the ticket-stub seams are a costume in a default hand.",
+"nav.sidebar-nav/desktop-icon-nav": "Site sections as desktop files is a whole-site metaphor costume by its own spec, with expressive evidence only.",
+"nav.mobile-menu/indexed-takeover": "SKILL.md giveaway: 01, 02, 03 markers on things that are not a sequence. Menu routes have no order, and the chapter itself warns about this.",
+"hero.video-loop/film-centred-lockup": "Needs real graded footage. No model can make it, so the result is a gradient or an unverified stock clip under a flat veil, which hero.md names as the cheap version.",
+"hero.video-loop/film-bottom-caption": "Needs a real film with a finished poster frame. The fallback is a dark gradient with a pause button on nothing.",
+"hero.video-loop/cinema-card": "A 1200px film card is the whole first screen, and there is no footage to put in it. An empty poster reads as a placeholder.",
+"hero.video-loop/reel-as-identity": "Depends on a real reel of varied work cut every second. A generated page has no such body of work.",
+"hero.video-loop/product-film": "Needs studio footage of a real product. The fallback is a CSS object at poster scale, a measured Opus tell.",
+"hero.video-loop/inset-reel": "Needs real footage. Without it the framed-print gutter frames nothing.",
+"hero.video-loop/texture-film": "Needs liquid-metal or motion-blur footage. The fallback is an animated gradient, the wash this skill warns against.",
+"hero.centered-with-product/video-tile-under-stack": "A play control needs a film behind it. Without one the tile is a fake control over a fake poster, which SKILL.md forbids as a picture that is not there.",
+"hero.object-3d/seamless-render-on-page-ground": "Needs a real render at 60 to 80% of viewport width. hero.md says not to fake one in CSS, and the anti-patterns list procedural objects at poster scale.",
+"hero.object-3d/object-beside-headline": "Needs a real matte or iridescent render. The model fallback is a glossy gradient blob, which hero.md calls cheap.",
+"hero.full-bleed-media/depth-layered-subject": "Depends on a clean cut-out layer from a real photograph. A model cannot produce the overlap, so the effect collapses.",
+"hero.type-only/giant-wordmark": "Name at 150 to 450px, weight up to 900, on a flat field. This is the exact vibe-code-good trap in SKILL.md and the oversized-headline giveaway. Expressive briefs still get it.",
+"hero.type-only/mark-plus-sentence": "The row itself says it needs a known company and reads as unfinished otherwise. Every invented business here is unknown.",
+"hero.type-only/stack-with-proof-row": "Proof row of avatars, stars and numerals has no real source on an invented business. It matches the invented-proof entry: five stars beside an avatar stack in 6 of 16 GPT runs. No gold evidence.",
+"hero.interactive-demo/signature-instrument": "A strange instrument filling the hero is the hero toy tell, in 8 of 16 Opus pages, and a gimmick doing the job of design. Evidence is all expressive tier.",
+"atmosphere.gradient-field/flat-colour-worlds": "Every section one saturated flat. This is the flat-field failure: 12 of 16 Opus pages against 5 of 147 gold. No gold evidence, unlike the false-alarm sites, which put real content in the colour.",
+"atmosphere.pattern/organic-blob-fields": "Organic blobs are in the anti-pattern catalogue, the atmosphere chapter calls a pale blob cheap, and the sibling blob row is marked dated. No gold evidence.",
+"layout.composition-shift/product-as-page": "The site dressed as an OS window is a metaphor costume, a SKILL.md giveaway. Evidence is PostHog pages plus one silver site.",
+"layout.section-rhythm/scene-per-viewport": "A 100vh image and one line per screen needs real film-grade imagery, and it is the one-sentence-per-screen failure when the imagery is weak.",
+"product.app-window/glow-bezel-window": "A soft coloured glow round a dark screen. The chapter's own mistake list calls a coloured glow behind a window the most recognisable AI-template move. Silver and expressive evidence only, no gold.",
+"product.app-window/tilted-backplates": "Two rotated plates behind a screenshot carry no information, so the tilt false alarm does not cover them. Matches tilted floating fragments, repeated identically on every row. One silver source.",
+"product.ui-fragment/handled-object": "UI drawn as a perforated note or hanging tag is product in costume at small scale, the same move as the sticky notes, receipt and polaroid in ai-notes/opus-1 (pair 3). Tilted cards are also a measured baseline habit (CSS tilts in 11 of 16 GPT runs).",
+"product.device-mockup/hand-held-device": "Needs a real photograph of hands holding a device with legible UI. Image generation does not rescue it: the chapter says generated hands fail on sight, and generators cannot render a legible screen.",
+"product.device-mockup/gradient-stroke-phone-cluster": "Needs real video of a person with pose overlays. Image generation does not supply footage, and a still leaves a stock phone with a fake overlay. One silver source.",
+"product.annotated-shot/margin-notes-on-code": "Slanted asides joined by curved hand-drawn arrows are a measured tell: a slanted aside with a loose arrow appears in at least 5 of 16 GPT runs by eye. One silver source.",
+"product.animated-demo/video-stage-with-controls": "Depends on real footage, which neither code nor image generation supplies. Without it the model ships player chrome round nothing. Use a self-playing DOM demo instead.",
+"media.illustration/flat-geometric-world": "The same objects run from hero to footer and the page ends as a scene, which is the metaphor costume definition (the prop is still there in the footer). No gold evidence, and the chapter files it under needs a real hand.",
+"media.icon-set/labelled-desktop-icons": "The recipe says only inside a site built as a desktop, so it cannot exist without a metaphor costume. One expressive source.",
+"media.video/full-bleed-loop": "Hero-scale live footage. Image generation does not supply it, and the stock clip that replaces it is the cheap video the chapter names. Use a still or a code-drawn loop.",
+"media.video/in-scene-caption": "Depends on lifestyle footage of the product in use, which neither code nor image generation supplies, so it falls back to stock mood.",
+"media.video/portrait-tile-row": "Needs real people on camera naming real outcomes. Faked, it is invented proof as well as missing footage.",
+"media.video/product-output-as-footage": "Needs real footage plus real product output registered to it. Neither can be generated, and an invented overlay on stock video is fake evidence.",
+"motion.hover-state/micro-lift": "Cards that lift on hover are a listed giveaway, and lift plus tinted shadow is the kit default. Only 13 to 18% of CTAs use a transform at all, and tone-step or fill rows cover this slot better.",
+"motion.load-sequence/film-opening": "Needs a real rendered film or object, and holds the page for 4 to 6s. A model's version is a cheap imitation in front of the content.",
+"motion.load-sequence/percent-counter": "Needs real assets to load. A generated page has nothing to load, so the count becomes a fake timer, and load.md already says not to show one then.",
+"motion.scroll-pin-or-scrub/camera-flight": "Needs real 3D scenes and a page with no conversion job. A model's scenes end up as procedural objects at poster scale.",
+"motion.scroll-pin-or-scrub/wheel-gated-stage": "Takes the wheel away from the reader, and its own spec says expressive sites only. Expressive hands skip flags, so it stays available there.",
+"motion.scroll-reveal/rise-stagger-row": "A rise and fade on entry is the fade-up on every block. A model dealt this row spreads it down the page, and only 3 of 66 measured reveal rows are this form.",
+"section.logo-wall/press-masthead-row": "An 'as seen in' row needs real coverage and real mastheads. On an invented business it is a made-up claim set in letterforms a model cannot draw.",
+"section.pricing-table/flip-board-price": "A split-flap prop is named as a costume in anti-patterns: a gimmick doing the job of design, on the section that most needs to read plainly.",
+"section.stats/rating-row": "Invented scores from named platforms. This is the five-star tell from 6 of 16 GPT runs, plus a false source.",
+"section.team/candid-group-photo": "Real people in a real place cannot be generated. The whole form depends on an asset a model cannot produce.",
+"section.testimonial/press-quotes": "Invented quotes and scores attributed to real outlets are fabricated proof, and the form depends on publisher marks a model does not have.",
+"section.testimonial/video-testimonials": "Depends on real footage of real customers. A play ring over a generated still is reliably cheap.",
+"layout.grid-system/viewport-as-grid": "Its own recipe says avoid on long content pages, and hands require long pages.",
+"media.logo-mark/seal-monogram": "Rotated seals and sticker badges are a measured model tell, and warm-neutral lists them as cheap.",
+"atmosphere.grid-or-lines/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/blueprint-rails-with-nodes": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/exposed-column-guides": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/textured-gutters-outside-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/ruled-cell-frame": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/dashed-column-guides": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"surface.border-treatment/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"surface.border-treatment/viewport-frame": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do."
+},
+"downweight": {
+"type.display-headline/crushed-tracking": {
+"weight": 0.3,
+"reason": "Same habit as the Crushed tracking tell: GPT headlines sit near -0.04em against gold's -0.02em. Works only in a face that can take it, and -0.06em on the wrong face fuses letters."
+},
+"type.display-headline/flat-accent-phrase": {
+"weight": 0.3,
+"reason": "SKILL.md giveaway when it arrives by default: 14 of 16 GPT H1s mark a word or phrase. Fine when the coloured words are the claim, as the false alarms allow, so it needs to be a choice."
+},
+"type.display-headline/marked-word": {
+"weight": 0.3,
+"reason": "One marked headline word is the same giveaway, and the hand-stroke option is the cheap one: the chapter says a plain stroke looks like a template component."
+},
+"type.display-headline/tonal-gradient-fill": {
+"weight": 0.4,
+"reason": "Literally gradient-filled text, a SKILL.md giveaway. Subtle enough on Resend to pass, but baselines used none in 32 runs, so a dealt hand should not be what introduces it."
+},
+"type.display-headline/wide-heavy-display": {
+"weight": 0.3,
+"reason": "Heavy display is the Claude default (800 or more in 7 of 16 runs, Frank's extended 800). No gold evidence, against a default headline weight of 400 to 600."
+},
+"type.section-heading/eyebrow-title-lede-stack": {
+"weight": 0.3,
+"reason": "Eyebrows are fine, but this recipe puts one above every section, which is the giveaway. The section opening calls this same stack the cheap version."
+},
+"type.section-heading/accent-word-or-line": {
+"weight": 0.3,
+"reason": "A coloured word repeated on section headings is the Accent word in every heading tell, and the glow option makes the cheap version easy. Fine when the hue means a product family."
+},
+"type.section-heading/indexed-cell-heading": {
+"weight": 0.3,
+"reason": "Numbered section headings become the 01, 02, 03 giveaway unless the sections are a real sequence. The chapter warns against fake numbering, and a dealt hand does not check."
+},
+"type.type-as-image/cropped-footer-wordmark": {
+"weight": 0.4,
+"reason": "Measured Claude tell: 7 of 16 Opus footers end on a giant wordmark, usually over an empty footer. Fine beside a real index, as the false alarms note."
+},
+"button.primary/nested-arrow-chip": {
+"weight": 0.3,
+"reason": "Arrows bolted on: the chapter calls it one of the cheapest ways to give a pill identity and lets the chip recur in text links, so models spread it to every action."
+},
+"button.primary/spectral-edge-pill": {
+"weight": 0.2,
+"reason": "Without colours from the page's own art this becomes, in the chapter's words, the rainbow border of a thousand AI landing pages. Models rarely have that art."
+},
+"button.primary/display-scale-button": {
+"weight": 0.3,
+"reason": "60 to 96px against a measured 34 to 44px, with no gold evidence. Opus already overshoots at 56px, and the chapter limits this to launches and games."
+},
+"button.text-link/serif-voice-link": {
+"weight": 0.3,
+"reason": "Real on galleries and agencies, but its serif or italic link voice is the flourish the owner rejects and off the default product standard. Keep it for briefs that ask."
+},
+"nav.floating-pill/centred-capsule": {
+"weight": 0.3,
+"reason": "The nav chapter names the white pill floating over a plain page from the first frame as the cheap version, and this variant holds most of the family's low scores. Listed evidence is 1 gold, 4 silver."
+},
+"nav.floating-pill/inset-rounded-bar": {
+"weight": 0.5,
+"reason": "A strong pattern, but its spec fixes 12 to 20px blur. Reflex nav glass is a measured tell, on 16 of 16 GPT runs against 11% of gold, so it should not be this easy to deal."
+},
+"atmosphere.light-surface-ladder/warm-tone-only-ladder": {
+"weight": 0.4,
+"reason": "Fine when the brief earns warmth, but the ladder slot has few rows, so it is dealt far above the 8% of gold pages on warm off-white. Warm ground is the model collapse: 81% of GPT-6 pages."
+},
+"atmosphere.light-surface-ladder/cream-section-bands": {
+"weight": 0.4,
+"reason": "Same collapse as the warm ladder. Together they reach about a third of simulated hands. The false alarm allows cream when chosen, so this is a weight, not a ban."
+},
+"atmosphere.light-surface-ladder/flat-colour-joins": {
+"weight": 0.3,
+"reason": "Each section a single flat is the Opus habit, median 4 grounds against gold's 1 or 2. Few rows in this slot, so it is dealt often. Valid with a strict system."
+},
+"hero.full-bleed-media/centred-lockup": {
+"weight": 0.4,
+"reason": "Flat overlay with centred white text is what hero.md calls the most generated hero. Real on Fred and La Table de Joakim, but only once the edges are added."
+},
+"hero.full-bleed-media/giant-type-over-image": {
+"weight": 0.3,
+"reason": "A 15 to 20vw title lands at 216 to 288px, feeding the Opus H1 median near 130px. Real on A24 and Acne, and fine on a light weight over a strong image, so it should be a choice."
+},
+"atmosphere.gradient-field/page-long-hue-journey": {
+"weight": 0.3,
+"reason": "A page-tall gradient with glass cards is a wash with no edge. The chapter says gradients fail when they fill the page, and only 7 of 66 rows do."
+},
+"atmosphere.gradient-field/vertical-wash-into-page": {
+"weight": 0.3,
+"reason": "A saturated hero wash is the classic overuse. Models build the two-stop version rather than the four to six stops the row needs."
+},
+"surface.bento/gradient-per-tile-bento": {
+"weight": 0.3,
+"reason": "A gradient in every tile spends a once-only device six times, and the cheap version is the template bento with gradient thumbnails."
+},
+"surface.glass-or-blur/glass-card-over-photo": {
+"weight": 0.3,
+"reason": "Glass cards are a SKILL.md giveaway and only 7 of 89 gold sites use glass at all. Legitimate over a rich photograph, as Hims does."
+},
+"layout.full-bleed-break/solid-colour-statement": {
+"weight": 0.3,
+"reason": "A viewport of saturated colour with one sentence is the Opus flat field. Works once with grain and overlapping product, as on Inngest, and the row warns it otherwise reads as a poster."
+},
+"layout.section-rhythm/butted-colour-blocks": {
+"weight": 0.3,
+"reason": "Five to seven grounds conflicts with layout's two or three and reads as a sample book in cheap form. Real on Framework and Analogue with a strict system."
+},
+"product.ui-fragment/float-card-on-wash": {
+"weight": 0.3,
+"reason": "The soft white card with a tinted shadow on a pale wash is the lifestyle-app template, and the row's emoji tile breaks SKILL.md's emoji rule. No gold evidence. Fine with an icon or real thumbnail, chosen on purpose."
+},
+"product.ui-fragment/metric-card-cluster": {
+"weight": 0.3,
+"reason": "Overlapping cards with a metric, chip and spark are dashboard by numbers in a hero, and models fill them with vanity figures. Keep for a real reliability claim with unit and time window."
+},
+"product.ui-fragment/layered-panels-on-gradient": {
+"weight": 0.4,
+"reason": "Works on Stripe, but the rich gradient is where models land on the purple-to-blue wash, and a pure CSS gradient reads as generated. Keep when the panels hold real plans and prices."
+},
+"product.device-mockup/phone-group": {
+"weight": 0.3,
+"reason": "Three phones need three distinct real screens, and the chapter calls three identical phones the oldest template. The reject thatspaceformen.com floats three phones on a gradient. Keep for consumer apps with truly different views."
+},
+"product.device-mockup/tilted-device": {
+"weight": 0.3,
+"reason": "Gold sites commit to steep, cropped, physical tilts. Models produce the gentle CSS version the chapter calls the template look, and tilt is a measured baseline habit."
+},
+"product.annotated-shot/floating-tag-pills": {
+"weight": 0.5,
+"reason": "Chips floating past an image edge are close to the measured floating-fragments tell, and thin words add little. Keep when each pill states something true of the picture. Needs a strong photograph, so image generation or real assets set the ceiling."
+},
+"product.data-viz/dot-globe-with-chips": {
+"weight": 0.4,
+"reason": "Canvas is the Opus default (12 of 16 runs) and a globe is the easy global signal, so it arrives as wallpaper. Keep for payments or infrastructure with real places and amounts on the chips."
+},
+"product.data-viz/hairline-radial-map": {
+"weight": 0.3,
+"reason": "The logo-at-centre and concentric-arc forms are the integrations ring, seen in 3 of 3 GPT PM runs. Keep to replace a long capability list that has real structure, not as a hub of logos."
+},
+"product.animated-demo/ambient-signal-rings": {
+"weight": 0.4,
+"reason": "Chips on concentric rings read as the same integrations ring tell. Keep for real security or signal products, where the chapter already limits it."
+},
+"media.photography/die-cut-shape-mask": {
+"weight": 0.3,
+"reason": "Ellipse and shape masks sit beside the arch-top crops measured in at least 4 of 16 GPT runs. Keep when the shape encodes something, such as a waveform. Needs hard-edged subjects, which image generation can make and code cannot."
+},
+"media.illustration/mascot-system": {
+"weight": 0.3,
+"reason": "High count inflates it, and an SVG mascot drawn by a model is reliably cheap. The chapter says avoid without someone who can draw it well. Reachable with strong image generation if one character holds across scales and poses."
+},
+"media.illustration/textured-commissioned-art": {
+"weight": 0.3,
+"reason": "Filter-faked gouache or ink is the cheap version, and feTurbulence is already an Opus habit (6 of 16 runs). The chapter says do not fake it. Reachable with real art or tightly style-controlled image generation."
+},
+"media.render-3d/glass-plate-isometric": {
+"weight": 0.3,
+"reason": "Translucent plates over a blurred accent glow are the stock AI-layers diagram and sit next to the glass giveaway. The chapter calls an empty stack the generic form. Keep for explaining real layers with real text on the plates."
+},
+"media.logo-mark/seal-monogram": {
+"weight": 0.3,
+"reason": "Tracked caps on a ring are the circular seal sticker (6 of 16 GPT runs by eye). Fine for an atelier or architect, where it is the one decorative object, not as borrowed craft."
+},
+"app.dashboard-layout/kpi-tile-row": {
+"weight": 0.3,
+"reason": "Four equal KPI tiles are dashboard by numbers, and the evidence is shadcn dashboard-01, the block generated dashboards already copy. Prefer kpi-tab-strip unless four equal numbers are the real answer."
+},
+"app.dashboard-layout/inset-console": {
+"weight": 0.4,
+"reason": "A real shell, but its content order of four tiles, chart and table is the default admin template. Keep the shell and lead with the decision the screen exists for."
+},
+"commerce.collection-grid/product-stage-chapters": {
+"weight": 0.3,
+"reason": "One viewport per product on its own ground is the Claude-style failure: a median of 4 full-frame grounds against gold's 1, and few words per screen. Needs one strong image per product, so real assets or image generation set the ceiling. Keep for short ranges or launches."
+},
+"motion.hover-state/arrow-nudge": {
+"weight": 0.4,
+"reason": "Fine on one link, but dealing it invites an arrow on every button, and arrows bolted on are a listed giveaway (16 of 16 GPT runs)."
+},
+"motion.hover-state/scale-pop": {
+"weight": 0.3,
+"reason": "Scale 1.05 on hover is the kit default. Only 13 to 18% of CTAs use any transform, and most change fill."
+},
+"motion.load-sequence/colour-plate-mark": {
+"weight": 0.3,
+"reason": "A splash before the page. Fine for a hotel, but preloaders are only 5 to 6% of SaaS and devtool load rows, and load theatre is a measured Opus tell."
+},
+"motion.load-sequence/headline-word-cycle": {
+"weight": 0.3,
+"reason": "The rotating word is a template move, and it stacks on the marked-word giveaway. Only worth it when the audiences are real."
+},
+"motion.load-sequence/iris-or-sheet-reveal": {
+"weight": 0.3,
+"reason": "A covered entrance of 1 to 1.5s whose shape must come from the brand, and a model invents the shape. Reads as load theatre."
+},
+"motion.load-sequence/mark-performs": {
+"weight": 0.3,
+"reason": "Needs an owned mark, which a freshly invented brand lacks, and holds a flat screen for 1.5 to 3s."
+},
+"motion.load-sequence/staged-fade-stair": {
+"weight": 0.4,
+"reason": "A real Linear-style move, but readable only by about 1.9s and easy to overrun. Models already keep heroes changing past 0.3s."
+},
+"motion.load-sequence/title-card-hold": {
+"weight": 0.2,
+"reason": "Holds a blank card and 110px type for about 2.5s before the page. Load theatre plus an oversized headline."
+},
+"motion.load-sequence/typed-title": {
+"weight": 0.3,
+"reason": "The typewriter headline is the cheap version of this idea, and it delays the first readable sentence."
+},
+"motion.load-sequence/word-blur-resolve": {
+"weight": 0.3,
+"reason": "Headline is not readable until well past 1s. Past the 1.2s limit in load.md for a selling page, and blur reveals are overused."
+},
+"motion.load-sequence/wordmark-docks-to-nav": {
+"weight": 0.3,
+"reason": "Covers the page for about 2s and locks scroll. Good when chosen for a brand, wrong as a default on a page with a job to do."
+},
+"motion.scroll-pin-or-scrub/sticky-card-deck": {
+"weight": 0.3,
+"reason": "Translucent cards with 22px blur land on the glass-cards giveaway, and stacked full-screen statements invite one sentence per screen."
+},
+"motion.scroll-reveal/blur-front-wipe": {
+"weight": 0.2,
+"reason": "Same scrubbed-reading failure as word-ink-scrub, with a gradient band and blurred text on top."
+},
+"motion.scroll-reveal/word-ink-scrub": {
+"weight": 0.2,
+"reason": "Scrubbed reading is a measured Opus tell: most paused frames show a half-lit sentence. Real on gold sites, but only as a deliberate showpiece."
+},
+"section.case-study/brand-poster-tiles": {
+"weight": 0.4,
+"reason": "Needs custom art per customer. The spec warns a bare gradient reads as missing, and a gradient is what a model will reach for."
+},
+"section.cta-band/character-or-joke-close": {
+"weight": 0.3,
+"reason": "Needs a real mascot a model cannot draw well, or a joke that lands in the Opus deadpan tic."
+},
+"section.cta-band/floating-object-ring": {
+"weight": 0.3,
+"reason": "Scattered tiles around a heading echo the orbiting logo ring from GPT runs, and the objects must be real, which an invented brand lacks."
+},
+"section.cta-band/giant-type-sign-off": {
+"weight": 0.3,
+"reason": "100 to 250px display type with an accent last word hits two giveaways: the oversized headline and the marked word."
+},
+"section.cta-band/inset-colour-panel": {
+"weight": 0.4,
+"reason": "The tinted CTA band of the template stack, and the commonest close. Loud bands are 24% of all closes but 10% of gold."
+},
+"section.feature-sticky-scroll/scrubbed-statement": {
+"weight": 0.2,
+"reason": "Pinned type as the event: scrubbed reading plus one sentence per screen, both measured Opus tells."
+},
+"section.footer/ghost-wordmark-crop": {
+"weight": 0.3,
+"reason": "Pale ghost wordmarks are named in anti-patterns from a reject and an Opus footer, and models reach for them to add weight cheaply."
+},
+"section.footer/giant-wordmark-finish": {
+"weight": 0.3,
+"reason": "Real on gold beside a true index, but 7 of 16 Opus runs already end this way. Fine when chosen, overused by default."
+},
+"section.footer/object-signoff": {
+"weight": 0.3,
+"reason": "Tilted paper labels and stickers are the hero-sticker habit moved to the footer. Its own spec limits it to personal sites and strong concepts."
+},
+"section.integrations/orbit-and-arc": {
+"weight": 0.2,
+"reason": "Logos orbiting a tile appeared in 3 of 3 GPT PM runs, and the chapter names it as the cheap version."
+},
+"section.logo-wall/masked-grey-marquee": {
+"weight": 0.3,
+"reason": "The default 'trusted by' strip, the commonest row in the family, though only 31% of walls move. With invented logos it is the template at its most visible."
+},
+"section.testimonial/drifting-double-row": {
+"weight": 0.3,
+"reason": "The infinite moving cards pattern from component kits. It needs about thirty public quotes, and a model fills it with stock names."
+},
+"section.testimonial/portrait-story-cards": {
+"weight": 0.3,
+"reason": "The photo must show the real person. Without real portraits the form collapses into generated faces under a scrim."
+}
+}
+}

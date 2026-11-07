@@ -1,0 +1,108 @@
+<!doctype html>
+<!-- What makes it good: the schedule's rows are the practice's real resources, a named hygienist and chair each, so three cleanings stacked across one morning read at a glance as a small Gantt chart with one quieter block for sealants. Below it, four family members carry their own next action and status, six shared documents carry dates, and the list runs off the card's edge instead of ending neatly. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Household schedule</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000; --surface:#0a0b0f; --raised:#12141c; --raised-2:#1b1f2c;
+  --ink:#ffffff; --ink-2:#c6c9d2; --muted:#8a8d96;
+  --accent:#173075; --blue:#9fb4f0;
+  --line:rgb(255 255 255/.1); --line-2:rgb(255 255 255/.18);
+  --font:'Zalando Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --rail:max(clamp(16px,6.1vw,88px),calc((100vw - 1264px)/2)); --in:16px;
+  --nav:72px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip}
+h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+
+.band{position:relative;padding:112px calc(var(--rail) + var(--in))}
+.band--sheets{padding-bottom:64px}
+h3{font-size:32px;font-weight:500;line-height:1.12;letter-spacing:-.022em}
+
+/* Card with a copy column; the product window is 960 by 800 and the card crops it */
+.sheet{display:grid;grid-template-columns:440px minmax(0,1fr);height:clamp(560px,calc(100svh - var(--nav) - 110px),640px);margin:0 calc(var(--in)*-1) 40px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--line-2);overflow:hidden}
+.copy{padding:56px 24px 40px 48px;display:flex;flex-direction:column;align-items:flex-start}
+.copy h3{font-size:36px}
+.copy>p{margin-top:16px;font-size:17px;line-height:1.5;color:var(--muted)}
+.ui{position:relative}
+.a{position:absolute;left:8px;top:40px;width:960px;height:800px;background:var(--raised);border-radius:8px 0 0 8px;box-shadow:0 0 0 1px var(--line);font-size:14px;line-height:1.35}
+.viewer__bar{display:flex;align-items:center;gap:16px;height:44px;padding:0 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.viewer__bar b{font-weight:500;color:var(--ink)}
+.viewer__x{margin-left:auto;margin-right:164px}
+
+.house__b{padding:20px 24px;max-width:796px}
+.sched{--c:210px}
+.sched__h,.sched__r{display:grid;grid-template-columns:118px repeat(3,var(--c)) auto;align-items:center}
+.sched__h{font-size:12px;color:var(--muted)}
+.sched__h span:not(:first-child){transform:translateX(-1px)}
+.sched__r{position:relative;height:42px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.sched__r i{position:absolute;left:calc(118px + var(--x)*var(--c)*1);width:calc(var(--w)*var(--c) - 3px);top:5px;bottom:5px;display:flex;align-items:center;padding:0 8px;font-style:normal;font-size:12px;white-space:nowrap;overflow:hidden;background:var(--accent);color:var(--ink);border-radius:2px}
+.sched__r i.alt{background:var(--raised-2);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.people{margin-top:16px}
+.people li{display:grid;grid-template-columns:220px 1fr auto;gap:12px;align-items:baseline;padding:9px 0;border-top:1px solid var(--line);color:var(--muted)}
+.people b{font-weight:500;color:var(--ink)}
+.people em{font-style:normal;font-size:12px;color:var(--blue)}
+.people em.wait{color:var(--muted)}
+.ulabel{padding:6px 8px;font-size:12px;color:var(--muted)}
+.ulabel--3{margin-top:20px;padding:0 0 8px;width:fit-content}
+
+@media(max-width:1180px){.sheet{grid-template-columns:360px minmax(0,1fr)}}
+@media(max-width:980px){
+  .sheet{grid-template-columns:1fr;height:auto;min-height:0}
+  .copy{padding:28px 20px 20px}
+  .ui{height:300px;overflow:hidden}
+  .a{left:16px;top:0}
+}
+@media(max-width:700px){
+  :root{--in:12px;--nav:64px}
+  .band{padding-block:72px}
+  .a{width:640px;height:640px}
+  .viewer__x{margin-right:0}
+}
+</style>
+</head>
+<body>
+<section class="band band--sheets" aria-label="Patient app">
+  <article class="sheet">
+    <div class="copy">
+      <h3>One account for a household</h3>
+      <p>Parents book for children under 18 from one login, and three cleanings can be stacked into one morning.</p>
+    </div>
+    <div class="ui">
+      <div class="a house">
+        <div class="viewer__bar"><b>Rivera household</b><span>4 patients</span><span class="viewer__x">Thursday, December 3</span></div>
+        <div class="house__b">
+          <div class="sched" role="img" aria-label="Three cleanings stacked on the morning of December 3 from 7:30 to 9:00.">
+            <div class="sched__h"><span></span><span>7:30</span><span>8:00</span><span>8:30</span><span>9:00</span></div>
+            <div class="sched__r"><span>Tessa, chair 2</span><i style="--x:0;--w:2">Elena, cleaning</i></div>
+            <div class="sched__r"><span>Hoa, chair 3</span><i style="--x:0;--w:1">Lucía, 9</i><i class="alt" style="--x:1;--w:1">Sealants</i></div>
+            <div class="sched__r"><span>Ana, chair 4</span><i style="--x:1;--w:2">Nico, 6, first molars</i></div>
+          </div>
+          <ul class="people">
+            <li><b>Elena Rivera</b><span>Cleaning due Nov 18</span><em>Booked</em></li>
+            <li><b>Marco Rivera</b><span>Crown #19 approved, $700 after plan</span><em class="wait">Waiting</em></li>
+            <li><b>Lucía Rivera, 9</b><span>Sealants on #3 and #14</span><em>Booked</em></li>
+            <li><b>Nico Rivera, 6</b><span>Cleaning and first-molar check</span><em>Booked</em></li>
+          </ul>
+          <p class="ulabel ulabel--3">Shared documents</p>
+          <ul class="people people--d">
+            <li><b>Plan card, front and back</b><span>Updated January 6</span></li>
+            <li><b>Consent forms, Lucía and Nico</b><span>Signed October 28</span></li>
+            <li><b>Referral letter, Marco</b><span>Sent to endodontist</span></li>
+            <li><b>Medical history, all four</b><span>Reviewed November 2</span></li>
+            <li><b>Pharmacy on file</b><span>Aldrich Street pickup</span></li>
+            <li><b>Tax receipts, 2025</b><span>Ready to download</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+</body>
+</html>

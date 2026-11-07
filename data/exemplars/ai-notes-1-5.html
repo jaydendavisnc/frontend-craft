@@ -1,0 +1,111 @@
+<!doctype html>
+<!-- A stats row where each number belongs to someone: named authors above it, the exact finding below it, a blue source mark on it, and a link card to the paper whose thumbnail draws the same figure as a hundred dots (34, 6 and 31 filled).
+     Compare "10k+ users, 99.9% uptime": every value here can be checked, and the digits decode into place inside width-locked cells, so nothing reflows. -->
+<html lang="en"><head><meta charset="utf-8"><title>Cited evidence stats</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&family=Newsreader:opsz,wght@6..72,400&display=swap">
+<style>
+:root{--bg:#f7f6f5;--surface:#edeceb;--ink:#000;--ink-2:#565555;--ink-3:#6c6b6b;--muted:#7b7a7a;--line-strong:rgb(0 0 0/.17);--tint-2:rgb(0 0 0/.075);--accent:#2200ff;
+  --display:"Hanken Grotesk",system-ui,sans-serif;--text:"Newsreader",Georgia,serif;--ui:"Hanken Grotesk",system-ui,sans-serif;--ease:cubic-bezier(.4,0,.2,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}h2,p{margin:0;padding:0}svg{display:block}
+.wrap{width:100%;max-width:1440px;margin-inline:auto;padding-inline:32px}.sec{position:relative;margin-block:64px}.rule{display:block;height:2px;background:var(--ink)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:0 48px;padding-top:22px;align-items:start}
+.d2{font:400 32px/1.18 var(--display);letter-spacing:-.018em;max-width:480px;text-wrap:pretty}.d2 span{display:block}.d2 .lead{color:var(--muted)}
+.body{color:var(--ink-2);max-width:560px;padding-top:4px}.label{font:500 13px/1.3 var(--ui)}.num{font-variant-numeric:tabular-nums}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+/* A source mark is the only blue on the page. */
+.src{display:inline-flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0 3px;margin-left:3px;border-radius:3px;position:relative;background:var(--accent);color:#fff;box-shadow:inset 0 0 0 1px var(--accent);font:500 10px/1 var(--ui);font-variant-numeric:tabular-nums;letter-spacing:0;vertical-align:.52em;cursor:pointer;transition:background-color .18s var(--ease),color .18s var(--ease)}
+.src::after{content:"";position:absolute;inset:-9px -6px}
+a.src:hover{background:#fff;color:var(--accent)}
+/* Stats slot: each number belongs to someone */
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:40px;margin-top:44px}
+.c{display:flex;flex-direction:column;border-top:1px solid var(--line-strong);padding-top:14px}
+.c .label{color:var(--ink-2)}
+.c .n{display:block;margin-top:10px;font:400 40px/1.1 var(--display);letter-spacing:-.02em;font-variant-numeric:tabular-nums lining-nums}
+.c .n .src{vertical-align:1.15em}
+.c .t{margin-top:8px;margin-bottom:22px;font-size:16.5px;line-height:1.5;color:var(--ink-2);max-width:42ch}
+.row-link{position:relative;display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;margin-top:auto;padding:8px;border-radius:12px;box-shadow:inset 0 0 0 1px var(--line-strong);transition:background-color .2s var(--ease),color .2s var(--ease),box-shadow .2s var(--ease)}
+.thumb{display:grid;place-items:center;height:72px;border-radius:4px;background:var(--surface);color:var(--accent);transition:background-color .2s var(--ease),color .2s var(--ease)}
+.thumb svg{width:56px;height:56px}
+.thumb circle{fill:rgb(0 0 0/.16);transition:fill .2s var(--ease)}
+.thumb circle.f{fill:currentColor}
+.tx{display:flex;flex-direction:column;justify-content:space-between;gap:6px;padding:2px 34px 2px 0;font:400 14px/1.3 var(--ui)}
+.tx b{font-weight:500}
+.tx span{color:var(--ink-3);transition:color .2s var(--ease)}
+.go{position:absolute;right:8px;bottom:8px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--tint-2);transition:background-color .2s var(--ease)}
+.row-link:hover{background:var(--ink);color:var(--bg);box-shadow:inset 0 0 0 1px var(--ink)}
+.row-link:hover .thumb{background:rgb(255 255 255/.12);color:#fff}
+.row-link:hover .thumb circle{fill:rgb(255 255 255/.24)}
+.row-link:hover .thumb circle.f{fill:#fff}
+.row-link:hover .tx span{color:rgb(255 255 255/.72)}
+.row-link:hover .go{background:rgb(255 255 255/.18)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3.500 8h9M8.500 4l4 4-4 4"/></symbol></svg>
+<div class="wrap"><section class="sec" id="evidence">
+  <i class="rule"></i>
+  <div class="split">
+    <h2 class="d2"><span class="lead">People mishear, memory fades and AI assistants misattribute</span><span>Three published figures behind every source link</span></h2>
+    <p class="body">A note passes through a recording, a transcript and a model, and each of them loses something. Ibid keeps a link to the source so that you never have to rely on any one of them.</p>
+  </div>
+  <div class="cols">
+    <div class="c">
+      <p class="label">Ebbinghaus, 1885</p>
+      <b class="n num" data-decode>33.7%<a class="src" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644" aria-label="Source 2">2</a></b>
+      <p class="t">One day after memorising a list, relearning it took 33.7% less time than learning it from scratch. Murre and Dros repeated the test in 2015 and measured 31.7%.</p>
+      <a class="row-link" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0120644"><span class="thumb" data-dots="34"></span><span class="tx"><b>Replication and analysis of Ebbinghaus' forgetting curve</b><span>PLOS ONE, 2015</span></span><span class="go"><svg class="ic"><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="c">
+      <p class="label">Xiong et al., Microsoft Research, 2016</p>
+      <b class="n num" data-decode>5.9%<a class="src" href="https://arxiv.org/abs/1610.05256" aria-label="Source 3">3</a></b>
+      <p class="t">The word error rate of professional human transcribers on the Switchboard telephone conversations in the NIST 2000 test set.</p>
+      <a class="row-link" href="https://arxiv.org/abs/1610.05256"><span class="thumb" data-dots="6"></span><span class="tx"><b>Achieving human parity in conversational speech recognition</b><span>arXiv, 2016</span></span><span class="go"><svg class="ic"><use href="#i-arrow"/></svg></span></a>
+    </div>
+    <div class="c">
+      <p class="label">EBU and BBC, 2025</p>
+      <b class="n num" data-decode>31%<a class="src" href="https://communication.vrt.be/largest-study-of-its-kind-shows-ai-assistants-misrepresent-news-content-45-of-the-time-regardless-of-language-or-territory" aria-label="Source 4">4</a></b>
+      <p class="t">The share of AI assistant answers about the news whose references were missing or misleading, from more than 3,000 answers reviewed by journalists.</p>
+      <a class="row-link" href="https://communication.vrt.be/largest-study-of-its-kind-shows-ai-assistants-misrepresent-news-content-45-of-the-time-regardless-of-language-or-territory"><span class="thumb" data-dots="31"></span><span class="tx"><b>Largest study of its kind shows AI assistants misrepresent news content</b><span>VRT, 2025</span></span><span class="go"><svg class="ic"><use href="#i-arrow"/></svg></span></a>
+    </div>
+  </div>
+</section></div>
+<script>
+(function () {
+  /* Each paper's figure, drawn as a hundred dots */
+  document.querySelectorAll('.thumb[data-dots]').forEach(t => {
+    const n = +t.dataset.dots; let dots = '';
+    for (let i = 0; i < 100; i++) dots += `<circle cx="${3 + (i % 10) * 6}" cy="${3 + Math.floor(i / 10) * 6}" r="2"${i < n ? ' class="f"' : ''}/>`;
+    t.innerHTML = `<svg viewBox="0 0 60 60" aria-hidden="true">${dots}</svg>`;
+  });
+  /* Decode: characters step into place. Each cell is locked to its own width, so nothing reflows. */
+  const GLYPHS = 'abcdefghijklmnopqrstuvwxyz';
+  function decode(el, each = 30, spin = 400, gap = 42) {
+    const original = el.innerHTML, chars = [];
+    [...el.childNodes].filter(n => n.nodeType === 3).forEach(n => {
+      const frag = document.createDocumentFragment();
+      [...n.textContent].forEach(c => { const s = document.createElement('span'); s.style.display = 'inline-block'; s.textContent = c; frag.append(s); chars.push(s); });
+      n.replaceWith(frag);
+    });
+    const widths = chars.map(c => c.getBoundingClientRect().width);
+    chars.forEach((c, i) => {
+      const final = c.textContent, start = performance.now() + i * each; let last = 0;
+      c.style.width = widths[i] + 'px'; c.style.textAlign = 'center'; c.style.opacity = 0;
+      requestAnimationFrame(function tick(now) {
+        const p = (now - start) / spin;
+        if (p >= 1) { c.textContent = final; c.style.opacity = 1; if (i === chars.length - 1) el.innerHTML = original; return; }
+        if (p > 0) {
+          c.style.opacity = Math.ceil(p * 3) / 3;                       // steps(3), the page's stepped motion
+          if (now - last >= gap) { last = now; c.textContent = /[0-9]/.test(final) ? Math.floor(Math.random() * 10) : GLYPHS[Math.floor(Math.random() * 26)]; }
+        }
+        requestAnimationFrame(tick);
+      });
+    });
+  }
+  /* Numbers resolve once, when they first scroll into view */
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); decode(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    document.fonts.ready.then(() => document.querySelectorAll('[data-decode]').forEach(el => io.observe(el)));
+  }
+})();
+</script>
+</body></html>

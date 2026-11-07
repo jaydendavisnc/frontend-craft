@@ -1,0 +1,213 @@
+<!doctype html>
+<!-- A nav whose search does the job a phone call would: it indexes every menu row from the live DOM plus hand-written synonyms ("wifi" finds Laptops, "gluten" finds Allergies), ranks title matches above mentions, puts the price on each result, and when nothing matches it gives the bar's phone number instead of a dead end. Slash and Cmd-K focus it, arrows move a hard inverted selection, and picking a menu row scrolls to it and flashes it, in a panel with no rounding and no drop shadow, just a 2px ink stroke. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trosclair nav search</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page-bg:#f1ede1; --page-ink:#1d1915; --page-muted:#746653; --page-accent:#7a281e;
+  --bone:#f1ede1; --ink:#1d1915; --muted:#746653; --fill:#efcfa8;
+  --sans:'Instrument Sans',ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --rule:color-mix(in srgb,currentColor 24%,transparent);
+  --nav:64px;
+  --gut:24px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(var(--nav) + 20px);background:var(--page-bg);color:var(--page-ink)}
+body{margin:0;font:400 17px/1.5 var(--sans);font-feature-settings:'kern','liga';-webkit-font-smoothing:antialiased;background:var(--page-bg)}
+h2,h3,p,dl,dd{margin:0;padding:0}
+svg{display:block;max-width:100%}
+a{color:inherit}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+.tnum{font-variant-numeric:lining-nums tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;height:var(--nav);display:flex;align-items:center;gap:24px;padding:0 var(--gut);background:var(--page-bg);color:var(--page-ink);box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--page-ink) 16%,transparent)}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:500 17px/1 var(--sans);letter-spacing:-.01em;white-space:nowrap}
+.brand svg{width:36px;height:36px;color:var(--page-accent)}
+.brand:hover svg{color:var(--page-ink)}
+.search{position:relative;flex:0 1 416px;margin-left:8px}
+.search label{display:flex;align-items:center;gap:8px;height:40px;padding:0 8px 0 12px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--page-ink) 34%,transparent);cursor:text}
+.search label:hover,.search label:focus-within{box-shadow:inset 0 0 0 2px var(--page-ink)}
+.search svg{flex:none;width:16px;height:16px}
+.search input{flex:1;min-width:0;height:100%;background:none;border:0;outline:0;font:400 14px/1 var(--sans)}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.search input::placeholder{color:var(--page-muted);opacity:1}
+.key{min-width:20px;height:20px;padding:0 5px;display:inline-grid;place-items:center;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--page-ink) 34%,transparent);font:500 11px/1 var(--sans);color:var(--page-muted)}
+.nav-links{margin-left:auto;display:flex;align-items:center;gap:24px;font:500 14px/1 var(--sans)}
+.nav-links a,.bag-btn{text-decoration:none;padding:6px 0;background:none}
+.nav-links a:hover,.bag-btn:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:2px}
+.bag-btn{font:500 14px/1 var(--sans)}
+.bag-btn b{font-weight:500;display:inline-grid;place-items:center;min-width:20px;height:20px;margin-left:4px;padding:0 5px;background:var(--page-ink);color:var(--page-bg)}
+
+/* SEARCH RESULTS */
+.res{position:absolute;left:0;right:0;top:44px;background:var(--bone);color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink);padding:6px;display:none;max-height:min(62vh,430px);overflow:auto}
+.res.open{display:block}
+.res a{display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:9px 10px;text-decoration:none;font:500 14px/1.35 var(--sans)}
+.res a span{grid-column:1/-1;font-weight:400;color:var(--muted);font-size:13.5px}
+.res a[aria-selected=true],.res a:hover{background:var(--ink);color:var(--bone)}
+.res a[aria-selected=true] span,.res a:hover span{color:#c9bfae}
+.res p{padding:10px;font-size:14px;line-height:1.4;color:var(--muted)}
+.res .hint{padding:8px 10px 6px;font:500 13px/1 var(--sans);color:var(--muted)}
+.hit{background:var(--fill)!important;color:var(--ink)!important;box-shadow:0 0 0 8px var(--fill)}
+.hit *{color:var(--ink)!important}
+
+/* the menu the search reads */
+.wrap{max-width:calc(1240px + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.row{display:grid;grid-template-columns:minmax(0,360px) minmax(0,880px)}
+.sec{padding-block:120px}
+.label{font:500 20px/1.3 var(--sans);letter-spacing:-.01em}
+h2{font:500 clamp(36px,3.9vw,56px)/1.04 var(--sans);letter-spacing:-.03em;max-width:15em;text-wrap:balance}
+.menu-cols{display:grid;grid-template-columns:1fr 1fr;gap:0 40px;margin-top:56px}
+.rule{height:8px;background:var(--page-accent);margin-bottom:26px}
+.mh{font:500 44px/1 var(--sans);letter-spacing:-.02em;text-transform:uppercase;margin-bottom:18px}
+.group+.group{margin-top:56px}
+.it{display:grid;grid-template-columns:1fr auto;gap:0 20px;padding:13px 0 15px;border-bottom:1px solid var(--rule)}
+.it.run{border-bottom-style:dashed}
+.it dt{font:500 17px/1.4 var(--sans)}
+.it dd{grid-row:1;grid-column:2;font:500 17px/1.4 var(--sans);font-variant-numeric:lining-nums tabular-nums}
+.it dd.d{grid-row:2;grid-column:1/-1;font:400 16px/1.4 var(--sans);color:var(--page-muted);max-width:30em}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="m44" viewBox="0 0 44 44"><g fill="none" stroke="currentColor"><path stroke-width="2.5" d="M22 2l20 20-20 20L2 22z"/><path stroke-width="1" d="M22 7.5L36.5 22 22 36.5 7.5 22z"/></g><path fill="currentColor" d="M14.5 15.5h15v3.2h-5.9v3h-3.2v-3h-5.9zM20.4 22.9h3.2v7.6h-3.2z"/></symbol>
+</svg>
+
+<header class="nav">
+  <a class="brand" href="#top" aria-label="Trosclair Coffee, back to top"><svg aria-hidden="true"><use href="#m44"/></svg>Trosclair Coffee</a>
+  <div class="search" role="search">
+    <label><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="7" cy="7" r="4.75"/><path d="M10.5 10.5L14 14"/></svg>
+      <span class="sr">Search the menu, hours and practical details</span>
+      <input id="q" type="search" placeholder="Search the menu, hours, parking" autocomplete="off" spellcheck="false">
+      <span class="key" aria-hidden="true">/</span></label>
+  </div>
+  <nav class="nav-links" aria-label="Main">
+    <a href="#menu">Menu</a><a href="#bags">Bags</a><a href="#visit">Visit</a>
+    <button class="bag-btn" type="button">Bag<b class="tnum" id="bagCount">0</b></button>
+  </nav>
+</header>
+
+<main id="top">
+<section class="sec" id="menu" aria-label="Menu">
+  <div class="wrap row">
+    <p class="label">The menu</p>
+    <div>
+      <h2>What's on the menu this week</h2>
+      <div class="menu-cols">
+        <div class="group">
+          <div class="rule"></div><h3 class="mh">Coffee</h3>
+          <dl>
+            <div class="it run" id="i-drip"><dt>Drip, Lot 74</dt><dd>3.50</dd><dd class="d">Batch brewed every 40 minutes. Refills are $1 until noon.</dd></div>
+            <div class="it run" id="i-pour"><dt>Pour-over, Lot 74</dt><dd>5.50</dd><dd class="d">One cup on a V60, about four minutes at the bar.</dd></div>
+            <div class="it run" id="i-espresso"><dt>Espresso, Lot 74</dt><dd>3.75</dd><dd class="d">18 grams in, 38 out.</dd></div>
+            <div class="it" id="i-cortado"><dt>Cortado</dt><dd>4.25</dd><dd class="d">Equal parts espresso and steamed whole milk.</dd></div>
+            <div class="it" id="i-flat"><dt>Flat white</dt><dd>4.75</dd><dd class="d">A double shot in a 6-ounce cup.</dd></div>
+            <div class="it" id="i-latte"><dt>Latte</dt><dd>5.00</dd><dd class="d">A double shot in 12 ounces of milk.</dd></div>
+            <div class="it" id="i-aulait"><dt>Caf&eacute; au lait</dt><dd>4.50</dd><dd class="d">Half chicory drip, half scalded milk, as this street has long had it.</dd></div>
+            <div class="it" id="i-iced"><dt>Iced chicory</dt><dd>4.75</dd><dd class="d">Steeped cold for 18 hours, poured over ice with condensed milk.</dd></div>
+            <div class="it run" id="i-tonic"><dt>Satsuma tonic</dt><dd>6.00</dd><dd class="d">Espresso over tonic and a squeeze of satsuma, through December.</dd></div>
+          </dl>
+        </div>
+        <div>
+          <div class="group">
+            <div class="rule"></div><h3 class="mh">Not coffee</h3>
+            <dl>
+              <div class="it run" id="i-soda"><dt>Satsuma soda</dt><dd>4.00</dd><dd class="d">Juice from Plaquemines Parish satsumas, cane syrup and soda water.</dd></div>
+              <div class="it" id="i-choc"><dt>Hot chocolate</dt><dd>4.50</dd><dd class="d">Whole milk and 70% dark chocolate.</dd></div>
+              <div class="it" id="i-tea"><dt>Black tea</dt><dd>3.25</dd><dd class="d">Assam by the pot, enough for two cups.</dd></div>
+            </dl>
+          </div>
+          <div class="group">
+            <div class="rule"></div><h3 class="mh">Food</h3>
+            <dl>
+              <div class="it" id="i-biscuit"><dt>Buttermilk biscuit</dt><dd>3.75</dd><dd class="d">With cane syrup butter. Usually gone by 10.</dd></div>
+              <div class="it" id="i-ham"><dt>Ham biscuit</dt><dd>7.50</dd><dd class="d">Smoked ham and Creole mustard.</dd></div>
+              <div class="it run" id="i-pie"><dt>Satsuma hand pie</dt><dd>5.00</dd><dd class="d">Through December, if the fruit lasts.</dd></div>
+              <div class="it" id="i-short"><dt>Pecan shortbread</dt><dd>2.75</dd><dd class="d">Two to a bag.</dd></div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<script>
+/* search: built from the page itself, so it cannot drift from the menu */
+(function(){
+  var X=[];
+  document.querySelectorAll('.it').forEach(function(e){X.push({t:e.querySelector('dt').textContent,s:e.querySelector('dd.d').textContent,p:'$'+e.querySelector('dd').textContent,h:e.id,k:'menu drink food'});});
+  /* the full page reads the bag and practical rows from their own sections; those sections are not in this extract, so they are written out */
+  X.push({t:'Lot 74, Kochere',s:'Ethiopia, washed heirloom. Bergamot, black tea and a dry finish.',p:'$22',h:'b-74',k:'bag beans buy whole grind'});
+  X.push({t:'Lot 73, Huehuetenango',s:'Guatemala, washed Bourbon. Apricot and brown sugar, soft and round.',p:'$20',h:'b-73',k:'bag beans buy whole grind'});
+  X.push({t:'Lot D9, decaf',s:'Colombia, decaffeinated with sugarcane. Cane sugar and cocoa.',p:'$21',h:'b-d9',k:'bag beans buy whole grind'});
+  X.push({t:'Roasted chicory',s:'Ground root in an 8-ounce bag. Use one part to four parts coffee for a New Orleans drip.',p:'$9',h:'b-ch',k:'bag beans buy whole grind'});
+  X.push({t:'Refills',s:'Drip refills are $1 until noon, in our cup or the one you carried from home.',h:'f-refill',k:'refill bottomless top up'});
+  X.push({t:'Milk',s:'Whole milk comes from a dairy in Folsom, 60 miles north. We also carry oat, and we don\'t stock almond or soy.',h:'f-milk',k:'oat almond soy dairy vegan milk alternative'});
+  X.push({t:'Dogs and the porch',s:'The Piety Street porch has six seats, a water bowl, and room for dogs. Inside there are 14 seats and no dogs.',h:'f-dogs',k:'dog pet porch outside outdoor patio seats'});
+  X.push({t:'Laptops',s:'The four window seats have outlets, and the Wi-Fi password is on your receipt. We ask you to share the table on Saturdays.',h:'f-laptops',k:'wifi wi-fi internet outlet plug laptop work study'});
+  X.push({t:'Getting in',s:'There\'s a ramp on the Piety side and one step on Dauphine. The restroom is wide enough for a wheelchair.',h:'f-access',k:'wheelchair ramp accessible step restroom bathroom toilet'});
+  X.push({t:'Your own tin',s:'Bring a tin or a jar for your beans and we take $1 off the bag price.',h:'f-bags',k:'tin jar reusable discount'});
+  X.push({t:'Hours',s:'Tuesday to Friday 6:30 am–3 pm, Saturday 7:30 am–3 pm, Sunday 7:30 am–1 pm. Closed Mondays.',h:'hours',k:'open close closed when time today monday sunday thanksgiving'});
+  X.push({t:'Directions and parking',s:'Dauphine and Piety. Street parking only. The 88 bus stops on St. Claude.',h:'visit',k:'address where map park parking bus car location'});
+  X.push({t:'Saturday cupping',s:'Free, 3:30 on Saturdays, 12 seats at the back table.',h:'cupping',k:'tasting class event free'});
+  X.push({t:'The roast',s:'Lot 74 takes 9:46 in the drum. We roast on Mondays.',h:'roast',k:'roaster curve how process'});
+  X.push({t:'Decaf',s:'Lot D9 goes in any drink for free.',p:'',h:'b-d9',k:'caffeine free decaffeinated'});
+  X.push({t:'Allergies',s:'Biscuits contain wheat and milk, shortbread contains pecans. One small kitchen.',h:'menu',k:'allergy gluten nut wheat dairy'});
+  X.push({t:'Phone and email',s:'(504) 555-0142',h:'hours',k:'contact call email'});
+  var SUG=['Oat milk','Hours','Decaf','Parking','Satsuma'];
+  function find(q){
+    var tk=q.toLowerCase().trim().split(/\s+/);
+    return X.map(function(r){var title=r.t.toLowerCase(),hay=(title+' '+r.s+' '+r.k).toLowerCase(),score=0;
+      if(!tk.every(function(w){return hay.indexOf(w)>=0;}))return null;
+      if(title.indexOf(tk[0])===0)score=3;else if(title.indexOf(tk[0])>=0)score=2;else if((' '+r.k).indexOf(' '+tk[0])>=0)score=1;
+      return {r:r,s:score};}).filter(Boolean).sort(function(a,b){return b.s-a.s;}).slice(0,6).map(function(x){return x.r;});
+  }
+  function go(e){
+    e.scrollIntoView({block:'center'});e.classList.add('hit');setTimeout(function(){e.classList.remove('hit');},1800);
+  }
+  var input=document.getElementById('q'),list=document.createElement('div'),sel=-1,items=[];
+  list.className='res';list.setAttribute('role','listbox');input.closest('.search').appendChild(list);
+  function render(){
+    var q=input.value.trim();sel=-1;list.innerHTML='';
+    if(!q){list.innerHTML='<div class="hint">Try</div>';items=SUG.map(function(s){return {t:s,sug:1};});}
+    else{items=find(q);if(!items.length){var p=document.createElement('p');p.textContent='We don’t have anything called “'+q+'”. Call the bar at (504) 555-0142 and we’ll tell you what we do have.';list.appendChild(p);}}
+    items.forEach(function(r,i){var a=document.createElement('a');a.href='#'+(r.h||'menu');a.setAttribute('role','option');
+      var nm=document.createElement('div');nm.textContent=r.t;a.appendChild(nm);
+      if(r.p){var pr=document.createElement('div');pr.className='tnum';pr.textContent=r.p;a.appendChild(pr);}
+      if(r.s){var s=document.createElement('span');s.textContent=r.s;a.appendChild(s);}
+      a.addEventListener('mousedown',function(ev){ev.preventDefault();});
+      a.addEventListener('click',function(ev){ev.preventDefault();pick(i);});
+      list.appendChild(a);});
+    list.classList.add('open');
+  }
+  /* A row whose section is not in this extract leaves the list open: its sub-line is already the answer. */
+  function pick(i){var r=items[i];if(!r)return;if(r.sug){input.value=r.t;render();input.focus();return;}var e=document.getElementById(r.h);if(!e)return;list.classList.remove('open');input.blur();go(e);}
+  function mark(){[].forEach.call(list.querySelectorAll('a'),function(a,i){a.setAttribute('aria-selected',i===sel);if(i===sel)a.scrollIntoView({block:'nearest'});});}
+  input.addEventListener('input',render);
+  input.addEventListener('focus',render);
+  input.addEventListener('blur',function(){setTimeout(function(){list.classList.remove('open');},80);});
+  input.addEventListener('keydown',function(e){
+    if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(sel+1,items.length-1);mark();}
+    else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(sel-1,0);mark();}
+    else if(e.key==='Enter'){e.preventDefault();pick(sel<0?0:sel);}
+    else if(e.key==='Escape'){if(input.value){input.value='';render();}else{input.blur();}}
+  });
+  addEventListener('keydown',function(e){
+    var typing=/INPUT|TEXTAREA/.test(document.activeElement.tagName);
+    if((e.key==='/'&&!typing)||((e.metaKey||e.ctrlKey)&&e.key==='k')){e.preventDefault();input.focus();input.select();}
+  });
+  /* Standalone only: open on a real query with the arrow on row two, so the state shows without typing. */
+  input.value='milk';input.focus();render();sel=1;mark();
+})();
+</script>
+</body>
+</html>

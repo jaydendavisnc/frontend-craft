@@ -1,0 +1,109 @@
+<!doctype html>
+<!-- A comparison table with a sticky plan row and 3 sticky group heads that dock under it, 13 feature rows holding real limits (5,000 runs, 8 breakpoints, 90 days, Your bucket) rather than ticks alone, and a recommended column marked only by an accent outline on its button. Under 860px the five columns collapse to one plan chosen from a sticky picker, driven by a single data attribute. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shim pricing table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#000;--line:#262626;--line-2:#2e2e2e;--ink:#eee;--ink-2:#8a8a8a;--ink-4:#505050;--accent:#8f9fe8;--on-accent:#0a0d1c;--tint:rgba(238,238,238,.05);
+  --sans:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --t-13:13px;--t-14:14px;--t-16:16px;--t-22:22px;--t-44:44px;--ease:cubic-bezier(.22,1,.36,1);--ease-ui:cubic-bezier(.4,0,.2,1);--pad:48px
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--t-16)/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+h2{margin:0;padding:0}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.frame{max-width:1320px;margin-inline:auto}
+.head{padding:72px var(--pad) 64px}
+h2{font:450 var(--t-44)/1.1 var(--sans);letter-spacing:-.024em;max-width:1010px;text-wrap:pretty;color:var(--ink)}
+h2>span{color:var(--ink-2)}
+.wipe{position:relative;isolation:isolate;display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 14px;border-radius:6px;overflow:hidden;font:500 var(--t-14)/1 var(--sans);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-2);transition:color .3s var(--ease-ui),box-shadow .3s var(--ease-ui)}
+.wipe::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .36s var(--ease)}
+.wipe:hover{color:var(--bg);box-shadow:inset 0 0 0 1px var(--ink)}.wipe:hover::before{transform:scaleX(1);transform-origin:left}
+/* pricing: plan row and group heads stack as sticky layers; --plans is measured, not guessed */
+.head-p{padding-top:88px}
+.ptable{position:relative;border-top:1px solid var(--line)}
+.p-pick{display:none}
+.plans{position:sticky;top:0;z-index:22;display:grid;grid-template-columns:repeat(5,1fr);background:var(--bg);border-bottom:1px solid var(--line)}
+.pl{display:grid;align-content:start;gap:2px;padding:16px 16px 16px;min-width:0;border-left:1px solid var(--line)}
+.pl-0{padding-left:var(--pad);padding-right:24px;border-left:0}
+.pl b{font-weight:500}.pl small{font-size:var(--t-13);line-height:1.35;color:var(--ink-2)}
+.pl-p{font-size:var(--t-22);line-height:1.2;letter-spacing:-.014em}
+.pl .wipe{margin-top:10px;justify-content:center;height:34px;font-size:var(--t-13);padding:0 8px}
+.pl.is-rec .wipe{box-shadow:inset 0 0 0 1px var(--accent);color:var(--ink)}
+.pl.is-rec .wipe::before{background:var(--accent)}.pl.is-rec .wipe:hover{color:var(--on-accent)}
+.p-g{position:sticky;top:var(--plans,165px);z-index:12;display:flex;align-items:center;height:40px;padding-left:var(--pad);background:var(--bg);border-bottom:1px solid var(--line);font:500 var(--t-14)/1 var(--sans);color:var(--ink)}
+.p-r{display:grid;grid-template-columns:repeat(5,1fr);align-items:center;min-height:44px;border-bottom:1px solid rgba(238,238,238,.07);font-size:var(--t-14);color:var(--ink);transition:background .15s}
+.p-r:hover{background:var(--tint)}
+.p-k{padding:10px 16px 10px var(--pad);color:var(--ink-2)}
+.p-c{padding:10px 16px;border-left:1px solid rgba(238,238,238,.07);align-self:stretch;display:flex;align-items:center}
+.ck{width:14px;height:14px;fill:none;stroke:var(--accent);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.no{color:var(--ink-4)}
+@media(max-width:860px){
+  :root{--pad:20px;--t-44:30px}
+  .head{padding:48px var(--pad) 40px}
+  .p-pick{position:sticky;top:0;z-index:23;display:grid;grid-template-columns:repeat(4,1fr);background:var(--bg);border-bottom:1px solid var(--line)}
+  .p-pick button{height:44px;font:500 var(--t-13)/1 var(--sans);color:var(--ink-2);box-shadow:inset 0 -2px 0 transparent;transition:color .2s,box-shadow .2s}
+  .p-pick button[aria-pressed=true]{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+  .plans{position:static;grid-template-columns:1fr}.pl-0{display:none}.pl{display:none;padding:20px var(--pad);border-left:0}
+  .p-r{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}.p-c{display:none}
+  .ptable .p-g{top:43px}
+  .ptable[data-plan="0"] [data-col="0"],.ptable[data-plan="1"] [data-col="1"],.ptable[data-plan="2"] [data-col="2"],.ptable[data-plan="3"] [data-col="3"]{display:flex}
+  .ptable[data-plan="0"] .pl[data-col="0"],.ptable[data-plan="1"] .pl[data-col="1"],.ptable[data-plan="2"] .pl[data-col="2"],.ptable[data-plan="3"] .pl[data-col="3"]{display:grid}
+}
+</style>
+</head>
+<body>
+<main class="frame">
+<section id="pricing">
+  <div class="head head-p"><h2>What a seat costs. <span>You pay for the designers who sign off. Engineers, PMs and viewers are free on every plan, because a tool people avoid to save a seat never gets used.</span></h2></div>
+  <div class="ptable" data-plan="1" role="table" aria-label="Plans compared">
+    <div class="p-pick" role="group" aria-label="Choose a plan to compare">
+<button data-pick="0" aria-pressed="false">Starter</button>
+<button data-pick="1" aria-pressed="true">Team</button>
+<button data-pick="2" aria-pressed="false">Company</button>
+<button data-pick="3" aria-pressed="false">Enterprise</button></div>
+    <div class="plans">
+<div class="pl pl-0"><b>Prices in USD</b><small>Billed monthly, cancel any time. Pay yearly and two months are free.</small></div>
+<div class="pl" data-col="0"><b>Starter</b><div class="pl-p num">$0</div><small>one designer, one repo</small><a class="wipe" href="#start"><span>Add to GitHub</span></a></div>
+<div class="pl is-rec" data-col="1"><b>Team</b><div class="pl-p num">$16</div><small>per designer, monthly</small><a class="wipe" href="#start"><span>Start 14-day trial</span></a></div>
+<div class="pl" data-col="2"><b>Company</b><div class="pl-p num">$28</div><small>per designer, monthly</small><a class="wipe" href="#start"><span>Start 14-day trial</span></a></div>
+<div class="pl" data-col="3"><b>Enterprise</b><div class="pl-p num">Custom</div><small>billed yearly</small><a class="wipe" href="#start"><span>Talk to Joel</span></a></div></div>
+    
+<div class="p-g" role="row"><span role="rowheader">Reviews</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Repositories</span><span class="p-c" data-col="0" role="cell">1</span><span class="p-c" data-col="1" role="cell">10</span><span class="p-c" data-col="2" role="cell">Unlimited</span><span class="p-c" data-col="3" role="cell">Unlimited</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Runs per month</span><span class="p-c" data-col="0" role="cell">200</span><span class="p-c" data-col="1" role="cell">5,000</span><span class="p-c" data-col="2" role="cell">40,000</span><span class="p-c" data-col="3" role="cell">Custom</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Breakpoints per frame</span><span class="p-c" data-col="0" role="cell">1</span><span class="p-c" data-col="1" role="cell">3</span><span class="p-c" data-col="2" role="cell">8</span><span class="p-c" data-col="3" role="cell">Unlimited</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Dark mode frames</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Interaction states</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-g" role="row"><span role="rowheader">People</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Designers who sign off</span><span class="p-c" data-col="0" role="cell">1</span><span class="p-c" data-col="1" role="cell">From 1</span><span class="p-c" data-col="2" role="cell">From 10</span><span class="p-c" data-col="3" role="cell">Custom</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Engineers, PMs and viewers</span><span class="p-c" data-col="0" role="cell">Free</span><span class="p-c" data-col="1" role="cell">Free</span><span class="p-c" data-col="2" role="cell">Free</span><span class="p-c" data-col="3" role="cell">Free</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Slack, Linear and Jira</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Blocking checks</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-g" role="row"><span role="rowheader">Security</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">SSO and SCIM</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">SOC 2 Type II report</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="2" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Screenshot retention</span><span class="p-c" data-col="0" role="cell">7 days</span><span class="p-c" data-col="1" role="cell">30 days</span><span class="p-c" data-col="2" role="cell">90 days</span><span class="p-c" data-col="3" role="cell">Your bucket</span></div>
+<div class="p-r" role="row"><span class="p-k" role="rowheader">Self-hosted runner</span><span class="p-c" data-col="0" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="1" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="2" role="cell"><span class="no" aria-label="Not included">–</span></span><span class="p-c" data-col="3" role="cell"><svg class="ck" viewBox="0 0 12 12" aria-label="Included"><path d="M2 6.5 4.8 9 10 3"/></svg></span></div>
+  </div>
+</section>
+</main>
+<script>
+// the group heads stick below the plan row, so its real height drives their offset
+const tb=document.querySelector('.ptable'),plans=document.querySelector('.plans');
+const measure=()=>tb.style.setProperty('--plans',plans.offsetHeight-1+'px');
+measure();addEventListener('resize',measure);document.fonts.ready.then(measure);
+// phone: one data attribute chooses which single plan column shows
+document.querySelectorAll('[data-pick]').forEach(b=>b.addEventListener('click',()=>{tb.dataset.plan=b.dataset.pick;
+  document.querySelectorAll('[data-pick]').forEach(x=>x.setAttribute('aria-pressed',x===b))}));
+</script>
+</body>
+</html>

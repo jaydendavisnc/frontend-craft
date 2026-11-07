@@ -1,0 +1,7 @@
+{
+"exclude": {
+"layout.grid-system/viewport-as-grid": "Its own recipe says avoid on long content pages, and hands require long pages.",
+"media.logo-mark/seal-monogram": "Rotated seals and sticker badges are a measured model tell, and warm-neutral lists them as cheap."
+},
+"downweight": {}
+}

@@ -1,0 +1,219 @@
+<!doctype html>
+<!-- What makes it good: a sample client file is shown as a real working window, with three columns, eight timestamped log rows with named owners, four legal deadlines citing the actual regulation, and one countdown that really ticks. Solid means settled and dashed means still running, in the log rail and the clocks alike, and the load plays the file being written beat by beat. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Casualty file window</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&family=Public+Sans:wght@400..500&display=swap">
+<script>
+(function(h){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;h.classList.add('motion-pending');
+window.motionWatchdog=setTimeout(function(){h.classList.remove('motion-pending');h.classList.add('motion-late')},2000)})(document.documentElement);
+</script>
+<style>
+:root{
+  --bg:#fff;--surface:#f5f5f4;--ink:#101114;--accent:#cac6b2;
+  --ink-2:#55564d;--ink-3:#6c6d61;--tone-3:#e2e0d2;
+  --line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --line-2:color-mix(in srgb,var(--ink) 24%,transparent);
+  --tint-2:color-mix(in srgb,var(--ink) 8%,transparent);
+  --ok:#3f7d5a;
+  --display:'Literata',Georgia,serif;
+  --sans:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:24px;
+  --r-l:20px;--r-m:12px;--r-s:6px;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg,canvas{display:block}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.num{font-variant-numeric:tabular-nums}
+/* the stage: black mat, region tags, a window that runs off the bottom edge */
+body{padding:var(--g)}
+.mat{position:relative;height:800px;border-radius:var(--r-l);overflow:hidden;background:#000;text-align:left;isolation:isolate}
+.tag{position:absolute;padding:3px 6px 3px 12px;background:#000;font:400 11px/1 var(--mono);color:var(--accent);white-space:nowrap}
+.tag::before{content:"";position:absolute;left:2px;top:6px;width:4px;height:4px;background:var(--accent)}
+/* the file window */
+.win{position:absolute;left:64px;right:64px;top:64px;height:900px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:40px 1fr;background:var(--surface);border-radius:var(--r-m);font:400 13px/1.4 var(--sans);color:var(--ink)}
+.win-top{display:flex;align-items:center;gap:14px;padding:0 14px;font:400 12px/1 var(--mono);color:var(--ink-3)}
+.dots{display:flex;gap:6px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--tint-2)}
+.crumb b{font-weight:400;color:var(--ink)}
+.sample{margin-left:auto;color:var(--ink-3)}
+.win-body{display:grid;grid-template-columns:216px minmax(0,1fr) 332px;gap:0;min-height:0;padding:0 8px 8px 0}
+.side{padding:6px 8px 0 12px;min-width:0}
+.acct{display:flex;align-items:center;gap:8px;height:32px;padding:0 6px;font-weight:500;color:var(--ink)}
+.acct .sq{width:18px;height:18px;border-radius:4px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font:500 10px/1 var(--sans)}
+.side ul{margin-top:8px}
+.side li{display:flex;align-items:center;gap:9px;height:30px;padding:0 6px;border-radius:var(--r-s);color:var(--ink-2)}
+.side li.on{background:var(--tint-2);color:var(--ink);font-weight:500}
+.side li .ct{margin-left:auto;font:400 11px/1 var(--mono);color:var(--ink-3)}
+.side h4{margin:18px 6px 4px;font:500 12px/1.4 var(--sans);color:var(--ink-3)}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.av{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font:500 9px/1 var(--sans);color:var(--ink);background:var(--tone-3)}
+.pane{min-width:0;background:var(--bg);border-radius:8px 0 0 8px;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;min-height:0}
+.pane-h{padding:18px 22px 0}
+.pane-h h3{font:400 23px/1.2 var(--display);letter-spacing:-.012em}
+.pane-h .meta{margin-top:5px;font:400 12px/1.4 var(--mono);color:var(--ink-3)}
+.tabs{display:flex;gap:18px;margin-top:14px;box-shadow:inset 0 -1px 0 var(--line)}
+.tabs span{padding:7px 0 9px;color:var(--ink-3)}
+.tabs span.on{color:var(--ink);font-weight:500;box-shadow:inset 0 -2px 0 var(--ink)}
+.log{padding:8px 22px 0}
+.log li{position:relative;display:grid;grid-template-columns:50px 1fr auto;gap:0 26px;padding:9px 0 12px}
+.log li::before{content:"";position:absolute;left:62px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.log li::after{content:"";position:absolute;left:65px;top:26px;bottom:-11px;border-left:1px solid var(--line-2)}
+.log li.open::before{background:var(--bg);box-shadow:inset 0 0 0 1px var(--ink-3)}
+.log li.open::after{border-left-style:dashed}
+.log li:last-child::after{display:none}
+.log time{font:400 12px/20px var(--mono);color:var(--ink-3)}
+.log .ev{min-width:0;color:var(--ink)}
+.log .ev small{display:block;font-size:12.5px;color:var(--ink-3)}
+.log .who{font:400 11.5px/20px var(--mono);color:var(--ink-3);white-space:nowrap}
+.log li.open .ev{color:var(--ink-2)}
+.rail{min-width:0;background:var(--bg);border-radius:0 8px 8px 0;box-shadow:0 0 0 1px var(--line);margin-left:1px;padding:16px 18px 0}
+.rail h4{font:500 13px/1.4 var(--sans)}
+.rail h4 small{float:right;font:400 11.5px/19px var(--mono);color:var(--ink-3)}
+.clock{padding:12px 0 13px;border-bottom:1px solid var(--line)}
+.clock.open{border-bottom-style:dashed;border-bottom-color:var(--line-2)}
+.clock .t{display:flex;justify-content:space-between;gap:12px;color:var(--ink)}
+.clock .v{font:400 12.5px/18px var(--mono);color:var(--ink);white-space:nowrap}
+.clock.done .v{color:var(--ok)}
+.clock .c{font-size:12px;color:var(--ink-3);margin-top:1px}
+.track{height:3px;margin-top:9px;border-radius:2px;background:var(--tint-2);overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);border-radius:2px;width:var(--p,0%);transition:width .9s var(--ease)}
+.flat{margin-top:16px;padding:12px 14px;border-radius:8px;background:var(--surface)}
+.flat .r{display:flex;justify-content:space-between}
+.flat .r b{font:400 13px/1.4 var(--mono)}
+.flat p{font-size:12px;color:var(--ink-3);margin-top:3px}
+.msg{margin-top:12px;display:flex;gap:10px;padding:12px 14px;border-radius:8px;box-shadow:inset 0 0 0 1px var(--line)}
+.msg p{font-size:12.5px;color:var(--ink-2)}
+.msg b{display:block;font-weight:500;color:var(--ink)}
+.motion-pending [data-hold]{visibility:hidden}
+</style>
+</head>
+<body>
+  <div class="mat" id="mat">
+    <div aria-hidden="true">
+      <span class="tag" style="left:17%;top:25px">Bristol Bay</span>
+      <span class="tag" style="left:41%;top:25px">Cook Inlet</span>
+      <span class="tag" style="left:60.5%;top:25px">Chatham Strait</span>
+      <span class="tag" style="left:84%;top:25px">British Columbia</span>
+    </div>
+    <div class="win" role="img" aria-label="A sample client file: the grounding of a fishing vessel, with a timeline of what was done and the legal deadlines still running.">
+      <div class="win-top" data-hold>
+        <div class="dots"><i></i><i></i><i></i></div>
+        <div class="crumb">Files / Alder Point Fisheries / <b>LP-26-1187</b></div>
+        <div class="sample">Sample file, vessel invented</div>
+      </div>
+      <div class="win-body">
+        <div class="side" data-hold>
+          <div class="acct"><span class="sq">A</span>Alder Point Fisheries</div>
+          <ul>
+            <li class="on"><svg class="ic" viewBox="0 0 16 16"><path d="M8 2.5v11M4 5h8M4 8h8M4 11h5"/></svg>Timeline</li>
+            <li><svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.5"/><path d="M8 5v3l2 1.5"/></svg>Clocks<span class="ct">4</span></li>
+            <li><svg class="ic" viewBox="0 0 16 16"><path d="M4 2.5h5.5L12.5 5.5v8h-8.5zM9.5 2.5v3h3"/></svg>Documents<span class="ct">14</span></li>
+            <li><svg class="ic" viewBox="0 0 16 16"><path d="M2.5 4h11v7h-6l-3 2.5V11h-2z"/></svg>Messages<span class="ct">2</span></li>
+            <li><svg class="ic" viewBox="0 0 16 16"><path d="M3 13V8M8 13V3M13 13V6"/></svg>Budget</li>
+          </ul>
+          <h4>Vessels</h4>
+          <ul style="margin-top:0">
+            <li style="color:var(--ink)">F/V Alder Point</li>
+            <li>F/V Sitkalidak</li>
+            <li>Tender Mary J.</li>
+          </ul>
+          <h4>On this file</h4>
+          <ul style="margin-top:0">
+            <li><span class="av">TA</span>Trish Aquino</li>
+            <li><span class="av">JK</span>Joe Kvasnikoff</li>
+            <li><span class="av">LD</span>Lyle Demidoff</li>
+          </ul>
+        </div>
+
+        <div class="pane" data-hold>
+          <div class="pane-h">
+            <h3>Grounding, Whale Passage</h3>
+            <div class="meta">F/V Alder Point, 58 ft seiner, O.N. 1089342 / 57&deg;56.1&prime;N 152&deg;47.8&prime;W</div>
+            <div class="tabs"><span class="on">Timeline</span><span>Crew statements</span><span>Survey</span><span>Correspondence</span></div>
+          </div>
+          <ol class="log" id="log">
+            <!-- invented: sample file, replace before launch -->
+            <li data-beat><time>02:47</time><div class="ev">Master called the desk on the sat phone<small>Answered on the second ring. No injuries, hull taking no water.</small></div><span class="who">Desk log</span></li>
+            <li data-beat><time>02:53</time><div class="ev">Trish Aquino took the file<small>Told the master: soundings first, then the log, no statements to anyone yet.</small></div><span class="who">T. Aquino</span></li>
+            <li data-beat><time>03:06</time><div class="ev">Sector Anchorage notified by phone<small>Immediate notice under 46 CFR 4.05-1. Watchstander name and time logged.</small></div><span class="who">T. Aquino</span></li>
+            <li data-beat><time>03:41</time><div class="ev">Hull underwriter and P&amp;I club notified<small>Two emails sent, copies filed in Documents.</small></div><span class="who">J. Kvasnikoff</span></li>
+            <li data-beat><time>04:22</time><div class="ev">Alcohol tests done for master and deck boss<small>1 h 41 m after grounding. Chain-of-custody forms uploaded.</small></div><span class="who">L. Demidoff</span></li>
+            <li class="open" data-beat><time>09:00</time><div class="ev">Surveyor at the boat on the morning tide<small>Ragnhild Sundsby, driving from Kodiak with the skiff.</small></div><span class="who">Pending</span></li>
+            <li class="open"><time>Day 2</time><div class="ev">Drug test samples collected<small>Due by 10:41 tomorrow. Clinic booked for 09:30.</small></div><span class="who">Pending</span></li>
+            <li class="open"><time>Day 4</time><div class="ev">CG-2692 draft goes to the master to review<small>Filed on day 5 at the latest.</small></div><span class="who">Pending</span></li>
+          </ol>
+        </div>
+
+        <aside class="rail" data-hold>
+          <h4>Clocks on this file <small>from 02:41 AKST</small></h4>
+          <div class="clock done" data-beat>
+            <div class="t"><span>Alcohol test, 2 hours</span><span class="v">Done</span></div>
+            <div class="c">46 CFR 4.06-3(a)</div>
+          </div>
+          <div class="clock open" data-beat>
+            <div class="t"><span>Drug test, 32 hours</span><span class="v num" data-count="drug">26:18:04</span></div>
+            <div class="c">46 CFR 4.06-3(b)</div>
+            <div class="track"><i style="--p:18%" data-track></i></div>
+          </div>
+          <div class="clock open" data-beat>
+            <div class="t"><span>Form CG-2692, 5 days</span><span class="v num" data-count="form">4d 18h</span></div>
+            <div class="c">46 CFR 4.05-10</div>
+            <div class="track"><i style="--p:5%" data-track></i></div>
+          </div>
+          <div class="clock open">
+            <div class="t"><span>Limitation action, 6 months</span><span class="v" style="color:var(--ink-3)">Not started</span></div>
+            <div class="c">Starts on written notice of a claim</div>
+          </div>
+          <div class="flat">
+            <div class="r"><span>First 72 hours</span><b>$4,800</b></div>
+            <p>Flat. No further billing until you approve a budget.</p>
+          </div>
+          <div class="msg" data-beat>
+            <span class="av">TA</span>
+            <p><b>Trish Aquino, 04:31</b>Tests are in. Get some sleep if you can, I have the surveyor. Text me a photo of the plotter screen before anyone touches it.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+<script>
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,ease='cubic-bezier(.2,0,0,1)';
+/* Hero: the load plays a casualty file being written, five beats, each a separate object. */
+function story(){
+  var beats=[].slice.call(document.querySelectorAll('.win [data-beat]'));
+  var win=document.querySelector('.win');
+  win.animate([{transform:'translateY(14px)',opacity:0},{transform:'none',opacity:1}],{duration:620,easing:ease,fill:'backwards'});
+  beats.forEach(function(el,i){
+    el.animate([{opacity:0,transform:'translateY(6px)'},{opacity:1,transform:'none'}],{duration:380,delay:360+i*135,easing:ease,fill:'backwards'});
+  });
+  document.querySelectorAll('[data-track]').forEach(function(t){var w=t.style.getPropertyValue('--p');t.style.setProperty('--p','0%');setTimeout(function(){t.style.setProperty('--p',w)},900)});
+}
+function boot(init){
+  var h=document.documentElement;
+  (document.fonts&&document.fonts.ready||Promise.resolve()).then(function(){
+    clearTimeout(window.motionWatchdog);
+    if(h.classList.contains('motion-late'))return;
+    h.classList.add('motion-on');
+    try{init()}catch(e){console.error(e);h.classList.remove('motion-on')}
+    h.classList.remove('motion-pending');
+  });
+}
+boot(function(){if(!reduce)story()});
+/* The running clock in the sample file. */
+(function(){
+  var el=document.querySelector('[data-count=drug]');if(!el)return;var left=26*3600+18*60+4;
+  function pad(n){return(n<10?'0':'')+n}
+  function tick(){left=Math.max(0,left-1);el.textContent=Math.floor(left/3600)+':'+pad(Math.floor(left/60)%60)+':'+pad(left%60)}
+  if(!reduce)setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>

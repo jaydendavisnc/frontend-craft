@@ -1,0 +1,219 @@
+<!doctype html>
+<!-- An editable config file wired to its output: a small real TOML parser turns the 51 lines on the left into a dependency graph on the right, with the critical path drawn heavier and the ship date in the header. Bad input keeps the last good plan on screen, highlights the line and names the error, and clicking a part node selects its lead value in the editor. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>build.toml playground</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{--bg:#ffffeb;--surface:#e4e4d0;--ink:#1a1a1a;--accent:#034f46;
+  --font-display:'Newsreader',Georgia,'Times New Roman',serif;              /* built with Gambetta (Fontshare); Newsreader stands in here */
+  --font-text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ink-2:#66665b;--soft:color-mix(in srgb,var(--surface) 16%,var(--bg));--line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --frame:min(1200px,100% - 48px);--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h2,p{margin:0}button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.mono{font-family:var(--font-mono)}.num{font-variant-numeric:tabular-nums}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:500;white-space:nowrap;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.fr{width:var(--frame);margin-inline:auto;border-inline:1px solid var(--line)}.block{border-top:1px solid var(--line)}.head{padding:72px 48px 68px}
+h2{font:400 38px/1.16 var(--font-display);letter-spacing:-.018em}.head h2{max-width:24.5em;text-wrap:pretty}h2 span{color:var(--ink-2)}
+.spacer{height:64px;border-top:1px solid var(--line)}
+/* code with its result */
+.code-row{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);border-top:1px solid var(--line)}.code-cell{min-width:0;border-right:1px solid var(--line)}
+.code-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;height:48px;padding:0 16px 0 24px;border-bottom:1px solid var(--line);font-size:13px;font-weight:500;color:var(--ink-2)}
+.code-cell .code-bar{padding-left:48px}.res-kv b{font-weight:500;color:var(--ink)}
+.ed{position:relative;height:580px;overflow:hidden;background:var(--soft)}
+.ed-hl,.ed textarea{position:absolute;inset:0;margin:0;padding:18px 16px 40px 48px;border:0;font:13px/22px var(--font-mono);letter-spacing:0;white-space:pre;tab-size:2;overflow:auto;background:none}
+.ed-hl{pointer-events:none;color:var(--ink);overflow:hidden}.ed-hl code{font:inherit}
+.ed textarea{width:100%;height:100%;resize:none;color:var(--ink);caret-color:var(--ink);outline:0;scrollbar-width:thin}
+.ed-hl{display:none}.js .ed-hl{display:block}.js .ed textarea{color:transparent}
+.ed textarea::selection{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.ed:focus-within{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.tk-c{color:var(--ink-2)}.tk-h{color:var(--accent);font-weight:600}.tk-s{color:#6d5a10}.tk-n{color:var(--accent)}.tk-e{background:#f6d6c8;border-radius:2px}
+.res-cell{min-width:0;display:flex;flex-direction:column}
+.res{position:relative;flex:1;overflow:hidden;background-color:var(--bg);background-image:radial-gradient(color-mix(in srgb,var(--ink) 16%,transparent) 1px,transparent 1.2px);background-size:16px 16px}
+.res-graph{position:absolute;inset:0}.res-graph svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:color-mix(in srgb,var(--ink) 26%,transparent);stroke-width:1}
+.res-graph svg .crit{stroke:var(--accent);stroke-width:1.5}
+.nd{position:absolute;width:104px;padding:7px 10px 8px;border-radius:8px;background:var(--bg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 16%,transparent);text-align:left;font-size:13px;line-height:17px;transition:box-shadow .15s,left .3s var(--ease),top .3s var(--ease)}
+.nd b{display:block;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.nd span{display:block;font-size:12px;line-height:16px;color:var(--ink-2)}
+.nd.crit{box-shadow:inset 0 0 0 1.5px var(--accent)}.nd.crit span{color:var(--accent)}
+button.nd:hover{box-shadow:inset 0 0 0 1px var(--accent)}button.nd:hover b{color:var(--accent)}
+.res-err{position:absolute;left:24px;right:24px;bottom:20px;padding:10px 12px;border-radius:8px;background:#f8ddcf;color:#7a2c12;font:13px/18px var(--font-mono)}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-link" viewBox="0 0 16 16"><path d="M6.5 9.5 9.5 6.5M7 4.5l1-1a2.8 2.8 0 0 1 4 4l-1 1M9 11.5l-1 1a2.8 2.8 0 0 1-4-4l1-1"/></symbol></defs></svg>
+<section class="block fr" id="api">
+ <div class="head"><h2>A plan can be one text file in your repo. <span>Keep build.toml next to the firmware, and every commit redraws the plan. Try a new lead time on the left.</span></h2></div>
+ <div class="code-row">
+  <div class="code-cell">
+   <div class="code-bar"><span class="mono">build.toml</span><span class="chip"><svg class="ic" aria-hidden="true"><use href="#i-link"/></svg>main</span></div>
+   <div class="ed" id="ed">
+    <pre class="ed-hl" aria-hidden="true"><code id="ed-hl"></code></pre>
+    <textarea id="ed-ta" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" wrap="off" aria-label="build.toml, editable"># plover-r2/build.toml
+[build]
+name     = "DVT-1"
+cm       = "Longhua Assembly"
+units    = 150
+calendar = "guangdong-2027"
+
+[part.enclosure]
+supplier = "Hengtai Mould"
+ordered  = "Nov 2"
+lead     = "68d"
+
+[part.mainboard]
+supplier = "Brightwell PCB"
+ordered  = "Nov 16"
+lead     = "31d"
+
+[part.battery]
+supplier = "Norvik Cells"
+ordered  = "Nov 9"
+lead     = "47d"
+
+[part.display]
+supplier = "Kingwell Opto"
+ordered  = "Nov 12"
+lead     = "38d"
+
+[part.sensor]
+supplier = "Arrowline Supply"
+ordered  = "Nov 6"
+lead     = "52d"
+
+[task.inspection]
+after = "parts"
+takes = "4d"
+
+[task.dvt-1]
+after = "inspection"
+takes = "9d"
+
+[task.drop-test]
+after = "dvt-1"
+takes = "11d"
+
+[task.fcc-scan]
+after = "dvt-1"
+takes = "12d"
+
+[task.pvt]
+after = ["drop-test", "fcc-scan"]
+takes = "60d"</textarea>
+   </div>
+  </div>
+  <div class="res-cell">
+   <div class="code-bar"><span>Rendered plan</span><span class="res-kv">First units ship <b class="num" id="res-ship">Apr 19</b></span></div>
+   <div class="res" id="res" aria-live="polite">
+    <div class="res-graph" id="graph" role="img" aria-label="Dependency graph of the DVT-1 build. The enclosure sets the date."></div>
+    <p class="res-err" id="res-err" hidden></p>
+   </div>
+  </div>
+ </div>
+</section>
+<div class="spacer fr"></div>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var DAY = 864e5, BASE = Date.UTC(2026, 10, 1), MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function day(y, m, d) { return Math.round((Date.UTC(y, m - 1, d) - BASE) / DAY); }
+  function label(n) { var x = new Date(BASE + n * DAY); return MON[x.getUTCMonth()] + ' ' + x.getUTCDate(); }
+  var CLOSE_A = day(2027, 2, 6), ta = $('#ed-ta'), hl = $('#ed-hl'), graph = $('#graph'), err = $('#res-err'), shipEl = $('#res-ship');
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function paint(src, badLine) {
+    hl.innerHTML = src.split('\n').map(function (l, i) {
+      var h = esc(l); if (/^\s*#/.test(l)) h = '<span class="tk-c">' + h + '</span>';
+      else if (/^\s*\[/.test(l)) h = '<span class="tk-h">' + h + '</span>';
+      else h = h.replace(/("[^"]*")/g, '<span class="tk-s">$1</span>').replace(/(=\s*)(\d+)/, '$1<span class="tk-n">$2</span>');
+      return i === badLine ? '<span class="tk-e">' + (h || ' ') + '</span>' : h;
+    }).join('\n') + '\n';
+  }
+  function parseDate(s, ln) {
+    var m = /^([A-Z][a-z]{2}) (\d{1,2})$/.exec(s), i = m ? MON.indexOf(m[1]) : -1;
+    if (i < 0) throw { line: ln, msg: 'ordered needs a date like "Nov 2"' }; return day(i < 6 ? 2027 : 2026, i + 1, +m[2]);
+  }
+  function days(s, key, ln) { if (!/^\d{1,3}d$/.test(s)) throw { line: ln, msg: key + ' needs a number of days like "34d"' }; return parseInt(s, 10); }
+  function parse(src) {
+    var parts = {}, tasks = {}, build = {}, cur = null;
+    src.split('\n').forEach(function (raw, i) {
+      var l = raw.replace(/#.*$/, '').trim(); if (!l) return;
+      var h = /^\[(build|part\.[\w-]+|task\.[\w-]+)\]$/.exec(l);
+      if (h) { var n = h[1].split('.'); cur = n[0] === 'build' ? build : (n[0] === 'part' ? parts : tasks)[n[1]] = { id: n[1], kind: n[0], line: i }; return; }
+      var kv = /^([\w-]+)\s*=\s*(.+)$/.exec(l); if (!kv || !cur) throw { line: i, msg: 'expected key = "value"' };
+      var val = kv[2].trim();
+      if (/^\[.*\]$/.test(val)) val = (val.match(/"([^"]*)"/g) || []).map(function (x) { return x.slice(1, -1); });
+      else if (/^".*"$/.test(val)) val = val.slice(1, -1);
+      else if (!/^\d+$/.test(val)) throw { line: i, msg: 'strings need "quotes"' };
+      cur[kv[1]] = val; cur['_' + kv[1]] = i;
+    });
+    var ids = Object.keys(parts); if (!ids.length) throw { line: 0, msg: 'a plan needs at least one [part.name]' };
+    ids.forEach(function (id) {
+      var p = parts[id]; if (p.lead === undefined) throw { line: p.line, msg: id + ' has no lead' };
+      if (p.ordered === undefined) throw { line: p.line, msg: id + ' has no ordered date' };
+      p.end = parseDate(p.ordered, p._ordered) + days(p.lead, 'lead', p._lead); p.rank = 0; p.deps = [];
+    });
+    var cal = build.calendar === 'guangdong-2027';
+    function solve(t, stack) {
+      if (t.end !== undefined) return t.end; if (stack.indexOf(t.id) >= 0) throw { line: t.line, msg: t.id + ' depends on itself' };
+      if (t.takes === undefined) throw { line: t.line, msg: t.id + ' has no takes' };
+      var after = [].concat(t.after || 'parts'), deps = [];
+      after.forEach(function (a) {
+        if (a === 'parts') { deps = deps.concat(ids.map(function (x) { return parts[x]; })); return; }
+        var d = tasks[a] || parts[a]; if (!d) throw { line: t._after, msg: 'nothing called "' + a + '"' }; deps.push(d);
+      });
+      var s = 0, rank = 0; deps.forEach(function (d) { s = Math.max(s, d.kind === 'task' ? solve(d, stack.concat(t.id)) : d.end); rank = Math.max(rank, d.rank); });
+      var e = s + days(t.takes, 'takes', t._takes); if (cal && s < CLOSE_A && e >= CLOSE_A) e += 15;
+      t.start = s; t.end = e; t.rank = rank + 1; t.deps = deps; return e;
+    }
+    var list = Object.keys(tasks).map(function (k) { return tasks[k]; }); list.forEach(function (t) { solve(t, []); });
+    var all = ids.map(function (x) { return parts[x]; }).concat(list), lastT = all.reduce(function (a, b) { return b.end >= a.end ? b : a; });
+    var mark = function (n) { n.crit = true; var c = null; n.deps.forEach(function (d) { if (!c || d.end > c.end) c = d; }); if (c) mark(c); };
+    mark(lastT); return { all: all, ship: lastT.end };
+  }
+  function drawGraph(p) {
+    var W = Math.max(graph.clientWidth, 640), H = Math.max(graph.clientHeight, 460), ranks = [], parts = [], lines = [];
+    p.all.forEach(function (n) { (ranks[n.rank] = ranks[n.rank] || []).push(n); });
+    var NW = 104, NH = 50, cols = ranks.length, gapX = Math.min(64, (W - 40 - cols * NW) / Math.max(1, cols - 1)), x0 = Math.max(20, (W - (cols * NW + (cols - 1) * gapX)) / 2);
+    ranks.forEach(function (r, i) {
+      var step = Math.min(84, (H - 40) / r.length), y0 = (H - (r.length - 1) * step - NH) / 2;
+      r.forEach(function (n, j) { n.x = x0 + i * (NW + gapX); n.y = y0 + j * step; });
+    });
+    p.all.forEach(function (n) {
+      var isPart = n.kind === 'part';
+      parts.push('<' + (isPart ? 'button type="button" data-line="' + n._lead + '"' : 'div') + ' class="nd' + (n.crit ? ' crit' : '') + '" style="left:' + n.x + 'px;top:' + n.y + 'px"><b>' + esc(n.id.replace(/-/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); }).replace(/^Dvt 1$/, 'DVT-1').replace(/^Fcc scan$/, 'FCC scan').replace(/^Pvt$/, 'PVT')) + '</b><span class="num">' + label(n.end) + '</span></' + (isPart ? 'button' : 'div') + '>');
+      n.deps.forEach(function (d) {
+        var x1 = d.x + NW, y1 = d.y + NH / 2, x2 = n.x, y2 = n.y + NH / 2, mx = x2 - Math.min(16, (x2 - x1) / 2), dy = y2 - y1, c = d.crit && n.crit, q = Math.min(6, Math.abs(dy) / 2), s = dy > 0 ? 1 : -1;
+        lines.push({ c: c, d: Math.abs(dy) < 1 ? 'M' + x1 + ' ' + y1 + 'H' + x2 : 'M' + x1 + ' ' + y1 + 'H' + (mx - q) + 'q' + q + ' 0 ' + q + ' ' + (q * s) + 'V' + (y2 - q * s) + 'q0 ' + (q * s) + ' ' + q + ' ' + (q * s) + 'H' + x2 });
+      });
+    });
+    lines.sort(function (a, b) { return a.c - b.c; });
+    graph.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" aria-hidden="true">' + lines.map(function (l) { return '<path' + (l.c ? ' class="crit"' : '') + ' d="' + l.d + '"/>'; }).join('') + '</svg>' + parts.join('');
+  }
+  /* bad input keeps the last good plan on screen and names the line */
+  var last = null;
+  function run() {
+    var src = ta.value;
+    try { last = parse(src); err.hidden = true; paint(src, -1); drawGraph(last); shipEl.textContent = label(last.ship); }
+    catch (e) { if (!e || e.line === undefined) throw e; paint(src, e.line); err.hidden = false; err.textContent = 'line ' + (e.line + 1) + ': ' + e.msg; }
+    sync();
+  }
+  function sync() { hl.parentNode.scrollTop = ta.scrollTop; hl.parentNode.scrollLeft = ta.scrollLeft; }
+  ta.addEventListener('input', run);
+  ta.addEventListener('scroll', sync);
+  graph.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-line]'); if (!b) return;
+    var lines = ta.value.split('\n'), n = +b.dataset.line, at = 0; for (var i = 0; i < n; i++) at += lines[i].length + 1;
+    var m = /"(\d+)d"/.exec(lines[n]); if (!m) return; var s = at + lines[n].indexOf(m[1]);
+    ta.focus({ preventScroll: true }); ta.setSelectionRange(s, s + m[1].length); ta.scrollTop = Math.max(0, n * 22 - 120);
+  });
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(run, run);
+  var t; addEventListener('resize', function () { clearTimeout(t); t = setTimeout(function () { if (last) drawGraph(last); }, 120); });
+})();
+</script>
+</body>
+</html>

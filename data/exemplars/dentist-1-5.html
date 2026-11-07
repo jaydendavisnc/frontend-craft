@@ -1,0 +1,117 @@
+<!doctype html>
+<!-- What makes it good: the product window holds the trade's own artefact, a dentist's note with three hand-inked tooth sections drawn in inline SVG and roughened by an feTurbulence displacement filter, so one reused tooth shape tells before, during and after. A plain-English paragraph explains it and four tagged lines close it out with the priced finding, home care, next visit and the question the patient asked. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Visit note window</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000; --surface:#0a0b0f; --raised:#12141c;
+  --ink:#ffffff; --ink-2:#c6c9d2; --muted:#8a8d96;
+  --red:#f0857a;
+  --line:rgb(255 255 255/.1); --line-2:rgb(255 255 255/.18);
+  --font:'Zalando Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --rail:max(clamp(16px,6.1vw,88px),calc((100vw - 1264px)/2)); --in:16px;
+  --nav:72px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip}
+h3,p,ul,figure{margin:0;padding:0}
+ul{list-style:none}
+
+.band{position:relative;padding:112px calc(var(--rail) + var(--in))}
+.band--sheets{padding-bottom:64px}
+h3{font-size:32px;font-weight:500;line-height:1.12;letter-spacing:-.022em}
+
+/* Card with a copy column; the product window is 960 by 800 and the card crops it */
+.sheet{display:grid;grid-template-columns:440px minmax(0,1fr);height:clamp(560px,calc(100svh - var(--nav) - 110px),640px);margin:0 calc(var(--in)*-1) 40px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line),inset 0 1px 0 var(--line-2);overflow:hidden}
+.copy{padding:56px 24px 40px 48px;display:flex;flex-direction:column;align-items:flex-start}
+.copy h3{font-size:36px}
+.copy>p{margin-top:16px;font-size:17px;line-height:1.5;color:var(--muted)}
+.ui{position:relative}
+.a{position:absolute;left:8px;top:40px;width:960px;height:800px;background:var(--raised);border-radius:8px 0 0 8px;box-shadow:0 0 0 1px var(--line);font-size:14px;line-height:1.35}
+.viewer__bar{display:flex;align-items:center;gap:16px;height:44px;padding:0 16px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.viewer__bar b{font-weight:500;color:var(--ink)}
+.viewer__x{margin-left:auto;margin-right:164px}
+
+.note-ui__b{padding:24px;max-width:796px}
+.note-ui__b>p{font-size:17px;line-height:1.5;color:var(--ink);max-width:680px}
+.draws{display:flex;gap:40px;margin-top:24px;color:var(--ink)}
+.draws figure{width:132px}
+.draws svg{display:block;width:100%;height:auto;overflow:visible}
+.draws figcaption{margin-top:6px;font-size:12px;color:var(--muted)}
+.fillpatch{fill:rgb(240 133 122/.5)}
+.cut{fill:rgb(255 255 255/.07);stroke:currentColor;stroke-width:1.25;stroke-dasharray:3 3}
+.solidpatch{fill:rgb(159 180 240/.62)}
+.finds{margin-top:14px}
+.finds li{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);color:var(--ink-2)}
+.finds--s{margin-top:20px}
+.finds--s li{grid-template-columns:52px 1fr}
+.tag{display:inline-block;justify-self:start;padding:1px 5px;border-radius:2px;font-size:12px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-2)}
+.tag--r{color:var(--red);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--red) 50%,transparent)}
+
+@media(max-width:1180px){.sheet{grid-template-columns:360px minmax(0,1fr)}}
+@media(max-width:980px){
+  .sheet{grid-template-columns:1fr;height:auto;min-height:0}
+  .copy{padding:28px 20px 20px}
+  .ui{height:300px;overflow:hidden}
+  .a{left:16px;top:0}
+}
+@media(max-width:700px){
+  :root{--in:12px;--nav:64px}
+  .band{padding-block:72px}
+  .a{width:640px;height:640px}
+  .viewer__x{margin-right:0}
+}
+</style>
+</head>
+<body>
+<section class="band band--sheets" aria-label="Patient app">
+  <article class="sheet">
+    <div class="copy">
+      <h3>Your dentist's notes and drawings</h3>
+      <p>Dr. Novosad draws what she found by hand and writes the note in plain English, so nothing has to be decoded at home.</p>
+    </div>
+    <div class="ui">
+      <div class="a note-ui">
+        <div class="viewer__bar"><b>Visit note</b><span>November 13, 2025</span><span class="viewer__x">Dr. Irene Novosad</span></div>
+        <div class="note-ui__b">
+          <p>The small spot on your lower right molar (#30) has grown since last year and has passed through the enamel. It does not hurt yet because it has not reached the nerve. A two-surface filling will stop it. I would schedule this in the next three months.</p>
+          <div class="draws">
+            <figure><svg viewBox="0 0 100 120" aria-hidden="true"><g clip-path="url(#toothclip)"><path class="fillpatch" d="M72 26c7 3 10 16 6 26l-15 3c-3-8 1-24 9-29z"/></g><use href="#tooth"/></svg><figcaption>Now</figcaption></figure>
+            <figure><svg viewBox="0 0 100 120" aria-hidden="true"><g clip-path="url(#toothclip)"><path class="cut" d="M58 10h26v46l-22 2-1-13-7-2z"/></g><use href="#tooth"/></svg><figcaption>Decay removed</figcaption></figure>
+            <figure><svg viewBox="0 0 100 120" aria-hidden="true"><g clip-path="url(#toothclip)"><path class="solidpatch" d="M58 10h26v46l-22 2-1-13-7-2z"/></g><use href="#tooth"/></svg><figcaption>Filled</figcaption></figure>
+          </div>
+          <ul class="finds finds--s">
+            <li><span class="tag tag--r">#30</span><span>Filling advised. Estimate 4212 attached, $58 after plan.</span></li>
+            <li><span class="tag">Home</span><span>Floss this side daily. Prescription toothpaste sent to your pharmacy.</span></li>
+            <li><span class="tag">Next</span><span>Cleaning in May with Tessa.</span></li>
+            <li><span class="tag">Asked</span><span>Whether the old silver filling on #3 needs replacing. Not yet, and I will review it each year.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="ink" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="slow"/>
+      <feDisplacementMap in="SourceGraphic" in2="slow" scale="1.5" result="a"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".5" numOctaves="1" seed="3" result="fast"/>
+      <feDisplacementMap in="a" in2="fast" scale=".7"/>
+    </filter>
+    <clipPath id="toothclip"><path d="M20 44C16 32 18 21 26 17c5-2 10 3 15 6 4 3 12 3 16 0 5-3 10-8 15-6 8 4 10 15 6 27-2 6-4 10-4 17 0 17-3 35-9 48-2 4-6 3-7-2-2-11-4-23-9-29-5 6-7 18-9 29-1 5-5 6-7 2-6-13-9-31-9-48 0-7-2-11-4-17z"/></clipPath>
+    <g id="tooth" fill="none" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink)">
+      <path d="M20 44C16 32 18 21 26 17c5-2 10 3 15 6 4 3 12 3 16 0 5-3 10-8 15-6 8 4 10 15 6 27-2 6-4 10-4 17 0 17-3 35-9 48-2 4-6 3-7-2-2-11-4-23-9-29-5 6-7 18-9 29-1 5-5 6-7 2-6-13-9-31-9-48 0-7-2-11-4-17z"/>
+      <path d="M29 50c-3-12-1-19 5-20 6 1 11 6 16 6s10-5 16-6c6 1 8 8 5 20"/>
+      <path d="M39 52c0-6 5-7 11-6 6-1 11 0 11 6 0 8-5 12-6 19-1 8-2 18-3 24M39 52c0 8 5 12 6 19 1 8 2 18 3 24"/>
+      <circle cx="50" cy="60" r="1.100" fill="currentColor" stroke="none"/>
+    </g>
+  </defs>
+</svg>
+</body>
+</html>

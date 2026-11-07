@@ -1,0 +1,216 @@
+<!doctype html>
+<!-- The four KPI cells are the chart's own tabs, so one ruled panel holds value, delta and trend. The line morphs in 300ms between metrics rather than redrawing, the axis comes from a computed nice() scale, and it carries a dashed pace line with an end tick, a comparison line, a crosshair tooltip that lists every series, and a table view of the same numbers. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Signed POs report</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f1f1f; --ink-2:#6b7280; --ink-3:#9ca3af; --accent:#d77600; --ok:#17b58a; --bad:#e5484d;
+  --line:color-mix(in srgb,var(--ink) 9%,transparent); --rule:#e4e5e7; --line-strong:color-mix(in srgb,var(--ink) 18%,transparent);
+  --fill-hover:color-mix(in srgb,var(--ink) 4%,transparent); --fill-active:color-mix(in srgb,var(--ink) 7%,transparent);
+  --ok-ink:color-mix(in oklab,var(--ok) 65%,var(--ink)); --bad-ink:color-mix(in oklab,var(--bad) 80%,var(--ink));
+  --font-text:"Zalando Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.215,.61,.355,1); --pad:40px;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/20px var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,select{font:inherit;color:inherit}button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+h2,h3{font-weight:500}table{width:100%;border-collapse:collapse}.i{width:15px;height:15px;flex:none;fill:currentColor}
+:focus{outline:0}:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+main{padding:32px var(--pad) 56px;max-width:1360px;margin:0 auto}
+/* Report head */
+.report-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;padding-top:4px}
+.report-head h2{font-size:17px;line-height:24px}.controls{display:flex;align-items:center;gap:8px}
+.date-trigger{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);white-space:nowrap;transition:box-shadow .15s var(--ease),background-color .15s var(--ease)}
+.date-trigger:hover{box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--fill-hover)}.date-trigger .i{color:var(--ink-2)}
+.select{position:relative;display:inline-flex;align-items:center;height:36px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow .15s var(--ease),background-color .15s var(--ease)}.select:hover{box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--fill-hover)}
+.select span{padding-left:10px;color:var(--ink-2);white-space:nowrap}.select select{appearance:none;-webkit-appearance:none;border:0;background:none;height:36px;padding:0 28px 0 6px;font-weight:500;border-radius:6px;cursor:pointer;max-width:180px}
+.select .i{position:absolute;right:8px;top:10px;pointer-events:none;color:var(--ink-2)}
+/* Ruled panel: gap 1px over a rule-coloured ground draws every divider */
+.panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.cell{background:var(--bg);min-width:0;padding:20px 24px}.span-4{grid-column:span 4}.kpis{display:grid;grid-template-columns:subgrid;gap:1px}
+.kpi{display:block;width:100%;background:var(--bg);min-width:0;padding:16px 24px 18px;position:relative;transition:background-color .15s var(--ease)}.kpi:hover{background:color-mix(in srgb,var(--ink) 2.5%,var(--bg))}
+.kpi::after{content:"";position:absolute;inset:auto 0 -1px 0;height:2px;background:transparent;transition:background-color .15s var(--ease);z-index:1}.kpi[aria-selected="true"]::after{background:var(--accent)}.kpi>span{display:block;color:var(--ink-2)}
+.kpi strong{display:block;font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.018em;margin-top:2px}.kpi em{display:block;font-style:normal;font-size:12px;line-height:16px;margin-top:4px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kpi em b{font-weight:500;color:var(--ink)}
+.kpi em b.bad{color:var(--bad-ink)}.kpi em b.good{color:var(--ok-ink)}
+/* Chart */
+.chart-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;min-height:24px}.chart-head h3{font-size:14px;line-height:20px}.chart-head h3 small{display:block;font-size:12px;line-height:16px;font-weight:400;color:var(--ink-2)}
+.chart-tools{display:flex;align-items:center;gap:16px}.legend{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;line-height:16px;color:var(--ink-2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px}.legend i.dash{width:12px;height:0;border-radius:0;border-top:1px dashed var(--ink);vertical-align:middle;margin-top:-2px}
+.icon{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:6px;color:var(--ink-2);transition:background-color .15s var(--ease),color .15s var(--ease)}.icon:hover{background:var(--fill-hover);color:var(--ink)}.icon[aria-pressed="true"]{background:var(--fill-active);color:var(--ink)}
+.plot-wrap{position:relative;min-height:280px}.plot{display:block;overflow:visible;touch-action:pan-y}
+.plot .grid{stroke:var(--line)}.plot .base{stroke:var(--line-strong)}.plot .tick{font:400 12px/1 var(--font-text);fill:var(--ink-2);font-variant-numeric:tabular-nums}.plot .cross{stroke:var(--line-strong)}.plot.swap .tick,.plot.swap .grid{animation:fade .24s var(--ease)}
+@keyframes fade{from{opacity:0}}
+.tip{position:absolute;z-index:3;min-width:176px;padding:8px 10px;background:var(--bg);border-radius:8px;box-shadow:0 0 0 1px var(--line),0 8px 24px -8px rgba(0,0,0,.18);font-size:12px;line-height:18px;pointer-events:none}.tip b{display:block;font-weight:500;margin-bottom:2px}
+.tip div{display:grid;grid-template-columns:8px 1fr auto;gap:8px;align-items:center;color:var(--ink-2)}.tip i{width:8px;height:8px;border-radius:2px}.tip em{font-style:normal;color:var(--ink)}
+.chart-table{height:280px;overflow:auto}.tbl th{height:36px;padding:0 10px;font-size:12px;font-weight:500;color:var(--ink-2);text-align:left;white-space:nowrap;border-bottom:1px solid var(--rule);background:var(--bg);position:sticky;top:0}
+.tbl td{height:36px;padding:0 10px;white-space:nowrap;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}.tbl .r{text-align:right}.tbl tbody tr:hover td{background:var(--fill-hover)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calendar" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M5 1v1.5h6V1h1.5v1.5h1c.28 0 .5.22.5.5v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3c0-.28.22-.5.5-.5h1V1zM3.5 6.5v6h9v-6z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-table" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" d="M2 3h12v10H2zM2 6.5h12M2 10h12M6.5 6.5V13"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M2 2.5V13.5h12M4.5 10l3-3.5 2.5 2 3.5-4.5"/></symbol>
+</svg>
+<main aria-labelledby="rhead">
+    <div class="report-head"><h2 id="rhead">Quarter to date</h2>
+      <div class="controls">
+        <button class="date-trigger" aria-haspopup="dialog"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg><span>Oct 1 to Nov 6, 2026</span></button>
+        <label class="select"><span>vs</span><select id="compare" aria-label="Compare with"><option value="prev">Previous period</option><option value="year">Last year</option><option value="none">Nothing</option></select><svg class="i" aria-hidden="true"><use href="#i-down"/></svg></label>
+      </div>
+    </div>
+    <div class="panel" id="report"></div>
+</main>
+<script>(function () {
+  'use strict';
+  /* Daily values for Oct 1 to Nov 6, 2026, the 37 days before that, and the same days a year earlier. */
+  const PACE = [34516,69032,69032,69032,103548,138065,172581,207097,241613,241613,241613,276129,310645,345161,379677,414194,414194,414194,448710,483226,517742,552258,586774,586774,586774,621290,655806,690323,724839,759355,759355,759355,793871,828387,862903,897419,931935];
+  const SERIES = {
+    closed: { cur: [47340,63390,63390,63390,99928,99928,115960,176970,176970,176970,176970,288942,288942,288942,326978,348728,348728,348728,394362,409702,471814,530738,556632,556632,556632,681546,689034,753788,753788,776208,776208,776208,776208,841584,893586,893586,900666], prev: [74096,74096,150392,154904,154904,154904,154904,154904,299820,337188,337188,337188,337188,337188,438580,451432,470152,477856,477856,477856,519232,566312,624734,642068,661756,661756,661756,688720,688720,700918,707998,707998,707998,707998,731748,816588,816588], year: [0,17334,17334,17334,34882,40914,60594,60594,98798,98798,98798,113564,157648,176368,176368,176368,176368,176368,220452,247592,247592,247592,317222,317222,317222,367910,391510,409870,437188,476136,476136,476136,476136,485256,540628,555968,693184] },
+    count: { cur: [3,1,0,0,2,0,1,3,0,0,0,4,0,0,2,1,0,0,3,1,1,2,1,0,0,5,1,2,0,1,0,0,0,1,1,0,1], prev: [4,0,3,1,0,0,0,0,4,2,0,0,0,0,4,1,1,1,0,0,2,1,1,1,1,0,0,1,0,1,1,0,0,0,2,2,0], year: [0,1,0,0,1,1,1,0,2,0,0,1,2,1,0,0,0,0,1,1,0,0,3,0,0,1,1,1,2,1,0,0,0,1,2,1,3] },
+    avg: { cur: [15780,16050,null,null,18269,null,16032,20337,null,null,null,27993,null,null,19018,21750,null,null,15211,15340,62112,29462,25894,null,null,24983,7488,32377,null,22420,null,null,null,65376,52002,null,7080], prev: [18524,null,25432,4512,null,null,null,null,36229,18684,null,null,null,null,25348,12852,18720,7704,null,null,20688,47080,58422,17334,19688,null,null,26964,null,12198,7080,null,null,null,11875,42420,null], year: [null,17334,null,null,17548,6032,19680,null,19102,null,null,14766,22042,18720,null,null,null,null,44084,27140,null,null,23210,null,null,50688,23600,18360,13659,38948,null,null,null,9120,27686,15340,45739] },
+    win: { cur: [0.6,0.2,null,null,0.5,0,0.5,0.375,0,null,null,0.444,0,0,0.4,1,null,null,0.6,0.25,0.333,0.4,0.25,null,null,0.833,0.333,0.667,0,0.5,null,null,null,1,0.333,0,0.25], prev: [0.667,0,0.6,1,null,null,null,0,0.667,0.333,0,null,null,null,0.8,0.25,0.5,0.5,null,null,0.5,0.25,0.5,0.5,0.5,null,null,0.5,0,0.333,0.5,0,null,null,0.667,0.667,0], year: [0,0.333,null,null,1,0.333,0.333,0,0.667,null,null,0.083,0.25,0.2,0,0,null,null,1,0.5,0,null,0.5,null,null,0.25,0.333,0.25,0.5,1,null,null,null,0.167,0.667,0.5,0.75] },
+  };
+  const KPI = { cur: {closed: 900666, count: 37, avg: 24342.32, win: 0.3854}, prev: {closed: 816588, count: 34, avg: 24017.29, win: 0.3953}, year: {closed: 693184, count: 28, avg: 24756.57, win: 0.3077} }, TARGET = 931935;
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const LABELS = PACE.map((_, i) => { const d = new Date(Date.UTC(2026, 9, 1 + i)); return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}`; }), TIPS = LABELS.map(l => l + ', 2026');
+  const MINUS = '−', DASH = '–';
+  const money = n => (n < 0 ? MINUS : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const short = n => { const a = Math.abs(n); return a >= 1e6 ? '$' + (n / 1e6).toFixed(a % 1e6 === 0 ? 0 : a % 1e5 === 0 ? 1 : 2) + 'M' : a >= 1e3 ? '$' + Math.round(n / 1e3) + 'k' : '$' + Math.round(n); };
+  const pct = (n, dp = 0) => (n * 100).toFixed(dp) + '%';
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)], reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ic = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const METRICS = {
+    closed: { label: 'Against pace', title: 'Signed POs, running total', fmt: short, val: money },
+    count: { label: 'POs signed', title: 'POs signed', fmt: v => String(v), val: v => v.toLocaleString('en-US'), integer: true },
+    avg: { label: 'Average PO', title: 'Average PO', fmt: short, val: v => v == null ? DASH : money(v) },
+    win: { label: 'Win rate', title: 'Win rate, signed over decided', fmt: v => Math.round(v * 100) + '%', val: v => v == null ? DASH : pct(v) },
+  };
+  const S = { metric: 'closed', compare: 'prev', chartTable: false };
+  const cmpLabel = () => S.compare === 'year' ? 'same days last year' : 'previous 37 days';
+  function deltaText(key, cur, prev) {
+    if (S.compare === 'none') return 'No comparison';
+    const dl = key === 'win' ? cur - prev : cur / prev - 1, arrow = dl > 0 ? '↑ ' : dl < 0 ? '↓ ' : '';
+    const size = key === 'win' ? (Math.abs(dl) * 100).toFixed(1) + ' pts' : pct(Math.abs(dl), 1);
+    return `<b class="${dl < 0 ? 'bad' : dl > 0 ? 'good' : ''}">${arrow}${size}</b> vs ${cmpLabel()}`;
+  }
+  function kpiHTML() {
+    const cur = KPI.cur, prev = KPI[S.compare] || {};
+    return Object.entries(METRICS).map(([key, m]) => {
+      const value = key === 'closed' ? pct(cur.closed / TARGET, 1) : m.val(cur[key]);
+      const note = key === 'closed' ? `${money(Math.abs(cur.closed - TARGET))} ${cur.closed < TARGET ? 'short of' : 'over'} ${money(TARGET)} pace` : deltaText(key, cur[key], prev[key]);
+      return `<button class="kpi" role="tab" aria-selected="${S.metric === key}" data-act="metric" data-metric="${key}"><span>${m.label}</span><strong>${value}</strong><em>${note}</em></button>`;
+    }).join('');
+  }
+  function chartConfig() {
+    const m = METRICS[S.metric], data = SERIES[S.metric], series = [];
+    if (S.compare !== 'none') series.push({ name: S.compare === 'year' ? 'Last year' : 'Previous period', values: data[S.compare], color: 'var(--ink-3)', w: 1.5 });
+    if (S.metric === 'closed') series.push({ name: 'Pace', values: PACE, color: 'var(--ink-2)', w: 1, dash: '3 3' });
+    series.push({ name: 'This period', values: data.cur, color: 'var(--accent)', area: true });
+    return { labels: LABELS, tips: TIPS, series, fmt: m.fmt, tipFmt: m.val, h: 280, paceEnd: S.metric === 'closed' ? PACE[PACE.length - 1] : null, integer: m.integer, aria: `${m.title}, Oct 1 to Nov 6, 2026` };
+  }
+  const legendHTML = cfg => cfg.series.slice().reverse().map(s => s.dash ? `<span><i class="dash"></i>${s.name}</span>` : `<span><i style="background:${s.color}"></i>${s.name}</span>`).join('');
+  function chartSub() {
+    if (S.metric !== 'closed') return '';
+    const cur = KPI.cur.closed, prev = KPI[S.compare]; if (!prev) return `${money(cur)} signed`;
+    const dl = cur / prev.closed - 1;
+    return `${money(cur)} signed, ${dl >= 0 ? 'up' : 'down'} ${pct(Math.abs(dl), 1)} on the ${cmpLabel()}`;
+  }
+  function chartTableHTML(cfg) {
+    const names = cfg.series.slice().reverse(), head = `<th scope="col">Period</th>` + names.map(s => `<th scope="col" class="r">${s.name}</th>`).join('');
+    const rows = cfg.tips.map((t, i) => `<tr><td>${t}</td>${names.map(s => `<td class="r">${s.values[i] == null ? DASH : cfg.tipFmt(s.values[i])}</td>`).join('')}</tr>`).reverse().join('');
+    return `<div class="chart-table"><div class="tbl"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+  }
+  /* Chart kit: computed scales, straight segments, crosshair, tooltip */
+  function nice(max, n = 5, integer) { const raw = (max || 1) / n, s = 10 ** Math.floor(Math.log10(raw)), m = raw / s; let step = (m > 5 ? 10 : m > 2 ? 5 : m > 1 ? 2 : 1) * s; if (integer) step = Math.max(1, step); return { step, top: Math.ceil((max || 1) / step) * step }; }
+  const svgEl = (t, a = {}, p) => { const e = document.createElementNS('http://www.w3.org/2000/svg', t); for (const k in a) e.setAttribute(k, a[k]); p && p.append(e); return e; };
+  const svgText = (p, x, y, s, c, anchor = 'start') => { const t = svgEl('text', { x, y, class: c, 'text-anchor': anchor }, p); t.textContent = s; return t; };
+  const charts = new Map();
+  function drawChart(host, o, from) {
+    host.querySelectorAll('svg,.tip').forEach(n => n.remove());
+    const W = host.clientWidth, H = o.h, L = 52, R = 8, T0 = 8, B = 26; if (W < 40) return;
+    const svg = svgEl('svg', { class: 'plot' + (from ? ' swap' : ''), viewBox: `0 0 ${W} ${H}`, width: W, height: H, role: 'img', 'aria-label': o.aria }, host);
+    const tip = document.createElement('div'); tip.className = 'tip'; tip.hidden = true; host.append(tip);
+    const n = o.labels.length, all = o.series.flatMap(s => s.values).filter(v => v != null);
+    const { step, top: hi } = nice(Math.max(...all, 0), 5, o.integer);
+    const X = i => L + (W - L - R) * i / (n - 1), Y = v => H - B - (H - B - T0) * v / hi;
+    for (let v = 0; v <= hi + 1e-9; v += step) { svgEl('line', { x1: L, x2: W - R, y1: Y(v), y2: Y(v), class: v ? 'grid' : 'base' }, svg); svgText(svg, L - 8, Y(v) + 4, o.fmt(v), 'tick', 'end'); }
+    const every = Math.max(1, Math.ceil(n / Math.max(2, Math.floor((W - L - R) / 72))));
+    o.labels.forEach((d, i) => { if (i % every === 0) svgText(svg, X(i), H - 6, d, 'tick', i === 0 ? 'start' : X(i) > W - 36 ? 'end' : 'middle'); });
+    const defs = svgEl('defs', {}, svg);
+    const pathOf = ys => { let d = '', pen = false; ys.forEach((y, i) => { if (y == null) { pen = false; return; } d += (pen ? 'L' : 'M') + X(i).toFixed(1) + ' ' + y.toFixed(1); pen = true; }); return d; };
+    const live = o.series.map((s, k) => {
+      let area = null;
+      if (s.area) {
+        const g = svgEl('linearGradient', { id: 'fade' + k, x1: 0, x2: 0, y1: 0, y2: 1 }, defs);
+        svgEl('stop', { offset: 0, 'stop-color': s.color, 'stop-opacity': .14 }, g); svgEl('stop', { offset: 1, 'stop-color': s.color, 'stop-opacity': 0 }, g);
+        area = svgEl('path', { fill: `url(#fade${k})` }, svg);
+      }
+      const line = svgEl('path', { fill: 'none', stroke: s.color, 'stroke-width': s.w || 2, 'stroke-linejoin': 'round', 'stroke-linecap': s.dash ? 'butt' : 'round', ...(s.dash ? { 'stroke-dasharray': s.dash } : {}) }, svg);
+      return { line, area };
+    });
+    const ys = o.series.map(s => s.values.map(v => v == null ? null : Y(v)));
+    const paint = frame => live.forEach(({ line, area }, k) => {
+      const v = frame[k]; line.setAttribute('d', pathOf(v));
+      if (area) { let d = '', a = null; v.forEach((y, i) => { if (y != null && a == null) a = i; if (a != null && (y == null || i === n - 1)) { const b = y == null ? i - 1 : i; if (b > a) d += pathOf(v.map((p, j) => j >= a && j <= b ? p : null)) + `L${X(b)} ${Y(0)}L${X(a)} ${Y(0)}Z`; a = null; } }); area.setAttribute('d', d); } // one closed shape per unbroken run, so days with no data stay empty
+    });
+    const before = from && o.series.map(s => from[s.name]);
+    if (before && !reduceMotion()) {
+      const t0 = performance.now(), dur = 300;
+      const frame = t => {
+        const p = Math.min(1, (t - t0) / dur), e = 1 - (1 - p) ** 3;
+        paint(ys.map((vals, k) => vals.map((y, i) => { const a = before[k]?.[i]; return y == null ? null : a == null ? y : a + (y - a) * e; })));
+        if (p < 1 && svg.isConnected) requestAnimationFrame(frame);
+      };
+      requestAnimationFrame(frame);
+    } else paint(ys);
+    if (o.paceEnd != null) { const x = X(n - 1), y = Y(o.paceEnd); svgEl('line', { x1: x, x2: x, y1: y - 8, y2: y + 8, stroke: 'var(--ink)', 'stroke-width': 1 }, svg); }
+    const cross = svgEl('line', { y1: T0, y2: H - B, class: 'cross', visibility: 'hidden' }, svg);
+    const dots = o.series.map(s => svgEl('circle', { r: 4, fill: s.color, stroke: 'var(--bg)', 'stroke-width': 2, visibility: 'hidden' }, svg));
+    const hide = () => { tip.hidden = true; cross.setAttribute('visibility', 'hidden'); dots.forEach(c => c.setAttribute('visibility', 'hidden')); };
+    svg.onpointermove = e => {
+      const r = svg.getBoundingClientRect(), i = Math.round((e.clientX - r.left - L) / (W - L - R) * (n - 1));
+      if (i < 0 || i >= n) return hide();
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.setAttribute('visibility', 'visible');
+      dots.forEach((c, k) => { const y = ys[k][i]; c.setAttribute('visibility', y == null ? 'hidden' : 'visible'); if (y != null) { c.setAttribute('cx', X(i)); c.setAttribute('cy', y); } });
+      tip.hidden = false;
+      tip.innerHTML = `<b>${o.tips[i]}</b>` + o.series.slice().reverse().map(s => `<div><i style="background:${s.color}"></i><span>${s.name}</span><em>${s.values[i] == null ? DASH : o.tipFmt(s.values[i])}</em></div>`).join('');
+      const tw = tip.offsetWidth; tip.style.left = Math.min(W - tw - 4, Math.max(4, X(i) + (X(i) + tw + 24 > W ? -tw - 12 : 12))) + 'px'; tip.style.top = T0 + 6 + 'px';
+    };
+    svg.onpointerleave = hide;
+    charts.set(host, { o, ys: Object.fromEntries(o.series.map((s, k) => [s.name, ys[k]])), w: W });
+  }
+  const resizer = new ResizeObserver(entries => { for (const e of entries) { const c = charts.get(e.target); if (c && Math.abs(c.w - e.target.clientWidth) > 1) drawChart(e.target, c.o); } });
+  function render() {
+    const cfg = chartConfig();
+    $('#report').innerHTML = `<div class="span-4 kpis" role="tablist" aria-label="Chart metric">${kpiHTML()}</div>
+      <div class="cell span-4"><div class="chart-head">
+          <h3><span id="chartTitle">${METRICS[S.metric].title}</span><small id="chartSub">${chartSub() || '&nbsp;'}</small></h3>
+          <div class="chart-tools"><div class="legend" id="legend">${legendHTML(cfg)}</div>
+          <button class="icon" data-act="chartTable" aria-pressed="${S.chartTable}" aria-label="${S.chartTable ? 'Show chart' : 'Show as table'}" title="${S.chartTable ? 'Show chart' : 'Show as table'}">${ic(S.chartTable ? 'chart' : 'table')}</button></div>
+        </div><div class="plot-wrap" id="plot">${S.chartTable ? chartTableHTML(cfg) : ''}</div></div>`;
+    const host = $('#plot');
+    if (!S.chartTable) { drawChart(host, cfg); resizer.observe(host); }
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-act]'); if (!t) return;
+    if (t.dataset.act === 'chartTable') { S.chartTable = !S.chartTable; return render(); }
+    const host = $('#plot'), prev = charts.get(host); S.metric = t.dataset.metric;
+    $$('.kpis .kpi').forEach(k => k.setAttribute('aria-selected', k === t));
+    const cfg = chartConfig(); $('#legend').innerHTML = legendHTML(cfg);
+    $('#chartTitle').textContent = METRICS[S.metric].title; $('#chartSub').innerHTML = chartSub() || '&nbsp;';
+    if (S.chartTable) host.innerHTML = chartTableHTML(cfg);
+    else if (host.querySelector('svg')) drawChart(host, cfg, prev && prev.ys);
+  });
+  $('#compare').onchange = e => { S.compare = e.target.value; render(); };
+  render();
+})();
+</script>
+</body>
+</html>

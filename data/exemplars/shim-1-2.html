@@ -1,0 +1,150 @@
+<!doctype html>
+<!-- Three tile pairs where the visual half is a real product fragment, never an icon: a 7-row token table that spends red and amber only on the 3 drifted cells, 46 snapshots beside 3 values with the reasons listed, and a two-person thread ending on decision buttons. Rows flip from 778/582 to 545/817 so the rhythm never repeats, and each copy half pins its heading to the tile foot under a pixel badge cut from the logo's grid. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shim comparison tiles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#000;--surface:#111;--line:#262626;--line-2:#2e2e2e;--ink:#eee;--ink-2:#8a8a8a;--accent:#8f9fe8;--ok:#5fc08a;--warn:#e0a93f;--bad:#ec6f63;
+  --a88:rgba(238,238,238,.88);--a58:rgba(238,238,238,.58);--a38:rgba(238,238,238,.46);--rim:rgba(238,238,238,.07);
+  --sans:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,sans-serif;--mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --t-12:12px;--t-13:13px;--t-14:14px;--t-16:16px;--t-22:22px;--t-30:30px;--t-44:44px;--ease-ui:cubic-bezier(.4,0,.2,1);--pad:48px;--nav:0px
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--t-16)/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+h2,h3,p,ul{margin:0;padding:0}ul{list-style:none}
+svg{display:block}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mono{font-family:var(--mono);letter-spacing:-.01em}.num{font-variant-numeric:tabular-nums}
+.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.frame{max-width:1320px;margin-inline:auto}
+.sec{position:relative}
+.bar{position:sticky;top:calc(var(--nav) - 1px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;height:44px;padding-inline:var(--pad);background:var(--bg);border-block:1px solid var(--line);font:500 var(--t-14)/1 var(--sans);color:var(--ink)}
+.bar>span:last-of-type{font:400 var(--t-14)/1 var(--sans);color:var(--ink-2)}
+.bar-p{position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left}
+.head{padding:72px var(--pad) 64px}
+h2{font:450 var(--t-44)/1.1 var(--sans);letter-spacing:-.024em;max-width:1010px;text-wrap:pretty;color:var(--ink)}
+h2>span{color:var(--ink-2)}
+h3{font:450 var(--t-22)/1.2 var(--sans);letter-spacing:-.014em}
+.chip{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;font:500 var(--t-12)/1 var(--sans);white-space:nowrap;color:var(--a58);box-shadow:inset 0 0 0 1px var(--line-2)}
+.chip .dot,.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.chip.is-ok{color:var(--ok)}
+.av{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font:500 10px/1 var(--sans);color:#fff;background:hsl(var(--h,220) 22% 38%)}
+/* paired tiles: the widths change between rows so the rhythm never repeats */
+.pairs{padding:0 16px 16px;display:grid;gap:16px}
+.pair{display:grid;gap:16px}.pair.p1{grid-template-columns:778fr 582fr}.pair.p2{grid-template-columns:545fr 817fr}
+.tile{position:relative;overflow:hidden;min-height:480px;border-radius:15px;box-shadow:inset 0 0 0 1px var(--rim);transition:box-shadow .3s var(--ease-ui)}
+.tile:hover{box-shadow:inset 0 0 0 1px rgba(238,238,238,.16)}
+.t-x{display:flex;flex-direction:column;gap:12px;padding:25px;background:var(--surface)}
+.t-x .bdg{margin-bottom:auto}
+.t-x h3{font-size:var(--t-30);line-height:1.14;letter-spacing:-.022em;max-width:15em}
+.t-x p{color:var(--ink-2);line-height:1.6;max-width:32em}
+.t-p{display:grid;place-items:center;padding:32px;background:#05060c}
+/* CSS stand-in for the rendered plate on the live page: ruled blades with one lifted blue blade */
+.t-p::before{content:"";position:absolute;inset:0;background:linear-gradient(var(--a,114deg),transparent var(--b,24%),#2f56c8 var(--b,24%) calc(var(--b,24%) + 5%),#14224f calc(var(--b,24%) + 5%) calc(var(--b,24%) + 7%),transparent calc(var(--b,24%) + 7%)),repeating-linear-gradient(var(--a,114deg),rgba(204,200,236,.6) 0 2px,transparent 2px 9px);-webkit-mask-image:linear-gradient(var(--m,205deg),#000 8%,transparent 74%);mask-image:linear-gradient(var(--m,205deg),#000 8%,transparent 74%)}
+.pair.p2 .t-p::before{--a:64deg;--b:30%;--m:150deg}.pair:last-child .t-p::before{--a:122deg;--b:44%;--m:330deg}
+.fc{position:relative;width:100%;max-width:560px;border-radius:12px;background:#0b0b0d;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),0 24px 80px rgba(0,0,0,.6);font-size:var(--t-13);line-height:1.35;color:var(--a88);overflow:hidden}
+.fc-h{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08)}.fc-h b{font-weight:500;color:var(--ink)}.fc-h span{color:var(--a38)}
+.fc table{width:100%;border-collapse:collapse}.fc th{padding:8px 14px 6px;text-align:left;font-weight:400;color:var(--a38);font-size:var(--t-12)}
+.fc td{padding:7px 14px;border-top:1px solid rgba(255,255,255,.06);font-size:var(--t-12);color:var(--a58)}.fc td:first-child{color:var(--a88)}
+.fc .r{text-align:right}.t-bad{color:var(--bad)!important}.t-warn{color:var(--warn)!important}.t-ok{color:var(--a38)!important}
+.fc-n{display:grid;grid-template-columns:1fr 1fr;max-width:620px}
+.n-c+.n-c{border-left:1px solid rgba(255,255,255,.08)}
+.n-big{padding:14px 14px 10px;color:var(--a58)}.n-big span{display:block;font-size:var(--t-30);line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.n-l,.n-v{padding:0 14px 12px}.n-l li,.n-v li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid rgba(255,255,255,.06);font-size:var(--t-12)}
+.n-l li{color:var(--a38)}.n-l .mono{color:var(--a58)}.n-l li span:last-child{white-space:nowrap}
+.n-v li{color:var(--a58)}.n-v b{font:400 var(--t-12)/1.35 var(--mono);color:var(--warn)}
+.c-i{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06)}.c-i b{font-weight:500;color:var(--ink)}.c-i span{color:var(--a38)}.c-i p{margin-top:2px;color:var(--a88)}
+.c-a{display:flex;align-items:center;gap:6px;padding:10px 14px}.c-a .chip{margin-right:auto}
+.c-b{display:inline-flex;align-items:center;height:26px;padding:0 9px;border-radius:6px;font-size:var(--t-12);font-weight:500;color:var(--a88);box-shadow:inset 0 0 0 1px var(--line-2)}.c-b.is-p{background:var(--ink);color:#0b0b0b;box-shadow:none}
+.bdg{width:36px;height:36px;margin-bottom:24px;fill:var(--ink)}
+@media(max-width:1100px){.pair.p1,.pair.p2{grid-template-columns:1fr}.pair.p2 .t-x{order:2}}
+@media(max-width:860px){
+  :root{--pad:20px;--t-44:30px}
+  .head{padding:48px var(--pad) 40px}
+  .t-p{padding:16px;min-height:420px}.tile{min-height:0}.t-x{min-height:280px}
+  .bdg{margin-bottom:16px}
+  .fc-n{grid-template-columns:1fr}.n-c+.n-c{border-left:0;border-top:1px solid rgba(255,255,255,.08)}
+  .fc td{white-space:nowrap;padding-inline:10px}.fc th{padding-inline:10px}.fc th:last-child,.fc td:last-child{display:none}
+}
+</style>
+</head>
+<body>
+<main class="frame">
+<section class="sec" id="features">
+  <div class="bar"><span>How it compares</span><span class="mono num">Computed styles, not pixels</span><i class="bar-p"></i></div>
+  <div class="head"><h2>A screenshot can’t tell a token from a typo. <span>Shim reads 38 CSS properties per node and checks each one against the approved frame.</span></h2></div>
+  <div class="pairs">
+    <div class="pair p1">
+      
+<div class="tile t-p">
+<div class="fc fc-t">
+<div class="fc-h"><b>Tokens</b><span>Brevet, 148 in Figma</span></div><table><thead>
+<tr><th>Token</th><th>Figma</th><th>Build</th><th class="r">Uses</th></tr></thead><tbody>
+<tr><td class="mono">--ink-2</td><td class="mono">#6B7280</td><td class="mono t-bad">hard-coded</td><td class="mono num r">14</td></tr>
+<tr><td class="mono">--space-4</td><td class="mono">16</td><td class="mono t-warn">14</td><td class="mono num r">6</td></tr>
+<tr><td class="mono">--radius-md</td><td class="mono">8</td><td class="mono t-warn">6</td><td class="mono num r">2</td></tr>
+<tr><td class="mono">--brand</td><td class="mono">#2B50E0</td><td class="mono t-ok">--brand</td><td class="mono num r">41</td></tr>
+<tr><td class="mono">--line</td><td class="mono">#E3E5EA</td><td class="mono t-ok">--line</td><td class="mono num r">73</td></tr>
+<tr><td class="mono">--text-sm</td><td class="mono">14</td><td class="mono t-ok">--text-sm</td><td class="mono num r">128</td></tr>
+<tr><td class="mono">--space-2</td><td class="mono">8</td><td class="mono t-ok">--space-2</td><td class="mono num r">96</td></tr></tbody></table></div></div>
+      
+<div class="tile t-x">
+<svg class="bdg" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M1 0H11V1H12V11H11V12H1V11H0V1H1ZM3 3h6v1h-6zM5 4h2v5h-2z"/></svg><h3>Drift is reported in tokens</h3><p>A hard-coded #6B7280 and --ink-2 render identically today, and one of them breaks in dark mode. Pixel tools can’t see the difference. Shim flags the value and names the token to use.</p></div>
+    </div>
+    <div class="pair p2">
+      
+<div class="tile t-x">
+<svg class="bdg" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M1 0H11V1H12V11H11V12H1V11H0V1H1ZM3 3h1v1h-1zM5 3h1v1h-1zM7 3h1v1h-1zM4 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM3 7h1v1h-1zM5 7h1v1h-1zM7 7h1v1h-1z"/></svg><h3>Anti-aliasing is not a design decision</h3><p>Shim doesn’t compare images, so font hinting and a new CI runner produce nothing to approve. The median run raises 0.2 false positives, and that figure is on our status page.</p></div>
+      
+<div class="tile t-p">
+<div class="fc fc-n">
+<div class="n-c">
+<div class="fc-h"><b>Pixel diff</b><span>against last build</span></div><div class="n-big"><span class="num">46</span> snapshots to approve</div><ul class="n-l">
+<li><span class="mono trunc">checkout/summary</span><span>Font hinting</span></li>
+<li><span class="mono trunc">checkout/summary--dark</span><span>Font hinting</span></li>
+<li><span class="mono trunc">account/rider</span><span>Sub-pixel layout</span></li>
+<li><span class="mono trunc">event/hero</span><span>Chart redraw</span></li>
+<li><span class="mono trunc">nav/desktop</span><span>Anti-aliasing</span></li>
+<li><span class="mono trunc">event/list</span><span>GPU rounding</span></li></ul></div>
+
+<div class="n-c">
+<div class="fc-h"><b>Shim</b><span>against Figma v14</span></div><div class="n-big"><span class="num">3</span> values to decide</div><ul class="n-v">
+<li><span>padding-block</span><b>16 → 14</b></li>
+<li><span>border-radius</span><b>8 → 6</b></li>
+<li><span>color</span><b>hard-coded</b></li></ul></div></div></div>
+    </div>
+    <div class="pair p1">
+      
+<div class="tile t-p">
+<div class="fc fc-c">
+<div class="fc-h"><b>Button / Primary</b><span>border-radius 8 → 6</span></div>
+
+<div class="c-i"><i class="av" style="--h:348">SA</i><div><b>Sanna Aho</b> <span>Design lead, 09:41</span><p>The 6 came in with the shadcn update, I think. Everything else on checkout is 8.</p></div></div>
+
+<div class="c-i"><i class="av" style="--h:190">TL</i><div><b>Tove Lindahl</b> <span>Engineer, 09:52</span><p>Yes, Button.tsx:21. Fixing it here rather than in the theme.</p></div></div>
+
+<div class="c-a"><span class="chip is-ok"><i class="dot"></i>Fix requested</span><span class="c-b">Accept in Figma</span><span class="c-b is-p">Request fix</span></div></div></div>
+      
+<div class="tile t-x">
+<svg class="bdg" viewBox="0 0 12 12" shape-rendering="crispEdges" aria-hidden="true"><path fill-rule="evenodd" d="M1 0H11V1H12V11H11V12H1V11H0V1H1ZM3 5h1v2h-1zM4 6h1v2h-1zM5 7h1v2h-1zM6 5h1v2h-1zM7 4h1v2h-1zM8 3h1v2h-1z"/></svg><h3>Drift is a decision, so a designer makes it</h3><p>Shim never rewrites your CSS and doesn’t fail a build unless you ask it to. Sometimes the code is right and the frame is stale. Someone should say so, and the note stays with the component.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+<script>
+// each product fragment drifts 56px against its plate through the viewport
+const plates=[...document.querySelectorAll('.t-p')];
+const drift=()=>plates.forEach(t=>{const r=t.getBoundingClientRect(),p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));t.querySelector('.fc').style.transform='translateY('+(28-56*p)+'px)'});
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){addEventListener('scroll',drift,{passive:true});addEventListener('resize',drift);drift()}
+const sec=document.querySelector('.sec'),barP=document.querySelector('.bar-p');
+const barLine=()=>{const r=sec.getBoundingClientRect();barP.style.transform='scaleX('+Math.max(0,Math.min(1,(44-r.top)/r.height))+')'};
+addEventListener('scroll',barLine,{passive:true});barLine();
+</script>
+</body>
+</html>

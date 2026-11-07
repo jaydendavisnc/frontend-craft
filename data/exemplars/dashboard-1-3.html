@@ -1,0 +1,215 @@
+<!doctype html>
+<!-- Every row's tinted bar is drawn to one shared black pace tick at 58% of the cell, so a bar past the tick reads as ahead with no axis, and the Pace header sits exactly over that tick. All 37 POs are in the file: bars, totals and shares are computed from them, and clicking any row opens a modal listing the POs that add up to that row's number. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reps against pace</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f1f1f; --ink-2:#6b7280; --ink-3:#9ca3af; --accent:#d77600; --ok:#17b58a; --bad:#e5484d;
+  --line:color-mix(in srgb,var(--ink) 9%,transparent); --rule:#e4e5e7; --line-strong:color-mix(in srgb,var(--ink) 18%,transparent);
+  --fill-hover:color-mix(in srgb,var(--ink) 4%,transparent); --fill-active:color-mix(in srgb,var(--ink) 7%,transparent);
+  --focus:color-mix(in srgb,var(--accent) 34%,transparent); --bad-ink:color-mix(in oklab,var(--bad) 80%,var(--ink));
+  --font-text:"Zalando Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.215,.61,.355,1); --pad:40px;
+}
+*{box-sizing:border-box;margin:0}
+html.locked{overflow:hidden}
+body{background:var(--bg);color:var(--ink);font:400 14px/20px var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input{font:inherit;color:inherit}button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+a{color:inherit;text-decoration:none}
+h2,h3{font-weight:500}
+table{width:100%;border-collapse:collapse}
+.i{width:15px;height:15px;flex:none;fill:currentColor}
+.num{font-variant-numeric:tabular-nums}
+:focus{outline:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+input:focus-visible{outline:0;box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}
+main{padding:32px var(--pad) 56px;max-width:1360px;margin:0 auto}
+.panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.cell{background:var(--bg);min-width:0;padding:20px 24px;container-type:inline-size}
+@container (max-width:400px){.cell-head>[data-act="details"]{display:none}}
+.span-2{grid-column:span 2}
+/* Links: dim on hover and reveal the arrow's stem */
+.go{display:inline-flex;align-items:center;gap:4px;font-weight:500;white-space:nowrap;transition:opacity .15s var(--ease)}
+.go svg{width:12px;height:12px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.go .stem{opacity:0;transition:opacity .15s var(--ease)}
+.go .chev{transition:transform .15s var(--ease)}.go:hover{opacity:.6}.go:hover .stem{opacity:1}.go:hover .chev{transform:translateX(3px)}
+/* Ranked rows: bar behind the row, with the pace tick */
+.cell-head{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:32px;margin-bottom:8px}.cell-head h3{font-size:14px;line-height:20px}
+.cols{display:grid;grid-template-columns:var(--row);gap:12px;align-items:end;height:20px;font-size:12px;line-height:16px;color:var(--ink-2)}.cols span:nth-last-child(-n+2){text-align:right}
+.cols .pace-col{position:relative;grid-column:var(--lab-col)}.cols .pace-col span{position:absolute;left:calc(var(--tick-n)*1%);bottom:0;transform:translateX(-50%)}
+.rows{--row:22px minmax(0,1fr) 76px 72px;--lab-col:2;--tick-n:58}.rows.plain{--row:minmax(0,1fr) 76px 52px;--lab-col:1}
+.row{display:grid;grid-template-columns:var(--row);align-items:center;gap:12px;width:100%;height:32px;margin-top:4px;border-radius:4px;transition:opacity .15s var(--ease)}
+.row .ix{font-size:12px;color:var(--ink-2);padding-left:1px}
+.lab{position:relative;min-width:0;height:32px;display:flex;align-items:center;padding:0 8px}.lab{--w:calc(var(--v,0)*1%)}.lab.paced{--w:min(100%,calc(var(--att,0)*var(--tick-n)*1%))}
+.lab::before{content:"";position:absolute;inset:0 auto 0 0;width:var(--w);min-width:2px;border-radius:4px;background:color-mix(in srgb,var(--accent) 14%,var(--bg));transition:background-color .15s var(--ease)}
+.lab span{position:relative;z-index:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row:hover .lab::before{background:color-mix(in srgb,var(--accent) 24%,var(--bg))}
+.neutral .lab::before{background:color-mix(in srgb,var(--ink) 7%,var(--bg))}.neutral .row:hover .lab::before{background:color-mix(in srgb,var(--ink) 12%,var(--bg))}
+.lab .tick{position:absolute;left:calc(var(--tick-n)*1%);top:-2px;bottom:-2px;width:1px;background:var(--ink)}
+.row b{font-weight:500;text-align:right}.row em{font-style:normal;text-align:right;color:var(--ink-2);white-space:nowrap}.row em.bad{color:var(--bad-ink)}
+.tabs{display:flex;gap:16px;min-width:0}.tabs button{height:32px;color:var(--ink-2);font-weight:500;white-space:nowrap;transition:color .15s var(--ease);position:relative}.tabs button:hover{color:var(--ink)}
+.tabs button[aria-selected="true"]{color:var(--ink)}.tabs button[aria-selected="true"]::after{content:"";position:absolute;left:0;right:0;bottom:2px;height:2px;background:var(--ink)}
+/* Data modal */
+dialog{color:inherit}
+.m{position:fixed;inset:48px auto 48px 50%;translate:-50% 0;margin:0;border:0;width:min(885px,calc(100vw - 32px));max-width:none;max-height:none;height:auto;padding:16px 28px 0;background:var(--bg);border-radius:12px;box-shadow:0 24px 48px -12px rgba(0,0,0,.3),0 0 0 2px var(--accent);overflow:hidden}
+.m[open]{display:grid;grid-template-rows:auto minmax(0,1fr);grid-template-columns:minmax(0,1fr);animation:rise .18s var(--ease)}.m::backdrop{background:rgba(31,31,31,.6)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+.m header{display:flex;align-items:center;gap:16px;padding-bottom:16px;border-bottom:1px solid var(--rule)}.m header h2{font-size:17px;line-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m header small{display:block;font-size:12px;line-height:16px;font-weight:400;color:var(--ink-2)}.m header .titles{flex:1;min-width:0}.m .back{margin-left:-8px}
+.icon{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:6px;color:var(--ink-2);transition:background-color .15s var(--ease),color .15s var(--ease)}
+.icon:hover{background:var(--fill-hover);color:var(--ink)}
+.find{flex:none;width:256px;display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2);transition:box-shadow .15s var(--ease)}
+.find:hover{box-shadow:inset 0 0 0 1px var(--line-strong)}.find:focus-within{box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}
+.find input{flex:1;min-width:0;border:0;background:none;outline:0;height:34px;color:var(--ink);box-shadow:none!important}.find input::placeholder{color:var(--ink-2)}
+.sc{overflow:auto;padding-bottom:32px;mask-image:linear-gradient(#000 calc(100% - 32px),transparent)}
+.tbl th{height:36px;padding:0 10px;font-size:12px;line-height:16px;font-weight:500;color:var(--ink-2);text-align:left;white-space:nowrap;border-bottom:1px solid var(--rule);background:var(--bg);position:sticky;top:0;z-index:1}
+.tbl td{height:36px;padding:0 10px;white-space:nowrap;max-width:260px;overflow:hidden;text-overflow:ellipsis}.tbl th:first-child,.tbl td:first-child{padding-left:12px}.tbl th:last-child,.tbl td:last-child{padding-right:12px}
+.tbl .r{text-align:right}.tbl td.num{font-variant-numeric:tabular-nums}.tbl td.strong{font-weight:500}.tbl td.dim{color:var(--ink-2)}.tbl tbody tr:nth-child(even) td{background:color-mix(in srgb,var(--ink) 2.5%,transparent)}
+.tbl tbody tr:hover td{background:var(--fill-active)}.tbl tr[data-act="drill"]{cursor:pointer}
+.st{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px 0 6px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);font-size:12px;font-weight:500;color:var(--ink-2)}
+.st i{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.st.signed i{background:var(--accent)}.st.installed i{background:var(--ok)}.st.on-hold i{background:var(--bad)}.st.shipped i{background:var(--ink-2)}
+.empty{padding:40px 24px;text-align:center;color:var(--ink-2)}.empty b{display:block;font-weight:500;color:var(--ink)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zM14 14l-3.4-3.4"/></symbol>
+  <symbol id="i-left" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M10 3L5 8l5 5"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3.5 3.5l9 9M12.5 3.5l-9 9"/></symbol>
+</svg>
+<main><div class="panel" id="report"></div></main>
+<dialog class="m" id="details" aria-labelledby="dTitle"></dialog>
+<script>(function () {
+  'use strict';
+  const RANGE = 'Oct 1 to Nov 6, 2026';
+  const REPS = [ // name, territory, pace target for the range
+    ['Deb Hoekstra', 'West Michigan', 128903.23], ['Ty Bouwman', 'West Michigan', 97548.39], ['Noor Haddad', 'Detroit Metro', 125419.35], ['Stan Nowak', 'Detroit Metro', 79258.06],
+    ['Darnell Pruitt', 'Northern Ohio', 143709.68], ['Marisol Ibarra', 'Chicagoland', 165483.87], ['Cal Brandt', 'Wisconsin', 117580.65], ['Kou Vang', 'Twin Cities', 74032.26],
+  ].map(([name, terr, target]) => ({ name, terr, target }));
+  const ORDERS = [ // every PO signed in the range, newest first
+    ['PO-23451', 'Nov 6', 'Black River Castings', 'Shift schedules', 'Darnell Pruitt', 'Northern Ohio', 'Tether controls', 'Manufacturing', 'Signed', 7080], ['PO-23449', 'Nov 4', 'Como Lake Clinic', 'Central plant', 'Kou Vang', 'Twin Cities', 'Ridgeback high-bay', 'Hospital', 'Signed', 52002],
+    ['PO-23445', 'Nov 3', 'Eight Mile Tool & Die', 'Engineering offices', 'Noor Haddad', 'Detroit Metro', 'Flatlay panel', 'Manufacturing', 'Signed', 65376], ['PO-23443', 'Oct 30', 'Sable Point Area Schools', 'Building schedules', 'Deb Hoekstra', 'West Michigan', 'Tether controls', 'K-12', 'In production', 22420],
+    ['PO-23439', 'Oct 28', 'Black River Castings', 'Engineering offices', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'Manufacturing', 'In production', 11040], ['PO-23437', 'Oct 28', 'Sable Point Area Schools', 'Gym high-bays', 'Deb Hoekstra', 'West Michigan', 'Ridgeback high-bay', 'K-12', 'In production', 53714],
+    ['PO-23433', 'Oct 27', 'Maumee Flats Local Schools', 'Classroom wing', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'K-12', 'In production', 7488], ['PO-23431', 'Oct 26', 'Des Plaines Valley District 208', 'Stairwell egress', 'Marisol Ibarra', 'Chicagoland', 'Beacon exit sign', 'K-12', 'In production', 3770],
+    ['PO-23427', 'Oct 26', 'Midway Foods Distribution', 'Racking aisles', 'Marisol Ibarra', 'Chicagoland', 'Ridgeback high-bay', 'Warehouse', 'In production', 43228], ['PO-23425', 'Oct 26', 'Black River Castings', 'Engineering offices', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'Manufacturing', 'In production', 4224],
+    ['PO-23421', 'Oct 26', 'Eastline Community Schools', 'Parking lot poles', 'Noor Haddad', 'Detroit Metro', 'Harbor area light', 'K-12', 'In production', 38556], ['PO-23419', 'Oct 26', 'Bayhaven Cold Storage', 'Break rooms', 'Deb Hoekstra', 'West Michigan', 'Flatlay panel', 'Warehouse', 'In production', 35136],
+    ['PO-23415', 'Oct 23', 'Eastline Community Schools', 'Auditorium', 'Stan Nowak', 'Detroit Metro', 'Ridgeback high-bay', 'K-12', 'In production', 25894], ['PO-23413', 'Oct 22', 'Kedzie Millwork', 'Engineering offices', 'Marisol Ibarra', 'Chicagoland', 'Flatlay panel', 'Manufacturing', 'In production', 15264],
+    ['PO-23409', 'Oct 22', 'Mercy East Hospital', 'Corridor dimming', 'Noor Haddad', 'Detroit Metro', 'Tether controls', 'Hospital', 'In production', 43660], ['PO-23407', 'Oct 21', 'Sable Point Area Schools', 'Corridors, east wing', 'Ty Bouwman', 'West Michigan', 'Flatlay panel', 'K-12', 'In production', 62112],
+    ['PO-23403', 'Oct 20', 'Cicero Avenue Plating', 'Shift schedules', 'Marisol Ibarra', 'Chicagoland', 'Tether controls', 'Manufacturing', 'Shipped', 15340], ['PO-23401', 'Oct 19', 'Calumet Intermodal', 'Front offices', 'Marisol Ibarra', 'Chicagoland', 'Flatlay panel', 'Warehouse', 'Shipped', 12480],
+    ['PO-23397', 'Oct 19', 'Ogden Park School District', 'Stairwell egress', 'Marisol Ibarra', 'Chicagoland', 'Beacon exit sign', 'K-12', 'Shipped', 3654], ['PO-23395', 'Oct 19', 'Lakeshore Pallet & Crate', 'Daylight harvesting', 'Deb Hoekstra', 'West Michigan', 'Tether controls', 'Warehouse', 'Shipped', 29500],
+    ['PO-23391', 'Oct 16', 'Grand Bend Furniture Works', 'Exit signs, plant', 'Ty Bouwman', 'West Michigan', 'Beacon exit sign', 'Manufacturing', 'Shipped', 21750], ['PO-23389', 'Oct 15', 'Prairie Path Park District', 'Fleet garage', 'Marisol Ibarra', 'Chicagoland', 'Ridgeback high-bay', 'Municipal', 'Shipped', 32528],
+    ['PO-23385', 'Oct 15', 'Maumee Flats Local Schools', 'Parking lot poles', 'Darnell Pruitt', 'Northern Ohio', 'Harbor area light', 'K-12', 'Shipped', 5508], ['PO-23383', 'Oct 12', 'Fox Bend School District', 'Field house', 'Cal Brandt', 'Wisconsin', 'Ridgeback high-bay', 'K-12', 'On hold', 47294],
+    ['PO-23379', 'Oct 12', 'Maumee Flats Local Schools', 'Parking lot poles', 'Darnell Pruitt', 'Northern Ohio', 'Harbor area light', 'K-12', 'Shipped', 20808], ['PO-23377', 'Oct 12', 'Mercy East Hospital', 'Central plant', 'Stan Nowak', 'Detroit Metro', 'Ridgeback high-bay', 'Hospital', 'Shipped', 27820],
+    ['PO-23373', 'Oct 12', 'Ambassador Freight Terminal', 'Racking aisles', 'Stan Nowak', 'Detroit Metro', 'Ridgeback high-bay', 'Warehouse', 'Shipped', 16050], ['PO-23371', 'Oct 8', 'Cicero Avenue Plating', 'Press shop floor', 'Marisol Ibarra', 'Chicagoland', 'Ridgeback high-bay', 'Manufacturing', 'Shipped', 16050],
+    ['PO-23367', 'Oct 8', 'Black River Castings', 'Engineering offices', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'Manufacturing', 'Shipped', 7296], ['PO-23365', 'Oct 8', 'Lorain Cold Chain', 'Racking aisles', 'Darnell Pruitt', 'Northern Ohio', 'Ridgeback high-bay', 'Warehouse', 'Shipped', 37664],
+    ['PO-23361', 'Oct 7', 'Cuyahoga Bend Freight', 'Front offices', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'Warehouse', 'Shipped', 16032], ['PO-23359', 'Oct 5', 'St. Croix Public Works', 'Ice arena', 'Kou Vang', 'Twin Cities', 'Ridgeback high-bay', 'Municipal', 'Shipped', 32314],
+    ['PO-23355', 'Oct 5', 'Maumee Flats Local Schools', 'Corridors, east wing', 'Darnell Pruitt', 'Northern Ohio', 'Flatlay panel', 'K-12', 'Shipped', 4224], ['PO-23353', 'Oct 2', 'Northshore Community Hospital', 'Loading dock', 'Marisol Ibarra', 'Chicagoland', 'Ridgeback high-bay', 'Hospital', 'Installed', 16050],
+    ['PO-23349', 'Oct 1', 'Fox Bend School District', 'Exit signs, all buildings', 'Cal Brandt', 'Wisconsin', 'Beacon exit sign', 'K-12', 'Installed', 20880], ['PO-23347', 'Oct 1', 'Port Clement Public Works', 'Exit signs, civic center', 'Darnell Pruitt', 'Northern Ohio', 'Beacon exit sign', 'Municipal', 'Installed', 5916],
+    ['PO-23343', 'Oct 1', 'Black River Castings', 'Press shop floor', 'Darnell Pruitt', 'Northern Ohio', 'Ridgeback high-bay', 'Manufacturing', 'Installed', 20544],
+  ].map(([po, day, acct, project, rep, terr, line, seg, status, amount]) => ({ po, day, acct, project, rep, terr, line, seg, status, amount }));
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = n => (n < 0 ? '−' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const plus = n => (n >= 0 ? '+' : '−') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const pct = (n, dp = 0) => (n * 100).toFixed(dp) + '%';
+  const sum = (list, f = o => o.amount) => list.reduce((a, o) => a + f(o), 0);
+  const ic = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const GO = '<svg viewBox="0 0 12 12" aria-hidden="true"><path class="stem" d="M2 6h8"/><path class="chev" d="M5.5 2 9.5 6l-4 4"/></svg>';
+  const BREAKDOWNS = {
+    acct: { label: 'Accounts', one: 'Account', title: 'Signed by account' }, line: { label: 'Products', one: 'Product line', title: 'Signed by product line' },
+    terr: { label: 'Territories', one: 'Territory', title: 'Signed by territory' }, seg: { label: 'Segments', one: 'Segment', title: 'Signed by segment' },
+  };
+  const S = { tab: 'acct' };
+  let modal = null;
+  const repStats = () => REPS.map(r => { const mine = ORDERS.filter(o => o.rep === r.name), signed = sum(mine); return { ...r, signed, att: signed / r.target, gap: signed - r.target }; }).sort((x, y) => y.att - x.att);
+  function breakdown(tab) {
+    const total = sum(ORDERS), map = new Map();
+    for (const o of ORDERS) { const k = o[tab], e = map.get(k) || { name: k, signed: 0, pos: 0 }; e.signed += o.amount; e.pos++; map.set(k, e); }
+    const rows = [...map.values()].sort((x, y) => y.signed - x.signed), top = rows[0].signed;
+    for (const e of rows) {
+      e.share = e.signed / total; e.avg = e.signed / e.pos; e.v = e.signed / top * 75;
+      if (tab === 'terr') { const target = sum(REPS.filter(r => r.terr === e.name), r => r.target); e.att = e.signed / target; e.gap = e.signed - target; }
+    }
+    return rows;
+  }
+  const paceRow = o => `<button class="row" data-act="drill" data-kind="${o.kind}" data-id="${esc(o.name)}">
+      ${o.ix ? `<span class="ix num">${o.ix}</span>` : ''}
+      <span class="lab paced" style="--att:${o.att}"><span>${esc(o.name)}</span><i class="tick"></i></span>
+      <b class="num">${money(o.signed)}</b>
+      <em class="num ${o.gap < 0 ? 'bad' : ''}">${plus(o.gap)}</em></button>`;
+  function repsCell() {
+    const rows = repStats().map((s, i) => paceRow({ kind: 'rep', ix: String(i + 1).padStart(2, '0'), name: s.name, signed: s.signed, att: s.att, gap: s.gap })).join('');
+    return `<div class="cell span-2">
+      <div class="cell-head"><h3>Reps against pace</h3><a class="go" href="#/reps">All reps ${GO}</a></div>
+      <div class="rows"><div class="cols"><span></span><span class="pace-col"><span>Pace</span></span><span>Signed</span><span>vs pace</span></div>${rows}</div>
+    </div>`;
+  }
+  function breakdownCell() {
+    const tab = S.tab, isTerr = tab === 'terr', data = breakdown(tab).slice(0, 8);
+    const rows = isTerr ? data.map(e => paceRow({ kind: 'terr', name: e.name, signed: e.signed, att: e.att, gap: e.gap })).join('')
+      : data.map(e => `<button class="row" data-act="drill" data-kind="${tab}" data-id="${esc(e.name)}"><span class="lab" style="--v:${e.v}"><span>${esc(e.name)}</span></span><b class="num">${money(e.signed)}</b><em class="num">${pct(e.share)}</em></button>`).join('');
+    const headRow = isTerr ? '<span class="pace-col"><span>Pace</span></span><span>Signed</span><span>vs pace</span>' : '<span></span><span>Signed</span><span>Share</span>';
+    return `<div class="cell span-2" id="bd">
+      <div class="cell-head">
+        <div class="tabs" role="tablist" aria-label="Breakdown">${Object.entries(BREAKDOWNS).map(([k, c]) => `<button role="tab" aria-selected="${k === tab}" data-act="tab" data-tab="${k}">${c.label}</button>`).join('')}</div>
+        <button class="go" data-act="details">Details ${GO}</button>
+      </div>
+      <div class="rows plain neutral" ${isTerr ? 'style="--row:minmax(0,1fr) 76px 72px"' : ''}><div class="cols">${headRow}</div>${rows}</div>
+    </div>`;
+  }
+  /* Data modal: the rows behind any number */
+  const table = (cols, rows, rowAttr = () => '') => rows.length
+    ? `<div class="tbl"><table><thead><tr>${cols.map(c => `<th scope="col" class="${c.r ? 'r' : ''}">${c.label}</th>`).join('')}</tr></thead><tbody>${rows.map(r => `<tr ${rowAttr(r)}>${cols.map(c => `<td class="${c.r ? 'r ' : ''}${c.num ? 'num ' : ''}${c.dim ? 'dim ' : ''}${c.strong ? 'strong' : ''}">${c.cell(r)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`
+    : `<div class="empty"><b>Nothing matches "${esc(modal.q)}"</b></div>`;
+  const statusChip = s => `<span class="st ${s.toLowerCase().replace(/\s/g, '-')}"><i></i>${s}</span>`;
+  const drillRows = () => { const q = modal.q.trim().toLowerCase(); return ORDERS.filter(o => o[modal.kind] === modal.id && (!q || `${o.po} ${o.acct} ${o.project} ${o.rep}`.toLowerCase().includes(q))); };
+  function modalBody() {
+    if (modal.kind === 'breakdown') {
+      const q = modal.q.trim().toLowerCase(), rows = breakdown(modal.tab).filter(e => e.name.toLowerCase().includes(q));
+      return table([{ label: BREAKDOWNS[modal.tab].one, cell: e => esc(e.name), strong: true }, { label: 'POs', r: 1, num: 1, cell: e => e.pos }, { label: 'Average PO', r: 1, num: 1, cell: e => money(e.avg) }, { label: 'Share', r: 1, num: 1, cell: e => pct(e.share, 1) }, { label: 'Signed', r: 1, num: 1, cell: e => money(e.signed) }],
+        rows, e => `tabindex="0" data-act="drill" data-kind="${modal.tab}" data-id="${esc(e.name)}" data-back="1"`);
+    }
+    const cols = [{ label: 'PO', cell: o => o.po, num: 1, dim: 1 }, { label: 'Signed', cell: o => o.day }, { label: 'Account', cell: o => esc(o.acct), strong: 1 }, { label: 'Project', cell: o => esc(o.project), dim: 1 },
+      { label: 'Rep', cell: o => esc(o.rep) }, { label: 'Status', cell: o => statusChip(o.status) }, { label: 'Amount', cell: o => money(o.amount), r: 1, num: 1 }];
+    return table(cols.filter(c => !(modal.kind === 'rep' && c.label === 'Rep')), drillRows());
+  }
+  function modalHeader() {
+    if (modal.kind === 'breakdown') return { title: BREAKDOWNS[modal.tab].title, sub: RANGE };
+    const rows = drillRows();
+    return { title: modal.id, sub: `${rows.length} ${rows.length === 1 ? 'PO' : 'POs'}, ${money(sum(rows))}, ${RANGE}` };
+  }
+  function openDrill(next) {
+    modal = { q: '', ...next };
+    const box = $('#details'), h = modalHeader();
+    box.innerHTML = `<header>
+        ${modal.back ? `<button class="icon back" data-act="modalBack" aria-label="Back to the breakdown">${ic('left')}</button>` : ''}
+        <div class="titles"><h2 id="dTitle">${esc(h.title)}</h2><small id="dSub">${esc(h.sub)}</small></div>
+        <label class="find">${ic('search')}<input id="dSearch" placeholder="Search" aria-label="Search this table"></label>
+        <button class="icon" data-act="modalClose" aria-label="Close">${ic('close')}</button>
+      </header><div class="sc" id="dBody" tabindex="0">${modalBody()}</div>`;
+    if (!box.open) box.showModal();
+    document.documentElement.classList.add('locked');
+    $('#dSearch').focus();
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-act]'); if (!t) return;
+    const act = t.dataset.act;
+    if (act === 'tab') { S.tab = t.dataset.tab; $('#bd').outerHTML = breakdownCell(); }
+    if (act === 'drill') openDrill({ kind: t.dataset.kind, id: t.dataset.id, back: t.dataset.back === '1' });
+    if (act === 'details') openDrill({ kind: 'breakdown', tab: S.tab });
+    if (act === 'modalBack') openDrill({ kind: 'breakdown', tab: S.tab });
+    if (act === 'modalClose') $('#details').close();
+  });
+  document.addEventListener('input', e => { if (e.target.id === 'dSearch') { modal.q = e.target.value; $('#dSub').textContent = modalHeader().sub; $('#dBody').innerHTML = modalBody(); } });
+  $('#details').addEventListener('close', () => document.documentElement.classList.remove('locked'));
+  $('#details').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.close(); });
+  $('#report').innerHTML = repsCell() + breakdownCell();
+})();
+</script>
+</body>
+</html>

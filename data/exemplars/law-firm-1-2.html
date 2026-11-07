@@ -1,0 +1,117 @@
+<!doctype html>
+<!-- What makes it good: this is pricing as a working budget rather than three tiers. Five phases carry a basis (flat, fixed, estimate, not approved), the rule above each row is solid when the price is settled and dashed when it is not, and the numbers reconcile: $4,800 + $1,350 = $6,150 approved, plus the $3,100 ceiling on the phase being approved = $9,250, with $6,771.91 billed against it. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phase budget sheet</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&family=Public+Sans:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#fff;--surface:#f5f5f4;--ink:#101114;--muted:#868677;
+  --ink-2:#55564d;--ink-3:#6c6d61;
+  --line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --line-2:color-mix(in srgb,var(--ink) 24%,transparent);
+  --tint-2:color-mix(in srgb,var(--ink) 8%,transparent);
+  --display:'Literata',Georgia,serif;
+  --sans:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:24px;--gap:12px;
+  --r-l:20px;--r-m:12px;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg,canvas{display:block}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.mono{font-family:var(--mono)}
+/* anchored rows on black plates */
+body{padding:40px var(--g)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:var(--gap)}
+.plate{position:relative;height:492px;overflow:hidden;border-radius:var(--r-l);background:#000}
+.copy{align-self:end;padding:0 24px 4px}
+.copy h3{max-width:21em;font:400 30px/1.14 var(--display);letter-spacing:-.022em}
+.copy h3 span{display:block;color:var(--muted)}
+.copy p{max-width:31em;margin-top:12px;color:var(--ink-2)}
+.sheet{position:absolute;left:44px;right:44px;top:44px;height:520px;padding:0 8px;background:var(--surface);border-radius:var(--r-m);font:400 13px/1.4 var(--sans);overflow:hidden}
+.sh-body{min-height:100%;border-radius:8px 8px 0 0;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:44px;padding:0 10px}
+.sh-top b{font-weight:500}
+.sh-top .mono{font-size:11.5px;color:var(--ink-3)}
+/* buttons */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 26px;border-radius:999px;overflow:hidden;isolation:isolate;font:500 16px/1 var(--sans);white-space:nowrap;cursor:pointer;transition:color .3s var(--ease),scale .1s}
+.btn::before{content:"";position:absolute;inset:0;z-index:-1;transform:scaleX(0);transform-origin:right;transition:transform .32s var(--ease)}
+.btn:hover::before{transform:scaleX(1);transform-origin:left}
+.btn:active{scale:.98}
+.outline{color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.outline::before{background:var(--ink)}
+.outline:hover{color:var(--bg)}
+.btn.sm{height:34px;padding:0 15px;font:500 14px/1 var(--sans)}
+/* budget: .set rows are ruled solid, .run rows dashed */
+.budget{width:100%;border-collapse:collapse}
+.budget th{height:34px;padding:0 18px;font-weight:400;font-size:12px;color:var(--ink-3);text-align:left}
+.budget td{height:44px;padding:0 18px;color:var(--ink)}
+.budget td+td{color:var(--ink-2)}
+.budget td.r{color:var(--ink);white-space:nowrap}
+.r{text-align:right!important}
+.budget td.mono{font-size:12.5px}
+.set td{border-top:1px solid var(--line)}
+.run td{border-top:1px dashed var(--line-2)}
+.approve{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 18px 0;padding:12px 14px;border-radius:8px;background:var(--surface)}
+.approve b{display:block;font-weight:500}
+.approve small{font-size:12.5px;color:var(--ink-3)}
+.approve .btn{pointer-events:none}
+.spent{margin:12px 18px 0;padding:0 14px}
+.spent .r{display:flex;justify-content:space-between}
+.spent .r b{font-weight:400;font-size:12.5px}
+.spent small{display:block;margin-top:7px;font-size:12.5px;color:var(--ink-3)}
+.spent .track{margin-top:7px}
+.approve .btn.is-done{color:var(--bg)}
+.approve .btn.is-done::before{transform:scaleX(1);transform-origin:left}
+.track{height:3px;margin-top:9px;border-radius:2px;background:var(--tint-2);overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);border-radius:2px;width:var(--p,0%);transition:width .9s var(--ease)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+  <article class="row" data-live>
+    <div class="plate">
+      <div class="sheet">
+        <div class="sh-top"><b>Budget, LP-26-1187</b><span class="mono">Approved $6,150</span></div>
+        <div class="sh-body">
+        <table class="budget">
+          <thead><tr><th>Phase</th><th>Basis</th><th class="r">Amount</th></tr></thead>
+          <tbody>
+            <tr class="set"><td>First 72 hours</td><td>Flat</td><td class="r mono">$4,800</td></tr>
+            <tr class="set"><td>Survey attendance, Whale Passage</td><td>Fixed</td><td class="r mono">$1,350</td></tr>
+            <tr class="run"><td>Coast Guard interview, master and deck boss</td><td>Estimate</td><td class="r mono">$2,200 to $3,100</td></tr>
+            <tr class="run"><td>Tender claim for lost pack time</td><td>Estimate</td><td class="r mono">$6,400 to $9,500</td></tr>
+            <tr class="run"><td>Limitation action, if a claim arrives</td><td>Not approved</td><td class="r mono">Quote first</td></tr>
+          </tbody>
+        </table>
+        <div class="approve"><div><b>Coast Guard interview</b><small>Lyle Demidoff to approve</small></div><span class="btn sm outline" aria-hidden="true">Approve phase</span></div>
+        <div class="spent"><div class="r"><span>Billed to date</span><b class="mono">$6,771.91</b></div><div class="track"><i style="--p:73%"></i></div><small>of $9,250 approved. Next invoice Nov 16.</small></div>
+        </div>
+      </div>
+    </div>
+    <div class="copy">
+      <h3><span>The first 72 hours are a flat $4,800</span> and after that you approve each phase before it starts</h3>
+      <p>What we can fix, we fix, and its line in your file is solid. What depends on the other side we estimate, and its line stays dashed until the bill is in. Expenses pass through at cost.</p>
+    </div>
+  </article>
+<script>
+/* The phase gets approved while you watch, and the header total moves with it: $6,150 + $3,100 = $9,250. */
+(function(){
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io.unobserve(e.target);
+    var b=e.target.querySelector('.approve .btn');
+    if(b&&!reduce)setTimeout(function(){b.classList.add('is-done');b.textContent='Approved';b.style.background='var(--ink)';var t=e.target.querySelector('.sh-top .mono');if(t)t.textContent='Approved $9,250'},2200);
+  })},{threshold:.3});
+  document.querySelectorAll('[data-live]').forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>

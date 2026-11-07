@@ -1,0 +1,131 @@
+<!doctype html>
+<!-- A one-claim dark chart built by hand in SVG: 34 monthly points on a truncated 40 to 80% axis, three dated event annotations that explain the moves, and a large figure that follows the crosshair on hover.
+     The caption states the method (what counts as a session, who is excluded), so the number reads as measured rather than decorative. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swingshift completion chart</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #101114; --accent: #e2c675;
+  --font: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --settle: cubic-bezier(.22, 1, .36, 1);
+  --rail: max(clamp(16px, 6.1vw, 88px), calc((100vw - 1264px) / 2)); --in: 24px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--ink); color: #fff; font: 400 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h2, figure { margin: 0; padding: 0; }
+svg { display: block; max-width: 100%; }
+.num { font-variant-numeric: tabular-nums; }
+.band { position: relative; padding: 112px calc(var(--rail) + var(--in)); }
+h2 { font: 500 40px/1.12 var(--font); letter-spacing: -.016em; max-width: 1150px; text-wrap: pretty; }
+.on-dark h2 span { color: rgba(255, 255, 255, .58); }
+
+/* The dark chapter: one flip, mostly empty, so the line is the only thing to read */
+.data-band { background: var(--ink); color: #fff; padding-bottom: 96px; }
+.data-band::before { content: ""; position: absolute; inset: 0 var(--rail); pointer-events: none; border-inline: 1px solid rgba(255, 255, 255, .1); }
+.data-top { position: relative; display: flex; justify-content: space-between; gap: 64px; align-items: flex-start; }
+.data-top h2 { max-width: 900px; }
+.nb { white-space: nowrap; }
+.figure { flex: none; text-align: right; }
+.figure b { display: block; font: 500 64px/1 var(--font); letter-spacing: -.02em; color: var(--accent); }
+.figure span { display: block; margin-top: 8px; font-size: 14px; color: rgba(255, 255, 255, .62); }
+.chart { position: relative; margin-top: 56px; }
+#chart { width: 100%; height: 420px; overflow: visible; }
+#chart text { font: 400 12px var(--font); fill: rgba(255, 255, 255, .56); font-variant-numeric: tabular-nums; }
+#chart .ann { fill: rgba(255, 255, 255, .86); font-size: 13px; font-weight: 500; }
+#chart .grid { stroke: rgba(255, 255, 255, .09); stroke-width: 1; vector-effect: non-scaling-stroke; }
+#chart .ln { fill: none; stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+#chart .ring { fill: var(--ink); stroke: var(--accent); stroke-width: 2; vector-effect: non-scaling-stroke; }
+#chart .cross { stroke: rgba(255, 255, 255, .3); stroke-width: 1; vector-effect: non-scaling-stroke; opacity: 0; transition: opacity .2s linear; }
+#chart .live { fill: var(--accent); }
+#chart .halo { fill: none; stroke: var(--accent); stroke-width: 1.5; vector-effect: non-scaling-stroke; animation: halo 2.6s var(--settle) infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes halo { from { transform: scale(.5); opacity: .8; } to { transform: scale(2.6); opacity: 0; } }
+figcaption { max-width: 74ch; margin-top: 28px; color: rgba(255, 255, 255, .62); font-size: 14px; line-height: 1.5; }
+.ca { color: var(--accent); }
+@media (max-width: 980px) { .data-top { flex-direction: column; gap: 28px; } .figure { text-align: left; } }
+@media (max-width: 760px) {
+  :root { --in: 16px; }
+  .band { padding-block: 72px; } .data-band { padding-bottom: 64px; }
+  h2 { font-size: 28px; line-height: 1.16; }
+  .figure b { font-size: 48px; } #chart { height: 320px; }
+}
+@media (prefers-reduced-motion: reduce) { #chart .halo { animation: none; } }
+</style>
+</head>
+<body>
+<section class="band data-band on-dark">
+  <div class="data-top">
+    <h2>Members finish more sessions when the app moves them. <span>Completion went from 54% to 71% in the three months after automatic <span class="nb">re-planning</span> shipped.</span></h2>
+    <div class="figure"><b class="num" id="figVal">78%</b><span id="figLabel">October 2026</span></div>
+  </div>
+  <figure class="chart">
+    <svg id="chart" role="img" aria-label="Line chart of the share of planned sessions completed each month, January 2024 to October 2026. It sits near 54 percent until March 2025, climbs to 71 percent by June 2025, and reaches 78 percent in October 2026." viewBox="0 0 1216 420"><path class="ln" d="M40.0 267.1L75.2 248.2L110.3 257.7L145.5 238.8L180.6 248.2L215.8 267.1L250.9 276.6L286.1 248.2L321.2 238.8L356.4 257.7L391.5 267.1L426.7 323.8L461.8 276.6L497.0 257.7L532.1 229.3L567.3 144.3L602.4 116.0L637.6 97.0L672.7 106.5L707.9 87.6L743.0 78.2L778.2 87.6L813.3 97.0L848.5 163.2L883.6 106.5L918.8 87.6L953.9 78.2L989.1 68.7L1024.2 59.2L1059.4 68.7L1094.5 78.2L1129.7 49.8L1164.8 40.3L1200.0 30.9"/></svg>
+    <figcaption><span class="ca">Share of planned sessions completed, monthly.</span> All active members, January 2024 to October 2026. A session counts if at least 80% of its working sets were logged. Each member's first two weeks are left out.</figcaption>
+  </figure>
+</section>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const svg = $('#chart');
+  // Monthly share of planned sessions completed, Jan 2024 to Oct 2026.
+  const D = [53, 55, 54, 56, 55, 53, 52, 55, 56, 54, 53, 47,  52, 54, 57, 66, 69, 71, 70, 72, 73, 72, 71, 64,  70, 72, 73, 74, 75, 74, 73, 76, 77, 78];
+  const label = i => `${MON[i % 12]} ${2024 + Math.floor(i / 12)}`;
+  const L = 40, R = 16, T = 12, B = 30;
+  const NS = 'http://www.w3.org/2000/svg';
+  const mk = (n, a = {}, p = svg) => { const e = document.createElementNS(NS, n); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  let W = 0, H = 0, X, Y, line, area, armed = !reduce, drawn = false;
+  const render = () => {
+    const r = svg.getBoundingClientRect(); if (!r.width || (r.width === W && r.height === H)) return;
+    W = r.width; H = r.height; svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('preserveAspectRatio', 'xMinYMin meet');
+    svg.innerHTML = '';
+    const small = W < 640, l = small ? 30 : L;
+    X = i => l + (W - l - R) * i / (D.length - 1); Y = v => T + (H - T - B) * (1 - (v - 40) / 40);
+    for (const v of [40, 50, 60, 70, 80]) { mk('line', { x1: l, x2: W, y1: Y(v), y2: Y(v), class: 'grid' }); mk('text', { x: 0, y: Y(v) + 4 }).textContent = v + '%'; }
+    for (let i = 0; i < D.length; i += small ? 12 : 6) { mk('line', { x1: X(i), x2: X(i), y1: H - B, y2: H - B + 6, class: 'grid' }); mk('text', { x: X(i), y: H - 8, 'text-anchor': 'start' }).textContent = small ? String(2024 + i / 12) : label(i); }
+    const d = D.map((v, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)} ${Y(v).toFixed(1)}`).join('');
+    const defs = mk('defs'); const g = mk('linearGradient', { id: 'cf', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+    mk('stop', { offset: '0', 'stop-color': '#e2c675', 'stop-opacity': '.2' }, g); mk('stop', { offset: '1', 'stop-color': '#e2c675', 'stop-opacity': '0' }, g);
+    area = mk('path', { d: `${d}L${X(D.length - 1)} ${H - B}L${X(0)} ${H - B}Z`, fill: 'url(#cf)' });
+    line = mk('path', { d, class: 'ln' });
+    for (const [i, txt, dy, anchor, dx] of [[14, 'Automatic re-planning ships, Mar 2025', -20, 'end', -12], [23, 'Holiday overtime, Dec 2025', 34, 'middle', 0], [29, 'Pause for calls ships, Jun 2026', -24, 'end', 40]]) {
+      const m = mk('g', { class: 'mark' });
+      mk('circle', { cx: X(i), cy: Y(D[i]), r: 5, class: 'ring' }, m);
+      if (!small) mk('text', { x: X(i) + dx, y: Y(D[i]) + dy, 'text-anchor': anchor, class: 'ann' }, m).textContent = txt;
+    }
+    const lx = X(D.length - 1), ly = Y(D.at(-1));
+    const end = mk('g', { class: 'mark' }); mk('circle', { cx: lx, cy: ly, r: 5, class: 'live' }, end); mk('circle', { cx: lx, cy: ly, r: 7, class: 'halo' }, end);
+    if (armed && !drawn) { line.style.strokeDasharray = line.getTotalLength(); line.style.strokeDashoffset = line.getTotalLength(); area.style.opacity = 0; $$('.mark circle', svg).forEach(c => { c.style.opacity = 0; }); $$('.mark text', svg).forEach(c => { c.style.opacity = .3; }); }
+    const cross = mk('line', { x1: 0, x2: 0, y1: T, y2: H - B, class: 'cross' }), ring = mk('circle', { r: 5, class: 'ring', style: 'opacity:0' });
+    svg.onpointermove = e => {
+      const b = svg.getBoundingClientRect(), i = Math.max(0, Math.min(D.length - 1, Math.round((e.clientX - b.left - l) / (W - l - R) * (D.length - 1))));
+      cross.setAttribute('x1', X(i)); cross.setAttribute('x2', X(i)); cross.style.opacity = 1;
+      ring.setAttribute('cx', X(i)); ring.setAttribute('cy', Y(D[i])); ring.style.opacity = 1;
+      $('#figVal').textContent = D[i] + '%'; $('#figLabel').textContent = i === D.length - 1 ? 'October 2026' : label(i);
+    };
+    svg.onpointerleave = () => { cross.style.opacity = 0; ring.style.opacity = 0; $('#figVal').textContent = '78%'; $('#figLabel').textContent = 'October 2026'; };
+  };
+  render();
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(render, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(render);
+  if (reduce) return;
+  const draw = () => {
+    drawn = true; const len = line.getTotalLength(), marks = $$('.mark', svg);
+    line.style.strokeDashoffset = ''; area.style.opacity = '';
+    line.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { duration: 1200, easing: 'cubic-bezier(.33,0,.5,1)' }).onfinish = () => { line.style.strokeDasharray = ''; };
+    area.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 700, delay: 600, fill: 'backwards' });
+    marks.forEach((m, n) => { // rings arrive as the line reaches them; labels only sharpen, so a fast scroll never misses one
+      const at = { duration: 300, delay: [520, 760, 900, 1050][n] || 0, fill: 'backwards' };
+      $$('circle', m).forEach(c => { c.style.opacity = ''; c.animate([{ opacity: 0 }, { opacity: 1 }], at); });
+      $$('text', m).forEach(c => { c.style.opacity = ''; c.animate([{ opacity: .3 }, { opacity: 1 }], at); });
+    });
+  };
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { o.disconnect(); draw(); } }, { threshold: .12 }).observe(svg);
+})();
+</script>
+</body>
+</html>

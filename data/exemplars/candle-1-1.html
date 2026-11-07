@@ -1,0 +1,206 @@
+<!doctype html>
+<!-- A class booking panel built as one piece of apparatus: a five-row spec column, a month grid where only bookable Saturdays are real buttons, and a third pane that is never blank because the first open date is preselected. Seat counts feed back everywhere: a full slot disables itself, the stepper caps at the seats left, and the button carries the live total. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saturday pours booking</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,450&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#f3eee8;--surface:#fdfcfb;--ink:#291e21;--ink-2:#6b6366;--accent:#4f2414;
+  --ink-3:color-mix(in srgb,var(--ink) 46%,var(--bg));
+  --line:color-mix(in srgb,var(--ink) 10%,transparent);
+  --line-strong:color-mix(in srgb,var(--ink) 20%,transparent);
+  --fill:color-mix(in srgb,var(--ink) 5%,transparent);
+  --gut:clamp(16px,3.9vw,56px);--wide:1328px;
+  --font-display:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --font-text:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h2,h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:calc(var(--wide) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+h2{font:450 44px/1.14 var(--font-display);letter-spacing:-.014em;text-wrap:balance;margin-top:12px}
+.eb{font:500 16px/1.3 var(--font-text);max-width:640px}
+.lede{font:400 18px/28px var(--font-text);max-width:640px;margin-top:16px}
+.head{margin-bottom:56px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;min-width:282px;height:55px;padding:0 32px;background:var(--ink);color:var(--bg);font:500 14px/1 var(--font-text);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:background-color .2s,color .2s,opacity .2s}
+.btn:hover{background:var(--accent)}
+.btn:active{opacity:.82}
+.btn[disabled]{background:var(--fill);color:var(--ink-2);cursor:not-allowed}
+.btn.block{display:flex;width:100%;min-width:0}
+
+.pours{position:relative;padding-block:112px;background:var(--ink);color:var(--bg)}
+.pours .eb{color:color-mix(in srgb,var(--bg) 72%,transparent)}
+.pours .lede{color:color-mix(in srgb,var(--bg) 70%,transparent)}
+.sched{display:grid;grid-template-columns:320px minmax(0,1fr) 300px;background:var(--surface);color:var(--ink)}
+.pane{padding:32px}
+.pane+.pane{border-left:1px solid var(--line)}
+.pane h3{font:500 16px/22px var(--font-text)}
+.host{display:flex;flex-direction:column;gap:2px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.host p{font-size:15px;line-height:22px;color:var(--ink-2)}
+.agenda{margin-top:8px}
+.agenda li{display:flex;justify-content:space-between;gap:16px;padding:9px 0;font-size:15px;line-height:22px;border-bottom:1px dotted var(--line-strong)}
+.agenda li span:first-child{color:var(--ink-2)}
+.agenda li span:last-child{text-align:right}
+.host-note{margin-top:16px;font-size:14px;line-height:21px;color:var(--ink-2)}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.mhead .mv{display:grid;place-items:center;width:36px;height:36px;font-size:18px;transition:background-color .2s}
+.mhead .mv:hover:not([disabled]){background:var(--fill)}
+.mhead .mv[disabled]{color:var(--ink-3);cursor:default}
+.mhead div{display:flex;gap:4px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;font-variant-numeric:tabular-nums}
+.cal .dow{height:32px;display:grid;place-items:center;font-size:13px;color:var(--ink-2)}
+.cal .d{display:grid;place-items:center;aspect-ratio:1/.68;font-size:15px;color:var(--ink-3)}
+.cal button.d{background:var(--fill);color:var(--ink);font-weight:500;transition:background-color .15s,color .15s}
+.cal button.d:hover{background:color-mix(in srgb,var(--ink) 12%,transparent)}
+.cal button.d[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.times{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.time{display:flex;justify-content:space-between;align-items:center;height:48px;padding:0 14px;box-shadow:inset 0 0 0 1px var(--line-strong);font:500 15px/1 var(--font-text);transition:background-color .15s,color .15s,box-shadow .15s}
+.time small{font:400 14px/1 var(--font-text);color:var(--ink-2)}
+.time:hover:not([disabled]){box-shadow:inset 0 0 0 1px var(--ink)}
+.time[aria-pressed=true]{background:var(--ink);color:var(--bg);box-shadow:none}
+.time[aria-pressed=true] small{color:inherit;opacity:.76}
+.time[disabled]{color:var(--ink-2);background:var(--fill);cursor:not-allowed;box-shadow:none}
+.time[disabled] small{color:inherit}
+.seats{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid var(--line);font-size:15px}
+.step{display:inline-flex;align-items:center;box-shadow:inset 0 0 0 1px var(--line-strong)}
+.step button{width:36px;height:36px;display:grid;place-items:center;font-size:17px;transition:background-color .15s}
+.step button:hover:not([disabled]){background:var(--fill)}
+.step button[disabled]{color:var(--ink-3);cursor:not-allowed}
+.step output{min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
+.pane .book{margin-top:16px}
+.book-note{margin-top:10px;font-size:14px;line-height:20px;color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:20px;z-index:70;display:flex;align-items:center;gap:16px;padding:12px 16px;background:var(--ink);color:var(--bg);font-size:14px;line-height:20px;transform:translate(-50%,calc(100% + 28px));transition:transform .32s var(--ease);max-width:calc(100vw - 24px)}
+.toast.on{transform:translate(-50%,0)}
+@media (max-width:1100px){
+  .sched{grid-template-columns:1fr 1fr}
+  .pane:first-child{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:12px 32px;border-bottom:1px solid var(--line)}
+  .pane:first-child .host{border-bottom:0;padding-bottom:0}
+  .pane:first-child .agenda{grid-column:2;grid-row:1/3;margin-top:-9px}
+  .pane:first-child .host-note{margin-top:0}
+  .pane:nth-child(2){border-left:0}
+}
+@media (max-width:760px){
+  .pours{padding-block:72px}
+  .sched{grid-template-columns:1fr;margin-inline:-4px}
+  .pane{padding:20px}
+  .pane:first-child{display:block}
+  .pane+.pane{border-left:0;border-top:1px solid var(--line)}
+  .cal .d{aspect-ratio:auto;min-height:40px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<section class="pours" id="pours">
+  <div class="wrap">
+    <div class="head">
+      <p class="eb">Saturday pours</p>
+      <h2>Pour your own candles at the shop, $65</h2>
+      <p class="lede">Two hours at the bench with Joan, six people to a class. You mix your own scent and leave with two jars. They need 14 days to cure, so you take them home and wait like everybody else.</p>
+    </div>
+    <div class="sched">
+      <div class="pane">
+        <div class="host"><h3>Joan Brandt</h3><p>Founder. Teaches every class herself.</p></div>
+        <ul class="agenda">
+          <li><span>Length</span><span>2 hours</span></li>
+          <li><span>Class size</span><span>6 seats</span></li>
+          <li><span>You leave with</span><span>Two 8 oz jars</span></li>
+          <li><span>Ages</span><span>14 and up</span></li>
+          <li><span>Where</span><span>Kinnickinnic Ave, Bay View</span></li>
+        </ul>
+        <p class="host-note">Street-level door, no stairs. Street parking only. Wear something you don't love, because dye gets on things.</p>
+      </div>
+      <div class="pane">
+        <div class="mhead"><h3 id="m-title">November 2026</h3><div><button class="mv" type="button" id="m-prev" aria-label="Previous month">&lsaquo;</button><button class="mv" type="button" id="m-next" aria-label="Next month">&rsaquo;</button></div></div>
+        <div class="cal" id="cal"><p class="dow" style="grid-column:1/-1">Saturdays at 10 am and 1 pm.</p></div>
+      </div>
+      <div class="pane">
+        <h3 id="t-title">Pick a day</h3>
+        <div class="times" id="times"></div>
+        <div class="seats"><span>Seats</span><span class="step"><button type="button" id="s-dn" aria-label="Fewer seats">&minus;</button><output id="s-n">2</output><button type="button" id="s-up" aria-label="More seats">+</button></span></div>
+        <button class="btn block book" type="button" id="book" disabled>Choose a time</button>
+        <p class="book-note">Goes in your bag and pays at checkout. Reschedule free up to 48 hours before.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var money = function (n) { return '$' + n; };
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var now = new Date(2026, 10, 6); // pinned so the sample seats and closed dates stay coherent; a live page uses new Date()
+  function day(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function fmtD(d) { return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function parse(s) { var a = s.split('-'); return new Date(+a[0], +a[1] - 1, +a[2]); }
+  function plus(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  var B = { y: 0, m: 0, date: null, time: null, seats: 2 }, start = new Date(now.getFullYear(), now.getMonth(), 1), held = 0;
+  B.y = start.getFullYear(); B.m = start.getMonth();
+  var CLOSED = { '2026-11-28': 1, '2026-12-26': 1 };
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function slots(d) { if (CLOSED[iso(d)]) return []; return d.getDay() === 6 ? ['10:00 am', '1:00 pm'] : []; }
+  function seatsLeft(d, t) {
+    // Sample availability: classes fill from the nearest date outward.
+    var s = iso(d) + t, h = 7, out = Math.round((d - day(now)) / 864e5);
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 101;
+    return Math.max(0, Math.min(6, Math.floor(out / 4) + h % 4 - 1));
+  }
+  function drawCal() {
+    var first = new Date(B.y, B.m, 1), n = new Date(B.y, B.m + 1, 0).getDate(), today = day(now), h = '';
+    $('#m-title').textContent = LONG[B.m] + ' ' + B.y;
+    ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].forEach(function (d) { h += '<span class="dow">' + d + '</span>'; });
+    for (var i = 0; i < first.getDay(); i++) h += '<span></span>';
+    for (var k = 1; k <= n; k++) {
+      var d = new Date(B.y, B.m, k), open = d > today && slots(d).length && slots(d).some(function (t) { return seatsLeft(d, t) > 0; });
+      h += open ? '<button class="d" type="button" data-d="' + iso(d) + '" aria-pressed="' + (B.date === iso(d)) + '" aria-label="' + fmtD(d) + '">' + k + '</button>' : '<span class="d">' + k + '</span>';
+    }
+    $('#cal').innerHTML = h;
+    $('#m-prev').disabled = B.y === start.getFullYear() && B.m === start.getMonth();
+    $('#m-next').disabled = (B.y * 12 + B.m) - (start.getFullYear() * 12 + start.getMonth()) >= 2;
+  }
+  function drawTimes() {
+    var t = $('#times');
+    if (!B.date) { $('#t-title').textContent = 'Pick a day'; t.innerHTML = ''; return; }
+    var d = parse(B.date); $('#t-title').textContent = fmtD(d);
+    t.innerHTML = slots(d).map(function (x) {
+      var l = seatsLeft(d, x);
+      return '<button class="time" type="button" data-t="' + x + '" aria-pressed="' + (B.time === x) + '"' + (l === 0 ? ' disabled' : '') + '>' + x + '<small>' + (l === 0 ? 'Full' : l + (l === 1 ? ' seat left' : ' seats left')) + '</small></button>';
+    }).join('');
+  }
+  function drawBook() {
+    var b = $('#book'), max = B.date && B.time ? seatsLeft(parse(B.date), B.time) : 6;
+    if (B.seats > max) B.seats = Math.max(1, max);
+    $('#s-n').textContent = B.seats; $('#s-dn').disabled = B.seats <= 1; $('#s-up').disabled = B.seats >= max;
+    b.disabled = !(B.date && B.time);
+    b.textContent = b.disabled ? 'Choose a time' : 'Add to bag, ' + money(65 * B.seats);
+  }
+  $('#cal').addEventListener('click', function (e) { var b = e.target.closest('[data-d]'); if (!b) return; B.date = b.dataset.d; B.time = slots(parse(B.date)).filter(function (t) { return seatsLeft(parse(B.date), t) > 0; })[0] || null; drawCal(); drawTimes(); drawBook(); });
+  $('#times').addEventListener('click', function (e) { var b = e.target.closest('[data-t]'); if (!b || b.disabled) return; B.time = b.dataset.t; drawTimes(); drawBook(); });
+  $('#m-prev').addEventListener('click', function () { var d = new Date(B.y, B.m - 1, 1); B.y = d.getFullYear(); B.m = d.getMonth(); drawCal(); });
+  $('#m-next').addEventListener('click', function () { var d = new Date(B.y, B.m + 1, 1); B.y = d.getFullYear(); B.m = d.getMonth(); drawCal(); });
+  $('#s-dn').addEventListener('click', function () { B.seats--; drawBook(); });
+  $('#s-up').addEventListener('click', function () { B.seats++; drawBook(); });
+  $('#book').addEventListener('click', function () {
+    held += B.seats;
+    var t = $('#toast'); t.textContent = 'Saved ' + B.seats + (B.seats === 1 ? ' seat' : ' seats') + ', ' + fmtD(parse(B.date)) + '. Bag (' + held + ')'; t.classList.add('on');
+    setTimeout(function () { t.classList.remove('on'); }, 4000);
+    B.time = null; drawTimes(); drawBook();
+  });
+  // first open date selected, so the third pane is never blank
+  (function () { var d = plus(day(now), 1); for (var i = 0; i < 40; i++) { var open = slots(d).filter(function (t) { return seatsLeft(d, t) > 0; }); if (open.length) { B.date = iso(d); B.time = open[0]; B.y = d.getFullYear(); B.m = d.getMonth(); break; } d = plus(d, 1); } })();
+  drawCal(); drawTimes(); drawBook();
+})();
+</script>
+</body>
+</html>

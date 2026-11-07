@@ -1,0 +1,106 @@
+<!doctype html>
+<!-- A contact form cut to one line that asks for the diagnosis, not a name: the placeholder models the answer ("Postgres 14 on 3 TB, vacuum can't keep up"), three buttons prefill the commonest situations, and submit opens a prefilled email with a "Deadline:" line already in it.
+     The small print does the qualifying a sales call would: reply time, booked until March 2027, €40,000 to €70,000, no on-call retainers, no Oracle. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Problem composer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#fff; --surface:#fff; --ink:#111; --muted:#8a8a8a; --ink-2:#6a6a6a; --accent:#f5b8cf;
+  --line-2:rgba(17,17,17,.16);
+  --display:'Libre Caslon Display','Times New Roman',serif;
+  --text:'Libre Franklin',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --m:clamp(16px,4.45vw,64px); --page:1600px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:tabular-nums;overflow-x:clip}
+h2,p{margin:0;padding:0}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+::selection{background:var(--accent);color:var(--ink)}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.wrap{width:min(100%,var(--page));margin-inline:auto;padding-inline:var(--m)}
+h2{font-family:var(--display);font-weight:400;letter-spacing:-.012em;font-synthesis:none;line-height:1.07;text-wrap:balance}
+
+/* hover: ink and paper trade places, on every control */
+.sw{transition:background-color .22s ease,color .22s ease,box-shadow .22s ease}
+.sw:hover{background:var(--ink);color:var(--bg)}
+.tlink{box-shadow:inset 0 -1px 0 currentColor;transition:background-color .22s ease,color .22s ease,box-shadow .22s ease}
+.tlink:hover{background:var(--ink);color:var(--bg);box-shadow:0 0 0 3px var(--ink)}
+.pill{display:inline-flex;align-items:center;height:40px;padding:0 20px;border-radius:999px;background:var(--accent);color:var(--ink);font-size:15px;font-weight:500;white-space:nowrap;transition:background-color .22s ease,color .22s ease}
+.pill:hover{background:var(--ink);color:var(--bg)}
+
+.sec{position:relative;z-index:1}
+.close{text-align:center;padding-top:clamp(96px,11vw,150px);padding-bottom:clamp(96px,11vw,150px)}
+.close h2{font-size:clamp(38px,4.45vw,64px);line-height:1.05;max-width:13.5em;margin-inline:auto}
+.close>.wrap>p.lead{font-size:clamp(18px,1.55vw,22px);line-height:1.3;color:var(--ink-2);margin:18px auto 0;max-width:30em;text-wrap:balance}
+.comp{display:flex;align-items:center;width:min(620px,100%);height:58px;margin:38px auto 0;padding:7px 7px 7px 18px;background:var(--surface);border-radius:14px;box-shadow:0 0 0 1px var(--line-2);transition:box-shadow .15s}
+.comp:focus-within{box-shadow:0 0 0 1px var(--ink),0 0 0 4px color-mix(in srgb,var(--accent) 45%,transparent)}
+.comp input{flex:1;min-width:0;border:0;outline:0;background:none;font-size:16px;text-align:left}
+.comp input::placeholder{color:var(--muted)}
+.comp .pill{flex:none;height:44px;margin-left:10px;padding:0 20px}
+.fills{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px}
+.fills button{height:34px;padding:0 12px;font-size:14px;box-shadow:inset 0 0 0 1px var(--line-2)}
+.after{margin:18px auto 0;font-size:14px;line-height:1.5;color:var(--ink-2);max-width:40em;text-wrap:balance}
+.after a{color:var(--ink)}
+
+@media (max-width:899px){
+  .close{text-align:left}
+  .close h2,.close>.wrap>p.lead{margin-inline:0}
+  .comp{flex-wrap:wrap;height:auto;padding:12px;border-radius:14px}
+  .comp input{flex:1 1 100%;height:40px;padding-inline:6px}
+  .comp .pill{margin:8px 0 0;width:100%;justify-content:center}
+  .fills{justify-content:flex-start}
+  .after{margin-inline:0}
+}
+@media (hover:none){
+  .sw:hover{background:none;color:inherit}
+  .pill:hover{background:var(--accent);color:var(--ink)}
+  .tlink:hover{background:none;color:inherit;box-shadow:inset 0 -1px 0 currentColor}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<section class="sec close" id="contact" aria-labelledby="h-close">
+  <div class="wrap">
+    <h2 id="h-close">Tell me what you're running and where it hurts</h2>
+    <p class="lead">I read every message myself and answer within two working days. I'm booked until March 2027, so give me your deadline as well.</p>
+    <form class="comp" id="comp">
+      <label class="sr" for="msg">What you're running and what's wrong</label>
+      <input id="msg" name="msg" type="text" autocomplete="off" placeholder="Postgres 14 on 3 TB, vacuum can't keep up">
+      <button class="pill" type="submit">Write to me</button>
+    </form>
+    <div class="fills" id="fills" role="group" aria-label="Start from a common situation">
+      <button class="sw" type="button" data-text="We're still on Postgres 14 and support ends this month.">Still on Postgres 14</button>
+      <button class="sw" type="button" data-text="We've outgrown our host and can't take downtime to move.">Outgrown our host</button>
+      <button class="sw" type="button" data-text="The disk keeps filling up and we don't know why.">Disk keeps filling up</button>
+    </div>
+    <p class="after" id="comp-status" role="status">Opens your email app with this text in it, or write to <a class="tlink" data-mail href="mailto:tove@rimstad.dev">tove@rimstad.dev</a>. After the audit, most moves cost €40,000 to €70,000. I don't take on-call retainers, and I don't work on Oracle.</p>
+  </div>
+</section>
+<script>
+const EMAIL = 'tove@rimstad.dev';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+$$('[data-mail]').forEach(a => { a.href = 'mailto:' + EMAIL; });
+$('#comp').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = $('#msg'), text = input.value.trim();
+  if (!text) { input.focus(); input.placeholder = 'One line is plenty: version, size, what hurts'; return; }
+  location.href = `mailto:${EMAIL}?subject=${encodeURIComponent('Database: ' + text.slice(0, 60))}&body=${encodeURIComponent(text + '\n\nDeadline: ')}`;
+});
+$$('#fills button').forEach(b => b.addEventListener('click', () => {
+  const input = $('#msg'); input.value = b.dataset.text; input.focus();
+}));
+</script>
+</body>
+</html>

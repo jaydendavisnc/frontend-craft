@@ -1,0 +1,156 @@
+<!doctype html>
+<!-- Opening hours that answer the question people really have, "are you open right now?": the week is stored as minutes from midnight, one function turns it into a plain sentence ("Open until 4pm", "Opens at 8.30am", "Closed, opens tomorrow 8am") in Leith time whatever clock the visitor has, and today's row lifts in the table. The third column is equally specific about practical friction: the tram stop, one step at the door, a ramp on request, a toilet that isn't step-free. -->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mowat visit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Literata:opsz,wght@24,400&display=swap">
+<style>
+:root{
+  --bone:#f0ede6;
+  --ink:#1a1613;
+  --ink-2:rgb(26 22 19/.66);
+  --ink-3:rgb(26 22 19/.44);
+  --line:rgb(26 22 19/.14);
+  --paper:#f4f1ea;
+  --accent:#2444c0;
+  --font-display:"Literata",Georgia,serif;
+  --font-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --g:80px;
+  --ease-ui:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--ink);font:400 17px/1.5 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+h2,h3,p,dl,dd{margin:0;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1440px;margin-inline:auto;padding-inline:var(--g)}
+.btn-line{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:3px;box-shadow:inset 0 0 0 1px currentColor;font-size:14px;font-weight:500;transition:background-color .15s var(--ease-ui),color .15s var(--ease-ui)}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+
+/* shared section system */
+.sec{padding-block:120px}
+h2{font:400 36px/1.16 var(--font-display);letter-spacing:-.015em}
+.side p{margin-top:16px;max-width:30ch;color:var(--ink-2)}
+.side{position:sticky;top:112px;align-self:start}
+.link{text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px;transition:text-decoration-color .15s var(--ease-ui)}
+.link:hover{text-decoration-color:var(--ink)}
+
+/* visit */
+.visit{border-top:1px solid var(--line)}
+.visit-grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,4fr) minmax(0,4fr);gap:48px}
+.now-line{font-size:20px;line-height:1.4;color:var(--ink)!important}
+.hours{display:grid;grid-template-columns:136px 1fr;font-size:20px;line-height:36px;font-variant-numeric:lining-nums tabular-nums}
+.hours dt{color:var(--ink-2)}
+.hours .now{font-weight:500;color:var(--ink)}
+.xmas{margin-top:24px;padding-top:16px;border-top:1px solid var(--ink);max-width:38ch}
+.where address{font-style:normal;font-size:20px;line-height:1.4}
+.where>p{margin-top:12px}
+.where h3{margin-top:32px;font:500 17px/1.5 var(--font-text);letter-spacing:0}
+.where h3+p{margin-top:0;color:var(--ink-2)}
+.maps{display:flex;gap:8px;margin-top:20px}
+.maps .btn-line{box-shadow:inset 0 0 0 1px var(--ink)}
+
+/* tablet */
+@media (max-width:1180px){
+  :root{--g:40px}
+  .visit-grid{grid-template-columns:1fr 1fr}
+  .side p{max-width:60ch}
+  .visit-grid .side{grid-column:1/-1;position:static}
+}
+
+/* phone */
+@media (max-width:900px){
+  :root{--g:20px}
+  .sec{padding-block:72px}
+  h2{font-size:24px;line-height:1.25}
+  .visit-grid{grid-template-columns:minmax(0,1fr);gap:32px}
+  .side{position:static}
+  .side p{max-width:none}
+  .hours{grid-template-columns:128px 1fr;font-size:17px;line-height:34px}
+}
+</style>
+</head>
+<body>
+<section class="sec visit" id="visit" aria-labelledby="visit-h">
+  <div class="wrap visit-grid">
+    <div class="side">
+      <h2 id="visit-h">Visit</h2>
+      <p class="now-line" data-status>Open Tuesday to Sunday</p>
+    </div>
+    <div>
+      <dl class="hours">
+        <dt data-day="1">Monday</dt><dd data-day="1">Closed</dd>
+        <dt data-day="2">Tuesday</dt><dd data-day="2">8am&ndash;2pm</dd>
+        <dt data-day="3">Wednesday</dt><dd data-day="3">7.30am&ndash;4pm</dd>
+        <dt data-day="4">Thursday</dt><dd data-day="4">7.30am&ndash;4pm</dd>
+        <dt data-day="5">Friday</dt><dd data-day="5">7.30am&ndash;4pm</dd>
+        <dt data-day="6">Saturday</dt><dd data-day="6">8.30am&ndash;4pm</dd>
+        <dt data-day="0">Sunday</dt><dd data-day="0">9am&ndash;3pm</dd>
+      </dl>
+      <p class="xmas">Closed from Thursday 24 December. Back on Tuesday 5 January, and we roast that morning.</p>
+    </div>
+    <div class="where">
+      <address>Sandport Street, Leith<br>Edinburgh EH6</address>
+      <p><a class="link" href="tel:+441314960142">0131 496 0142</a><br><a class="link" href="mailto:hello@mowatcoffee.example">hello@mowatcoffee.example</a></p>
+      <div class="maps">
+        <a class="btn-line" href="https://www.google.com/maps/search/?api=1&amp;query=Sandport+Street+Leith+Edinburgh">Google Maps</a>
+        <a class="btn-line" href="https://maps.apple.com/?q=Sandport+Street,+Leith,+Edinburgh">Apple Maps</a>
+      </div>
+      <h3>Getting here</h3>
+      <p>Tram to The Shore, then about six minutes on foot. There&rsquo;s a bike rack outside and paid street parking.</p>
+      <h3>Access</h3>
+      <p>One step at the door. Knock on the window and we&rsquo;ll bring the ramp out. The toilet is downstairs and isn&rsquo;t step-free. Dogs are welcome.</p>
+    </div>
+  </div>
+</section>
+<script>
+// Everything that changes is computed in the shop's own time zone, so it can't go stale.
+(function () {
+  const TZ = 'Europe/London';
+  // Minutes from midnight. Sunday first. Empty is closed.
+  const WEEK = [[[540, 900]], [], [[480, 840]], [[450, 960]], [[450, 960]], [[450, 960]], [[510, 960]]];
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const clock = m => {
+    const h = (m / 60 | 0) % 12 || 12, mm = m % 60;
+    return `${h}${mm ? '.' + String(mm).padStart(2, '0') : ''}${m < 720 ? 'am' : 'pm'}`;
+  };
+
+  function here(now) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+      timeZone: TZ, weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23',
+    }).formatToParts(now).map(x => [x.type, x.value]));
+    const d = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    return { d, m: +p.hour * 60 + +p.minute };
+  }
+
+  function status(t) {
+    const span = WEEK[t.d].find(([a, b]) => t.m >= a && t.m < b);
+    if (span) return `Open until ${clock(span[1])}`;
+    const later = WEEK[t.d].find(([a]) => a > t.m);
+    if (later) return `Opens at ${clock(later[0])}`;
+    for (let i = 1; i < 8; i++) {
+      const n = (t.d + i) % 7;
+      if (WEEK[n].length) return `Closed, opens ${i === 1 ? 'tomorrow' : DAYS[n]} ${clock(WEEK[n][0][0])}`;
+    }
+    return 'Closed';
+  }
+
+  const fill = (sel, text) => document.querySelectorAll(sel).forEach(e => { e.textContent = text; });
+
+  function paint() {
+    const t = here(new Date());
+    fill('[data-status]', status(t));
+    document.querySelectorAll('[data-day]').forEach(e => e.classList.toggle('now', +e.dataset.day === t.d));
+  }
+  paint();
+  setInterval(paint, 60000);
+})();
+</script>
+</body>
+</html>

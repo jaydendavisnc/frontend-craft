@@ -1,0 +1,148 @@
+<!doctype html>
+<!-- A footer that answers questions instead of listing links: address and hours in the shop's voice, a Help column that opens a side sheet with the real policy text, a wordmark filling the full width with colour showing through a 5px halftone dot screen, and a joke in the legal line. The wordmark's colour comes from CSS gradients in the brand's wax colours. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brandt footer</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,450&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#f3eee8;--surface:#fdfcfb;--ink:#291e21;--ink-2:#6b6366;
+  --line:color-mix(in srgb,var(--ink) 10%,transparent);
+  --line-strong:color-mix(in srgb,var(--ink) 20%,transparent);
+  --gut:clamp(16px,3.9vw,56px);--wide:1328px;
+  --font-display:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --font-text:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --wipe:cubic-bezier(.76,0,.24,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h2,h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:calc(var(--wide) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.tlink{font:500 15px/1.3 var(--font-text);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:4px;transition:text-decoration-color .2s,color .2s}
+.tlink:hover{text-decoration-color:currentColor}
+
+.foot{position:relative;background:var(--bg);padding-top:72px}
+.cols{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:24px;padding-bottom:64px}
+.cols h3{font:500 15px/22px var(--font-text);margin-bottom:10px}
+.cols li a,.cols li button{display:inline-block;padding:3px 0;font-size:15px;line-height:22px;color:var(--ink-2);text-decoration:none;transition:color .2s}
+.cols li a:hover,.cols li button:hover{color:var(--ink)}
+.visit p{font-size:15px;line-height:22px;color:var(--ink-2)}
+.visit p+p{margin-top:12px}
+.visit strong{color:var(--ink);font-weight:500}
+/* The dots are one radial gradient tiled at 5px, painted in the page colour over the wax colours; the type is the clip. */
+.wm{margin:0 auto;width:min(calc(100% - 2*var(--gut)),var(--wide));height:clamp(96px,28.6vw,420px);overflow:hidden;container-type:inline-size;position:relative}
+.wm b{display:block;width:max-content;white-space:nowrap;font:600 calc(100cqw/var(--k,2.57))/.8 var(--font-display);letter-spacing:-.04em;padding-top:.04em;margin-left:-.02em;color:transparent;-webkit-background-clip:text;background-clip:text;
+  background-image:radial-gradient(circle,transparent 0 56%,var(--bg) 60%),
+    radial-gradient(7% 62% at 69% 62%,#ecd8a0,#d9a441 55%,transparent),
+    radial-gradient(5% 44% at 16% 62%,#c2401a,transparent),
+    radial-gradient(9% 22% at 28% 88%,#b23a17,transparent),
+    radial-gradient(12% 30% at 88% 42%,#7a2c16,transparent),
+    linear-gradient(170deg,#241714,#180e0b 60%,#2c120c);
+  background-size:5px 5px,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%}
+.wm::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,color-mix(in srgb,var(--bg) 30%,transparent),transparent 45%,color-mix(in srgb,var(--bg) 22%,transparent));pointer-events:none}
+.legal{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-block:20px 28px;font-size:14px;line-height:20px;color:var(--ink-2)}
+.legal a{text-decoration:none}.legal a:hover{color:var(--ink)}
+.legal nav{display:flex;gap:20px}
+
+.scrim{position:fixed;inset:0;z-index:60;background:color-mix(in srgb,var(--ink) 42%,transparent);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.scrim.on{opacity:1;visibility:visible}
+.sheet{position:fixed;top:0;right:0;bottom:0;z-index:61;display:flex;flex-direction:column;width:min(540px,100vw);background:var(--surface);transform:translateX(102%);visibility:hidden;transition:transform .42s var(--wipe),visibility .42s}
+.sheet.on{transform:none;visibility:visible}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;flex:none;height:60px;padding:0 24px;border-bottom:1px solid var(--line);font-size:15px}
+.sheet-top button{display:grid;place-items:center;height:36px;padding:0 4px;font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+.sheet-body{flex:1;overflow:auto;overscroll-behavior:contain}
+.sheet-foot{flex:none;padding:16px 24px 20px;border-top:1px solid var(--line);background:var(--surface)}
+.qv-info{padding:24px}
+.qv-info h2{font:450 34px/1.12 var(--font-display);letter-spacing:-.014em}
+.qv-info .story{margin-top:12px;font-size:15px;line-height:23px}
+@media (max-width:1100px){.cols{grid-template-columns:1fr 1fr 1fr}.cols .visit{grid-column:1/-1}}
+@media (max-width:760px){
+  .foot{padding-top:48px}
+  .cols{grid-template-columns:1fr 1fr;padding-bottom:40px}
+  .cols li a,.cols li button{padding-block:6px}
+  .legal a{display:inline-block;padding-block:6px}
+  .sheet{width:100vw}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<footer class="foot">
+  <div class="wrap">
+    <div class="cols">
+      <div class="visit">
+        <p><strong>Shop and workshop</strong><br>Kinnickinnic Ave, Bay View<br>Milwaukee, Wisconsin</p>
+        <p><strong>Open</strong> Thu 12 to 6, Sat 10 to 5. The rest of the week we're pouring.</p>
+        <p>(414) 555-0142<br><a class="tlink" href="mailto:joan@brandtcandle.example" style="font-weight:400">joan@brandtcandle.example</a></p>
+      </div>
+      <div><h3>Shop</h3><ul>
+        <li><a href="#shelf">Tins</a></li>
+        <li><a href="#shelf">Jars</a></li>
+        <li><a href="#shelf">Three-wicks</a></li>
+        <li><a href="#shelf">Beeswax</a></li>
+        <li><a href="#shelf">Matches and holders</a></li>
+      </ul></div>
+      <div><h3>Workshop</h3><ul>
+        <li><a href="#pours">Saturday pours</a></li>
+        <li><a href="mailto:joan@brandtcandle.example?subject=Private%20class">Private classes</a></li>
+        <li><a href="mailto:joan@brandtcandle.example?subject=Wholesale">Wholesale</a></li>
+        <li><a href="#log">Batch log</a></li>
+      </ul></div>
+      <div><h3>Help</h3><ul>
+        <li><button type="button" data-help="ship">Shipping</button></li>
+        <li><button type="button" data-help="returns">Returns</button></li>
+        <li><button type="button" data-help="refill">Refills</button></li>
+        <li><button type="button" data-help="burn">Burn care</button></li>
+      </ul></div>
+    </div>
+  </div>
+  <div class="wm" aria-hidden="true"><b>Brandt</b></div>
+  <div class="wrap legal">
+    <span>Fish Fry is real. We pour it once a year, for people from Wisconsin.</span>
+    <nav aria-label="Legal"><span>&copy; 2026 Brandt Candle Co.</span><a href="#top">Back to top</a></nav>
+  </div>
+</footer>
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
+  <div class="sheet-top"><span id="sheet-title"></span><button type="button" id="sheet-close">Close</button></div>
+  <div class="sheet-body" id="sheet-body"></div>
+  <div class="sheet-foot"><a class="tlink" href="mailto:joan@brandtcandle.example">Ask Joan, she answers her own email</a></div>
+</aside>
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var sheet = $('#sheet'), scrim = $('#scrim'), lastFocus = null;
+  var HELP = {
+    ship: ['Shipping', 'Orders placed by 2 pm Central on a weekday leave Bay View the same day by USPS Ground Advantage, usually 2 to 3 business days. Flat $6, free over $60. Priority is $14. We ship to the lower 48 only, because wax and Arizona in July don\'t mix and neither do customs forms.'],
+    returns: ['Returns', '30 days from delivery, even if you have burned it. Email Joan and tell us which room you tried it in. If you can\'t smell it from the next room, we refund the candle and the shipping, and you keep the jar.'],
+    refill: ['Refills', 'Every jar and three-wick box holds a prepaid label. Mail the clean, empty glass back with a note saying which scent you want. An 8 oz refill is $18 and a 16 oz refill is $32, and it comes back in about 10 days. Tins are not refillable. Recycle them with your cans.'],
+    burn: ['Burn care', 'On the first burn, let the whole top go liquid before you blow it out: about 2 hours for a jar, 3 for a three-wick. Trim the wick to 1/4 in before each burn. Don\'t burn for more than 4 hours at a time. Stop with 1/2 in of wax left in the glass. Never leave a lit candle alone.']
+  };
+  function openHelp(k) {
+    lastFocus = document.activeElement;
+    $('#sheet-body').innerHTML = '<div class="qv-info"><h2>' + HELP[k][0] + '</h2><div class="story"><p>' + HELP[k][1] + '</p></div></div>';
+    $('#sheet-title').textContent = 'Help';
+    sheet.classList.add('on'); scrim.classList.add('on');
+    document.documentElement.style.overflow = 'hidden';
+    setTimeout(function () { $('#sheet-close').focus(); }, 30);
+  }
+  function closeSheet() {
+    sheet.classList.remove('on'); scrim.classList.remove('on');
+    document.documentElement.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  document.addEventListener('click', function (e) { var h = e.target.closest('[data-help]'); if (h) openHelp(h.dataset.help); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet.classList.contains('on')) closeSheet(); });
+  scrim.addEventListener('click', closeSheet);
+  $('#sheet-close').addEventListener('click', closeSheet);
+})();
+</script>
+</body>
+</html>

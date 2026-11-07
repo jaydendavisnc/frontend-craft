@@ -1,0 +1,219 @@
+<!doctype html>
+<!-- Three real app screens at full size instead of three icons: a PDF import with one flagged row you can fix, a form whose summary recomputes from the slider, and a set logger with a running rest clock.
+     Every row holds real values (dates, loads, reps, 22 of 40 min) and each screen has a true state change, and the windows crop at the section rule so they read as software, not cards. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swingshift setup steps</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root {
+  --bg: #ffffff; --surface: #f5f5f4; --ink: #101114; --accent: #e2c675; --page: #f4f5f3;
+  --ink-2: #5a5a51; --ink-3: #6b6b61;
+  --line: color-mix(in srgb, var(--ink) 9%, transparent);
+  --line-2: color-mix(in srgb, var(--ink) 16%, transparent);
+  --amber-mid: #8a6d2c;
+  --tint: color-mix(in srgb, var(--ink) 5%, transparent);
+  --tint-2: color-mix(in srgb, var(--ink) 9%, transparent);
+  --ok: color-mix(in oklab, #2fa86f 82%, var(--ink)); --warn: color-mix(in oklab, #d9962b 72%, var(--ink));
+  --font: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --soft: cubic-bezier(.33, 1, .68, 1);
+  --rail: max(clamp(16px, 6.1vw, 88px), calc((100vw - 1264px) / 2)); --in: 24px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font: 400 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h2, h3, p { margin: 0; padding: 0; }
+svg { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+.num { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--amber-mid); outline-offset: 2px; border-radius: 4px; }
+.rails { position: relative; overflow-x: clip; }
+.rails::before { content: ""; position: absolute; inset: 0 var(--rail); z-index: 20; pointer-events: none; border-inline: 1px solid var(--line); }
+.band { position: relative; padding: 112px calc(var(--rail) + var(--in)); border-top: 1px solid var(--line); }
+h2 { font: 500 40px/1.12 var(--font); letter-spacing: -.016em; max-width: 1150px; text-wrap: pretty; }
+h2 span { color: var(--ink-3); }
+.sdot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--amber-mid) 60%, transparent); flex: none; }
+
+/* Steps: real screens at full size, cut by the section rule */
+.steps-band { padding-bottom: 0; border-bottom: 1px solid var(--line-2); }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 72px; margin-top: 72px; }
+.stepnum { display: grid; place-items: center; width: 32px; height: 32px; margin-bottom: 20px; border-radius: 4px; background: var(--ink); color: #fff; font: 500 15px/1 var(--font); }
+.step h3 { font: 500 28px/1.14 var(--font); letter-spacing: -.016em; }
+.step > p { margin-top: 12px; color: var(--ink-2); line-height: 1.5; min-height: 6em; }
+.ui { position: relative; height: 412px; overflow: hidden; margin-top: 28px; padding: 16px; border: 1px solid var(--line); border-bottom: 0; border-radius: 14px 14px 0 0; background: var(--bg); font-size: 14px; line-height: 1.3; }
+fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.ic { width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.trunc { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.file { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 10px; border-radius: 8px; background: var(--surface); } .file time { margin-left: auto; flex: none; color: var(--ink-3); font-size: 13px; }
+.found { display: flex; justify-content: space-between; gap: 12px; padding: 14px 2px 8px; } .found b { font-weight: 600; white-space: nowrap; } .found span { color: var(--ink-3); font-size: 13px; text-align: right; }
+.ir { display: grid; grid-template-columns: 1fr 76px 66px; align-items: center; gap: 8px; height: 38px; padding: 0 2px; border-top: 1px solid var(--line); transition: opacity .5s var(--soft), background-color .5s var(--soft); }
+.ir:not(.flag):hover { background: var(--tint); }
+.ir time { text-align: right; color: var(--ink-3); font-size: 13px; }
+.chipn, .chipq { display: inline-flex; justify-self: start; align-items: center; height: 22px; padding: 0 8px; border-radius: 5px; font-size: 12.5px; font-weight: 500; background: var(--ink); color: #fff; }
+.chipq { background: color-mix(in srgb, var(--warn) 18%, var(--bg)); color: color-mix(in oklab, var(--warn) 62%, var(--ink)); }
+.ir.flag { background: color-mix(in srgb, var(--warn) 7%, transparent); margin-inline: -8px; padding-inline: 10px; grid-template-columns: 1fr 76px 66px; }
+.fix { justify-self: end; height: 28px; padding: 0 10px; border-radius: 6px; font-size: 13px; font-weight: 500; background: var(--ink); color: #fff; transition: background-color .2s var(--soft), color .2s var(--soft); } .fix:hover { background: var(--accent); color: var(--ink); }
+html.js .ui.wait .ir:not(.flag) { opacity: .3; }
+.ui legend { padding: 0; margin-bottom: 8px; color: var(--ink-3); font-size: 13px; }
+.seg label, .kit label { position: relative; cursor: pointer; }
+.seg input, .kit input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.seg { display: flex; flex-wrap: wrap; } .seg legend { width: 100%; }
+.seg span { display: grid; place-items: center; height: 32px; padding: 0 13px; font-weight: 500; background: var(--surface); margin-right: 1px; transition: background-color .2s var(--soft), color .2s var(--soft); }
+.seg label:first-of-type span { border-radius: 7px 0 0 7px; }
+.seg label:last-of-type span { border-radius: 0 7px 7px 0; margin-right: 0; }
+.seg label:hover span { background: color-mix(in srgb, var(--ink) 9%, var(--bg)); }
+.seg input:checked + span { background: var(--ink); color: #fff; }
+.seg input:focus-visible + span, .kit input:focus-visible + span { outline: 2px solid var(--amber-mid); outline-offset: 2px; }
+.kit { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; } .kit legend { width: 100%; }
+.kit span { display: inline-flex; align-items: center; height: 30px; padding: 0 10px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--line-2); font-size: 13.5px; color: var(--ink-2); transition: background-color .2s var(--soft), color .2s var(--soft), box-shadow .2s var(--soft); }
+.kit label:hover span { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 36%, transparent); }
+.kit input:checked + span { background: color-mix(in srgb, var(--ink) 7%, var(--bg)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 30%, transparent); color: var(--ink); font-weight: 500; }
+.range { display: block; margin-top: 16px; }
+.rl { display: flex; justify-content: space-between; color: var(--ink-3); font-size: 13px; } .rl output { color: var(--ink); font-weight: 600; font-size: 14px; }
+.range input { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 22px; margin: 4px 0 0; background: none; cursor: pointer; }
+.range input::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--ink) var(--fill, 50%), var(--tint-2) var(--fill, 50%)); }
+.range input::-moz-range-track { height: 4px; border-radius: 2px; background: var(--tint-2); } .range input::-moz-range-progress { height: 4px; background: var(--ink); } .range input::-moz-range-thumb { width: 18px; height: 18px; border: 0; border-radius: 50%; background: var(--bg); box-shadow: 0 0 0 1px var(--line-2), 0 1px 3px rgba(16, 18, 27, .22); }
+.range input::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; margin-top: -7px; border-radius: 50%; background: var(--bg); box-shadow: 0 0 0 1px var(--line-2), 0 1px 3px rgba(16, 18, 27, .22); }
+.ticks { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); } .ticks i { font-style: normal; }
+.sum { display: flex; align-items: center; gap: 8px; height: 38px; margin-top: 12px; padding: 0 10px; border-radius: 7px; background: color-mix(in srgb, var(--accent) 16%, var(--bg)); font-weight: 500; }
+.after { display: flex; justify-content: space-between; align-items: center; gap: 12px; height: 40px; border-top: 1px solid var(--line); color: var(--ink-2); } .sum + .after { margin-top: 10px; } .after b { font-weight: 600; color: var(--ink); }
+.lhead { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line); } .lhead b { display: block; font-size: 16px; font-weight: 600; } .lhead span { color: var(--ink-3); font-size: 13px; }
+.tagmin { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 5px; background: var(--surface); color: var(--ink-2) !important; }
+.lex { display: flex; justify-content: space-between; padding: 12px 0 6px; } .lex b { font-weight: 600; } .lex span { color: var(--ink-3); }
+.lset { display: grid; grid-template-columns: 24px 64px 1fr 78px; align-items: center; height: 36px; border-top: 1px solid var(--line); color: var(--ink-3); }
+.lset > :last-child { justify-self: end; }
+.lset.done { color: var(--ink); } .lset.done .ic { color: var(--ok); stroke-width: 2; }
+.lset.cur { color: var(--ink); font-weight: 500; background: color-mix(in srgb, var(--accent) 16%, var(--bg)); margin-inline: -8px; padding-inline: 8px; border-radius: 6px; border-top-color: transparent; }
+.lset button { height: 28px; padding: 0 10px; border-radius: 6px; background: var(--ink); color: #fff; font-size: 13px; font-weight: 500; transition: background-color .2s var(--soft), color .2s var(--soft); } .lset button:hover { background: var(--accent); color: var(--ink); }
+.rest { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 10px; height: 34px; color: var(--ink-3); font-size: 13px; } .rest b { color: var(--ink); font-weight: 600; } .rest i { height: 4px; border-radius: 2px; background: var(--tint-2); overflow: hidden; } .rest u { display: block; height: 100%; width: 60%; background: var(--ink); border-radius: 2px; }
+@media (max-width: 1180px) { .steps { gap: 0 32px; } }
+@media (max-width: 980px) { .steps { grid-template-columns: 1fr; gap: 64px; } .step > p { min-height: 0; max-width: 34em; } .ui { max-width: 420px; } }
+@media (max-width: 760px) {
+  :root { --in: 16px; }
+  .band { padding-block: 72px; } .steps-band { padding-bottom: 0; }
+  h2 { font-size: 28px; line-height: 1.16; }
+  .steps { margin-top: 44px; } .step h3 { font-size: 24px; } .ui { max-width: none; }
+  .fix, .lset button { height: 32px; } .range input { height: 32px; } .seg span, .kit span { height: 34px; }
+}
+</style>
+</head>
+<body>
+<main class="rails">
+  <section class="band steps-band" id="how">
+    <h2>Three steps from a schedule PDF to today's session. <span>Setup takes about four minutes, and most members do it on a break.</span></h2>
+    <div class="steps">
+      <article class="step">
+        <div class="stepnum">1</div>
+        <h3>Add your schedule</h3>
+        <p>Forward the PDF, paste a calendar link or tap in your rotation. Swingshift reads the shifts and asks about anything it can't place.</p>
+        <div class="ui" id="uiImport">
+          <div class="file"><svg class="ic" viewBox="0 0 16 16"><path d="M4 1.5h5.5L13 5v9.5H4z"/><path d="M9.5 1.5V5H13"/></svg><span class="trunc">nov-schedule-4west-final-v2.pdf</span><time>Read in 2.1 s</time></div>
+          <div class="found"><b class="num">14 shifts found</b><span>Nov 1 to Nov 28, 1 needs a look</span></div>
+          <div class="rows">
+            <div class="ir"><span class="num">Sat Nov 7</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir"><span class="num">Sun Nov 8</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir"><span class="num">Mon Nov 9</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir"><span class="num">Thu Nov 12</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir flag"><span class="num">Fri Nov 13</span><span class="chipq">"N/C"?</span><button class="fix" type="button">Fix</button></div>
+            <div class="ir"><span class="num">Tue Nov 17</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir"><span class="num">Wed Nov 18</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+            <div class="ir"><span class="num">Sat Nov 21</span><span class="chipn">Night</span><time class="num">7:00 PM</time></div>
+          </div>
+        </div>
+      </article>
+      <article class="step">
+        <div class="stepnum">2</div>
+        <h3>Tell it what you have</h3>
+        <p>Pick where you train, what's there and how long you've got. You can keep a separate kit for home and for work.</p>
+        <form class="ui" id="uiForm" onsubmit="return false">
+          <fieldset class="seg" aria-label="Where you train">
+            <legend>Where you train</legend>
+            <label><input type="radio" name="where" checked><span>Home</span></label>
+            <label><input type="radio" name="where"><span>Station</span></label>
+            <label><input type="radio" name="where"><span>Plant gym</span></label>
+          </fieldset>
+          <fieldset class="kit">
+            <legend>What's there</legend>
+            <label><input type="checkbox" checked><span>Dumbbells to 50 lb</span></label>
+            <label><input type="checkbox" checked><span>Bench</span></label>
+            <label><input type="checkbox"><span>Barbell</span></label>
+            <label><input type="checkbox" checked><span>Bands</span></label>
+            <label><input type="checkbox"><span>Pull-up bar</span></label>
+            <label><input type="checkbox"><span>Kettlebells</span></label>
+          </fieldset>
+          <label class="range"><span class="rl">Longest session <output id="rOut" class="num">40 min</output></span>
+            <input id="rIn" type="range" min="20" max="60" step="5" value="40"><span class="ticks num"><i>20</i><i>30</i><i>40</i><i>50</i><i>60</i></span></label>
+          <div class="sum"><i class="sdot"></i><span id="sumOut">3 sessions a week, 2 hours in total</span></div>
+          <div class="after"><span>After a night shift, wait</span><b class="num">8 hours</b></div>
+          <div class="after"><span>Under 11 hours between shifts</span><b>Shorten to 20 min</b></div>
+        </form>
+      </article>
+      <article class="step">
+        <div class="stepnum">3</div>
+        <h3>Train today's session</h3>
+        <p>Open the app and the session is there, with weights filled in from last time. Log each set with one thumb.</p>
+        <div class="ui" id="uiLog">
+          <div class="lhead"><div><b>Lower A</b><span>Wed Nov 11, 4:30 PM</span></div><span class="tagmin num">22 of 40 min</span></div>
+          <div class="lex"><b>Goblet squat</b><span class="num">3 × 8</span></div>
+          <div class="lset done"><span class="num">1</span><span class="num">50 lb</span><span class="num">8 reps</span><svg class="ic" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></svg></div>
+          <div class="lset done"><span class="num">2</span><span class="num">50 lb</span><span class="num">8 reps</span><svg class="ic" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></svg></div>
+          <div class="lset cur" id="curSet"><span class="num">3</span><span class="num">50 lb</span><span class="num" id="curReps">8 reps</span><button type="button" id="logBtn">Log set</button></div>
+          <div class="rest"><span>Rest</span><b class="num" id="restT">1:12</b><i><u id="restBar"></u></i></div>
+          <div class="lex"><b>Romanian deadlift</b><span class="num">3 × 10</span></div>
+          <div class="lset"><span class="num">1</span><span class="num">40 lb</span><span class="num">10 reps</span><span></span></div>
+          <div class="lset"><span class="num">2</span><span class="num">40 lb</span><span class="num">10 reps</span><span></span></div>
+          <div class="lset"><span class="num">3</span><span class="num">40 lb</span><span class="num">10 reps</span><span></span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* Step 1: the file gets read, line by line, and the flagged row can be fixed */
+  const ui = $('#uiImport'), rows = $$('.ir:not(.flag)', ui), fix = $('.fix', ui);
+  if (!reduce) {
+    ui.classList.add('wait');
+    new IntersectionObserver(([e], o) => {
+      if (!e.isIntersecting) return; o.disconnect();
+      ui.classList.remove('wait'); rows.forEach((r, i) => { r.style.transitionDelay = i * 90 + 'ms'; });
+    }, { threshold: .35 }).observe(ui);
+  }
+  fix.addEventListener('click', () => {
+    const row = fix.closest('.ir'); row.classList.remove('flag');
+    row.children[1].className = 'chipn'; row.children[1].textContent = 'Off'; row.children[1].style.background = 'var(--tint-2)'; row.children[1].style.color = 'var(--ink)';
+    const t = document.createElement('time'); t.className = 'num'; t.textContent = 'Fixed'; fix.replaceWith(t);
+    $('.found span', ui).textContent = 'Nov 1 to Nov 28, all placed';
+  });
+
+  /* Step 2: the form is real, and the summary answers it */
+  const r = $('#rIn'), out = $('#rOut'), sum = $('#sumOut');
+  const up = () => {
+    const m = +r.value, n = m >= 50 ? 2 : m <= 25 ? 4 : 3, total = n * m;
+    out.textContent = m + ' min'; r.style.setProperty('--fill', ((m - 20) / 40 * 100) + '%');
+    sum.textContent = `${n} sessions a week, ${total % 60 ? (total / 60).toFixed(1) : total / 60} hours in total`;
+  };
+  r.addEventListener('input', up); up();
+
+  /* Step 3: the rest clock runs, and Log set logs the set */
+  const log = $('#uiLog'), tEl = $('#restT'), bar = $('#restBar'), btn = $('#logBtn'), cur = $('#curSet');
+  let left = 72, run = false, id = 0;
+  const show = () => { tEl.textContent = `${Math.floor(left / 60)}:${String(left % 60).padStart(2, '0')}`; bar.style.width = (left / 120 * 100) + '%'; };
+  const tick = () => { if (left > 0) { left--; show(); } else { left = 72; show(); } };
+  if (!reduce) new IntersectionObserver(([e]) => { if (e.isIntersecting && !run) { run = true; id = setInterval(tick, 1000); } if (!e.isIntersecting && run) { run = false; clearInterval(id); } }).observe(log);
+  show();
+  btn.addEventListener('click', () => {
+    cur.classList.remove('cur'); cur.classList.add('done');
+    btn.outerHTML = '<svg class="ic" viewBox="0 0 16 16"><path d="M3 8.5 6.5 12 13 4.5"/></svg>';
+    left = 120; show();
+  });
+})();
+</script>
+</body>
+</html>

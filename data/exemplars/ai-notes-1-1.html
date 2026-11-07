@@ -1,0 +1,220 @@
+<!doctype html>
+<!-- A working three-pane app, not a screenshot: 13 sidebar rows (nav and folders with counts, recent notes with days), a streamed answer whose blue marks each open the exact passage,
+     a seeded waveform whose playhead lands at that timestamp, and a "Not in your notes" line that states what the product refuses to claim. -->
+<html lang="en"><head><meta charset="utf-8"><title>Ibid app window</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&family=Newsreader:opsz,wght@6..72,400&display=swap">
+<style>
+:root{--bg:#f7f6f5;--surface:#edeceb;--sheet:#fff;--ink:#000;--ink-2:#565555;--ink-3:#6c6b6b;--ink-4:#b4b3b2;
+  --line:rgb(0 0 0/.09);--line-strong:rgb(0 0 0/.17);--tint:rgb(0 0 0/.045);--tint-2:rgb(0 0 0/.075);--accent:#2200ff;--accent-wash:rgb(34 0 255/.075);
+  --text:"Newsreader",Georgia,serif;--ui:"Hanken Grotesk",system-ui,sans-serif;--gutter:32px;--ease:cubic-bezier(.4,0,.2,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+p,ul,ol,h4{margin:0;padding:0}ul,ol{list-style:none}svg{display:block}a{color:inherit;text-decoration:none}[hidden]{display:none!important}
+.nb{white-space:nowrap}.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}.hero{display:flex;flex-direction:column;align-items:center;padding-top:40px}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.mk{width:18px;height:18px;color:var(--ink);flex:none}
+/* The signature. A source mark is the only blue on the page. */
+.src{display:inline-flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0 3px;margin-left:3px;border-radius:3px;position:relative;background:var(--accent);color:#fff;box-shadow:inset 0 0 0 1px var(--accent);font:500 10px/1 var(--ui);font-variant-numeric:tabular-nums;vertical-align:.52em;cursor:pointer;transition:background-color .18s var(--ease),color .18s var(--ease)}
+.src::after{content:"";position:absolute;inset:-9px -6px}a.src:hover,.src.on{background:#fff;color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 13px;border-radius:99px;box-shadow:inset 0 0 0 1px var(--line-strong);font:400 14px/1 var(--ui);color:var(--ink-2);transition:background-color .2s var(--ease),color .2s var(--ease),box-shadow .2s var(--ease)}
+.chip:hover,.chip[aria-pressed=true]{background:var(--ink);color:var(--bg);box-shadow:inset 0 0 0 1px var(--ink)}
+/* One window treatment: grey tray, white sheets, hairlines, no chrome */
+.hero-app{width:100%;margin-top:32px;padding-inline:var(--gutter);max-width:1440px}
+.win{position:relative;background:var(--surface);border-radius:12px 12px 0 0;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;text-align:left;font:400 13.5px/1.4 var(--ui)}
+.app{display:grid;grid-template-columns:232px minmax(0,1fr) 432px;gap:8px;height:528px;padding:0 8px;margin-bottom:-1px}
+.sheet{background:var(--sheet);box-shadow:0 0 0 1px var(--line);min-width:0;overflow:hidden;margin-top:8px;border-radius:8px 8px 0 0}
+.dots{display:flex;gap:6px;align-items:center;height:36px;padding:0 6px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--ink-4);opacity:.55}.kbd{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 4px;border-radius:4px;font-size:11px;color:var(--ink-3);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.side{padding-inline:4px;font-size:13.5px;min-width:0}.ws{display:flex;align-items:center;gap:8px;height:30px;padding:0 6px;font-weight:500}.ws .ic:last-child{margin-left:auto;width:12px;height:12px;color:var(--ink-3)}
+.find{display:flex;align-items:center;gap:7px;height:30px;margin:8px 0 10px;padding:0 6px 0 8px;border-radius:7px;background:var(--tint);color:var(--ink-3)}.find .kbd{margin-left:auto}
+.side li{display:flex;align-items:center;gap:8px;height:30px;padding:0 8px;border-radius:6px;color:rgb(0 0 0/.8)}
+.side li .n{margin-left:auto;color:var(--ink-3);font-size:12.5px;font-variant-numeric:tabular-nums}
+.side li.sel{background:var(--tint-2);color:#000;font-weight:500}.side li .ic{color:var(--ink-3)}
+.side h4{margin:14px 0 2px;padding:0 8px;font:500 12px/24px var(--ui);color:var(--ink-3)}
+.side .rec{display:grid;grid-template-columns:1fr auto;gap:0 8px;height:auto;padding:6px 8px;align-items:baseline}.side .rec small{font-size:12px;color:var(--ink-3)}
+.ask{display:flex;flex-direction:column}.ask-h,.src-h{display:flex;align-items:center;gap:8px;height:40px;flex:none;padding:0 16px;border-bottom:1px solid var(--line);color:var(--ink-3);font-size:12.5px}
+.ask-h b,.src-h b{font-weight:500;color:#000}.ask-h .r,.src-h .r{margin-left:auto}
+.state{display:inline-flex;align-items:center;gap:6px}.state i{width:6px;height:6px;border-radius:50%;background:var(--ink-4)}
+.state.busy i{background:var(--accent);animation:blink .8s steps(2) infinite}@keyframes blink{50%{opacity:0}}
+.ask-b{padding:22px 28px 0;max-width:680px}.ask-q{font:500 15px/1.4 var(--ui)}.answer{margin-top:12px;font:400 17px/1.56 var(--text);color:#000}
+.miss{display:flex;gap:8px;align-items:baseline;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font:400 13.5px/1.45 var(--ui);color:var(--ink-2)}.miss b{flex:none;font-weight:500;color:#000}
+.pass{margin-top:18px}.pass h4{margin:0 0 4px;font:500 12px/20px var(--ui);color:var(--ink-3)}
+.pass li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;height:34px;margin-inline:-8px;padding:0 8px;border-radius:6px;cursor:pointer;transition:background-color .18s var(--ease),color .18s var(--ease)}
+.pass li .src{margin:0;vertical-align:0;justify-self:start}.pass li small{font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums;transition:color .18s var(--ease)}
+.pass li:hover,.pass li.on{background:var(--ink);color:var(--bg)}.pass li:hover small,.pass li.on small{color:rgb(255 255 255/.7)}
+.srcp{display:flex;flex-direction:column}.srcp-t{padding:14px 16px 10px}.srcp-t b{display:block;font:500 15px/1.3 var(--ui)}.srcp-t span{display:block;margin-top:2px;font-size:12.5px;color:var(--ink-3)}
+.wave{display:flex;align-items:center;gap:8px;padding:0 16px 12px}
+.play{width:26px;height:26px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bg)}.play svg{width:10px;height:10px;fill:currentColor}
+.wbars{position:relative;flex:1;height:30px;display:flex;align-items:center;gap:1.5px;min-width:0;overflow:hidden}
+.wbars i{flex:1 0 1.5px;background:var(--ink-4);border-radius:1px}.wbars i.past{background:var(--ink)}
+.wbars u{position:absolute;top:0;bottom:0;width:1.5px;background:var(--accent);transition:left .5s var(--ease)}
+.wave time{font-size:12.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}.ts{border-top:1px solid var(--line);padding:6px 8px;flex:1;overflow:hidden}
+.ts li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:7px 8px;border-radius:6px;transition:background-color .25s var(--ease)}
+.ts time{font-size:12px;line-height:20px;color:var(--ink-3);font-variant-numeric:tabular-nums}.ts b{display:block;font:500 12.5px/20px var(--ui)}
+.ts p{font:400 14.5px/1.45 var(--text);color:var(--ink-2)}.ts li.hit{background:var(--accent-wash)}.ts li.hit p{color:#000}
+.band{height:44px;background:var(--surface)}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="m16" viewBox="0 0 16 16"><path fill="currentColor" d="M0 2h16v2.4H0zM0 6.8h12.5v2.4H0zM0 11.600h7v2.400H0z"/><rect x="9" y="9.600" width="3.600" height="3.600" fill="#2200ff"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4.500"/><path d="m10.500 10.500 3 3"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 16 16"><path d="m4.500 6.500 3.500 3.500 3.500-3.500"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 16 16"><path d="M2 12.500v-8a1 1 0 0 1 1-1h3l1.500 1.700H13a1 1 0 0 1 1 1v6.300a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 16 16"><path d="M4 2.500h5l3 3v8H4zM9 2.500v3h3M6 8.500h4M6 11h4"/></symbol>
+  <symbol id="i-user" viewBox="0 0 16 16"><circle cx="8" cy="5.500" r="2.500"/><path d="M3 13.500c.6-2.500 2.600-3.800 5-3.800s4.400 1.300 5 3.800"/></symbol>
+  <symbol id="i-diff" viewBox="0 0 16 16"><path d="M4.500 2.500v8M2.500 8.500l2 2 2-2M11.500 13.500v-8M9.500 7.500l2-2 2 2"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 16 16"><path d="M3 4.500h10v9H3zM3 7.500h10M5.500 3v3M10.500 3v3"/></symbol>
+  <symbol id="i-notes" viewBox="0 0 16 16"><path d="M3 4h10M3 8h10M3 12h6"/></symbol>
+  <symbol id="i-ask" viewBox="0 0 16 16"><path d="M3 3.500h10v7.500H7l-3 2.500V11H3z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.500"/><path d="m5.700 8.200 1.600 1.600 3-3.200"/></symbol>
+</svg>
+<section class="hero">
+  <div class="chips" id="chips" role="group" aria-label="Example questions">
+    <button type="button" class="chip" data-a="0" aria-pressed="true"><svg class="ic"><use href="#i-doc"/></svg>Terms agreed with Veloma</button>
+    <button type="button" class="chip" data-a="1" aria-pressed="false"><svg class="ic"><use href="#i-user"/></svg>Who owes what after Tuesday</button>
+    <button type="button" class="chip" data-a="2" aria-pressed="false"><svg class="ic"><use href="#i-diff"/></svg>What changed since the March plan</button>
+    <button type="button" class="chip" data-a="3" aria-pressed="false"><svg class="ic"><use href="#i-cal"/></svg>What the board asked for in October</button>
+  </div>
+  <div class="hero-app"><div class="win app" id="app" role="group" aria-label="The Ibid app, showing an answer and its source">
+    <aside class="side" aria-hidden="true">
+      <div class="dots"><i></i><i></i><i></i></div>
+      <div class="ws"><svg class="mk" style="width:14px;height:14px"><use href="#m16"/></svg>Harlaw Cycles<svg class="ic"><use href="#i-chev"/></svg></div>
+      <div class="find"><svg class="ic"><use href="#i-search"/></svg>Search or ask<span class="kbd">⌘K</span></div>
+      <ul>
+        <li><svg class="ic"><use href="#i-notes"/></svg>All notes<span class="n">214</span></li>
+        <li class="sel"><svg class="ic"><use href="#i-ask"/></svg>Ask</li>
+        <li><svg class="ic"><use href="#i-check"/></svg>Follow-ups<span class="n">6</span></li>
+        <li><svg class="ic"><use href="#i-diff"/></svg>Changes<span class="n">2</span></li></ul>
+      <h4>Folders</h4><ul>
+        <li><svg class="ic"><use href="#i-folder"/></svg>Veloma<span class="n">18</span></li>
+        <li><svg class="ic"><use href="#i-folder"/></svg>Board<span class="n">9</span></li>
+        <li><svg class="ic"><use href="#i-folder"/></svg>Product<span class="n">41</span></li>
+        <li><svg class="ic"><use href="#i-folder"/></svg>Dealers<span class="n">23</span></li>
+        <li><svg class="ic"><use href="#i-folder"/></svg>Ops<span class="n">63</span></li></ul>
+      <h4>Recent</h4><ul>
+        <li class="rec"><span class="trunc">Weekly ops</span><small>Thu</small></li>
+        <li class="rec"><span class="trunc">Veloma, spring price list</span><small>Tue</small></li>
+        <li class="rec"><span class="trunc">Ewan, one to one</span><small>Mon</small></li>
+        <li class="rec"><span class="trunc">Dealer day, Perth</span><small>Sat</small></li></ul>
+    </aside>
+    <section class="sheet ask">
+      <div class="ask-h"><b>Ask</b><span>All notes</span><span class="r state" id="state"><i></i><span id="stateT">Answered from 1 note</span></span></div>
+      <div class="ask-b">
+        <p class="ask-q" id="ansQ"></p>
+        <div class="answer" id="ansA"></div>
+        <p class="miss" id="ansM"></p>
+        <div class="pass"><h4>Passages</h4><ul id="ansP"></ul></div>
+      </div>
+    </section>
+    <section class="sheet srcp">
+      <div class="src-h"><b>Source</b><span class="r" id="srcKind">Call</span></div>
+      <div class="srcp-t"><b id="srcT"></b><span id="srcM"></span></div>
+      <div class="wave"><span class="play"><svg viewBox="0 0 10 10"><path d="M2 1v8l7-4z"/></svg></span><div class="wbars" id="wbars"></div><time id="srcTime"></time></div>
+      <ol class="ts" id="srcL"></ol>
+    </section>
+  </div></div>
+</section>
+<div class="band"></div>
+<script>
+(function () {
+  const notes = {
+    veloma: { title: 'Veloma, spring price list', meta: 'Tue 3 Nov, 52 min', kind: 'Call', who: 'Morag Sinclair, Callum Reid, Anneke de Vries' },
+    ops: { title: 'Weekly ops', meta: 'Thu 5 Nov, 31 min', kind: 'Call', who: 'Fiona Geddes, Ewan Tait, Morag Sinclair' },
+    board: { title: 'Board call, Q3 review', meta: 'Tue 27 Oct, 1 h 04', kind: 'Call', who: 'Isla Morrison, Rory Aitken, Morag Sinclair' },
+    plan: { title: 'March plan', meta: 'Thu 12 Mar, 14 pp', kind: 'PDF', who: 'Uploaded by Morag Sinclair' }
+  };
+  const passages = {
+    p1: { note: 'veloma', t: '14:07', who: 'Anneke de Vries', text: "We can hold this year's wholesale price on the Tarn frame until the end of February, but not past it." },
+    p2: { note: 'veloma', t: '14:32', who: 'Morag Sinclair', text: 'So the spring list goes out at 412 euros a frame, and that stands to the 28th.' },
+    p3: { note: 'veloma', t: '15:10', who: 'Anneke de Vries', text: "From March it's 438. If an order is forty frames or more, we can do 425." },
+    p4: { note: 'veloma', t: '31:44', who: 'Callum Reid', text: "I'll send Anneke the revised list by Friday." },
+    p5: { note: 'veloma', t: '38:12', who: 'Morag Sinclair', text: 'Freight stays on us for anything over twenty frames.' },
+    p6: { note: 'veloma', t: '44:51', who: 'Anneke de Vries', text: 'I need the Q2 forecast from you before the 20th, otherwise our allocation slips a month.' },
+    p8: { note: 'ops', t: '06:18', who: 'Fiona Geddes', text: 'The held price now needs forty frames, not the fifty we put in the March plan.' },
+    p9: { note: 'ops', t: '09:40', who: 'Ewan Tait', text: 'Rotterdam lead time is back up to nine weeks. It was six in March.' },
+    p10: { note: 'ops', t: '12:02', who: 'Fiona Geddes', text: "I'll have the Q2 forecast with Anneke by the 18th." },
+    p11: { note: 'board', t: '22:36', who: 'Isla Morrison', text: 'Before December I want to see margin per frame at the new price, not the blended figure.' },
+    p12: { note: 'board', t: '23:10', who: 'Rory Aitken', text: 'And a second supplier quote for the Tarn frame, even if we stay with Veloma.' },
+    p13: { note: 'board', t: '41:55', who: 'Isla Morrison', text: 'Bring the dealer survey to the January meeting.' },
+    p14: { note: 'plan', t: 'p. 6', who: 'March plan', text: 'Hold pricing requires a minimum order of 50 frames.' },
+    p15: { note: 'plan', t: 'p. 8', who: 'March plan', text: 'Rotterdam lead time assumed at 6 weeks.' },
+    p16: { note: 'plan', t: 'p. 9', who: 'March plan', text: 'Freight paid by Harlaw on orders over 30 frames.' }
+  };
+  const answers = [
+    { q: 'What did we agree with Veloma on the spring price list?', missing: 'Whether the held price covers the 58 cm Tarn was not discussed.', lines: [
+      { text: 'The spring list goes out at €412 a frame, and Veloma holds that price to 28 February.', src: ['p2', 'p1'] },
+      { text: 'From March the price is €438, or €425 on orders of forty frames or more.', src: ['p3'] },
+      { text: 'Harlaw pays freight on anything over twenty frames.', src: ['p5'] }] },
+    { q: "Who owes what after Tuesday's call?", missing: 'The 58 cm question from dealer day has no owner.', lines: [
+      { text: 'Callum sends Anneke the revised list by Friday 6 November.', src: ['p4'] },
+      { text: 'Fiona sends her the Q2 forecast by the 18th, two days before the date Veloma set.', src: ['p10', 'p6'] },
+      { text: 'If the forecast misses the 20th, Veloma says the allocation slips a month.', src: ['p6'] }] },
+    { q: 'What has changed since the March plan?', missing: 'No note since March returns to the margin target on page 3 of the plan.', lines: [
+      { text: 'The minimum order for the held price fell from 50 frames to 40.', src: ['p14', 'p8'] },
+      { text: 'Rotterdam lead time rose from 6 weeks to 9.', src: ['p15', 'p9'] },
+      { text: 'The freight threshold fell from 30 frames to 20.', src: ['p16', 'p5'] }] },
+    { q: 'What did the board ask for in October?', missing: 'No owner was named for the supplier quote.', lines: [
+      { text: 'Isla Morrison asked to see margin per frame at the new price, rather than the blended figure, before December.', src: ['p11'] },
+      { text: 'Rory Aitken asked for a second supplier quote on the Tarn frame.', src: ['p12'] },
+      { text: 'The dealer survey goes to the January meeting.', src: ['p13'] }] }
+  ];
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  /* Waveform: a seeded shape with speech rhythm, gaps and one long pause */
+  const wbars = $('#wbars'), BARS = 72; let rand = 7, env = .5, html = '';
+  const rng = () => (rand = (rand * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < BARS; i++) {
+    env = Math.max(.15, Math.min(1, env + (rng() - .5) * .4));
+    const gap = (i % 17 === 11 || i % 23 === 7) ? .12 : 1;
+    html += `<i style="height:${Math.max(2, Math.round(30 * env * gap * (.45 + rng() * .55)))}px"></i>`;
+  }
+  wbars.innerHTML = html + '<u></u>';
+  const secs = t => { const m = /^(\d+):(\d+)$/.exec(t); return m ? +m[1] * 60 + +m[2] : 0; };
+  function playhead(t, note) {
+    const total = { veloma: 3120, ops: 1860, board: 3840 }[note] || 0, f = total ? Math.min(1, secs(t) / total) : 0, n = Math.round(f * BARS);
+    $$('i', wbars).forEach((b, i) => b.classList.toggle('past', i < n));
+    $('u', wbars).style.left = (f * 100) + '%';
+  }
+  /* Source pane: show a passage among its neighbours in the same note */
+  function showSource(id) {
+    const p = passages[id], n = notes[p.note];
+    $('#srcKind').textContent = n.kind; $('#srcT').textContent = n.title; $('#srcM').textContent = n.meta + ' · ' + n.who; $('#srcTime').textContent = p.t;
+    const same = Object.entries(passages).filter(([, x]) => x.note === p.note), at = same.findIndex(([k]) => k === id), from = Math.max(0, Math.min(at - 1, same.length - 5));
+    $('#srcL').innerHTML = same.slice(from, from + 5).map(([k, x]) => `<li class="${k === id ? 'hit' : ''}"><time>${x.t}</time><div><b>${esc(x.who)}</b><p>${esc(x.text)}</p></div></li>`).join('');
+    playhead(p.t, p.note);
+    $$('#ansP li').forEach(li => li.classList.toggle('on', li.dataset.p === id));
+    $$('#ansA .src').forEach(s => s.classList.toggle('on', s.dataset.p === id));
+  }
+  const order = a => [...new Set(a.lines.flatMap(l => l.src))];   // source numbers, in order of first appearance
+  const setState = (t, busy) => { $('#stateT').textContent = t; $('#state').classList.toggle('busy', !!busy); };
+  function finish(a) {
+    const ids = order(a), n = new Set(ids.map(i => passages[i].note)).size;
+    $('#ansM').innerHTML = `<b>Not in your notes</b><span>${esc(a.missing)}</span>`; $('#ansM').hidden = false;
+    $('#ansP').innerHTML = ids.map((id, i) => `<li data-p="${id}"><span class="src">${i + 1}</span><span class="trunc">${esc(notes[passages[id].note].title)}, ${esc(passages[id].who.split(' ')[0])}</span><small>${passages[id].t}</small></li>`).join('');
+    setState(`Answered from ${n} note${n === 1 ? '' : 's'}`); showSource(ids[0]);
+  }
+  /* The answer arrives word by word, and each citation fires its source as it lands. */
+  let run = 0; const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function play(a, instant) {
+    const me = ++run, ids = order(a), box = $('#ansA');
+    $('#ansQ').textContent = a.q; box.innerHTML = ''; $('#ansM').hidden = true; $('#ansP').innerHTML = '';
+    if (!instant) { setState('Reading notes', true); await wait(420); if (me !== run) return; setState('Writing', true); }
+    for (const line of a.lines) {
+      const words = line.text.split(' '), tail = document.createElement('span'); tail.className = 'nb';
+      for (let i = 0; i < words.length; i++) {
+        const lead = i || box.childNodes.length ? ' ' : '';
+        if (i === words.length - 1) { box.append(lead); tail.textContent = words[i]; box.append(tail); } else box.append(lead + words[i]);
+        if (!instant) { await wait(26); if (me !== run) return; }
+      }
+      for (const s of line.src) {
+        const m = document.createElement('a'); m.className = 'src'; m.href = '#'; m.dataset.p = s; m.textContent = ids.indexOf(s) + 1; tail.append(m);
+        if (!instant) { showSource(s); await wait(120); if (me !== run) return; }
+      }
+    }
+    finish(a);
+  }
+  $$('.chip').forEach(c => c.addEventListener('click', () => { $$('.chip').forEach(x => x.setAttribute('aria-pressed', x === c)); play(answers[+c.dataset.a]); }));
+  $('#app').addEventListener('click', e => { const hit = e.target.closest('[data-p]'); if (hit) { e.preventDefault(); showSource(hit.dataset.p); } });
+  play(answers[0], true);
+})();
+</script>
+</body></html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<!-- A footer that still sells and still informs: a 64px wordmark over a "Next roast" date stamp computed in Leith time, the same mark as on the bags, beside five rows of hours. The hours are re-edited for a glance rather than repeated, Wednesday to Friday merged into one row and closed Monday moved to the end, and the last line carries the allergen note where most footers put empty legal links. -->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mowat footer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Literata:opsz,wght@24,400&display=swap">
+<style>
+:root{
+  --bone:#f0ede6;
+  --stone:#1a1613;
+  --paper:#f4f1ea;
+  --paper-2:rgb(244 241 234/.68);
+  --paper-3:rgb(244 241 234/.4);
+  --paper-line:rgb(244 241 234/.16);
+  --accent:#2444c0;
+  --font-display:"Literata",Georgia,serif;
+  --font-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --g:80px;
+  --ease-ui:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+/* scaffold: a short page, so the flex column keeps the footer on the bottom edge as it is on the site */
+body{margin:0;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;background:var(--bone);font:400 17px/1.5 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+p,dl,dd{margin:0;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1440px;margin-inline:auto;padding-inline:var(--g)}
+
+/* the signature: a date stamp, as it is on the bags */
+.stamp{display:inline-block;padding:3px 8px 2px;border:1.5px solid currentColor;font-size:13px;font-weight:500;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+
+/* footer */
+.foot{background:var(--stone);color:var(--paper);padding-block:72px 32px}
+.foot-top{display:grid;grid-template-columns:1fr auto;gap:48px;padding-bottom:64px}
+.foot-word{font:400 64px/1 var(--font-display);letter-spacing:-.02em}
+.foot-top p{margin-top:12px;max-width:40ch;color:var(--paper-2)}
+.next{display:flex;align-items:center;gap:12px;margin-top:24px!important}
+.next .stamp{color:var(--paper)}
+.foot-hours{display:grid;grid-template-columns:auto auto;gap:4px 40px;font-variant-numeric:lining-nums tabular-nums}
+.foot-hours dt{color:var(--paper-2)}
+.foot-row{display:flex;justify-content:space-between;gap:32px;padding-block:24px;border-block:1px solid var(--paper-line)}
+.foot-row nav{display:flex;gap:28px}
+.foot-row a{transition:color .15s var(--ease-ui)}
+.foot-row nav a:hover{color:var(--paper-2)}
+.foot-row address{font-style:normal;color:var(--paper-2)}
+.foot-row address a{color:var(--paper);text-decoration:underline;text-decoration-color:var(--paper-3);text-underline-offset:3px}
+.foot-base{display:flex;justify-content:space-between;gap:24px;padding-top:20px;font-size:14px;color:var(--paper-2)}
+
+/* tablet */
+@media (max-width:1180px){
+  :root{--g:40px}
+}
+
+/* phone */
+@media (max-width:900px){
+  :root{--g:20px}
+  .foot{padding-block:48px 24px}
+  .foot-top{grid-template-columns:minmax(0,1fr);padding-bottom:40px}
+  .foot-hours{grid-template-columns:1fr auto}
+  .foot-row,.foot-base{flex-direction:column;gap:12px}
+  .foot-row nav a{padding-block:6px}
+}
+</style>
+</head>
+<body>
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <a class="foot-word" href="#top">Mowat</a>
+        <p>Coffee roasters, Leith. Since April 2021.</p>
+        <p class="next">Next roast <span class="stamp" data-next-roast>Tue 10 Nov</span></p>
+      </div>
+      <dl class="foot-hours">
+        <dt>Tuesday</dt><dd>8am&ndash;2pm</dd>
+        <dt>Wednesday to Friday</dt><dd>7.30am&ndash;4pm</dd>
+        <dt>Saturday</dt><dd>8.30am&ndash;4pm</dd>
+        <dt>Sunday</dt><dd>9am&ndash;3pm</dd>
+        <dt>Monday</dt><dd>Closed</dd>
+      </dl>
+    </div>
+    <div class="foot-row">
+      <nav aria-label="Footer">
+        <a href="#menu">Menu</a><a href="#week">Roasting</a><a href="#beans">Beans</a><a href="#visit">Visit</a>
+      </nav>
+      <address>Sandport Street, Leith, Edinburgh EH6 &middot; <a href="tel:+441314960142">0131 496 0142</a></address>
+    </div>
+    <div class="foot-base">
+      <span>&copy; 2026 Mowat Coffee Ltd</span>
+      <span>Ask at the counter for allergen information on anything we serve.</span>
+    </div>
+  </div>
+</footer>
+<script>
+// The next roast is computed in the shop's own time zone, so it can't go stale.
+(function () {
+  const TZ = 'Europe/London';
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function here(now) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+      timeZone: TZ, weekday: 'short', day: 'numeric', month: 'numeric', year: 'numeric',
+    }).formatToParts(now).map(x => [x.type, x.value]));
+    const d = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    return { d, date: new Date(Date.UTC(+p.year, +p.month - 1, +p.day)) };
+  }
+
+  const shift = (date, days) => new Date(date.getTime() + days * 864e5);
+  const short = d => `${DAYS[d.getUTCDay()].slice(0, 3)} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+
+  const fill = (sel, text) => document.querySelectorAll(sel).forEach(e => { e.textContent = text; });
+
+  function paint() {
+    const t = here(new Date());
+    const back = (t.d - 2 + 7) % 7;            // days since the last Tuesday
+    const next = shift(shift(t.date, -back), 7);
+    fill('[data-next-roast]', short(next));
+  }
+  paint();
+  setInterval(paint, 60000);
+})();
+</script>
+</body>
+</html>

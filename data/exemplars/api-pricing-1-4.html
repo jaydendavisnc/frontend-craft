@@ -1,0 +1,215 @@
+<!doctype html>
+<!-- A comparison table with 56 real rows across six tabs, split into named groups, with a "Differences only" switch that hides rows identical on every plan and stays in sync across tabs. Cells say real values like "15-minute delay" or "Since Jan 2014" and fall back to a tick or dash only when nothing more can be said, and the Operators tab changes its columns entirely because coverage does not vary by plan. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compare the plans | Baseload</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&display=swap">
+<style>
+:root{
+  --bg:#fafaf8;--surface:#ffffff;--ink:#222222;--ink-2:#666666;--ink-4:#b9b9b6;
+  --line-2:color-mix(in srgb,#222222 20%,transparent);
+  --font-display:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--font-text:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --rail:min(1240px,calc(100% - 64px));--ui:cubic-bezier(.2,0,0,1);
+  --nav-sub:0px; /* 48px on the full page, where the table head sticks under the nav */
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h2{margin:0;font:450 40px/1.1 var(--font-display);letter-spacing:-.02em}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{width:var(--rail);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.mono{font-family:var(--font-mono);font-size:.9em;letter-spacing:-.01em}
+.compare{padding-block:40px 56px}
+.cmp-head{display:flex;justify-content:space-between;align-items:center;gap:32px;margin-bottom:12px}
+.seg.tabs{position:relative;display:inline-flex;padding:3px;border-radius:12px;background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 8%,transparent);max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg.tabs::-webkit-scrollbar{display:none}
+.seg .thumb{position:absolute;top:3px;bottom:3px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:9px;background:var(--surface);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .24s var(--ui),width .24s var(--ui)}
+.tab{position:relative;z-index:1;flex:none;height:32px;padding:0 14px;border:0;border-radius:9px;background:none;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:color .2s}
+.tab[aria-selected="true"]{color:var(--ink)}
+.tab:focus-visible{outline-offset:-2px;border-radius:9px}
+@media(hover:hover){.tab:hover{color:var(--ink)}}
+.panel{outline-offset:6px}
+.panel[hidden]{display:none}
+table{border-collapse:separate;border-spacing:0}
+.scroller table{width:100%;table-layout:fixed;font-size:15px}
+.scroller thead th,.scroller thead td{position:sticky;top:calc(var(--nav-sub) + 2px);z-index:5;height:76px;padding:12px 16px;background:var(--bg);box-shadow:0 1px 0 var(--line-2);vertical-align:bottom}
+.scroller thead th{text-align:right;font:500 16px/1.2 var(--font-display);letter-spacing:-.01em}
+.scroller thead small{display:block;margin-top:2px;font:400 14px/1.3 var(--font-text);letter-spacing:0;color:var(--ink-2)}
+.scroller thead .corner{width:32%;padding-left:0;vertical-align:bottom}
+.switch{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer;transition:color .2s}
+.switch input{position:absolute;opacity:0}
+.switch i{position:relative;width:28px;height:16px;border-radius:8px;background:color-mix(in srgb,var(--ink) 14%,transparent);transition:background-color .2s}
+.switch i::after{content:"";position:absolute;left:2px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--surface);transition:transform .2s var(--ui)}
+.switch input:checked+i{background:var(--ink)}
+.switch input:checked+i::after{transform:translateX(12px)}
+.switch input:focus-visible+i{outline:2px solid var(--ink);outline-offset:2px}
+@media(hover:hover){.switch:hover{color:var(--ink)}}
+.scroller tr.group th{padding:34px 0 10px;text-align:left;font:500 16px/1.2 var(--font-display);letter-spacing:-.01em}
+.scroller tbody th[scope=row]{padding:0;font-weight:400;text-align:left}
+.scroller tbody td,.scroller tbody th[scope=row]{position:relative;height:50px;vertical-align:middle;line-height:1.3}
+.scroller tbody td{padding:0 16px;text-align:right}
+.scroller tbody td::after,.scroller tbody th[scope=row]::after{content:"";position:absolute;left:16px;right:16px;bottom:0;height:1px;background:radial-gradient(circle,var(--line-2) .7px,transparent .8px) left/5px 1px repeat-x}
+.scroller tbody th[scope=row]::after{left:0}
+.scroller td.y::before{content:"";display:inline-block;width:11px;height:5.5px;margin-right:2px;border:solid var(--ink);border-width:0 0 1.3px 1.3px;transform:translateY(-3px) rotate(-45deg)}
+.scroller td.n::before{content:"";display:inline-block;width:9px;height:1px;background:var(--ink-4);transform:translateY(-4px)}
+.diff .scroller tr.same{display:none}
+.scroller .lft{text-align:left}
+.ops .scroller thead .corner{width:18%}
+.ops .scroller thead th:nth-child(2){width:23%}
+.ops .scroller tbody td:nth-child(2)::after{left:16px}
+.ops tr.sum th,.ops tr.sum td{font-weight:500}
+.corner-note{white-space:nowrap;font-size:14px;font-weight:500;color:var(--ink-2)}
+@media(max-width:1180px){.cmp-head{flex-direction:column;align-items:flex-start;gap:16px}}
+@media(max-width:760px){
+  :root{--rail:calc(100% - 32px)}h2{font-size:30px}.tab{height:38px}.switch{min-height:40px;white-space:nowrap}
+  .scroller{overflow-x:auto;margin-inline:-16px;padding-inline:16px;scrollbar-width:none}.scroller table{width:680px}
+  .scroller thead th,.scroller thead td{position:static;height:64px}
+  .scroller thead .corner,.scroller tbody th[scope=row]{position:sticky;top:auto;left:-16px;z-index:2;width:176px;padding-left:16px;background:var(--bg)}
+  .ops .scroller thead .corner{width:176px}.scroller tbody th[scope=row]::after{left:16px}.scroller tr.group th{position:sticky;left:-16px;padding-left:16px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<!-- invented: Baseload, its plans and all figures are a fictional sample. -->
+<section class="compare wrap" id="compare">
+  <div class="cmp-head">
+    <h2>Compare the plans</h2>
+    <div class="seg tabs" role="tablist" aria-label="Compare by category">
+<i class="thumb" aria-hidden="true"></i>
+<button class="tab" role="tab" type="button" id="t-prices" aria-controls="p-prices" data-name="prices">Prices</button>
+<button class="tab" role="tab" type="button" id="t-load" aria-controls="p-load" data-name="load">Load and generation</button>
+<button class="tab" role="tab" type="button" id="t-forecasts" aria-controls="p-forecasts" data-name="forecasts">Forecasts</button>
+<button class="tab" role="tab" type="button" id="t-limits" aria-controls="p-limits" data-name="limits">Limits and delivery</button>
+<button class="tab" role="tab" type="button" id="t-support" aria-controls="p-support" data-name="support">Support and terms</button>
+<button class="tab" role="tab" type="button" id="t-operators" aria-controls="p-operators" data-name="operators">Operators</button>
+</div>
+  </div>
+  <div class="panels">
+    <!-- Every plan panel shares this thead. Rows that match on all four plans carry class "same". -->
+<section class="panel" role="tabpanel" id="p-prices" aria-labelledby="t-prices" tabindex="0"><div class="scroller"><table><caption class="sr">Prices, by plan</caption>
+<thead><tr><td class="corner"><label class="switch"><input type="checkbox" data-diff><i aria-hidden="true"></i>Differences only</label></td><th scope="col">Sandbox<small>$0</small></th><th scope="col">Build<small>$80</small></th><th scope="col">Scale<small>$700</small></th><th scope="col">Enterprise<small>Custom</small></th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">Real time</th></tr>
+<tr><th scope="row">Five-minute LMP</th><td>24-hour delay</td><td>15-minute delay</td><td>30 seconds</td><td>30 seconds</td></tr>
+<tr><th scope="row">WebSocket price stream</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td>Dedicated</td></tr>
+<tr><th scope="row">Energy, congestion and loss components</th><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr class="same"><th scope="row">Hubs, zones and nodes</th><td>31,812</td><td>31,812</td><td>31,812</td><td>31,812</td></tr>
+<tr class="same"><th scope="row">Negative-price and scarcity flags</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Day-ahead and history</th></tr>
+<tr class="same"><th scope="row">Hourly day-ahead LMP</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Price history</th><td>90 days</td><td>2 years</td><td>Since Jan 2014</td><td>Since Jan 2014</td></tr>
+<tr><th scope="row">Operator revisions</th><td>Latest only</td><td>Latest only</td><td>Every version</td><td>Every version</td></tr>
+<tr><th scope="row">Ancillary service prices</th><td class="n"><span class="sr">Not included</span></td><td>Hourly</td><td>Five-minute</td><td>Five-minute</td></tr>
+<tr><th scope="row">Capacity and FTR auction results</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody></table></div></section>
+<section class="panel" role="tabpanel" id="p-load" aria-labelledby="t-load" tabindex="0"><div class="scroller"><table><caption class="sr">Load and generation, by plan</caption>
+<thead><tr><td class="corner"><label class="switch"><input type="checkbox" data-diff><i aria-hidden="true"></i>Differences only</label></td><th scope="col">Sandbox<small>$0</small></th><th scope="col">Build<small>$80</small></th><th scope="col">Scale<small>$700</small></th><th scope="col">Enterprise<small>Custom</small></th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">Load</th></tr>
+<tr><th scope="row">System load, five-minute</th><td>24-hour delay</td><td>15-minute delay</td><td>30 seconds</td><td>30 seconds</td></tr>
+<tr class="same"><th scope="row">Load by zone</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Net imports and interface flows</th><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Generation</th></tr>
+<tr><th scope="row">Generation by fuel type</th><td>Hourly</td><td>Five-minute</td><td>Five-minute</td><td>Five-minute</td></tr>
+<tr><th scope="row">Wind and solar output</th><td>Hourly</td><td>Five-minute</td><td>Five-minute</td><td>Five-minute</td></tr>
+<tr><th scope="row">Renewable curtailment</th><td class="n"><span class="sr">Not included</span></td><td>Hourly</td><td>Five-minute</td><td>Five-minute</td></tr>
+<tr><th scope="row">Planned and forced outages</th><td class="n"><span class="sr">Not included</span></td><td>Daily</td><td>Hourly</td><td>Hourly</td></tr>
+<tr class="same"><th scope="row">Average carbon intensity</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Marginal carbon intensity</th><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody></table></div></section>
+<section class="panel" role="tabpanel" id="p-forecasts" aria-labelledby="t-forecasts" tabindex="0"><div class="scroller"><table><caption class="sr">Forecasts, by plan</caption>
+<thead><tr><td class="corner"><label class="switch"><input type="checkbox" data-diff><i aria-hidden="true"></i>Differences only</label></td><th scope="col">Sandbox<small>$0</small></th><th scope="col">Build<small>$80</small></th><th scope="col">Scale<small>$700</small></th><th scope="col">Enterprise<small>Custom</small></th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">Published by the operators</th></tr>
+<tr class="same"><th scope="row">Load forecasts</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr class="same"><th scope="row">Wind and solar forecasts</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Published by Baseload</th></tr>
+<tr><th scope="row">Day-ahead price forecast</th><td class="n"><span class="sr">Not included</span></td><td>7 hubs</td><td>412 hubs and zones</td><td>412 hubs and zones</td></tr>
+<tr><th scope="row">Forecast horizon</th><td class="n"><span class="sr">Not included</span></td><td>24 hours</td><td>7 days</td><td>7 days</td></tr>
+<tr><th scope="row">Load forecast by zone</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">As-of queries</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Forecast vintages kept</th><td class="n"><span class="sr">Not included</span></td><td>7 days</td><td>5 years</td><td>5 years</td></tr>
+<tr class="same"><th scope="row">Monthly error reports</th><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+</tbody></table></div></section>
+<section class="panel" role="tabpanel" id="p-limits" aria-labelledby="t-limits" tabindex="0"><div class="scroller"><table><caption class="sr">Limits and delivery, by plan</caption>
+<thead><tr><td class="corner"><label class="switch"><input type="checkbox" data-diff><i aria-hidden="true"></i>Differences only</label></td><th scope="col">Sandbox<small>$0</small></th><th scope="col">Build<small>$80</small></th><th scope="col">Scale<small>$700</small></th><th scope="col">Enterprise<small>Custom</small></th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">Metering</th></tr>
+<tr><th scope="row">Rows included each month</th><td>1M</td><td>10M</td><td>250M</td><td>From 2B</td></tr>
+<tr><th scope="row">Additional rows, per 1M</th><td class="n"><span class="sr">Not included</span></td><td>$6.00</td><td>$2.50</td><td>Committed rate</td></tr>
+<tr><th scope="row">Default spend cap</th><td>Stops at 1M</td><td>$500</td><td>$2,500</td><td>None</td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Throughput</th></tr>
+<tr><th scope="row">Requests a minute</th><td>60</td><td>600</td><td>6,000</td><td>Custom</td></tr>
+<tr><th scope="row">Rows per response</th><td>10,000</td><td>100,000</td><td>1,000,000</td><td>Custom</td></tr>
+<tr><th scope="row">API keys</th><td>1</td><td>3</td><td>25</td><td>Unlimited</td></tr>
+<tr><th scope="row">WebSocket streams</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>10</td><td>Custom</td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Bulk files and alerts</th></tr>
+<tr><th scope="row">Parquet files to S3 or GCS</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>Daily</td><td>Hourly</td></tr>
+<tr><th scope="row">Webhook endpoints</th><td class="n"><span class="sr">Not included</span></td><td>5</td><td>50</td><td>Custom</td></tr>
+<tr><th scope="row">Price threshold alerts</th><td class="n"><span class="sr">Not included</span></td><td>10</td><td>500</td><td>Custom</td></tr>
+</tbody></table></div></section>
+<section class="panel" role="tabpanel" id="p-support" aria-labelledby="t-support" tabindex="0"><div class="scroller"><table><caption class="sr">Support and terms, by plan</caption>
+<thead><tr><td class="corner"><label class="switch"><input type="checkbox" data-diff><i aria-hidden="true"></i>Differences only</label></td><th scope="col">Sandbox<small>$0</small></th><th scope="col">Build<small>$80</small></th><th scope="col">Scale<small>$700</small></th><th scope="col">Enterprise<small>Custom</small></th></tr></thead>
+<tbody><tr class="group"><th scope="rowgroup" colspan="5">Support</th></tr>
+<tr><th scope="row">Channel</th><td>Community forum</td><td>Email</td><td>Email</td><td>Named engineer</td></tr>
+<tr><th scope="row">First response</th><td class="n"><span class="sr">Not included</span></td><td>2 business days</td><td>4 business hours</td><td>1 hour, Sev 1</td></tr>
+<tr><th scope="row">Uptime SLA</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>99.9%</td><td>99.95%</td></tr>
+<tr><th scope="row">Service credits</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>Up to 10%</td><td>Up to 30%</td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Data use</th></tr>
+<tr><th scope="row">Commercial use</th><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Derived figures in your product</th><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Raw-data redistribution</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>Licensed</td></tr>
+</tbody><tbody><tr class="group"><th scope="rowgroup" colspan="5">Security and billing</th></tr>
+<tr><th scope="row">SAML SSO</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td class="y"><span class="sr">Included</span></td></tr>
+<tr><th scope="row">Audit logs</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>30 days</td><td>1 year</td></tr>
+<tr><th scope="row">SOC 2 Type II report</th><td class="n"><span class="sr">Not included</span></td><td class="n"><span class="sr">Not included</span></td><td>Under NDA</td><td>Under NDA</td></tr>
+<tr><th scope="row">Payment</th><td>None needed</td><td>Card</td><td>Card or ACH</td><td>Invoice, net 30</td></tr>
+</tbody></table></div></section>
+<section class="panel ops" role="tabpanel" id="p-operators" aria-labelledby="t-operators" tabindex="0"><div class="scroller"><table><caption class="sr">Coverage by grid operator, the same on every plan</caption>
+<thead><tr><td class="corner"><span class="corner-note">The same on every plan</span></td><th scope="col" class="lft">Region</th><th scope="col">Hubs and zones</th><th scope="col">Pricing nodes</th><th scope="col">Main hub</th><th scope="col">Market time</th></tr></thead>
+<tbody><tr><th scope="row">CAISO</th><td class="lft">California</td><td>18</td><td>4,860</td><td><span class="mono">TH_NP15_GEN-APND</span></td><td>Pacific</td></tr><tr><th scope="row">ERCOT</th><td class="lft">Texas</td><td>31</td><td>1,180</td><td><span class="mono">HB_NORTH</span></td><td>Central</td></tr><tr><th scope="row">ISO-NE</th><td class="lft">New England</td><td>9</td><td>1,210</td><td><span class="mono">.H.INTERNAL_HUB</span></td><td>Eastern</td></tr><tr><th scope="row">MISO</th><td class="lft">Midwest and Mid-South</td><td>74</td><td>3,640</td><td><span class="mono">INDIANA.HUB</span></td><td>Eastern</td></tr><tr><th scope="row">NYISO</th><td class="lft">New York</td><td>26</td><td>590</td><td><span class="mono">N.Y.C.</span></td><td>Eastern</td></tr><tr><th scope="row">PJM</th><td class="lft">Mid-Atlantic and Ohio Valley</td><td>168</td><td>13,420</td><td><span class="mono">WESTERN HUB</span></td><td>Eastern</td></tr><tr><th scope="row">SPP</th><td class="lft">Great Plains</td><td>86</td><td>6,500</td><td><span class="mono">SPPNORTH_HUB</span></td><td>Central</td></tr><tr class="sum"><th scope="row">All seven</th><td class="lft"></td><td>412</td><td>31,400</td><td></td><td></td></tr></tbody></table></div></section>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  function placeThumb(group, instant) {
+    const th = group.querySelector('.thumb'), on = group.querySelector('[aria-selected="true"]');
+    if (instant) th.style.transition = 'none';
+    th.style.setProperty('--x', on.offsetLeft + 'px'); th.style.setProperty('--w', on.offsetWidth + 'px');
+    if (instant) { th.offsetWidth; th.style.transition = ''; }
+  }
+  /* Tabs: arrow keys, Home and End move focus, the thumb slides, the panel fades in */
+  const tabs = $$('.tab'), tabList = $('.seg.tabs');
+  function selectTab(name, focus) {
+    const t = tabs.find(x => x.dataset.name === name) || tabs[0], prev = tabs.find(x => x.getAttribute('aria-selected') === 'true');
+    tabs.forEach(x => { const on = x === t, p = document.getElementById(x.getAttribute('aria-controls')); x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; p.hidden = !on; });
+    placeThumb(tabList, !prev);
+    const box = tabList.getBoundingClientRect(), r = t.getBoundingClientRect();
+    if (r.left < box.left || r.right > box.right) tabList.scrollLeft += r.left - box.left - 12;
+    if (focus) t.focus();
+    if (prev && prev !== t && !reduce.matches) document.getElementById(t.getAttribute('aria-controls')).animate({ opacity: [0, 1] }, { duration: 180, easing: 'linear' });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => selectTab(t.dataset.name));
+    t.addEventListener('keydown', e => {
+      const n = tabs.length, to = { ArrowRight: (i + 1) % n, ArrowLeft: (i - 1 + n) % n, Home: 0, End: n - 1 }[e.key];
+      if (to === undefined) return;
+      e.preventDefault(); selectTab(tabs[to].dataset.name, true);
+    });
+  });
+  /* One switch per panel, all kept in sync, so changing tab never loses the filter */
+  $$('[data-diff]').forEach(c => c.addEventListener('change', () => {
+    $$('[data-diff]').forEach(o => { o.checked = c.checked; });
+    $('.panels').classList.toggle('diff', c.checked);
+  }));
+  (document.fonts?.ready || Promise.resolve()).then(() => { selectTab('prices'); addEventListener('resize', () => placeThumb(tabList, true)); });
+})();
+</script>
+</body>
+</html>

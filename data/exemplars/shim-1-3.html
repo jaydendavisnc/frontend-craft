@@ -1,0 +1,93 @@
+<!doctype html>
+<!-- Customer proof built from the product's own object: 12 teams each appear as a live check with a generated 5x5 identicon, a specific pull request number, a title from that team's own domain (Dry-dock calendar header, Seed lot filters), a drift count and a run time, where a generic page would show a grey logo strip. Two strips run in opposite directions at 64s and 78s, fade at both edges and pause on hover. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shim customer checks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+--bg:#000;--surface:#111;--line:#262626;--ink:#eee;--ink-2:#8a8a8a;--ok:#5fc08a;--warn:#e0a93f;
+  --a58:rgba(238,238,238,.58);--a38:rgba(238,238,238,.46);--rim:rgba(238,238,238,.07);
+  --sans:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,sans-serif;--mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --t-12:12px;--t-13:13px;--t-14:14px;--t-16:16px;--t-44:44px;--ease-ui:cubic-bezier(.4,0,.2,1);--pad:48px;--nav:0px
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 var(--t-16)/1.55 var(--sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;overflow-x:clip}
+h2,ul{margin:0;padding:0}ul{list-style:none}
+svg{display:block}
+.mono{font-family:var(--mono);letter-spacing:-.01em}.num{font-variant-numeric:tabular-nums}
+.trunc{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.frame{max-width:1320px;margin-inline:auto}
+.sec{position:relative}
+.bar{position:sticky;top:calc(var(--nav) - 1px);z-index:20;display:flex;align-items:center;justify-content:space-between;gap:16px;height:44px;padding-inline:var(--pad);background:var(--bg);border-block:1px solid var(--line);font:500 var(--t-14)/1 var(--sans);color:var(--ink)}
+.bar>span:last-of-type{font:400 var(--t-14)/1 var(--sans);color:var(--ink-2)}
+.head{padding:72px var(--pad) 64px}
+h2{font:450 var(--t-44)/1.1 var(--sans);letter-spacing:-.024em;max-width:1010px;text-wrap:pretty;color:var(--ink)}
+h2>span{color:var(--ink-2)}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+/* customers as checks */
+.mq{display:grid;gap:12px;padding-bottom:64px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mq-t{display:flex;gap:12px;width:max-content;animation:mq 64s linear infinite}.mq-t.rev{animation-direction:reverse;animation-duration:78s}
+.mq:hover .mq-t{animation-play-state:paused}
+@keyframes mq{to{transform:translateX(calc(-50% - 6px))}}
+.pr{display:grid;grid-template-columns:36px 196px auto;gap:12px;align-items:center;width:344px;height:68px;padding:0 14px 0 12px;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--rim);font-size:var(--t-13);line-height:1.35;color:var(--a58);transition:box-shadow .2s var(--ease-ui),background .2s var(--ease-ui)}
+.pr:hover{background:#161616;box-shadow:inset 0 0 0 1px rgba(238,238,238,.16)}
+.pr b{font-weight:500;color:var(--ink)}.pr .mono{font-size:var(--t-12);color:var(--a38)}.pr small{display:block;font-size:var(--t-13)}
+.idn{width:36px;height:36px;border-radius:8px;background:hsl(var(--h) 26% 14%);fill:hsl(var(--h) 62% 68%)}
+.pr-r{display:grid;justify-items:end;gap:2px;font-size:var(--t-12);white-space:nowrap}
+.pr-s{display:inline-flex;align-items:center;gap:5px}.pr-s.is-ok{color:var(--ok)}.pr-s.is-warn{color:var(--warn)}.pr-s .dot{width:6px;height:6px}
+@media(max-width:860px){
+  :root{--pad:20px;--t-44:30px}
+  .head{padding:48px var(--pad) 40px}
+  .pr{width:236px;grid-template-columns:36px minmax(0,1fr)}.pr-r{display:none}
+}
+@media(prefers-reduced-motion:reduce){.mq-t{animation:none}.mq{overflow-x:auto}}
+</style>
+</head>
+<body>
+<main class="frame">
+<section class="sec" id="teams">
+  <div class="bar"><span>In use</span><span class="mono num">340 product teams</span></div>
+  
+<div class="head"><h2>Today’s checks, from a few of the 340 teams on Shim. <span>Most are small: the median workspace has four designers and nineteen engineers.</span></h2></div>
+  <div class="mq" aria-label="Recent checks from teams using Shim">
+    <ul class="mq-t">
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:346"><path d="M0 1h1v1h-1zM4 1h1v1h-1zM2 1h1v1h-1zM2 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM2 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Brevet</b> <span class="mono num">#4412</span><small class="trunc">Move promo code below order total</small></div><div class="pr-r"><span class="pr-s is-warn"><i class="dot"></i>3 drift</span><span class="mono num">38 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:136"><path d="M2 0h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Tessel</b> <span class="mono num">#1182</span><small class="trunc">Room schedule table density</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">31 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:37"><path d="M1 2h1v1h-1zM3 2h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Oakum</b> <span class="mono num">#903</span><small class="trunc">Dry-dock calendar header</small></div><div class="pr-r"><span class="pr-s is-warn"><i class="dot"></i>1 drift</span><span class="mono num">44 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:27"><path d="M2 0h1v1h-1zM0 1h1v1h-1zM4 1h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM2 1h1v1h-1zM0 2h1v1h-1zM4 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Ymer</b> <span class="mono num">#2760</span><small class="trunc">Citation sidebar spacing</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">27 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:76"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM2 0h1v1h-1zM0 1h1v1h-1zM4 1h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1zM2 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Marram</b> <span class="mono num">#518</span><small class="trunc">Survey map legend</small></div><div class="pr-r"><span class="pr-s is-warn"><i class="dot"></i>2 drift</span><span class="mono num">36 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:154"><path d="M1 0h1v1h-1zM3 0h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM0 2h1v1h-1zM4 2h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM2 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Pallas</b> <span class="mono num">#3391</span><small class="trunc">Pick list empty state</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">41 s</span></div></li>
+</ul>
+<ul class="mq-t rev">
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:315"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM0 1h1v1h-1zM4 1h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM2 1h1v1h-1zM0 2h1v1h-1zM4 2h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Lowtide</b> <span class="mono num">#640</span><small class="trunc">Tide chart tooltip</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">29 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:352"><path d="M2 1h1v1h-1zM0 2h1v1h-1zM4 2h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM2 3h1v1h-1z"/></svg>
+<div class="trunc"><b>Fjärde</b> <span class="mono num">#1467</span><small class="trunc">Invoice line editor</small></div><div class="pr-r"><span class="pr-s is-warn"><i class="dot"></i>4 drift</span><span class="mono num">52 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:202"><path d="M1 0h1v1h-1zM3 0h1v1h-1zM2 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Hollis Pay</b> <span class="mono num">#8813</span><small class="trunc">Refund modal copy</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">33 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:168"><path d="M1 0h1v1h-1zM3 0h1v1h-1zM0 1h1v1h-1zM4 1h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM2 1h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Ostara</b> <span class="mono num">#275</span><small class="trunc">Seed lot filters</small></div><div class="pr-r"><span class="pr-s is-warn"><i class="dot"></i>1 drift</span><span class="mono num">35 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:219"><path d="M0 0h1v1h-1zM4 0h1v1h-1zM1 0h1v1h-1zM3 0h1v1h-1zM0 1h1v1h-1zM4 1h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM0 2h1v1h-1zM4 2h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM2 2h1v1h-1zM0 3h1v1h-1zM4 3h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM0 4h1v1h-1zM4 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Nettle</b> <span class="mono num">#1094</span><small class="trunc">Allergen badges</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">24 s</span></div></li>
+<li class="pr"><svg class="idn" viewBox="-1 -1 7 7" shape-rendering="crispEdges" aria-hidden="true" style="--h:123"><path d="M0 1h1v1h-1zM4 1h1v1h-1zM1 1h1v1h-1zM3 1h1v1h-1zM1 2h1v1h-1zM3 2h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM3 3h1v1h-1zM2 3h1v1h-1zM1 4h1v1h-1zM3 4h1v1h-1zM2 4h1v1h-1z"/></svg>
+<div class="trunc"><b>Corvid</b> <span class="mono num">#3052</span><small class="trunc">Audit log columns</small></div><div class="pr-r"><span class="pr-s is-ok"><i class="dot"></i>0 drift</span><span class="mono num">47 s</span></div></li></ul>
+  </div>
+</section>
+</main>
+<script>
+// double each strip so the -50% loop lands exactly on its own start
+document.querySelectorAll('.mq-t').forEach(u=>[...u.children].forEach(li=>{const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');u.append(c)}));
+</script>
+</body>
+</html>

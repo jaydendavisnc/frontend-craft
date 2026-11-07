@@ -1,0 +1,89 @@
+<!doctype html>
+<!-- A stat block that works as proof because each number shows its arithmetic: 240 kg green becomes 204 roasted, at 49 a week that is 29 days, and $6.40/lb is about 30 cents in a $3.50 drip. The heading names what most shops hide, the footnote offers the invoice at the bar, and each 300px tile pins the number to the top and the claim to the bottom so the gap does the visual work. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trosclair purchase book</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page-bg:#e6dcc6; --page-ink:#1d1915; --page-muted:#6a5c49; --page-accent:#7a281e;
+  --bone:#f1ede1; --ink:#1d1915; --accent:#7a281e; --on-dark:#e9bb8e;
+  --sans:'Instrument Sans',ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --gut:24px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--page-bg);color:var(--page-ink)}
+body{margin:0;font:400 17px/1.5 var(--sans);font-feature-settings:'kern','liga';-webkit-font-smoothing:antialiased;background:var(--page-bg)}
+h2,h3,p{margin:0;padding:0}
+
+/* one offset down the whole page: label column, content column, nothing else */
+.wrap{max-width:calc(1240px + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.row{display:grid;grid-template-columns:minmax(0,360px) minmax(0,880px)}
+.sec{padding-block:120px}
+.label{font:500 20px/1.3 var(--sans);letter-spacing:-.01em}
+.side{position:sticky;top:32px;align-self:start;padding-right:40px}
+h2{font:500 clamp(36px,3.9vw,56px)/1.04 var(--sans);letter-spacing:-.03em;max-width:15em;text-wrap:balance}
+
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:56px}
+.tile{background:var(--ink);color:var(--bone);padding:28px 24px 30px;min-height:300px;display:flex;flex-direction:column}
+.tile+.tile{box-shadow:inset 1px 0 0 color-mix(in srgb,var(--bone) 16%,transparent)}
+.tile b{font:500 64px/1 var(--sans);letter-spacing:-.035em;color:var(--on-dark);font-variant-numeric:lining-nums tabular-nums}
+.tile b small{font:500 22px/1 var(--sans);letter-spacing:-.01em}
+.tile h3{margin-top:auto;font:500 22px/1.2 var(--sans);letter-spacing:-.012em}
+.tile p{margin-top:8px;font-size:15px;line-height:1.45;color:#c9bfae}
+.tile:hover{background:var(--accent)}
+.tile:hover p{color:var(--bone)}
+.tile:hover b{color:var(--bone)}
+.method{margin-top:20px;max-width:37em;font-size:16px;line-height:1.5;color:var(--page-muted)}
+
+@media (max-width:1120px){
+  .row{grid-template-columns:minmax(0,220px) minmax(0,1fr)}
+  .tile{padding-inline:18px}
+  .tile b{font-size:52px}
+}
+@media (max-width:980px){
+  .row{grid-template-columns:minmax(0,1fr);gap:20px}
+  .side{position:static;padding-right:0}
+}
+@media (max-width:760px){
+  .sec{padding-block:72px}
+  h2{font-size:34px;line-height:1.08}
+  .tiles{grid-template-columns:minmax(0,1fr);margin-top:36px}
+  .tile{min-height:0;padding:24px 20px}
+  .tile+.tile{box-shadow:inset 0 1px 0 color-mix(in srgb,var(--bone) 16%,transparent)}
+  .tile h3{margin-top:28px}
+  .tile b{font-size:60px}
+}
+</style>
+</head>
+<body>
+<section class="sec" id="books" aria-label="Figures from the purchase book">
+  <div class="wrap row">
+    <div class="side"><p class="label">The books</p></div>
+    <div>
+      <h2>What we paid for this coffee, and how long it will last</h2>
+      <div class="tiles">
+        <div class="tile">
+          <b>74</b>
+          <h3>Lots since March 2021</h3>
+          <p>That's one about every four weeks. The shortest, Lot 52, was a single bag and lasted nine days.</p>
+        </div>
+        <div class="tile">
+          <b>$6.40<small>/lb</small></b>
+          <h3>Paid for Lot 74</h3>
+          <p>That's the price at the warehouse door, and about 30&cent; of green coffee in a $3.50 drip.</p>
+        </div>
+        <div class="tile">
+          <b>29<small> days</small></b>
+          <h3>How long it should last</h3>
+          <p>240 kilos green is 204 roasted. We go through about 49 a week across the bar and the bags.</p>
+        </div>
+      </div>
+      <p class="method">These numbers come from our purchase book and change with every lot. Ask at the bar and we'll show you the invoice.</p>
+    </div>
+  </div>
+</section>
+</body>
+</html>

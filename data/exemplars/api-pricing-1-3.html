@@ -1,0 +1,214 @@
+<!doctype html>
+<!-- The estimator's answer is a real invoice, not a big number: every line shows its working (6,500 locations × 8,640 intervals, 46,160,000 at $6.00 per 1M), it picks the cheapest plan that meets your delay, and it prices the plans it rejected. The slider snaps to nine real volumes with named hints like "Every SPP node", and a warning line appears only when the bill passes the plan's spend cap. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bill estimator | Baseload</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&display=swap">
+<style>
+:root{
+  --bg:#fafaf8;--surface:#ffffff;--hover:#f3f3f0;--ink:#222222;--ink-2:#666666;--ink-3:#757573;
+  --line:color-mix(in srgb,#222222 11%,transparent);
+  --line-2:color-mix(in srgb,#222222 20%,transparent);
+  --accent:#ff5e1e;--accent-ink:#c9420c;
+  --font-display:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--font-text:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --rail:min(1240px,calc(100% - 64px));
+  --ui:cubic-bezier(.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h2,p,ul{margin:0;padding:0}
+ul{list-style:none}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{width:var(--rail);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.estimate{padding-block:56px}
+h2{font:450 40px/1.1 var(--font-display);letter-spacing:-.02em}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,600px);gap:32px;align-items:start;margin-bottom:40px}
+.sec-head p{font-size:17px;line-height:1.5;color:var(--ink-2)}
+.sheet{display:grid;gap:8px;padding:8px;border-radius:24px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.pane{min-width:0;border-radius:16px}
+.b-quiet{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border:0;border-radius:16px;white-space:nowrap;cursor:pointer;
+  background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);font:500 16px/1 var(--font-text);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 14%,transparent);transition:background-color .2s,box-shadow .2s}
+.b-quiet:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:16px}
+@media(hover:hover){.b-quiet:hover{background:color-mix(in srgb,var(--ink) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 24%,transparent)}}
+/* Segment. Outer 12, inset 3, inner 9. */
+.seg{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:auto;padding:3px;border-radius:12px;background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 8%,transparent)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{position:relative;z-index:1;display:flex;align-items:center;height:32px;padding:0 13px;border-radius:9px;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:color .2s,background-color .2s,box-shadow .2s}
+.seg input:checked+label{color:var(--ink);background:var(--surface);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent)}
+.seg input:focus-visible+label{outline:2px solid var(--ink);outline-offset:1px}
+.seg .save{margin-left:7px;font-weight:400;color:var(--accent-ink)}
+@media(hover:hover){.seg label:hover{color:var(--ink)}}
+.seg .thumb{position:absolute;top:3px;bottom:3px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:9px;background:var(--surface);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .24s var(--ui),width .24s var(--ui)}
+.js .seg:has(.thumb) input:checked+label{background:none;box-shadow:none}
+html:not(.js) .seg .thumb{display:none}
+/* Estimate: controls beside a real invoice */
+.est{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)}
+.controls{display:flex;flex-direction:column;gap:26px;padding:24px 20px 24px 22px;background:var(--hover)}
+.controls fieldset{margin:0;padding:0;border:0;min-width:0}
+.controls legend,.f-top label{padding:0;font-size:14px;font-weight:500}
+.controls .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin-top:8px;width:100%}
+.controls .seg label{justify-content:center;padding:0 8px}
+.f-top{display:flex;justify-content:space-between;align-items:baseline}
+.f-top output{font:500 24px/1.2 var(--font-display);letter-spacing:-.02em}
+.hint{min-height:20px;font-size:14px;line-height:20px;color:var(--ink-2)}
+input[type=range]{-webkit-appearance:none;appearance:none;display:block;width:100%;height:28px;margin:6px 0 2px;background:none;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:9px;background:linear-gradient(var(--line-2) 0 0) center/100% 1px no-repeat,repeating-linear-gradient(90deg,var(--line-2) 0 1px,transparent 1px calc((100% - 3px)/8)) 1px 0/calc(100% - 2px) 100% no-repeat}
+input[type=range]::-moz-range-track{height:1px;background:var(--line-2)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:3px;height:22px;margin-top:-6.5px;border-radius:0;background:var(--accent);box-shadow:0 0 0 7px transparent}
+input[type=range]::-moz-range-thumb{width:3px;height:22px;border:0;border-radius:0;background:var(--accent)}
+.invoice{display:flex;flex-direction:column;padding:24px 22px 18px}
+.inv-top{display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.note{min-height:20px;font-size:14px;line-height:20px;color:var(--ink-3)}
+.price{display:flex;align-items:baseline;gap:6px;font:500 48px/1.1 var(--font-display);letter-spacing:-.03em}
+.price small{font:400 15px/1 var(--font-text);letter-spacing:0;color:var(--ink-2)}
+.lines{width:100%;margin-top:22px;border-collapse:collapse;font-size:15px}
+.lines th{font-weight:400;text-align:left;width:150px}
+.lines td{color:var(--ink-2)}
+.lines td:last-child{color:var(--ink);text-align:right;white-space:nowrap}
+.lines th,.lines td{padding:10px 0;border-top:1px solid var(--line)}
+.alts{margin-top:auto;padding-top:18px}
+.alts li{display:flex;justify-content:space-between;gap:16px;padding:3px 0;font-size:14px;color:var(--ink-2)}
+.cap{min-height:20px;font-size:14px;line-height:20px;color:var(--accent-ink)}
+@media(max-width:980px){.est,.sec-head{grid-template-columns:minmax(0,1fr)}.sec-head{gap:12px}}
+@media(max-width:760px){
+  :root{--rail:calc(100% - 32px)}h2{font-size:30px}.sec-head{margin-bottom:24px}.sec-head p{font-size:16px}.seg label{height:38px}
+  .invoice{padding:20px 14px 14px}.controls{padding:20px 14px}.inv-top{flex-direction:column;align-items:stretch;gap:14px}.lines th{width:auto}
+  .lines tr{display:grid;grid-template-columns:1fr auto;gap:0 12px;padding:9px 0;border-top:1px solid var(--line)}
+  .lines th,.lines td{padding:0;border:0}.lines td:nth-child(2){grid-column:1/-1;grid-row:2;font-size:14px}
+  .lines td:last-child{grid-column:2;grid-row:1}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<!-- invented: Baseload, its plans, rates and figures are a fictional sample. On the full page the button opens an API key dialog for the plan it names. -->
+<section class="estimate wrap" id="estimate">
+  <div class="sec-head">
+    <h2>Estimate a monthly bill</h2>
+    <p>Estimates use a 30-day month and one price series per location. On monthly billing, Scale costs less than Build above 113 million rows a month.</p>
+  </div>
+
+  <form class="sheet est" id="est" onsubmit="return false">
+    <div class="pane controls">
+      <div class="field">
+        <div class="f-top"><label for="loc">Locations</label><output id="loc-out" for="loc">6,500</output></div>
+        <input type="range" id="loc" min="0" max="8" step="1" value="6" aria-describedby="loc-hint">
+        <p class="hint" id="loc-hint">Every SPP node</p>
+      </div>
+      <fieldset>
+        <legend>Interval</legend><div class="seg"><i class="thumb" aria-hidden="true"></i>
+          <input type="radio" name="iv" id="iv-5" value="288" checked><label for="iv-5">5 minutes</label>
+          <input type="radio" name="iv" id="iv-15" value="96"><label for="iv-15">15 minutes</label>
+          <input type="radio" name="iv" id="iv-60" value="24"><label for="iv-60">Hourly</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Delay you can accept</legend><div class="seg"><i class="thumb" aria-hidden="true"></i>
+          <input type="radio" name="fresh" id="fr-a" value="24"><label for="fr-a">24 hours</label>
+          <input type="radio" name="fresh" id="fr-b" value="15" checked><label for="fr-b">15 minutes</label>
+          <input type="radio" name="fresh" id="fr-c" value="0"><label for="fr-c">30 seconds</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Billing</legend><div class="seg"><i class="thumb" aria-hidden="true"></i>
+          <input type="radio" name="billing2" id="bill2-m" value="m" checked><label for="bill2-m">Monthly</label>
+          <input type="radio" name="billing2" id="bill2-a" value="a"><label for="bill2-a">Annual<span class="save">15% off</span></label>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="pane invoice">
+      <p class="sr" aria-live="polite" id="est-live"></p>
+      <div class="inv-top">
+        <div>
+          <p class="note" id="inv-label">Lowest bill: Build, monthly</p>
+          <p class="price"><span id="inv-total">$356.96</span><small>/month</small></p>
+        </div>
+        <button class="b-quiet" type="button" id="inv-cta">Start Build</button>
+      </div>
+      <table class="lines">
+        <caption class="sr">Estimated invoice lines</caption>
+        <tbody>
+          <tr><th scope="row">Rows read</th><td id="l-math">6,500 locations &times; 8,640 five-minute intervals</td><td id="l-rows">56,160,000</td></tr>
+          <tr><th scope="row">Plan fee</th><td id="l-fee-note">Build, billed monthly</td><td id="l-fee">$80.00</td></tr>
+          <tr><th scope="row">Included rows</th><td id="l-inc">10,000,000</td><td>$0.00</td></tr>
+          <tr><th scope="row">Additional rows</th><td id="l-add">46,160,000 at $6.00 per 1M</td><td id="l-over">$276.96</td></tr>
+        </tbody>
+      </table>
+      <ul class="alts" id="alts">
+        <li><span>Sandbox</span><span>Stops at 1M rows</span></li>
+        <li><span>Scale</span><span>$700.00</span></li>
+      </ul>
+      <p class="cap" id="inv-note"></p>
+    </div>
+  </form>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* Interpolated numbers: the invoice ticks like a meter */
+  function tick(el, to, format, ms = 400) {
+    const from = el._shown ?? to, t0 = performance.now();
+    cancelAnimationFrame(el._raf);
+    const write = v => { el._shown = v; el.textContent = format(v); };
+    if (reduce.matches || document.hidden || from === to) return write(to);
+    (function step(now) { const p = Math.min(1, (now - t0) / ms); write(p === 1 ? to : from + (to - from) * (1 - (1 - p) ** 4)); if (p < 1) el._raf = requestAnimationFrame(step); })(t0);
+  }
+  function placeThumb(group, instant) {
+    const th = group.querySelector('.thumb'), on = group.querySelector('input:checked+label');
+    if (instant) th.style.transition = 'none';
+    th.style.setProperty('--x', on.offsetLeft + 'px'); th.style.setProperty('--w', on.offsetWidth + 'px');
+    if (instant) { th.offsetWidth; th.style.transition = ''; }
+  }
+  const thumbs = () => $$('.seg').forEach(g => placeThumb(g, true));
+  $$('.seg input').forEach(i => i.addEventListener('change', () => placeThumb(i.closest('.seg'))));
+
+  const STOPS = [[1, 'One hub'], [31, 'Every ERCOT hub and zone'], [100, 'A 100-site battery fleet'], [412, 'Every hub and zone'], [1180, 'Every ERCOT node'], [3640, 'Every MISO node'], [6500, 'Every SPP node'], [13420, 'Every PJM node'], [31400, 'Every pricing node']];
+  const PLANS = { build: { name: 'Build', fee: { m: 80, a: 68 }, inc: 10e6, rate: 6, wait: 15, cap: 500 }, scale: { name: 'Scale', fee: { m: 700, a: 595 }, inc: 250e6, rate: 2.5, wait: 0, cap: 2500 } };
+  const nf = new Intl.NumberFormat('en-US'), money = v => '$' + v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const monthsOf = n => n === 288 ? 'five-minute' : n === 96 ? '15-minute' : 'hourly';
+  const bill = (p, rows, mode) => { const add = Math.max(0, rows - p.inc); return { add, over: add / 1e6 * p.rate, fee: p.fee[mode], total: p.fee[mode] + add / 1e6 * p.rate }; };
+  function estimate() {
+    const form = $('#est'), [loc, hint] = STOPS[+$('#loc').value], perDay = +form.iv.value, wait = +form.fresh.value, mode = form.billing2.value;
+    const intervals = perDay * 30, rows = loc * intervals, build = bill(PLANS.build, rows, mode), scale = bill(PLANS.scale, rows, mode);
+    const sandOK = rows <= 1e6 && wait >= 24, buildOK = wait >= 15, modeWord = mode === 'a' ? 'annual' : 'monthly';
+    $('#loc-out').textContent = nf.format(loc); $('#loc-hint').textContent = hint;
+    const pick = sandOK ? 'sandbox' : buildOK && build.total < scale.total ? 'build' : 'scale';
+    const P = PLANS[pick], b = pick === 'build' ? build : pick === 'scale' ? scale : null;
+    const name = pick === 'sandbox' ? 'Sandbox' : P.name;
+    $('#inv-label').textContent = pick === 'sandbox' ? 'Lowest bill: Sandbox, no card required' : `Lowest bill: ${name}, ${modeWord}`;
+    tick($('#inv-total'), b ? b.total : 0, money);
+    $('#l-math').textContent = `${nf.format(loc)} ${loc === 1 ? 'location' : 'locations'} × ${nf.format(intervals)} ${monthsOf(perDay)} intervals`;
+    tick($('#l-rows'), rows, v => nf.format(Math.round(v)));
+    $('#l-fee-note').textContent = pick === 'sandbox' ? 'Sandbox' : `${name}, billed ${mode === 'a' ? 'annually' : 'monthly'}`;
+    tick($('#l-fee'), b ? b.fee : 0, money);
+    $('#l-inc').textContent = nf.format(pick === 'sandbox' ? 1e6 : P.inc);
+    $('#l-add').textContent = b && b.add ? `${nf.format(b.add)} at ${money(P.rate)} per 1M` : 'None';
+    tick($('#l-over'), b ? b.over : 0, money);
+    $('#inv-cta').textContent = pick === 'sandbox' ? 'Get an API key' : `Start ${name}`;
+    const li = (n, v) => `<li><span>${n}</span><span>${v}</span></li>`, alts = [];
+    if (pick !== 'sandbox') alts.push(li('Sandbox', rows > 1e6 ? 'Stops at 1M rows' : '24-hour delay'));
+    if (pick !== 'build') alts.push(li('Build', buildOK ? money(build.total) : '15-minute delay'));
+    if (pick !== 'scale') alts.push(li('Scale', money(scale.total)));
+    $('#alts').innerHTML = alts.join('');
+    $('#inv-note').textContent = b && b.total > P.cap ? `Above the default ${money(P.cap).replace('.00', '')} spend cap. Raise the cap in your dashboard before reading this volume.` : '';
+    $('#est-live').textContent = `Lowest bill ${name}, ${money(b ? b.total : 0)} a month for ${nf.format(rows)} rows.`;
+  }
+  $('#est').addEventListener('input', estimate);
+  $$('#inv-total,#l-rows,#l-fee,#l-over').forEach(el => { el._shown = parseFloat(el.textContent.replace(/[$,]/g, '')); });
+  (document.fonts?.ready || Promise.resolve()).then(() => { estimate(); thumbs(); addEventListener('resize', thumbs); });
+})();
+</script>
+</body>
+</html>

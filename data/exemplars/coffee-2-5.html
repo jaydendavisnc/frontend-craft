@@ -1,0 +1,217 @@
+<!doctype html>
+<!-- A nav where every slot holds something true today: a dated Christmas post deadline above the bar, the shop's live status in place of a dead Contact link, and a 1fr auto 1fr grid that keeps the wordmark truly centred. The bar turns solid once the page moves and turns dark over any stone section, and on phones it opens a clip-path sheet of big serif links with the status, address and phone at the foot; the three live cells below come from the same one paint() call. -->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mowat nav</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Literata:opsz,wght@24,400&display=swap">
+<style>
+:root{
+  --bone:#f0ede6;--stone:#1a1613;--accent:#2444c0;
+  --ink:#1a1613;--ink-2:rgb(26 22 19/.66);--ink-3:rgb(26 22 19/.44);--line:rgb(26 22 19/.14);
+  --paper:#f4f1ea;--paper-2:rgb(244 241 234/.68);--paper-3:rgb(244 241 234/.4);--paper-line:rgb(244 241 234/.16);
+  --font-display:"Literata",Georgia,serif;
+  --font-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --g:80px;
+  --ease-ui:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--ink);font:400 17px/1.5 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+h2,p,dl,dd,figure,blockquote{margin:0;padding:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1440px;margin-inline:auto;padding-inline:var(--g)}
+/* announcement */
+.strip{position:relative;z-index:30;display:flex;justify-content:center;gap:12px;height:36px;align-items:center;padding-inline:var(--g);background:var(--stone);color:var(--paper-2);font-size:14px;line-height:1}
+.strip a{color:var(--paper);text-decoration:underline;text-decoration-color:var(--paper-3);text-underline-offset:3px;transition:text-decoration-color .15s var(--ease-ui)}
+.strip a:hover{text-decoration-color:var(--paper)}
+/* nav: clear at rest, solid once the page moves, dark over any stone section */
+.nav{position:sticky;top:0;z-index:40;height:72px;margin-bottom:-72px;padding-inline:max(var(--g),calc((100vw - 1440px)/2 + var(--g)));display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;color:var(--ink);font-size:15px;transition:background-color .25s var(--ease-ui),box-shadow .25s var(--ease-ui),color .25s var(--ease-ui)}
+.nav.solid{background:var(--bone);box-shadow:inset 0 -1px 0 var(--line)}
+.nav.dark{background:var(--stone);color:var(--paper);box-shadow:inset 0 -1px 0 var(--paper-line)}
+.nav.dark .nav-l a:hover,.nav.dark .live:hover{color:var(--paper-2)}
+.nav.dark .btn-line{box-shadow:inset 0 0 0 1px var(--paper)}
+.nav.dark .btn-line:hover{background:var(--paper);color:var(--ink)}
+.nav-l{display:flex;gap:28px}
+.nav-l a,.live{transition:color .15s var(--ease-ui)}
+.nav-l a:hover,.live:hover{color:var(--ink-2)}
+.word{font:400 36px/1 var(--font-display);letter-spacing:-.02em}
+.nav-r{display:flex;align-items:center;justify-content:flex-end;gap:24px}
+.btn-line{display:inline-flex;align-items:center;height:36px;padding:0 14px;border-radius:3px;box-shadow:inset 0 0 0 1px currentColor;font-size:14px;font-weight:500;transition:background-color .15s var(--ease-ui),color .15s var(--ease-ui)}
+.btn-line:hover{background:var(--ink);color:var(--paper)}
+.burger{display:none;height:40px;padding:0 2px;font-size:15px;font-weight:500}
+/* phone menu */
+.sheet{position:fixed;inset:0;z-index:35;display:flex;flex-direction:column;padding:124px 20px 24px;background:var(--bone);visibility:hidden;clip-path:inset(0 0 100% 0);transition:clip-path .34s cubic-bezier(.76,0,.24,1),visibility .34s}
+.menu-open .sheet{visibility:visible;clip-path:inset(0)}
+.sheet nav a{display:block;font:400 52px/62px var(--font-display);letter-spacing:-.025em}
+.sheet-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--ink);font-size:17px;line-height:30px}
+.sheet-foot a{text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--ink-3)}
+/* the live cells from the bottom of the hero */
+.today{display:flex;align-items:flex-start}
+.today>div{padding-inline:24px 40px;border-left:1px solid var(--paper-line)}
+.today>div:last-child{padding-right:0}
+.today dt{font-size:14px;color:var(--paper-2)}
+.today dd{margin-top:6px;font-size:17px;font-weight:500;white-space:nowrap;font-variant-numeric:lining-nums tabular-nums}
+.stamp{display:inline-block;padding:3px 8px 2px;border:1.5px solid currentColor;font-size:13px;font-weight:500;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+/* scaffold: one stone ground and one bone ground from the page, so the bar has something to change over */
+h2{font:400 36px/1.16 var(--font-display);letter-spacing:-.015em}
+h2.two>span:first-child{color:var(--ink-3);display:block}
+.week{background:var(--stone);color:var(--paper)}
+.week h2.two>span:first-child{color:var(--paper-3)}
+.week-foot{min-height:480px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:56px;padding-block:144px 48px}
+.quote{min-height:100vh;padding-block:120px}
+.quote blockquote{font:400 48px/1.1 var(--font-display);letter-spacing:-.02em;max-width:1040px;text-wrap:pretty}
+.quote figcaption{margin-top:24px;color:var(--ink-2)}
+/* tablet */
+@media (max-width:1180px){
+  :root{--g:40px}
+  .nav{margin-bottom:0;background:var(--bone)}
+  .nav.dark{background:var(--stone)}
+  .week-foot{grid-template-columns:minmax(0,1fr);gap:32px;padding-top:64px}
+}
+/* phone */
+@media (max-width:900px){
+  :root{--g:20px}
+  .strip{height:36px;justify-content:space-between;white-space:nowrap}
+  .strip .long{display:none}
+  .nav{height:60px;grid-template-columns:auto 1fr}
+  .nav-l,.live,.nav-r .btn-line{display:none}
+  .burger{display:block}
+  .menu-open .nav,.menu-open .nav.dark{background:var(--bone);color:var(--ink);box-shadow:none}
+  .today{flex-direction:column;align-items:stretch;border-top:1px solid var(--paper-line)}
+  .today>div{display:flex;justify-content:space-between;align-items:center;min-width:0;padding:10px 0 9px;border-left:0;border-bottom:1px solid var(--paper-line)}
+  .today>div:last-child{border-bottom:0;padding-bottom:0}
+  .today dd{margin:0}
+  h2{font-size:24px;line-height:1.25}
+  .quote{padding-block:72px}
+  .quote blockquote{font-size:24px;line-height:1.25;letter-spacing:-.01em}
+}
+</style>
+</head>
+<body>
+<p class="strip"><span>Christmas post: order by <span class="long">Monday </span>14 December<span class="long"> for the last roast we can post in time</span>.</span> <a href="#beans">Order beans</a></p>
+
+<header class="nav" id="nav">
+  <nav class="nav-l" aria-label="Main">
+    <a href="#menu">Menu</a>
+    <a href="#week">Roasting</a>
+    <a href="#beans">Beans</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <a class="word" href="#top" aria-label="Mowat Coffee, home">Mowat</a>
+  <div class="nav-r">
+    <a class="live" href="#visit"><span data-status>Open Tuesday to Sunday</span></a>
+    <a class="btn-line" href="#beans">Order beans</a>
+    <button class="burger" id="burger" aria-expanded="false" aria-controls="sheet">Menu</button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet">
+  <nav aria-label="Phone">
+    <a href="#menu">Menu</a>
+    <a href="#week">Roasting</a>
+    <a href="#beans">Beans</a>
+    <a href="#visit">Visit</a>
+  </nav>
+  <div class="sheet-foot">
+    <p><span data-status>Open Tuesday to Sunday</span></p>
+    <p>Sandport Street, Leith</p>
+    <a href="tel:+441314960142">0131 496 0142</a>
+  </div>
+</div>
+
+<main id="top">
+<section class="week">
+  <div class="wrap week-foot">
+    <h2 class="two"><span>We roast once a week, and only what we expect to sell.</span> Some weeks the Kenya is gone by Saturday.</h2>
+    <dl class="today">
+      <div><dt data-dayname>Today</dt><dd data-status>Open Tuesday to Sunday</dd></div>
+      <div><dt>On batch brew</dt><dd data-filter>Kenya, Nyeri</dd></div>
+      <div><dt>Last roast</dt><dd><span class="stamp" data-last-roast>Tue 3 Nov</span></dd></div>
+    </dl>
+  </div>
+</section>
+<section class="quote">
+  <figure class="wrap">
+    <!-- invented: replace before launch -->
+    <blockquote>I started with a 6 kg roaster and Tuesdays off the bar, and we never found a reason to change it.</blockquote>
+    <figcaption>Ishbel Mowat, who opened the shop in April 2021</figcaption>
+  </figure>
+</section>
+</main>
+<script>
+// Everything that changes is computed in the shop's own time zone, so it can't go stale.
+(function () {
+  const TZ = 'Europe/London';
+  // Minutes from midnight. Sunday first. Empty is closed.
+  const WEEK = [[[540, 900]], [], [[480, 840]], [[450, 960]], [[450, 960]], [[450, 960]], [[510, 960]]];
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // Batch brew through the week. Sunday first.
+  const BATCH = ['Colombia, Huila', 'Back on Tuesday', 'Colombia, Huila', 'Colombia, Huila', 'Ethiopia, Guji', 'Kenya, Nyeri', 'Kenya, Nyeri'];
+  const clock = m => { const h = (m / 60 | 0) % 12 || 12, mm = m % 60; return `${h}${mm ? '.' + String(mm).padStart(2, '0') : ''}${m < 720 ? 'am' : 'pm'}`; };
+
+  function here(now) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+      timeZone: TZ, weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23',
+      day: 'numeric', month: 'numeric', year: 'numeric',
+    }).formatToParts(now).map(x => [x.type, x.value]));
+    const d = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    return { d, m: +p.hour * 60 + +p.minute, date: new Date(Date.UTC(+p.year, +p.month - 1, +p.day)) };
+  }
+
+  function status(t) {
+    const span = WEEK[t.d].find(([a, b]) => t.m >= a && t.m < b);
+    if (span) return `Open until ${clock(span[1])}`;
+    const later = WEEK[t.d].find(([a]) => a > t.m);
+    if (later) return `Opens at ${clock(later[0])}`;
+    for (let i = 1; i < 8; i++) {
+      const n = (t.d + i) % 7;
+      if (WEEK[n].length) return `Closed, opens ${i === 1 ? 'tomorrow' : DAYS[n]} ${clock(WEEK[n][0][0])}`;
+    }
+    return 'Closed';
+  }
+
+  const short = d => `${DAYS[d.getUTCDay()].slice(0, 3)} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+  const fill = (sel, text) => document.querySelectorAll(sel).forEach(e => { e.textContent = text; });
+
+  function paint() {
+    const t = here(new Date());
+    const back = (t.d - 2 + 7) % 7;            // days since the last Tuesday
+    fill('[data-status]', status(t));
+    fill('[data-dayname]', `Today, ${DAYS[t.d]}`);
+    fill('[data-filter]', BATCH[t.d]);
+    fill('[data-last-roast]', short(new Date(t.date.getTime() - back * 864e5)));
+  }
+  paint();
+  setInterval(paint, 60000);
+
+  // Nav turns solid once the page moves, and dark over stone.
+  const nav = document.getElementById('nav');
+  const dark = [...document.querySelectorAll('.week')];
+  const onScroll = () => {
+    nav.classList.toggle('solid', scrollY > 44);
+    nav.classList.toggle('dark', dark.some(s => { const r = s.getBoundingClientRect(); return r.top <= 36 && r.bottom > 36; }));
+  };
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Phone menu.
+  const burger = document.getElementById('burger');
+  const sheet = document.getElementById('sheet');
+  const set = open => {
+    document.documentElement.classList.toggle('menu-open', open);
+    burger.setAttribute('aria-expanded', open);
+    burger.textContent = open ? 'Close' : 'Menu';
+  };
+  burger.addEventListener('click', () => set(!document.documentElement.classList.contains('menu-open')));
+  sheet.addEventListener('click', e => { if (e.target.closest('a')) set(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') set(false); });
+  window.openMenu = () => set(true);
+})();
+</script>
+</body>
+</html>

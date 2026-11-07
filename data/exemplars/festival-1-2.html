@@ -1,0 +1,165 @@
+<!doctype html>
+<!-- A ticket picker built as a radio group and a live order bar, not three pricing cards: the heading states the tier rule (Tier 2 of 3, $30 more on February 1 or after 1,100 passes), the selected price fills with the one accent, a day picker appears only for the One day ticket, quantity clamps at 1 and 8, and the total recalculates.
+     Each plate shows the product itself in its own colour pair, and the fine print does sales work: "There is no VIP ticket."
+     Extraction note: the plates were rendered images on the page; here they are inline SVG wristbands in the same colours. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hadlock tickets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0f13; --s1:#16171b; --s2:#1d1e22; --s3:#2a2b31;
+  --ink:#e3e5f1; --ink-2:#b4b6c0; --mut:#8b8d94; --accent:#86ec7b; --on-accent:#0c1a0a;
+  --rule:rgba(227,229,241,.11);
+  --m:48px; --in:24px; --nav:0px;
+  --ease:cubic-bezier(.25,.1,.3,1);
+  --font:"TikTok Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%;height:auto}
+button,input{font:inherit;color:inherit}
+ul,ol{list-style:none}
+b{font-weight:500}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.g{color:var(--mut)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.frame{width:100%;max-width:1440px;margin-inline:auto;padding-inline:var(--m)}
+.ruled{--r:linear-gradient(var(--rule),var(--rule));--c:calc((100% - 2*var(--m))/3);
+  background-image:var(--r),var(--r),var(--r),var(--r);background-repeat:no-repeat;background-size:1px 100%;
+  background-position:var(--m) 0,calc(var(--m) + var(--c)) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.ruled.r2{background-image:var(--r),var(--r),var(--r);background-position:var(--m) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.cell{padding-inline:var(--in)}
+.sect>.frame:last-child{padding-bottom:104px}
+h2{font-size:48px;font-weight:400;letter-spacing:-.022em;line-height:1.08}
+.band{position:sticky;top:var(--nav);z-index:20;background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.band-g{display:grid;grid-template-columns:2fr 1fr;align-items:end;padding-block:22px 20px}
+.aside{font-size:15px;line-height:20px;color:var(--mut);padding-bottom:3px}
+.aside-m{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:48px;padding-inline:24px;font-size:16px;font-weight:500;background:var(--accent);color:var(--on-accent);border:0;border-radius:0;cursor:pointer;white-space:nowrap;transition:background-color .2s,color .2s}
+.btn:hover{background:var(--ink);color:var(--bg)}
+/* Tickets: cover-art cards */
+.shelf{padding-top:24px}
+.tk{all:unset;box-sizing:border-box;display:block;padding-inline:var(--in);cursor:pointer}
+.tk .art{width:100%;aspect-ratio:1;object-fit:cover;transition:filter .3s}
+.tk:hover .art{filter:brightness(1.07)}
+.tk:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.tkc{display:flex;justify-content:space-between;gap:16px;margin-top:12px;font-size:15px;line-height:20px}
+.tkc b{display:block;font-size:16px;line-height:22px}
+.tkc .g{display:block;max-width:19em}
+.chip{flex:none;display:inline-flex;align-items:center;height:32px;padding-inline:12px;font-size:15px;font-weight:500;font-variant-numeric:tabular-nums;box-shadow:inset 0 0 0 1px var(--rule);transition:background-color .2s,color .2s,box-shadow .2s}
+.tk:hover .chip{box-shadow:inset 0 0 0 1px var(--ink-2)}
+.tk.on .chip{background:var(--accent);color:var(--on-accent);box-shadow:none}
+.order{margin-top:32px;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);min-height:88px;align-items:start}
+.order .g{display:block;font-size:13px;font-weight:500;line-height:18px}
+.order output{font-size:17px;line-height:26px;font-variant-numeric:tabular-nums}
+.o1,.o2,.o3{padding-block:18px}
+.dayp{display:flex;gap:6px;margin-top:6px}
+.dayp[hidden]{display:none}
+.dayp button{all:unset;cursor:pointer;font-size:13px;font-weight:500;line-height:28px;padding-inline:10px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2);transition:color .2s,box-shadow .2s}
+.dayp button:hover{box-shadow:inset 0 0 0 1px var(--ink-2)}
+.dayp button.on{color:var(--ink);box-shadow:inset 0 0 0 1px var(--accent)}
+.dayp button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.qty{display:flex;align-items:center;gap:4px;margin-left:-8px;height:26px}
+.qty button{all:unset;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;font-size:17px;transition:background-color .2s}
+.qty button:hover{background:var(--s2)}
+.qty button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.qty output{min-width:24px;text-align:center}
+.o3{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.fine{display:flex;justify-content:space-between;gap:24px;padding-top:12px;font-size:15px;line-height:20px;color:var(--mut)}
+#oMsg{color:var(--ink-2)}
+.wt{font:500 13.5px var(--font);letter-spacing:.05em;fill:#fff;text-anchor:middle}
+.js .stagger .r{opacity:0;transform:translateY(10px)}
+.js .stagger.in .r{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.stagger .r:nth-child(2){--i:1}.stagger .r:nth-child(3){--i:2}.stagger .r:nth-child(4){--i:3}
+@media (max-width:960px){
+  :root{--m:16px;--in:16px}
+  .ruled,.ruled.r2{background-image:var(--r),var(--r);background-position:var(--m) 0,calc(100% - var(--m)) 0}
+  .g3{grid-template-columns:minmax(0,1fr)}
+  h2{font-size:28px}
+  .band-g{grid-template-columns:1fr;padding-block:13px 12px}
+  .aside{display:none}
+  .aside-m{display:block;padding:14px var(--in) 0;font-size:15px;line-height:21px;color:var(--mut)}
+  .sect>.frame:last-child{padding-bottom:64px}
+  .shelf{row-gap:28px;padding-top:16px}
+  .order{margin-top:24px;grid-template-columns:1fr auto}
+  .o1{grid-column:1}.o2{grid-column:2;grid-row:1}
+  .o3{grid-column:1/-1;padding-block:0 16px}
+  .fine{flex-direction:column;gap:4px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <path id="arc" d="M66 224a134 62 0 0 0 268 0"/>
+  <symbol id="band" viewBox="0 0 400 400" overflow="visible">
+    <ellipse cx="184" cy="268" rx="150" ry="58" fill="#000" opacity=".22" style="filter:blur(9px)"/>
+    <path d="M58 190a142 66 0 0 1 284 0v48a142 66 0 0 0-284 0z" fill="currentColor"/><path d="M58 190a142 66 0 0 1 284 0v48a142 66 0 0 0-284 0z" fill="#000" opacity=".2"/>
+    <rect x="192" y="118" width="16" height="50" fill="#8b8d94"/><path d="M322 150l44-10 4 22-30 6z" fill="currentColor"/>
+    <path d="M58 190a142 66 0 0 0 284 0v48a142 66 0 0 1-284 0z" fill="currentColor"/>
+    <g fill="none" stroke="#fff" stroke-width="1.5" opacity=".85"><ellipse cx="200" cy="190" rx="142" ry="66"/><path d="M58 190v48a142 66 0 0 0 284 0v-48"/></g>
+  </symbol>
+</defs></svg>
+<section id="tickets" class="sect">
+<div class="band"><div class="frame ruled r2"><div class="band-g"><h2 class="cell">Tickets for August 2027</h2><p class="cell aside">Tier 2 of 3. Prices go up $30 on February 1, or when these 1,100 weekend passes sell, whichever comes first.</p></div></div></div><div class="frame ruled"><p class="aside-m">Tier 2 of 3. Prices go up $30 on February 1, or when these 1,100 weekend passes sell, whichever comes first.</p></div>
+<div class="frame ruled"><div class="shelf g3 stagger" role="radiogroup" aria-label="Choose a ticket">
+  <button class="tk r on" type="button" role="radio" aria-checked="true" data-name="Weekend with camping" data-price="340">
+    <svg class="art" viewBox="0 0 400 400" aria-hidden="true"><rect width="400" height="400" fill="#2d51d4"/><g style="color:#e9552c"><use href="#band" width="400" height="400"/><text class="wt"><textPath href="#arc" startOffset="50%">HADLOCK 2027 WEEKEND + CAMP</textPath></text></g></svg>
+    <span class="tkc"><span><b>Weekend with camping</b><span class="g">Thursday morning to Monday, with a pitch on the island</span></span><span class="chip">$340</span></span></button>
+  <button class="tk r" type="button" role="radio" aria-checked="false" data-name="Weekend" data-price="265">
+    <svg class="art" viewBox="0 0 400 400" aria-hidden="true"><rect width="400" height="400" fill="#e8bd48"/><g style="color:#2d51d4"><use href="#band" width="400" height="400"/><text class="wt"><textPath href="#arc" startOffset="50%">HADLOCK 2027 &#9632; WEEKEND</textPath></text></g></svg>
+    <span class="tkc"><span><b>Weekend</b><span class="g">Three days. Sleep on the mainland and cross with the tide</span></span><span class="chip">$265</span></span></button>
+  <button class="tk r" type="button" role="radio" aria-checked="false" data-name="One day" data-price="115">
+    <svg class="art" viewBox="0 0 400 400" aria-hidden="true"><rect width="400" height="400" fill="#e6a1b6"/><g transform="translate(-16 6) scale(.68)" style="color:#7ad86f"><use href="#band" width="400" height="400"/><text class="wt"><textPath href="#arc" startOffset="50%">HADLOCK 2027 FRIDAY</textPath></text></g><g transform="translate(146 30) scale(.68)" style="color:#e9552c"><use href="#band" width="400" height="400"/><text class="wt"><textPath href="#arc" startOffset="50%">HADLOCK 2027 SATURDAY</textPath></text></g><g transform="translate(58 136) scale(.72)" style="color:#2d51d4"><use href="#band" width="400" height="400"/><text class="wt"><textPath href="#arc" startOffset="50%">HADLOCK 2027 SUNDAY</textPath></text></g></svg>
+    <span class="tkc"><span><b>One day</b><span class="g">Friday, Saturday or Sunday, each with its own wristband</span></span><span class="chip">$115</span></span></button>
+</div>
+<div class="order g3">
+  <div class="cell o1"><span class="g">Your order</span><output id="oName">Weekend with camping</output><div class="dayp" id="oDay" hidden role="group" aria-label="Choose a day"><button type="button" class="on">Friday</button><button type="button">Saturday</button><button type="button">Sunday</button></div></div>
+  <div class="cell o2"><span class="g">Tickets</span><div class="qty"><button type="button" id="qMinus" aria-label="One fewer ticket">&minus;</button><output id="qN">2</output><button type="button" id="qPlus" aria-label="One more ticket">+</button></div></div>
+  <div class="cell o3"><span class="tot"><span class="g">Total</span><output id="oTotal">$680</output></span><button class="btn" id="oGo" type="button">Continue to checkout</button></div>
+</div>
+<p class="fine cell"><span>Under-12s are free with an adult. There is no VIP ticket.</span><span id="oMsg" role="status"></span></p>
+</div>
+</section>
+<script>
+(() => {
+  const root = document.documentElement;
+  const moving = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+  if (moving) root.classList.add('js');
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  /* Rise-stagger: rows of peers only, once. The row is observed so it starts together. */
+  if (moving) {
+    const io = new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    $$('.stagger').forEach(el => io.observe(el));
+  }
+
+  /* Tickets: one small state object, and everything in the order bar is written from it */
+  const tks = $$('.tk'), oName = $('#oName'), oTotal = $('#oTotal'), qN = $('#qN'), oDay = $('#oDay'), oMsg = $('#oMsg');
+  let qty = 2, cur = tks[0], day = 'Friday';
+  function order() {
+    const n = cur.dataset.name;
+    oName.textContent = n === 'One day' ? `One day, ${day}` : n;
+    oDay.hidden = n !== 'One day';
+    qN.textContent = qty;
+    oTotal.textContent = '$' + (qty * +cur.dataset.price).toLocaleString('en-US');
+    oMsg.textContent = '';
+  }
+  tks.forEach(t => t.addEventListener('click', () => {
+    tks.forEach(x => { x.classList.toggle('on', x === t); x.setAttribute('aria-checked', x === t); });
+    cur = t; order();
+  }));
+  $$('button', oDay).forEach(b => b.addEventListener('click', () => { $$('button', oDay).forEach(x => x.classList.toggle('on', x === b)); day = b.textContent; order(); }));
+  $('#qMinus').addEventListener('click', () => { qty = Math.max(1, qty - 1); order(); });
+  $('#qPlus').addEventListener('click', () => { qty = Math.min(8, qty + 1); order(); });
+  $('#oGo').addEventListener('click', () => { oMsg.textContent = 'This is a design sample, so checkout stops here.'; });
+})();
+</script>
+</body>
+</html>

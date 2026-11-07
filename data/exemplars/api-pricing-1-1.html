@@ -1,0 +1,220 @@
+<!doctype html>
+<!-- Four plan tickets share a CSS subgrid, so name, rate, delay and button sit on the same lines across every card, and the one dark ticket marks the pick with no badge. Each ticket has a "Newest row" with a concrete timestamp and price that update on a live clock, so the delay you pay for is shown instead of described. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<script>document.documentElement.classList.add("js")</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan tickets | Baseload</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&display=swap">
+<style>
+:root{
+  --bg:#fafaf8;--surface:#ffffff;--ink:#222222;--ink-2:#666666;--ink-3:#757573;
+  --line:color-mix(in srgb,#222222 11%,transparent);
+  --line-2:color-mix(in srgb,#222222 20%,transparent);
+  --accent-ink:#c9420c;
+  --font-display:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--font-text:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --rail:min(1240px,calc(100% - 64px));
+  --ui:cubic-bezier(.2,0,0,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased;overflow-x:clip}
+h2,p,ul,dl,dd{margin:0;padding:0}
+ul{list-style:none}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{width:var(--rail);margin-inline:auto}
+.mono{font-family:var(--font-mono);font-size:.9em;letter-spacing:-.01em}
+/* Quiet button. Fill and line rise together. Inverts on its own inside the ink tile. */
+.b-quiet{display:inline-flex;align-items:center;justify-content:center;height:48px;padding:0 24px;border:0;border-radius:16px;white-space:nowrap;cursor:pointer;
+  background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink);font:500 16px/1 var(--font-text);
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 14%,transparent);transition:background-color .2s,box-shadow .2s}
+.b-quiet:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:16px}
+@media(hover:hover){.b-quiet:hover{background:color-mix(in srgb,var(--ink) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 24%,transparent)}}
+.head{padding-block:44px}
+.head-foot{display:grid;grid-template-columns:minmax(0,600px) auto;justify-content:space-between;align-items:end;gap:32px}
+.sub-copy{font-size:17px;line-height:1.5;color:var(--ink-2)}
+.head-tools{display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.clock{font-size:14px;color:var(--ink-2);text-align:right}
+.clock b{font-weight:500;color:var(--ink)}
+/* Segment. Outer 12, inset 3, inner 9. */
+.seg{position:relative;display:inline-grid;grid-auto-flow:column;grid-auto-columns:auto;padding:3px;border-radius:12px;background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 8%,transparent)}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{position:relative;z-index:1;display:flex;align-items:center;height:32px;padding:0 13px;border-radius:9px;font-size:14px;font-weight:500;color:var(--ink-2);cursor:pointer;white-space:nowrap;transition:color .2s,background-color .2s,box-shadow .2s}
+.seg input:checked+label{color:var(--ink);background:var(--surface);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent)}
+.seg input:focus-visible+label{outline:2px solid var(--ink);outline-offset:1px}
+.seg .save{margin-left:7px;font-weight:400;color:var(--accent-ink)}
+@media(hover:hover){.seg label:hover{color:var(--ink)}}
+.seg .thumb{position:absolute;top:3px;bottom:3px;left:0;width:var(--w,0);transform:translateX(var(--x,0));border-radius:9px;background:var(--surface);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 10%,transparent);transition:transform .24s var(--ui),width .24s var(--ui)}
+.js .seg:has(.thumb) input:checked+label{background:none;box-shadow:none}
+html:not(.js) .seg .thumb,html:not(.js) .head-tools{display:none}
+/* Plans: tickets above a list */
+.plans{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 16px;margin-top:32px}
+.plan{display:grid;grid-row:span 9;grid-template-rows:subgrid;align-content:start}
+.tile{grid-row:span 7;display:grid;grid-template-rows:subgrid;padding:8px;border-radius:24px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);transition:box-shadow .2s}
+.tile>*{margin-inline:14px}
+.tile>.b-quiet{margin-inline:0}
+@media(hover:hover){.tile:hover{box-shadow:inset 0 0 0 1px var(--line-2)}}
+.pick .tile{--ink:#ffffff;--ink-2:rgba(255,255,255,.66);--ink-3:rgba(255,255,255,.6);--line:rgba(255,255,255,.14);--line-2:rgba(255,255,255,.24);background:#222222;color:#fff}
+.p-name{margin-top:12px;font:500 20px/1.2 var(--font-display);letter-spacing:-.01em}
+.p-for{margin-top:4px;font-size:15px;line-height:1.4;color:var(--ink-2)}
+.note{margin-top:16px;min-height:20px;font-size:14px;line-height:20px;color:var(--ink-3)}
+.price{display:flex;align-items:baseline;gap:6px;font:500 48px/1.1 var(--font-display);letter-spacing:-.03em}
+.price small{font:400 15px/1 var(--font-text);letter-spacing:0;color:var(--ink-2)}
+.p-rate{margin-top:6px;font-size:15px;line-height:1.4}
+.p-rate span{display:block;color:var(--ink-2)}
+.p-live{margin-top:14px;padding-top:12px;font-size:14px;line-height:1.3;background:radial-gradient(circle,var(--line-2) .7px,transparent .8px) top left/5px 1px repeat-x}
+.p-live div{display:flex;justify-content:space-between;gap:12px;padding:3px 0}
+.p-live dt{color:var(--ink-2)}
+.p-live dd{white-space:nowrap}
+.p-live dd b{margin-left:6px;font-weight:500}
+.tile>.b-quiet{width:100%;margin-top:14px}
+.lead{margin-top:24px;padding:0 22px 6px;font-size:14px;font-weight:500;color:var(--ink)}
+.list{padding:0 22px}
+.plan:first-child .list{grid-row:span 2;margin-top:24px}
+.list li{position:relative;padding:9px 0 9px 22px;font-size:15px;line-height:1.4;background:radial-gradient(circle,var(--line-2) .7px,transparent .8px) bottom left/5px 1px repeat-x}
+.list li::before{content:"";position:absolute;left:1px;top:calc(9px + .42em);width:10px;height:5px;border:solid var(--ink-2);border-width:0 0 1.3px 1.3px;transform:rotate(-45deg)}
+@media(max-width:1180px){.plans{grid-template-columns:repeat(2,minmax(0,1fr))}.plan:nth-child(n+3){margin-top:36px}}
+@media(max-width:760px){
+  :root{--rail:calc(100% - 32px)}.seg label{height:38px}.head-foot{grid-template-columns:minmax(0,1fr);gap:16px}.head-tools{align-items:flex-start}
+  .clock{text-align:left}.sub-copy{font-size:16px}.plans{grid-template-columns:minmax(0,1fr);margin-top:24px}.plan,.tile{display:block}
+  .plan+.plan,.plan:nth-child(n+3){margin-top:32px}.plan:first-child .list{margin-top:16px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<!-- invented: Baseload, its plans, rates and figures are a fictional sample. On the full page the buttons open an API key dialog. -->
+<section class="head wrap" id="plans">
+  <div class="head-foot">
+    <p class="sub-copy">Baseload publishes prices, load and generation from all seven US grid operators through one API. Every plan reaches every node. Plans differ in how fresh the data is, how far back it goes and what a row costs.</p>
+    <div class="head-tools">
+      <p class="clock"><span class="mono">HB_NORTH</span> hub today, in $/MWh, as of <b id="clock">16:07:12 CT</b></p>
+      <div class="seg" role="radiogroup" aria-label="Billing period">
+        <i class="thumb" aria-hidden="true"></i>
+        <input type="radio" name="billing" id="bill-m" value="m" checked><label for="bill-m">Monthly</label>
+        <input type="radio" name="billing" id="bill-a" value="a"><label for="bill-a">Annual<span class="save">15% off</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="plans">
+    <article class="plan">
+      <div class="tile">
+        <h2 class="p-name">Sandbox</h2> <p class="p-for">For evaluating the API and testing against recent data.</p>
+        <p class="note">No card required</p> <p class="price"><span>$0</span><small>/month</small></p>
+        <p class="p-rate">1M rows included <span>Requests stop at the limit</span></p>
+        <dl class="p-live"><div><dt>Delay</dt><dd>24 hours</dd></div><div><dt>Newest row</dt><dd><span data-row="sandbox-t">Nov 5, 16:05</span> <b data-row="sandbox-p">$29.60</b></dd></div></dl>
+        <button class="b-quiet" type="button">Get an API key</button>
+      </div>
+      <ul class="list"><li>All 31,400 pricing nodes and 412 hubs and zones</li><li>Prices, load, generation and fuel mix</li><li>90 days of history</li><li>60 requests a minute</li><li>1 API key</li><li>Internal, non-commercial use</li><li>Community forum</li></ul>
+    </article>
+    <article class="plan pick">
+      <div class="tile">
+        <h2 class="p-name">Build</h2> <p class="p-for">For dashboards, reports and carbon-aware scheduling.</p>
+        <p class="note" data-m="Billed monthly" data-a="$816 billed annually">Billed monthly</p> <p class="price"><span data-price data-m="80" data-a="68">$80</span><small>/month</small></p>
+        <p class="p-rate">10M rows included <span>Then $6 per additional 1M</span></p>
+        <dl class="p-live"><div><dt>Delay</dt><dd>15 minutes</dd></div><div><dt>Newest row</dt><dd><span data-row="build-t">15:50</span> <b data-row="build-p">$31.02</b></dd></div></dl>
+        <button class="b-quiet" type="button">Start Build</button>
+      </div>
+      <p class="lead">Everything in Sandbox, plus:</p> <ul class="list"><li>2 years of history</li><li>600 requests a minute</li><li>3 API keys</li><li>Commercial use in your own product</li><li>Webhooks for new intervals</li><li>Email support, 2 business days</li></ul>
+    </article>
+    <article class="plan">
+      <div class="tile">
+        <h2 class="p-name">Scale</h2> <p class="p-for">For dispatch, bidding and battery optimization.</p>
+        <p class="note" data-m="Billed monthly" data-a="$7,140 billed annually">Billed monthly</p> <p class="price"><span data-price data-m="700" data-a="595">$700</span><small>/month</small></p>
+        <p class="p-rate">250M rows included <span>Then $2.50 per additional 1M</span></p>
+        <dl class="p-live"><div><dt>Delay</dt><dd>30 seconds</dd></div><div><dt>Newest row</dt><dd><span data-row="scale-t">16:05</span> <b data-row="scale-p">$34.18</b></dd></div></dl>
+        <button class="b-quiet" type="button">Start Scale</button>
+      </div>
+      <p class="lead">Everything in Build, plus:</p> <ul class="list"><li>REST and WebSocket delivery</li><li>History back to January 2014</li><li>6,000 requests a minute</li><li>25 API keys and 10 streams</li><li>Baseload forecasts for every hub</li><li>As-of queries for back-testing</li><li>99.9% monthly uptime SLA</li><li>Email support, 4 business hours</li></ul>
+    </article>
+    <article class="plan">
+      <div class="tile">
+        <h2 class="p-name">Enterprise</h2> <p class="p-for">For redistribution, resale and private delivery.</p>
+        <p class="note">Annual agreement</p> <p class="price"><span>Custom</span></p>
+        <p class="p-rate">Committed volume <span>From 2B rows a month</span></p>
+        <dl class="p-live"><div><dt>Delay</dt><dd>30 seconds</dd></div><div><dt>Newest row</dt><dd><span data-row="ent-t">16:05</span> <b data-row="ent-p">$34.18</b></dd></div></dl>
+        <a class="b-quiet" href="mailto:sales@baseload.dev?subject=Grid%20API%20Enterprise">Talk to sales</a>
+      </div>
+      <p class="lead">Everything in Scale, plus:</p> <ul class="list"><li>Raw-data redistribution license</li><li>Dedicated stream in your choice of region</li><li>Hourly Parquet files to S3 or GCS</li><li>SAML SSO and 1-year audit logs</li><li>99.95% uptime SLA with service credits</li><li>Named engineer, 1-hour Sev 1 response</li><li>Invoice billing, net 30</li></ul>
+    </article>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* Simulated market data. Stable for any five-minute interval, so every ticket agrees. */
+  const hash = n => { let x = Math.imul(n ^ 0x9e3779b9, 0x85ebca6b); x ^= x >>> 13; x = Math.imul(x, 0xc2b2ae35); x ^= x >>> 16; return (x >>> 0) / 4294967296; };
+  const bell = (x, c, w) => Math.exp(-(((x - c) / w) ** 2));
+  const ctFmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hourCycle: 'h23', year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', weekday: 'short' });
+  const ctParts = ms => Object.fromEntries(ctFmt.formatToParts(ms).map(p => [p.type, p.value]));
+  function smooth(i, span) { const a = Math.floor(i / span), f = i / span - a, t = f * f * (3 - 2 * f); return hash(a * 7 + 11) * (1 - t) + hash((a + 1) * 7 + 11) * t; }
+  function shape(doy, hour, weekend) {
+    const summer = bell(doy, 215, 52), winter = bell(doy, 22, 32) + bell(doy, 352, 26), shoulder = Math.max(0, 1 - summer - winter), base = 30 + 14 * summer + 8 * winter;
+    const morning = bell(hour, 7.5, 1.9), evening = bell(hour, 19, 2.5), solar = bell(hour, 12.5, 3.2), night = bell(hour, 3, 3.4);
+    return base * (0.82 + 0.5 * morning * (1 + winter) + (0.62 + 1.25 * summer) * evening - 0.42 * solar * (0.45 + shoulder) - 0.2 * night) * (weekend ? 0.8 : 1);
+  }
+  function lmpAt(ms) {
+    const i = Math.floor(ms / 300000), p = ctParts(i * 300000), hour = +p.hour + +p.minute / 60, d = new Date(`${p.month} ${p.day}, ${p.year}`);
+    const doy = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / 864e5), wknd = p.weekday === 'Sat' || p.weekday === 'Sun';
+    let v = shape(doy, hour, wknd) * (0.78 + 0.5 * smooth(i, 18)) * (0.92 + 0.16 * smooth(i + 500, 4));
+    if (hash(i) > 0.985) v *= 1.6 + 2.4 * hash(i + 9);
+    return Math.round(v * 100) / 100;
+  }
+
+  /* Clock and the newest row each plan can read. A new interval flashes orange, then settles. */
+  const usd = v => '$' + v.toFixed(2);
+  const hm = ms => { const p = ctParts(ms); return `${p.hour}:${p.minute}`; };
+  const dayHm = ms => { const p = ctParts(ms); return `${p.month} ${p.day}, ${p.hour}:${p.minute}`; };
+  let lastInterval = -1, lastShown = false;
+  function setRow(key, t, price) {
+    const a = $(`[data-row="${key}-t"]`), b = $(`[data-row="${key}-p"]`), changed = a.textContent !== t && lastInterval > 0 && lastShown;
+    a.textContent = t; b.textContent = usd(price);
+    if (changed && !reduce.matches) b.animate({ color: ['#ff5e1e', getComputedStyle(b).color] }, { duration: 600, easing: 'linear' });
+  }
+  function tickClock() {
+    const now = Date.now(), p = ctParts(now), live = Math.floor((now - 30000) / 300000) * 300000;
+    $('#clock').textContent = `${p.hour}:${p.minute}:${p.second} CT`;
+    if (live === lastInterval) return;
+    lastInterval = live;
+    const build = live - 900000, sand = live - 86400000;
+    setRow('scale', hm(live), lmpAt(live - 1)); setRow('ent', hm(live), lmpAt(live - 1));
+    setRow('build', hm(build), lmpAt(build - 1)); setRow('sandbox', dayHm(sand), lmpAt(sand - 1));
+    lastShown = true;
+  }
+
+  /* Interpolated numbers and the sliding thumb */
+  function tick(el, to, format, ms = 400) {
+    const from = el._shown ?? to, t0 = performance.now();
+    cancelAnimationFrame(el._raf);
+    const write = v => { el._shown = v; el.textContent = format(v); };
+    if (reduce.matches || document.hidden || from === to) return write(to);
+    (function step(now) { const p = Math.min(1, (now - t0) / ms); write(p === 1 ? to : from + (to - from) * (1 - (1 - p) ** 4)); if (p < 1) el._raf = requestAnimationFrame(step); })(t0);
+  }
+  function placeThumb(group, instant) {
+    const th = group.querySelector('.thumb'), on = group.querySelector('input:checked+label');
+    if (instant) th.style.transition = 'none';
+    th.style.setProperty('--x', on.offsetLeft + 'px'); th.style.setProperty('--w', on.offsetWidth + 'px');
+    if (instant) { th.offsetWidth; th.style.transition = ''; }
+  }
+  const thumbs = () => $$('.seg').forEach(g => placeThumb(g, true));
+  function applyBilling(mode) {
+    $$('[data-price]').forEach(el => tick(el, +el.dataset[mode], v => '$' + Math.round(v)));
+    $$('.note[data-m]').forEach(el => { el.textContent = el.dataset[mode]; });
+  }
+  $$('[data-price]').forEach(el => { el._shown = +el.dataset.m; });
+  $$('.seg input').forEach(r => r.addEventListener('change', () => { placeThumb(r.closest('.seg')); if (r.checked) applyBilling(r.value); }));
+
+  (document.fonts?.ready || Promise.resolve()).then(() => { tickClock(); setInterval(tickClock, 1000); thumbs(); addEventListener('resize', thumbs); });
+})();
+</script>
+</body>
+</html>

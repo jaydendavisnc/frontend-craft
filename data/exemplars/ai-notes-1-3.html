@@ -1,0 +1,174 @@
+<!doctype html>
+<!-- One window, four real product states behind tabs: a live transcript with a running clock and level meter, a note whose sentences open their passage, a ten-row task table with named owners and "Needs owner" gaps,
+     and a diff against an old plan with struck values, "Unchanged", and a "Worth checking" conflict. Hover inverts a whole row, and every stored fact carries a blue source mark. -->
+<html lang="en"><head><meta charset="utf-8"><title>Capture stage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&family=Newsreader:opsz,wght@6..72,400&display=swap">
+<style>
+:root{--bg:#f7f6f5;--surface:#edeceb;--sheet:#fff;--ink:#000;--ink-2:#565555;--ink-3:#6c6b6b;--muted:#7b7a7a;--ink-4:#b4b3b2;--line:rgb(0 0 0/.09);--line-strong:rgb(0 0 0/.17);--tint:rgb(0 0 0/.045);--tint-2:rgb(0 0 0/.075);--accent:#2200ff;--accent-wash:rgb(34 0 255/.075);
+  --display:"Hanken Grotesk",system-ui,sans-serif;--text:"Newsreader",Georgia,serif;--ui:"Hanken Grotesk",system-ui,sans-serif;--ease:cubic-bezier(.4,0,.2,1)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}h2,h3,h4,p,ul,ol{margin:0;padding:0}ul,ol{list-style:none}[hidden]{display:none!important}.num{font-variant-numeric:tabular-nums}
+.wrap{width:100%;max-width:1320px;margin-inline:auto;padding-inline:32px}.sec{position:relative;margin-top:48px}.rule{display:block;height:2px;background:var(--ink)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:0 48px;padding-top:22px}.d2{font:400 32px/1.18 var(--display);letter-spacing:-.018em;max-width:480px;text-wrap:pretty}.d2 span{display:block}.d2 .lead{color:var(--muted)}.body{color:var(--ink-2);max-width:560px;padding-top:4px}
+.src{display:inline-flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0 3px;margin-left:3px;border-radius:3px;background:var(--accent);color:#fff;box-shadow:inset 0 0 0 1px var(--accent);font:500 10px/1 var(--ui);font-variant-numeric:tabular-nums;vertical-align:.52em}
+/* Feature tabs over the stage. The section's own rule cuts the window. */
+.cut{border-bottom:1px solid var(--line-strong);overflow:clip}
+.tabs{display:flex;gap:8px;margin-top:44px}.tab{flex:none;height:38px;padding:0 18px;border-radius:9px;box-shadow:inset 0 0 0 1px var(--line-strong);font:500 14px/1 var(--ui);color:var(--ink-2);transition:background-color .2s var(--ease),color .2s var(--ease),box-shadow .2s var(--ease)}
+.tab:hover,.tab[aria-selected=true]{background:var(--ink);color:var(--bg);box-shadow:inset 0 0 0 1px var(--ink)}
+.win{position:relative;background:var(--surface);border-radius:12px 12px 0 0;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;font:400 13.5px/1.4 var(--ui)}.stage{height:560px;margin-top:20px;margin-bottom:-1px;display:flex;flex-direction:column}
+.stage-bar{display:flex;align-items:center;gap:12px;height:36px;flex:none;padding:0 14px;font-size:12.5px;color:var(--ink-3)}.dots{display:flex;gap:6px;align-items:center}.dots i{width:9px;height:9px;border-radius:50%;background:var(--ink-4);opacity:.55}
+.panel{flex:1;min-height:0;display:grid;gap:8px;padding:0 8px;outline-offset:-2px}.p-rec,.p-note{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}.p-fu,.p-ch{grid-template-columns:minmax(0,1fr)}
+.sheet{background:var(--sheet);box-shadow:0 0 0 1px var(--line);min-width:0;overflow:hidden;border-radius:8px 8px 0 0;display:flex;flex-direction:column}
+.ask-h,.src-h{display:flex;align-items:center;gap:8px;height:40px;flex:none;padding:0 16px;border-bottom:1px solid var(--line);color:var(--ink-3);font-size:12.5px}.ask-h b,.src-h b{font-weight:500;color:#000}.ask-h .r,.src-h .r{margin-left:auto}
+.live{display:inline-flex;align-items:center;gap:7px}.live i{width:8px;height:8px;border-radius:50%;background:#000;animation:blink 1.6s steps(2) infinite}@keyframes blink{50%{opacity:0}}
+.meter{display:inline-flex;align-items:center;gap:2px;height:14px;margin-left:4px}.meter i{width:2px;height:100%;background:var(--ink);transform-origin:50% 50%;animation:lv 1.3s steps(4) infinite alternate}
+.meter i:nth-child(3n){animation-duration:.9s}.meter i:nth-child(4n+1){animation-duration:1.7s}.meter i:nth-child(5n){animation-delay:-.4s}.meter i:nth-child(2n){animation-delay:-.8s}@keyframes lv{from{transform:scaleY(.2)}to{transform:scaleY(1)}}
+.feed{flex:1;padding:8px 8px 0;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}.feed li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:8px}.feed time{font-size:12px;line-height:20px;color:var(--ink-3)}.feed b{display:block;font:500 12.5px/20px var(--ui)}.feed p{font:400 16px/1.45 var(--text);color:#000}
+.feed .cur::after{content:"";display:inline-block;width:1.5px;height:15px;margin-left:2px;vertical-align:-2px;background:var(--accent);animation:blink 1s steps(2) infinite}
+.doc{padding:18px 24px 0;overflow:hidden}.doc h3{font:500 20px/1.25 var(--ui);letter-spacing:-.012em}.doc-m{margin-top:4px;font:400 12.5px/1.4 var(--ui);color:var(--ink-3)}.doc h4{margin:18px 0 4px;font:500 13px/20px var(--ui)}.doc h4:first-child{margin-top:0}
+.doc li{margin-inline:-8px;padding:3px 8px;border-radius:5px;font:400 16px/1.45 var(--text);color:#000;transition:background-color .2s var(--ease)}.doc li.dim{color:var(--ink-3)}.doc li.hit{background:var(--accent-wash)}.doc li[data-n]{cursor:pointer}.doc li[data-n]:hover{background:var(--tint)}.doc li.hit:hover{background:var(--accent-wash)}
+.ts{padding:6px 8px;flex:1;overflow:hidden}.ts li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:8px;padding:7px 8px;border-radius:6px;transition:background-color .25s var(--ease)}.ts time{font-size:12px;line-height:20px;color:var(--ink-3);font-variant-numeric:tabular-nums}.ts b{display:block;font:500 12.5px/20px var(--ui)}.ts p{font:400 14.5px/1.45 var(--text);color:var(--ink-2)}.ts li.hit{background:var(--accent-wash)}.ts li.hit p{color:#000}
+.tb{width:100%;border-collapse:collapse;font-size:13.5px}.tb th{height:34px;padding:0 16px;text-align:left;font:500 12px/1 var(--ui);color:var(--ink-3);border-bottom:1px solid var(--line)}
+.tb td{height:46px;padding:0 16px;border-bottom:1px solid var(--line);white-space:nowrap;color:rgb(0 0 0/.86);transition:background-color .18s var(--ease),color .18s var(--ease)}.tb td:first-child{font-weight:500;color:#000}.tb td.dim{color:var(--ink-3)}.tb s{color:var(--ink-3);text-decoration-thickness:1px}
+.tb tbody tr:hover td{background:var(--ink);color:var(--bg)}.tb tbody tr:hover .tag{color:var(--bg);box-shadow:inset 0 0 0 1px rgb(255 255 255/.4);background:none}.tb tbody tr:hover s{color:rgb(255 255 255/.7)}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 7px;border-radius:6px;font-size:12px;font-weight:500;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line-strong)}.tag.on{background:var(--tint-2);color:#000;box-shadow:none}.tag.ask-o{background:var(--ink);color:var(--bg);box-shadow:none}
+.ch-note{padding:0 16px}.miss{display:flex;gap:8px;align-items:baseline;margin-top:16px;padding-top:12px;font:400 13.5px/1.45 var(--ui);color:var(--ink-2)}.miss b{flex:none;font-weight:500;color:#000}
+</style></head><body>
+<div class="wrap"><section class="sec cut" id="capture">
+  <i class="rule"></i>
+  <div class="split">
+    <h2 class="d2"><span class="lead">A note starts as audio on your own machine</span><span>It ends as a list of who owes what</span></h2>
+    <p class="body">Ibid listens to your microphone and system audio, so no bot joins the call, and it reminds you to tell the room before it starts. Afterwards it writes the note, pulls out follow-ups, and compares what was said with what you had on file.</p>
+  </div>
+  <div class="tabs" role="tablist" aria-label="Stages of a note">
+    <button class="tab" role="tab" id="t1" aria-controls="p1" aria-selected="true">Record</button>
+    <button class="tab" role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1">Note</button>
+    <button class="tab" role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1">Follow-ups</button>
+    <button class="tab" role="tab" id="t4" aria-controls="p4" aria-selected="false" tabindex="-1">Changes</button>
+  </div>
+  <div class="win stage" id="stage">
+    <div class="stage-bar"><div class="dots"><i></i><i></i><i></i></div><span id="crumb">Veloma / Spring price list / Recording</span></div>
+    <div class="panel p-rec" role="tabpanel" id="p1" aria-labelledby="t1" tabindex="0">
+      <section class="sheet">
+        <div class="ask-h"><span class="live"><i></i><b>Recording</b></span><span class="num" id="recT">00:41:27</span><span class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="r">Microphone and system audio</span></div>
+        <ol class="feed" id="feed">
+          <li><time class="num">40:18</time><div><b>Callum Reid</b><p>On the forecast, we'll know more once the dealer orders close on the 12th.</p></div></li>
+          <li><time class="num">40:31</time><div><b>Anneke de Vries</b><p>Fine, but I still need a number from you before allocation closes.</p></div></li>
+          <li><time class="num">40:47</time><div><b>Callum Reid</b><p>A range would do for now?</p></div></li>
+          <li><time class="num">40:52</time><div><b>Anneke de Vries</b><p>A range is fine for now.</p></div></li>
+          <li><time class="num">41:02</time><div><b>Morag Sinclair</b><p>Let's come back to the Tarn. Where does that leave us after February?</p></div></li>
+          <li><time class="num">41:09</time><div><b>Anneke de Vries</b><p>The Tarn is the one I can't move on after February.</p></div></li>
+          <li><time class="num">41:15</time><div><b>Morag Sinclair</b><p>Understood. What about the Corrie?</p></div></li>
+          <li><time class="num">41:19</time><div><b>Anneke de Vries</b><p>Corrie stays where it is through the summer, I can put that in writing.</p></div></li>
+        </ol>
+      </section>
+      <section class="sheet">
+        <div class="ask-h"><b>Note so far</b><span class="r">Writes as you talk</span></div>
+        <div class="doc">
+          <h4>Decisions</h4><ul>
+            <li>The spring list goes out at €412 a frame.<span class="src">1</span></li>
+            <li>Veloma holds that price to 28 February, and not past it.<span class="src">2</span></li>
+            <li>Harlaw pays freight on anything over twenty frames.<span class="src">3</span></li></ul>
+          <h4>Prices from March</h4><ul>
+            <li>€438 a frame, or €425 on orders of forty frames or more.<span class="src">4</span></li>
+            <li>Corrie prices hold through the summer.<span class="src">5</span></li></ul>
+          <h4>Follow-ups</h4><ul>
+            <li>Callum sends Anneke the revised list by Friday.<span class="src">6</span></li>
+            <li>Harlaw gives Veloma a forecast range before allocation closes.<span class="src">7</span></li></ul>
+          <h4>Open</h4><ul><li class="dim">Is the forty-frame rule per model or across the order?</li></ul>
+        </div>
+      </section>
+    </div>
+    <div class="panel p-note" role="tabpanel" id="p2" aria-labelledby="t2" tabindex="0" hidden>
+      <section class="sheet"><div class="doc" id="noteDoc">
+        <h3>Veloma, spring price list</h3><p class="doc-m">Tue 3 Nov, 14:00, 52 min, Morag Sinclair, Callum Reid, Anneke de Vries</p>
+        <h4>Decisions</h4><ul>
+          <li data-n="p2">The spring list goes out at €412 a frame.<span class="src">1</span></li>
+          <li data-n="p1">Veloma holds that price to 28 February, and not past it.<span class="src">2</span></li>
+          <li data-n="p5">Harlaw pays freight on anything over twenty frames.<span class="src">3</span></li></ul>
+        <h4>Prices from March</h4><ul><li data-n="p3">€438 a frame, or €425 on orders of forty frames or more.<span class="src">4</span></li></ul>
+        <h4>Follow-ups</h4><ul>
+          <li data-n="p4">Callum sends Anneke the revised list by Friday.<span class="src">5</span></li>
+          <li data-n="p6">Veloma needs the Q2 forecast before the 20th.<span class="src">6</span></li>
+          <li data-n="p7">Morag asks Fiona for the forecast on Wednesday.<span class="src">7</span></li></ul>
+        <h4>Not discussed</h4><ul><li class="dim">Whether the held price covers the 58 cm Tarn.</li></ul>
+      </div></section>
+      <section class="sheet"><div class="src-h"><b>Source</b><span class="r num" id="noteT">14:32</span></div><ol class="ts" id="noteL"></ol></section>
+    </div>
+    <div class="panel p-fu" role="tabpanel" id="p3" aria-labelledby="t3" tabindex="0" hidden>
+      <section class="sheet">
+        <div class="ask-h"><b>Follow-ups</b><span>This week and next</span><span class="r">10 items, 2 need an owner</span></div>
+        <table class="tb"><thead><tr><th>Task</th><th>Owner</th><th>Due</th><th>Source</th><th>Status</th></tr></thead><tbody>
+          <tr><td>Send Anneke the revised list</td><td>Callum Reid</td><td>Fri 6 Nov</td><td>Veloma, 31:44<span class="src">1</span></td><td><span class="tag on">Sending today</span></td></tr>
+          <tr><td>Book the Perth demo frames back in</td><td>Ewan Tait</td><td>Mon 9 Nov</td><td>Stock count, 11:30<span class="src">2</span></td><td><span class="tag">Open</span></td></tr>
+          <tr><td>Q2 forecast to Veloma</td><td>Fiona Geddes</td><td>Wed 18 Nov</td><td>Weekly ops, 12:02<span class="src">3</span></td><td><span class="tag">In progress</span></td></tr>
+          <tr><td>Margin per frame at the new price</td><td>Morag Sinclair</td><td>Tue 1 Dec</td><td>Board, 22:36<span class="src">4</span></td><td><span class="tag">Open</span></td></tr>
+          <tr><td>Test the longer stem on the Tarn</td><td>Callum Reid</td><td>Fri 4 Dec</td><td>Fit study, 33:47<span class="src">5</span></td><td><span class="tag">Open</span></td></tr>
+          <tr><td>Second supplier quote, Tarn frame</td><td class="dim">No owner</td><td class="dim">No date</td><td>Board, 23:10<span class="src">6</span></td><td><span class="tag ask-o">Needs owner</span></td></tr>
+          <tr><td>Ask Anneke about the 58 cm Tarn</td><td class="dim">No owner</td><td class="dim">No date</td><td>Dealer day, 01:12<span class="src">7</span></td><td><span class="tag ask-o">Needs owner</span></td></tr>
+          <tr><td>Dealer survey for the January board</td><td>Morag Sinclair</td><td>Tue 12 Jan</td><td>Board, 41:55<span class="src">8</span></td><td><span class="tag">Open</span></td></tr>
+          <tr><td>Decide on the second van lease</td><td>Ewan Tait</td><td>January</td><td>One to one, 08:26<span class="src">9</span></td><td><span class="tag">Open</span></td></tr>
+          <tr><td>Recount the Tarn frames in Perth</td><td>Fiona Geddes</td><td>February</td><td>Stock count, 04:15<span class="src">10</span></td><td><span class="tag">Open</span></td></tr>
+        </tbody></table>
+      </section>
+    </div>
+    <div class="panel p-ch" role="tabpanel" id="p4" aria-labelledby="t4" tabindex="0" hidden>
+      <section class="sheet">
+        <div class="ask-h"><b>Changes</b><span>March plan, compared with notes since 12 Mar</span><span class="r">3 changed, 3 unchanged, 1 not revisited</span></div>
+        <table class="tb"><thead><tr><th>Item</th><th>In the March plan</th><th>Now</th><th>Last said by</th></tr></thead><tbody>
+          <tr><td>Minimum order for the held price</td><td><s>50 frames</s><span class="src">1</span></td><td>40 frames<span class="src">2</span></td><td>Fiona Geddes, Thu 5 Nov</td></tr>
+          <tr><td>Rotterdam lead time</td><td><s>6 weeks</s><span class="src">3</span></td><td>9 weeks<span class="src">4</span></td><td>Ewan Tait, Thu 5 Nov</td></tr>
+          <tr><td>Freight paid by Harlaw</td><td><s>Orders over 30 frames</s><span class="src">5</span></td><td>Orders over 20 frames<span class="src">6</span></td><td>Morag Sinclair, Tue 3 Nov</td></tr>
+          <tr><td>Tarn frame supplier</td><td>Veloma<span class="src">7</span></td><td class="dim">Unchanged</td><td>Anneke de Vries, Tue 3 Nov</td></tr>
+          <tr><td>Corrie wholesale price</td><td>Held to August<span class="src">8</span></td><td class="dim">Unchanged</td><td>Anneke de Vries, Tue 3 Nov</td></tr>
+          <tr><td>Dealer survey</td><td>January board<span class="src">9</span></td><td class="dim">Unchanged</td><td>Isla Morrison, Tue 27 Oct</td></tr>
+          <tr><td>Margin target</td><td>Page 3<span class="src">10</span></td><td class="dim">Not mentioned since</td><td class="dim">Not since 12 Mar</td></tr>
+        </tbody></table>
+        <div class="ch-note"><p class="miss"><b>Worth checking</b><span>Fiona and Morag gave different dates for the forecast. Fiona said the 18th on Thursday; on Tuesday Morag told Anneke she would ask Fiona the next day.</span></p></div>
+      </section>
+    </div>
+  </div>
+</section></div>
+<script>
+(function () {
+  const passages = {
+    p1: { t: '14:07', who: 'Anneke de Vries', text: "We can hold this year's wholesale price on the Tarn frame until the end of February, but not past it." },
+    p2: { t: '14:32', who: 'Morag Sinclair', text: 'So the spring list goes out at 412 euros a frame, and that stands to the 28th.' },
+    p3: { t: '15:10', who: 'Anneke de Vries', text: "From March it's 438. If an order is forty frames or more, we can do 425." },
+    p4: { t: '31:44', who: 'Callum Reid', text: "I'll send Anneke the revised list by Friday." },
+    p5: { t: '38:12', who: 'Morag Sinclair', text: 'Freight stays on us for anything over twenty frames.' },
+    p6: { t: '44:51', who: 'Anneke de Vries', text: 'I need the Q2 forecast from you before the 20th, otherwise our allocation slips a month.' },
+    p7: { t: '46:03', who: 'Morag Sinclair', text: "Fiona has the forecast. I'll ask her tomorrow." }
+  };
+  const live = [['Anneke de Vries', "The Tarn is the one I can't move on after February."], ['Morag Sinclair', 'Understood. What about the Corrie?'], ['Anneke de Vries', 'Corrie stays where it is through the summer, I can put that in writing.'], ['Callum Reid', 'Could you send it with the revised list?'], ['Anneke de Vries', 'Yes, by Monday.'], ['Morag Sinclair', 'And if we go over forty frames in one order, is that per model or across the order?'], ['Anneke de Vries', 'Across the order, as long as it ships together.']];
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)], pad = n => String(n).padStart(2, '0');
+  const tabs = $$('#capture [role=tab]'), crumbs = ['Veloma / Spring price list / Recording', 'Veloma / Spring price list', 'Follow-ups', 'Changes / March plan'];
+  function pick(t) { tabs.forEach((x, i) => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).hidden = !on; if (on) $('#crumb').textContent = crumbs[i]; }); }
+  tabs.forEach((t, i) => { t.addEventListener('click', () => pick(t)); t.addEventListener('keydown', e => { const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key]; if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; pick(n); n.focus(); } }); });
+  /* Note tab: each sentence opens its passage, and a highlight walks the note until someone clicks */
+  let noteAuto = true;
+  function notePick(li) {
+    $$('#noteDoc li').forEach(x => x.classList.toggle('hit', x === li));
+    const id = li.dataset.n; $('#noteT').textContent = passages[id].t;
+    $('#noteL').innerHTML = Object.entries(passages).map(([k, x]) => `<li class="${k === id ? 'hit' : ''}"><time>${x.t}</time><div><b>${x.who}</b><p>${x.text}</p></div></li>`).join('');
+  }
+  $('#noteDoc').addEventListener('click', e => { const li = e.target.closest('li[data-n]'); if (li) { noteAuto = false; notePick(li); } });
+  notePick($('#noteDoc li[data-n]'));
+  /* Record tab: the clock runs and the transcript keeps arriving, word by word, while the panel is on screen */
+  let seen = false, recS = 41 * 60 + 27, transcriptS = 41 * 60 + 25, liveI = 3; const feed = $('#feed');
+  new IntersectionObserver(es => { seen = es[0].isIntersecting; }, { threshold: .15 }).observe($('#stage'));
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    setInterval(() => { if (seen && !$('#p1').hidden) { recS++; $('#recT').textContent = `00:${pad(Math.floor(recS / 60))}:${pad(recS % 60)}`; } }, 1000);
+    setInterval(() => {
+      if (!seen || $('#p1').hidden) return;
+      const [who, text] = live[liveI++ % live.length], li = document.createElement('li'), words = text.split(' '); let i = 0;
+      transcriptS += 6 + (liveI % 3) * 2;
+      li.innerHTML = `<time class="num">${pad(Math.floor(transcriptS / 60))}:${pad(transcriptS % 60)}</time><div><b>${who}</b><p class="cur"></p></div>`;
+      feed.append(li); while (feed.children.length > 10) feed.firstElementChild.remove();
+      const p = li.querySelector('p'), t = setInterval(() => { p.textContent = words.slice(0, ++i).join(' '); if (i >= words.length) { clearInterval(t); p.classList.remove('cur'); } }, 110);
+    }, 2600);
+    setInterval(() => { if (noteAuto && seen && !$('#p2').hidden) { const items = $$('#noteDoc li[data-n]'), at = items.findIndex(x => x.classList.contains('hit')); notePick(items[(at + 1) % items.length]); } }, 2400);
+  }
+})();
+</script>
+</body></html>

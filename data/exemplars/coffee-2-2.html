@@ -1,0 +1,121 @@
+<!doctype html>
+<!-- A café menu set like a printed page, with no cards at all: 18 items in four groups, hierarchy carried only by rule weight (full ink under a group heading, a 14% hairline under each item), weight 500 names, and a tabular price column. The small print does the real work, a sticky side column with the milk surcharge, card-only rule and allergen warning, and item notes a generic menu never has: "Friday to Sunday. Usually gone by 11." -->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mowat menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Literata:opsz,wght@24,400&display=swap">
+<style>
+:root{
+  --bone:#f0ede6;
+  --ink:#1a1613;
+  --ink-2:rgb(26 22 19/.66);
+  --line:rgb(26 22 19/.14);
+  --font-display:"Literata",Georgia,serif;
+  --font-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --g:80px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--ink);font:400 17px/1.5 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+h2,h3,p,dl,dd{margin:0;padding:0}
+.wrap{max-width:1440px;margin-inline:auto;padding-inline:var(--g)}
+
+/* shared section system */
+.sec{padding-block:120px}
+h2{font:400 36px/1.16 var(--font-display);letter-spacing:-.015em}
+h3{font:400 24px/1.25 var(--font-display);letter-spacing:-.01em}
+.split{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:48px}
+.side p{margin-top:16px;max-width:30ch;color:var(--ink-2)}
+.side{position:sticky;top:112px;align-self:start}
+
+/* menu */
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.group+.group{margin-top:48px}
+.group h3{padding-bottom:12px;border-bottom:1px solid var(--ink)}
+.items>div{display:grid;grid-template-columns:1fr auto;gap:0 24px;padding:12px 0;border-bottom:1px solid var(--line)}
+.items dt{font-weight:500}
+.items dt i{font-style:normal;font-weight:400;font-size:14px;color:var(--ink-2);margin-left:4px}
+.items dd{font-variant-numeric:lining-nums tabular-nums;text-align:right}
+.items p{grid-column:1/-1;color:var(--ink-2)}
+.after{margin-top:16px;color:var(--ink-2)}
+
+/* tablet */
+@media (max-width:1180px){
+  :root{--g:40px}
+  .split{grid-template-columns:minmax(0,1fr)}
+  .split .side{position:static}
+  .side p{max-width:60ch}
+}
+
+/* phone */
+@media (max-width:900px){
+  :root{--g:20px}
+  .sec{padding-block:72px}
+  h2{font-size:24px;line-height:1.25}
+  .split,.menu{grid-template-columns:minmax(0,1fr);gap:32px}
+  .side{position:static}
+  .side p{max-width:none}
+}
+</style>
+</head>
+<body>
+<section class="sec" id="menu" aria-labelledby="menu-h">
+  <div class="wrap split">
+    <div class="side">
+      <h2 id="menu-h">Menu</h2>
+      <p>Prices in pounds. Oat or soya milk adds 40p. Card and phone payments only.</p>
+      <p>V is vegetarian, VG is vegan. Our kitchen handles gluten, milk, eggs and nuts, so please tell us about allergies before you order.</p>
+    </div>
+    <div class="menu">
+      <div class="col">
+        <div class="group">
+          <h3>Coffee</h3>
+          <dl class="items">
+            <div><dt>Espresso</dt><dd>2.90</dd></div>
+            <div><dt>Macchiato</dt><dd>3.10</dd></div>
+            <div><dt>Cortado</dt><dd>3.40</dd></div>
+            <div><dt>Flat white</dt><dd>3.70</dd></div>
+            <div><dt>Cappuccino</dt><dd>3.80</dd></div>
+            <div><dt>Latte</dt><dd>3.90</dd></div>
+          </dl>
+        </div>
+        <div class="group">
+          <h3>Filter</h3>
+          <dl class="items">
+            <div><dt>Batch brew</dt><dd>3.20</dd><p>Ask what&rsquo;s on, or see the top of this page.</p></div>
+            <div><dt>V60, Colombia Huila</dt><dd>4.20</dd></div>
+            <div><dt>V60, Ethiopia Guji</dt><dd>4.50</dd></div>
+            <div><dt>V60, Kenya Nyeri</dt><dd>4.80</dd></div>
+          </dl>
+        </div>
+        <div class="group">
+          <h3>Other drinks</h3>
+          <dl class="items">
+            <div><dt>Hot chocolate</dt><dd>3.90</dd></div>
+            <div><dt>Loose-leaf tea</dt><dd>3.20</dd></div>
+          </dl>
+        </div>
+      </div>
+      <div class="col">
+        <div class="group">
+          <h3>Food</h3>
+          <dl class="items">
+            <div><dt>Porridge <i>V</i></dt><dd>5.80</dd><p>Cream and brown sugar. Until 11am.</p></div>
+            <div><dt>Buttery <i>V</i></dt><dd>3.60</dd><p>Toasted, with marmalade.</p></div>
+            <div><dt>Sourdough toast <i>V</i></dt><dd>4.50</dd><p>Salted butter and marmalade, or VG with jam.</p></div>
+            <div><dt>Cardamom bun <i>V</i></dt><dd>3.80</dd><p>Friday to Sunday. Usually gone by 11.</p></div>
+            <div><dt>Lentil soup <i>VG</i></dt><dd>6.50</dd><p>With sourdough. From 11.30am.</p></div>
+            <div><dt>Cheese toastie <i>V</i></dt><dd>8.50</dd><p>Mull cheddar and pickled onion on sourdough.</p></div>
+          </dl>
+          <p class="after">Kitchen closes at 2pm, or at 1pm on Tuesdays.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

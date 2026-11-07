@@ -1,0 +1,141 @@
+<!doctype html>
+<!-- The agent feature is proved by its own log, not a promise: a dark terminal with run status, cpu and mem meters, 24 lines of tree output naming real POs, suppliers and date moves, and a last step still in progress. It prints line by line on arrival and sits beside a hard limit on what the product will do plus a wall of six supplier marks, each with its own weight, tracking and glyph. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nightly run log</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffeb;--surface:#e4e4d0;--ink:#1a1a1a;--accent:#034f46;
+  --font-display:'Newsreader',Georgia,'Times New Roman',serif;              /* built with Gambetta (Fontshare); Newsreader stands in here */
+  --font-text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ink-2:#66665b;--half:color-mix(in srgb,var(--surface) 42%,var(--bg));--line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --frame:min(1200px,100% - 48px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h2,p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.fr{width:var(--frame);margin-inline:auto;border-inline:1px solid var(--line)}
+.spacer{height:64px;border-top:1px solid var(--line)}
+h2{font:400 38px/1.16 var(--font-display);letter-spacing:-.018em}
+h2 span{color:var(--ink-2)}
+/* run log with suppliers set inside the text */
+.runs{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border-top:1px solid var(--line)}
+.runs-text{padding:72px 48px 56px;border-right:1px solid var(--line)}
+.runs-note{margin-top:28px;font-size:16px;line-height:1.55}
+.logos{margin-top:56px;padding-top:24px;border-top:1px solid var(--line)}
+.logos p{font-size:15px;line-height:1.5;color:var(--ink-2)}
+.lg-wall{display:grid;grid-template-columns:repeat(3,max-content);justify-content:space-between;gap:20px 24px;margin-top:24px;color:color-mix(in oklab,var(--ink) 58%,var(--bg))}
+.lg{display:flex;align-items:center;gap:7px;height:20px;white-space:nowrap;transition:color .15s}
+.lg:hover{color:var(--accent)}
+.lg svg{width:16px;height:16px;flex:none}
+.lg-a{font:600 13px/1 var(--font-text);letter-spacing:.1em}
+.lg-b{font:600 16px/1 var(--font-text);letter-spacing:-.02em}
+.lg-c{font:700 17px/1 var(--font-text);letter-spacing:-.03em}
+.lg-d{font:500 16px/1 var(--font-text)}
+.lg-e{font:500 13px/1 var(--font-text);letter-spacing:.16em}
+.lg-f{font:600 15px/1 var(--font-text)}
+.runs-art{display:flex;flex-direction:column;justify-content:flex-end;min-width:0;padding:72px 32px 0;background:var(--half)}
+.term{border-radius:14px 14px 0 0;background:#1b1a17;color:rgba(255,255,255,.58);font:12px/19px var(--font-mono);box-shadow:0 0 0 1px rgba(0,0,0,.2);overflow:hidden}
+.t-h{display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;color:rgba(255,255,255,.92);border-bottom:1px solid rgba(255,255,255,.08)}
+.t-dim{color:rgba(255,255,255,.48)}
+.t-run{margin-left:auto;display:flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;color:#7fd4a1;box-shadow:inset 0 0 0 1px rgba(127,212,161,.35)}
+.t-run .dot{width:6px;height:6px}
+.t-s{display:flex;align-items:center;gap:16px;height:34px;padding:0 14px;color:rgba(255,255,255,.5);border-bottom:1px solid rgba(255,255,255,.08)}
+.t-m{display:flex;align-items:center;gap:6px}
+.t-m i{display:block;width:44px;height:4px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.t-m u{display:block;height:100%;background:#7fd4a1}
+.t-replay{margin-left:auto;color:rgba(255,255,255,.7);font:12px/34px var(--font-mono);text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(255,255,255,.3);transition:color .15s}
+.t-replay:hover{color:#7fd4a1}
+.t-out{padding:12px 14px 16px;overflow-x:auto}
+.ln{white-space:pre}
+.cm{color:rgba(255,255,255,.48)}.w{color:rgba(255,255,255,.92)}.ok{color:#7fd4a1}.am{color:#f0c674}
+.tr{padding-left:12px;color:rgba(255,255,255,.5)}
+.cur-l{position:relative;margin:2px -14px 0;padding:0 14px 0 26px;background:rgba(255,255,255,.06);box-shadow:inset 2px 0 0 #7fd4a1}
+.cur{display:inline-block;width:7px;height:13px;margin-left:6px;vertical-align:-2px;background:#fff;animation:blink 1.1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cur{animation:none}*{transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .line{animation:ink linear both;animation-timeline:view();animation-range:entry 12% cover 32%}
+  @keyframes ink{from{opacity:.15}to{opacity:1}}
+}}
+</style>
+</head>
+<body>
+<section class="runs fr" id="runs">
+ <div class="runs-text">
+  <h2 class="line">A run reads every supplier thread before stand-up. <span>At 06:00 Shenzhen time it matches PO numbers to BOM lines and replans the build.</span></h2>
+  <p class="runs-note">It drafts replies and a person sends them. Fiducial has never written to a supplier on its own, and there is no setting that lets it.</p>
+  <div class="logos">
+   <p>Suppliers never need a login. They keep replying by email or WeCom, the way they do now. These already appear in plans on Fiducial.</p>
+   <div class="lg-wall">
+    <span class="lg lg-a"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5 16.5 6v8L10 17.5 3.5 14V6z" fill="none" stroke="currentColor" stroke-width="2"/></svg>HENGTAI</span>
+    <span class="lg lg-b"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h14v3H3zM3 12h9v3H3z" fill="currentColor"/></svg>Brightwell</span>
+    <span class="lg lg-c"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3a7 7 0 1 0 7 7h-7z" fill="currentColor"/></svg>norvik</span>
+    <span class="lg lg-d"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2.5 7.5 7.5-7.5 7.5L2.500 10z" fill="currentColor"/></svg>Kingwell</span>
+    <span class="lg lg-e"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h6v6H3zM11 3h6v6h-6zM3 11h6v6H3z" fill="currentColor"/></svg>LONGHUA</span>
+    <span class="lg lg-f"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3.500 17 16H3z" fill="none" stroke="currentColor" stroke-width="2"/></svg>Tri-Seal</span>
+   </div>
+  </div>
+ </div>
+ <div class="runs-art">
+  <div class="term" id="term">
+   <div class="t-h"><span>plover-labs</span><span class="t-dim">nightly, hkg1</span><span class="t-run"><span class="dot"></span>Running</span></div>
+   <div class="t-s"><span>06:00 CST, Mon to Sat</span><span class="t-m">cpu<i><u style="width:38%"></u></i></span><span class="t-m">mem<i><u style="width:61%"></u></i></span><button class="t-replay" id="replay">Replay</button></div>
+   <div class="t-out" id="t-out">
+<div class="ln cm"># started 06:00:02, Fri Nov 6, last run 18:40</div>
+<div class="ln"><span class="ok">●</span> <span class="w">inbox.read</span> suppliers@ploverlabs.com</div>
+<div class="ln tr">└ 41 threads open, 6 new</div>
+<div class="ln"><span class="ok">●</span> <span class="w">wecom.read</span> plover-hw-cm</div>
+<div class="ln tr">└ 12 messages, 2 with attachments</div>
+<div class="ln"><span class="ok">●</span> <span class="w">po.match</span> 8 threads to BOM lines</div>
+<div class="ln tr">├ PO-2291 Hengtai Mould, T1 shots Jan 3 → <span class="am">Jan 9</span></div>
+<div class="ln tr">├ PO-2302 Brightwell PCB, gerbers accepted</div>
+<div class="ln tr">├ PO-2304 Arrowline Supply, tracking added</div>
+<div class="ln tr">├ PO-2307 Norvik Cells, UN38.3 report attached</div>
+<div class="ln tr">├ PO-2309 Tri-Seal, quote only, no date change</div>
+<div class="ln tr">└ PO-2311 Kingwell Opto, no reply in 4 days</div>
+<div class="ln"><span class="ok">●</span> <span class="w">stock.check</span> digikey, mouser</div>
+<div class="ln tr">└ 86 lines, 2 below build quantity</div>
+<div class="ln"><span class="ok">●</span> <span class="w">plan.replan</span> dvt-1</div>
+<div class="ln tr">├ 3 tasks moved</div>
+<div class="ln tr">├ DVT-1 starts Jan 13 <span class="am">+6d</span></div>
+<div class="ln tr">└ first units ship Apr 19 <span class="am">+6d</span></div>
+<div class="ln"><span class="ok">●</span> <span class="w">draft.reply</span> Vivian Zhou, Hengtai Mould</div>
+<div class="ln tr">└ held for Ines Aubry, not sent</div>
+<div class="ln"><span class="ok">●</span> <span class="w">draft.reply</span> Jason Pan, Kingwell Opto</div>
+<div class="ln tr">└ held for Ines Aubry, not sent</div>
+<div class="ln"><span class="ok">✓</span> <span class="w">notify</span> #plover-hw, 1 message</div>
+<div class="ln cur-l"><span class="w">calendar.sync</span> closures, Guangdong 2027<span class="cur"></span></div>
+   </div>
+  </div>
+ </div>
+</section>
+<div class="spacer fr"></div>
+<script>
+/* run log: prints once on arrival, the last step stays in progress */
+(function () {
+  var term = document.querySelector('#term'), lines = Array.prototype.slice.call(term.querySelectorAll('.ln')), replay = document.querySelector('#replay'), timer;
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function play() {
+    clearTimeout(timer);
+    lines.forEach(function (l) { l.style.visibility = 'hidden'; });
+    var i = 0;
+    (function next() {
+      if (i >= lines.length) return;
+      var l = lines[i++]; l.style.visibility = '';
+      timer = setTimeout(next, /tr/.test(l.className) ? 36 : 110);
+    })();
+  }
+  if (calm || !('IntersectionObserver' in window)) { replay.hidden = true; return; }
+  replay.addEventListener('click', play);
+  lines.forEach(function (l) { l.style.visibility = 'hidden'; });
+  new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { ob.disconnect(); play(); } }, { rootMargin: '0px 0px 120px 0px' }).observe(term);
+})();
+</script>
+</body>
+</html>

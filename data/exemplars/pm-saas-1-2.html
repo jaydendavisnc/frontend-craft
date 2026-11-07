@@ -1,0 +1,207 @@
+<!doctype html>
+<!-- A live critical-path scheduler instead of a feature screenshot: every BOM line is a draggable bar, the latest arrival plus 4 days sets the build line, and each row recomputes its own arrival date and days of spare. The Lunar New Year toggle really pushes parts past the hatched closure, the summary row names which part sets the date, and on first view the plan demonstrates itself once, then lets go. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lead time scheduler</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffeb;--surface:#e4e4d0;--ink:#1a1a1a;--accent:#034f46;
+  --font-display:'Newsreader',Georgia,'Times New Roman',serif;              /* built with Gambetta (Fontshare); Newsreader stands in here */
+  --font-text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --ink-2:#66665b;--ink-3:color-mix(in oklab,var(--ink) 44%,var(--bg));--line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --slip:#7d4f00;--slip-bg:#f6e2ad;--frame:min(1200px,100% - 48px);--ease:cubic-bezier(.2,.7,.2,1)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h2,p{margin:0}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.tag{display:inline-flex;align-items:center;height:18px;padding:0 5px;border-radius:4px;font:500 11px/1 var(--font-mono);white-space:nowrap}
+.tag.slip{background:var(--slip-bg);color:var(--slip)}
+/* ruled frame: the page rails run through every section */
+.fr{width:var(--frame);margin-inline:auto;border-inline:1px solid var(--line)}
+.block{border-top:1px solid var(--line)}
+.head{padding:72px 48px 68px}
+h2{font:400 38px/1.16 var(--font-display);letter-spacing:-.018em}
+.head h2{max-width:24.5em;text-wrap:pretty}
+h2 span{color:var(--ink-2)}
+.spacer{height:64px;border-top:1px solid var(--line)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.link{font:500 14px/20px var(--font-text);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;color:var(--ink);transition:color .15s}
+.link:hover{color:var(--accent)}
+/* scheduler */
+.sum{display:grid;grid-template-columns:1fr 1fr 1.25fr 1.25fr;gap:1px;background:var(--line);border-block:1px solid var(--line)}
+.sum>div{background:var(--bg);padding:20px 24px 22px;min-width:0}
+.sum>div:first-child{padding-left:48px}
+.sum span{display:block;font-size:14px;line-height:20px;color:var(--ink-2)}
+.sum b{display:flex;align-items:center;gap:8px;margin-top:4px;font:500 26px/34px var(--font-text);letter-spacing:-.015em;white-space:nowrap}
+.sum b em{font-style:normal}
+.sum .tag{height:20px;font-size:12px;letter-spacing:0}
+.sum .tag.good{background:color-mix(in srgb,var(--accent) 12%,var(--bg));color:var(--accent)}
+.sum-ctl{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:8px}
+.sw{display:flex;align-items:center;gap:10px;cursor:pointer}
+.sw input{position:absolute;opacity:0;width:32px;height:20px;margin:0;cursor:pointer}
+.sw i{position:relative;width:32px;height:20px;flex:none;border-radius:999px;background:color-mix(in srgb,var(--ink) 22%,var(--bg));transition:background-color .15s}
+.sw i::after{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--bg);transition:translate .15s var(--ease)}
+.sw input:checked+i{background:var(--accent)}.sw input:checked+i::after{translate:12px 0}.sw input:focus-visible+i{outline:2px solid var(--accent);outline-offset:2px}
+.sw span{color:var(--ink);font-size:14px;line-height:18px}.sw:hover span{color:var(--accent)}
+.s-grid{--c1:300px;--c3:128px;--pl:48px;--pr:24px;--g:24px;padding-bottom:12px}
+.s-axis,.s-row{display:grid;grid-template-columns:var(--c1) minmax(0,1fr) var(--c3);gap:var(--g);padding:0 var(--pr) 0 var(--pl)}
+.s-ticks{position:relative;height:36px;font-size:12px;line-height:36px;color:var(--ink-2)}.s-ticks span{position:absolute;white-space:nowrap}
+.s-closed{top:0;translate:-50% 0;color:#7d5a12}.s-closed-off .s-closed{display:none}
+.s-ticks .s-flag{top:0;translate:-50% 0;color:var(--accent);font-weight:500;background:var(--bg);padding:0 6px;transition:left .35s var(--ease)}
+.s-rows{position:relative}
+.s-over{position:absolute;top:0;bottom:0;left:calc(var(--pl) + var(--c1) + var(--g));right:calc(var(--pr) + var(--c3) + var(--g));pointer-events:none}
+.s-close{position:absolute;top:0;bottom:0;background:repeating-linear-gradient(135deg,color-mix(in srgb,#b98a2e 26%,transparent) 0 1px,transparent 1px 6px);transition:opacity .2s}
+.s-closed-off .s-close{opacity:0}
+.s-build{position:absolute;top:0;bottom:0;width:1px;background:var(--accent);transition:left .35s var(--ease)}
+.s-row{align-items:center;min-height:58px;border-top:1px solid var(--line);transition:background-color .15s}.s-row:hover{background:color-mix(in srgb,var(--surface) 22%,transparent)}
+.s-name{min-width:0}
+.s-name b{display:block;font-weight:500;font-size:15px;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .15s}
+.s-name span{display:block;font-size:13px;line-height:18px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.s-row:hover .s-name b{color:var(--accent)}
+.s-track{position:relative;height:40px}
+.s-bar{position:absolute;top:13px;height:14px;border-radius:4px;background:color-mix(in srgb,var(--ink) 16%,var(--bg))}.s-row.crit .s-bar{background:var(--accent)}
+.s-spare{position:absolute;top:20px;border-top:1px solid color-mix(in srgb,var(--ink) 32%,transparent)}.s-row.crit .s-spare{display:none}
+.s-spare::after{content:"";position:absolute;right:-2px;top:-3px;width:5px;height:5px;border-radius:50%;background:var(--ink-3)}
+.s-h{position:absolute;top:20px;width:12px;height:30px;translate:-50% -50%;border-radius:4px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--ink-3);cursor:ew-resize;touch-action:none;transition:box-shadow .15s}
+.s-h::before{content:"";position:absolute;inset:-7px -16px}
+.s-h::after{content:"";position:absolute;left:5px;top:9px;bottom:9px;width:2px;border-radius:1px;background:var(--ink-3)}
+.s-h:hover,.s-h.drag,.s-row.crit .s-h{box-shadow:inset 0 0 0 1px var(--accent)}.s-h:hover::after,.s-h.drag::after,.s-row.crit .s-h::after{background:var(--accent)}
+.s-out{text-align:right;white-space:nowrap}
+.s-out b{display:block;font-weight:500;font-size:15px;line-height:20px}.s-out span{display:block;font-size:13px;line-height:18px;color:var(--ink-2)}
+.s-row.crit .s-out span{color:var(--accent);font-weight:500}
+</style>
+</head>
+<body>
+<section class="block fr" id="try">
+ <div class="head"><h2>Move a lead time and see what it hits. <span>This is the live scheduler on a 150-unit build. Drag any bar.</span></h2></div>
+ <div class="sched" id="sched">
+  <div class="sum">
+   <div><span>DVT-1 starts</span><b class="num" data-v="start">Jan 13</b></div>
+   <div><span>First units ship</span><b class="num"><em data-v="ship">Apr 19</em><i class="tag slip" data-v="diff" hidden></i></b></div>
+   <div><span>Sets the date</span><b data-v="crit">Bottom enclosure</b></div>
+   <div class="sum-ctl">
+    <label class="sw"><input type="checkbox" id="closure" checked><i></i><span>Lunar New Year closure, Feb 6 to 20</span></label>
+    <button class="link" id="reset" hidden>Reset the plan</button>
+   </div>
+  </div>
+  <div class="s-grid">
+   <div class="s-axis"><div></div><div class="s-ticks"><span class="num" style="left:23.81%">Dec</span><span class="num" style="left:48.413%">Jan</span><span class="num" style="left:73.016%">Feb</span><span class="num" style="left:95.238%">Mar</span><span class="s-closed" style="left:82.54%">Closed</span><span class="s-flag num" data-flag>DVT-1</span></div><div></div></div>
+   <div class="s-rows">
+    <div class="s-over"><i class="s-close" style="left:76.984%;width:11.905%"></i><i class="s-build" style="left:57.937%"></i></div>
+    <div class="s-row crit" data-o="1" data-lead="68" data-cn="1"><div class="s-name"><b>Bottom enclosure, T1 shots</b><span>Hengtai Mould, Dongguan</span></div><div class="s-track"><i class="s-bar" style="left:0.794%;width:53.968%"></i><i class="s-spare" style="left:54.762%;width:3.175%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Bottom enclosure, T1 shots" aria-valuemin="1" aria-valuemax="118" aria-valuenow="68" aria-valuetext="68 days, arrives Jan 9" style="left:54.762%"></div></div><div class="s-out"><b class="num">Jan 9</b><span class="num">Sets the date</span></div></div>
+    <div class="s-row" data-o="1" data-lead="61" data-cn="1"><div class="s-name"><b>Top enclosure, T1 shots</b><span>Hengtai Mould, Dongguan</span></div><div class="s-track"><i class="s-bar" style="left:0.794%;width:48.412%"></i><i class="s-spare" style="left:49.206%;width:8.731%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Top enclosure, T1 shots" aria-valuemin="1" aria-valuemax="118" aria-valuenow="61" aria-valuetext="61 days, arrives Jan 2" style="left:49.206%"></div></div><div class="s-out"><b class="num">Jan 2</b><span class="num">11 d spare</span></div></div>
+    <div class="s-row" data-o="5" data-lead="52" data-cn="0"><div class="s-name"><b>CO₂ sensor module</b><span>Arrowline Supply, Reno</span></div><div class="s-track"><i class="s-bar" style="left:3.968%;width:41.270%"></i><i class="s-spare" style="left:45.238%;width:12.699%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, CO₂ sensor module" aria-valuemin="1" aria-valuemax="114" aria-valuenow="52" aria-valuetext="52 days, arrives Dec 28" style="left:45.238%"></div></div><div class="s-out"><b class="num">Dec 28</b><span class="num">16 d spare</span></div></div>
+    <div class="s-row" data-o="8" data-lead="47" data-cn="1"><div class="s-name"><b>Li-ion pack, 2,400 mAh</b><span>Norvik Cells, Huizhou</span></div><div class="s-track"><i class="s-bar" style="left:6.349%;width:37.302%"></i><i class="s-spare" style="left:43.651%;width:14.286%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Li-ion pack, 2,400 mAh" aria-valuemin="1" aria-valuemax="111" aria-valuenow="47" aria-valuetext="47 days, arrives Dec 26" style="left:43.651%"></div></div><div class="s-out"><b class="num">Dec 26</b><span class="num">18 d spare</span></div></div>
+    <div class="s-row" data-o="11" data-lead="38" data-cn="1"><div class="s-name"><b>Display and flex</b><span>Kingwell Opto, Huizhou</span></div><div class="s-track"><i class="s-bar" style="left:8.73%;width:30.159%"></i><i class="s-spare" style="left:38.889%;width:19.048%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Display and flex" aria-valuemin="1" aria-valuemax="108" aria-valuenow="38" aria-valuetext="38 days, arrives Dec 20" style="left:38.889%"></div></div><div class="s-out"><b class="num">Dec 20</b><span class="num">24 d spare</span></div></div>
+    <div class="s-row" data-o="15" data-lead="31" data-cn="1"><div class="s-name"><b>Mainboard PCBA, rev C</b><span>Brightwell PCB, Shenzhen</span></div><div class="s-track"><i class="s-bar" style="left:11.905%;width:24.603%"></i><i class="s-spare" style="left:36.508%;width:21.429%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Mainboard PCBA, rev C" aria-valuemin="1" aria-valuemax="104" aria-valuenow="31" aria-valuetext="31 days, arrives Dec 17" style="left:36.508%"></div></div><div class="s-out"><b class="num">Dec 17</b><span class="num">27 d spare</span></div></div>
+    <div class="s-row" data-o="22" data-lead="19" data-cn="0"><div class="s-name"><b>Silicone gasket, 40A</b><span>Tri-Seal, Penang</span></div><div class="s-track"><i class="s-bar" style="left:17.46%;width:15.080%"></i><i class="s-spare" style="left:32.54%;width:25.397%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Silicone gasket, 40A" aria-valuemin="1" aria-valuemax="97" aria-valuenow="19" aria-valuetext="19 days, arrives Dec 12" style="left:32.54%"></div></div><div class="s-out"><b class="num">Dec 12</b><span class="num">32 d spare</span></div></div>
+    <div class="s-row" data-o="30" data-lead="9" data-cn="0"><div class="s-name"><b>Screw and insert kit</b><span>Fastlane Hardware, Cleveland</span></div><div class="s-track"><i class="s-bar" style="left:23.81%;width:7.142%"></i><i class="s-spare" style="left:30.952%;width:26.985%"></i><div class="s-h" role="slider" tabindex="0" aria-label="Lead time, Screw and insert kit" aria-valuemin="1" aria-valuemax="89" aria-valuenow="9" aria-valuetext="9 days, arrives Dec 10" style="left:30.952%"></div></div><div class="s-out"><b class="num">Dec 10</b><span class="num">34 d spare</span></div></div>
+   </div>
+  </div>
+  <p class="sr" aria-live="polite" id="sched-live"></p>
+ </div>
+</section>
+<div class="spacer fr"></div>
+<script>
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  /* dates: day numbers from Nov 1 2026, always in UTC so the sample plan never shifts with the visitor's clock */
+  var DAY = 864e5, BASE = Date.UTC(2026, 10, 1), MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function day(y, m, d) { return Math.round((Date.UTC(y, m - 1, d) - BASE) / DAY); }
+  function label(n) { var x = new Date(BASE + n * DAY); return MON[x.getUTCMonth()] + ' ' + x.getUTCDate(); }
+  var CLOSE_A = day(2027, 2, 6), CLOSE_B = day(2027, 2, 20);
+  function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
+  /* real logic: latest part arrival + 4 days inspection = DVT-1, then 81 days to first units */
+  var box = $('#sched'), rows = $$('.s-row', box), touched = false, demo = false;
+  var AX1 = day(2027, 3, 7), closure = $('#closure'), reset = $('#reset');
+  var parts = rows.map(function (el) {
+    return { el: el, o: +el.dataset.o, lead: +el.dataset.lead, base: +el.dataset.lead, cn: el.dataset.cn === '1',
+      name: $('.s-name b', el).textContent, bar: $('.s-bar', el), spare: $('.s-spare', el), h: $('.s-h', el),
+      when: $('.s-out b', el), note: $('.s-out span', el) };
+  });
+  var v = {}; $$('[data-v]', box).forEach(function (e) { v[e.dataset.v] = e; });
+  var flag = $('[data-flag]', box), line = $('.s-build', box), live = $('#sched-live');
+  var pct = function (n) { return n / AX1 * 100; };
+  var settle = function (n, cn) { return closure.checked && cn && n >= CLOSE_A && n <= CLOSE_B ? CLOSE_B + 1 : n; };
+  var plan = function () {
+    var last = 0;
+    parts.forEach(function (p) { p.at = settle(p.o + p.lead, p.cn); last = Math.max(last, p.at); });
+    var start = settle(last + 4, true);
+    return { last: last, start: start, ship: start + 81 + (closure.checked && start < CLOSE_A ? 15 : 0) };
+  };
+  var baseShip = plan().ship, liveT;
+  function draw() {
+    var r = plan(), crit = null, dirty = !closure.checked;
+    parts.forEach(function (p) {
+      var c = p.at === r.last; if (c && !crit) crit = p;
+      if (p.lead !== p.base) dirty = true;
+      p.el.classList.toggle('crit', c);
+      p.bar.style.width = (pct(p.at) - pct(p.o)) + '%';
+      p.spare.style.left = pct(p.at) + '%';
+      p.spare.style.width = Math.max(0, pct(r.start) - pct(p.at)) + '%';
+      p.h.style.left = pct(p.at) + '%';
+      p.h.setAttribute('aria-valuenow', p.lead);
+      p.h.setAttribute('aria-valuetext', p.lead + ' days, arrives ' + label(p.at));
+      p.when.textContent = label(p.at);
+      p.note.textContent = c ? 'Sets the date' : (r.start - p.at) + ' d spare';
+    });
+    line.style.left = flag.style.left = pct(r.start) + '%';
+    v.start.textContent = label(r.start); v.ship.textContent = label(r.ship); v.crit.textContent = crit.name.split(',')[0];
+    var diff = r.ship - baseShip;
+    v.diff.hidden = !diff; v.diff.textContent = (diff > 0 ? '+' : '−') + Math.abs(diff) + 'd';
+    v.diff.classList.toggle('slip', diff > 0); v.diff.classList.toggle('good', diff < 0);
+    reset.hidden = !dirty || demo;
+    box.classList.toggle('s-closed-off', !closure.checked);
+    clearTimeout(liveT);
+    liveT = setTimeout(function () { live.textContent = crit.name + ' sets the date. DVT-1 starts ' + label(r.start) + ', first units ship ' + label(r.ship) + '.'; }, 400);
+  }
+  parts.forEach(function (p) {
+    var max = AX1 - 7 - p.o;
+    function setLead(n) { p.lead = clamp(n, 1, max); draw(); }
+    p.h.addEventListener('pointerdown', function (e) { e.preventDefault(); p.h.focus({ preventScroll: true }); p.h.setPointerCapture(e.pointerId); p.h.classList.add('drag'); });
+    p.h.addEventListener('pointermove', function (e) {
+      if (!p.h.classList.contains('drag')) return;
+      var box = p.h.parentNode.getBoundingClientRect();
+      setLead(Math.round((e.clientX - box.left) / box.width * AX1) - p.o);
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) { p.h.addEventListener(t, function () { p.h.classList.remove('drag'); }); });
+    p.h.addEventListener('keydown', function (e) {
+      var step = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1, PageUp: 7, PageDown: -7 }[e.key];
+      if (e.key === 'Home') { e.preventDefault(); return setLead(1); }
+      if (e.key === 'End') { e.preventDefault(); return setLead(max); }
+      if (!step) return;
+      e.preventDefault();
+      var n = p.lead + step, at = p.o + n;
+      if (closure.checked && p.cn && at >= CLOSE_A && at <= CLOSE_B) n = (step > 0 ? CLOSE_B + 1 : CLOSE_A - 1) - p.o;
+      setLead(n);
+    });
+  });
+  closure.addEventListener('change', function () { touched = true; draw(); });
+  reset.addEventListener('click', function () { parts.forEach(function (p) { p.lead = p.base; }); closure.checked = true; draw(); });
+  ['pointerdown', 'keydown'].forEach(function (t) { box.addEventListener(t, function () { touched = true; }); });
+  draw();
+  /* on first arrival, once: the top enclosure runs late, the build moves, then it lets go */
+  if (calm || !('IntersectionObserver' in window)) return;
+  function nudge() {
+    var p = parts[1], t0 = performance.now(), peak = 13;
+    demo = true;
+    (function step(now) {
+      if (touched) { demo = false; return draw(); }
+      var t = now - t0, k = t < 800 ? t / 800 : t < 2000 ? 1 : t < 2600 ? 1 - (t - 2000) / 600 : 0;
+      k = k * k * (3 - 2 * k);
+      p.lead = p.base + Math.round(peak * k); draw();
+      if (t < 2600) requestAnimationFrame(step); else { demo = false; draw(); }
+    })(t0);
+  }
+  new IntersectionObserver(function (es, ob) { if (es[0].isIntersecting) { ob.disconnect(); setTimeout(nudge, 500); } }, { threshold: .55 }).observe($('.s-rows', box));
+})();
+</script>
+</body>
+</html>

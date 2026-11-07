@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- Replaces the generic "how it works" block with a ranked evidence table: seven rows per question, each with rank, a tonal square, speaker, note and timestamp, a stepped bar and a share that sums to 100.
+     Passages the model read but did not use stay listed at 0%, and clicking any row quotes that passage below. -->
+<html lang="en"><head><meta charset="utf-8"><title>Passage ranking table</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&family=Newsreader:opsz,wght@6..72,400&display=swap">
+<style>
+:root{--bg:#f7f6f5;--sheet:#fff;--ink:#000;--ink-2:#565555;--ink-3:#6c6b6b;--muted:#7b7a7a;--ink-4:#b4b3b2;
+  --line:rgb(0 0 0/.09);--tint:rgb(0 0 0/.045);--accent:#2200ff;
+  --a1:color-mix(in srgb,var(--accent) 34%,#fff);--a2:var(--accent);--a3:color-mix(in srgb,var(--accent) 52%,#000);
+  --display:"Hanken Grotesk",system-ui,sans-serif;--text:"Newsreader",Georgia,serif;--ui:"Hanken Grotesk",system-ui,sans-serif;--ease:cubic-bezier(.4,0,.2,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.55 var(--text);-webkit-font-smoothing:antialiased}
+h2,p,ol,figure{margin:0;padding:0}ol{list-style:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+.wrap{width:100%;max-width:1320px;margin-inline:auto;padding-inline:32px}
+.sec{position:relative;margin-block:64px}
+.rule{display:block;height:2px;background:var(--ink)}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,680px);gap:0 48px;padding-top:22px}
+.split-l{display:flex;flex-direction:column;justify-content:space-between;gap:40px;min-width:0}
+.d2{font:400 32px/1.18 var(--display);letter-spacing:-.018em;max-width:480px;text-wrap:pretty}.d2 span{display:block}.d2 .lead{color:var(--muted)}
+.body{color:var(--ink-2);max-width:46ch}
+/* Compact leaderboard */
+.lb{min-width:0;border:1px solid var(--line);background:var(--sheet);font:400 13px/1.3 var(--ui)}
+.lb-tabs{display:flex;gap:2px;padding:8px;border-bottom:1px solid var(--line)}
+.lb-tabs button{height:28px;padding:0 10px;border-radius:6px;font:500 13px/1 var(--ui);color:var(--ink-2);transition:background-color .18s var(--ease),color .18s var(--ease)}
+.lb-tabs button:hover,.lb-tabs button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
+.lb-q{padding:14px 16px 12px;font:500 15px/1.35 var(--ui)}
+.lb-rows{border-top:1px solid var(--line)}
+.row{border-bottom:1px solid var(--line)}
+.row button{display:grid;grid-template-columns:18px 9px minmax(0,auto) minmax(0,1fr) 110px 40px;gap:10px;align-items:center;width:100%;height:37px;padding:0 16px;text-align:left;transition:background-color .18s var(--ease),color .18s var(--ease)}
+.rk{color:var(--ink-3);font-variant-numeric:tabular-nums}
+.sq{width:9px;height:9px;background:var(--s,var(--ink-4))}
+.nm{white-space:nowrap}
+.qu{font-size:11.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{display:block;height:6px;background:var(--tint)}
+.bar i{display:block;height:100%;width:100%;background:var(--s,var(--ink-4));transform:scaleX(var(--v,0));transform-origin:0 50%;transition:transform .42s steps(8)}
+.pc{text-align:right;font-variant-numeric:tabular-nums}
+.row.zero .nm,.row.zero .pc{color:var(--ink-3)}
+.row button:hover,.row.on button{background:var(--ink);color:var(--bg)}
+.row button:hover .rk,.row button:hover .qu,.row.on .rk,.row.on .qu{color:rgb(255 255 255/.72)}
+.row button:hover .pc,.row.on .pc,.row button:hover .nm,.row.on .nm{color:var(--bg)}
+.row button:hover .bar,.row.on .bar{background:rgb(255 255 255/.16)}
+.row button:hover .sq,.row.on .sq,.row button:hover .bar i,.row.on .bar i{background:#fff}
+.lb-pass{margin:0;padding:16px;min-height:104px}
+.lb-pass p{font:400 18px/1.45 var(--text)}
+.lb-pass footer{margin-top:8px;font:400 12.5px/1.3 var(--ui);color:var(--ink-3)}
+</style></head><body>
+<div class="wrap"><section class="sec" id="sources">
+  <i class="rule"></i>
+  <div class="split">
+    <div class="split-l">
+      <h2 class="d2"><span class="lead">An answer is only as good as the passages under it</span><span>Ibid ranks them and shows its working</span></h2>
+      <p class="body">The table lists what Ibid read for the question above, and how much of the answer each passage supports. Passages it read and did not use stay on the list at zero, so you can see what it left out.</p>
+    </div>
+    <figure class="lb" id="lb">
+      <div class="lb-tabs" role="group" aria-label="Choose a question">
+        <button type="button" data-a="0" aria-pressed="true">Terms</button>
+        <button type="button" data-a="1" aria-pressed="false">Who owes what</button>
+        <button type="button" data-a="2" aria-pressed="false">Changes</button>
+        <button type="button" data-a="3" aria-pressed="false">Board</button>
+      </div>
+      <figcaption class="lb-q" id="lbQ"></figcaption>
+      <ol class="lb-rows" id="lbRows"></ol>
+      <blockquote class="lb-pass" id="lbP"></blockquote>
+    </figure>
+  </div>
+</section></div>
+<script>
+(function () {
+  const notes = { veloma: 'Veloma, spring price list', ops: 'Weekly ops', board: 'Board call, Q3 review', plan: 'March plan', dealer: 'Dealer day, Perth' };
+  const passages = {
+    p1: { note: 'veloma', t: '14:07', who: 'Anneke de Vries', text: "We can hold this year's wholesale price on the Tarn frame until the end of February, but not past it." },
+    p2: { note: 'veloma', t: '14:32', who: 'Morag Sinclair', text: 'So the spring list goes out at 412 euros a frame, and that stands to the 28th.' },
+    p3: { note: 'veloma', t: '15:10', who: 'Anneke de Vries', text: "From March it's 438. If an order is forty frames or more, we can do 425." },
+    p4: { note: 'veloma', t: '31:44', who: 'Callum Reid', text: "I'll send Anneke the revised list by Friday." },
+    p5: { note: 'veloma', t: '38:12', who: 'Morag Sinclair', text: 'Freight stays on us for anything over twenty frames.' },
+    p6: { note: 'veloma', t: '44:51', who: 'Anneke de Vries', text: 'I need the Q2 forecast from you before the 20th, otherwise our allocation slips a month.' },
+    p7: { note: 'veloma', t: '46:03', who: 'Morag Sinclair', text: "Fiona has the forecast. I'll ask her tomorrow." },
+    p8: { note: 'ops', t: '06:18', who: 'Fiona Geddes', text: 'The held price now needs forty frames, not the fifty we put in the March plan.' },
+    p9: { note: 'ops', t: '09:40', who: 'Ewan Tait', text: 'Rotterdam lead time is back up to nine weeks. It was six in March.' },
+    p10: { note: 'ops', t: '12:02', who: 'Fiona Geddes', text: "I'll have the Q2 forecast with Anneke by the 18th." },
+    p11: { note: 'board', t: '22:36', who: 'Isla Morrison', text: 'Before December I want to see margin per frame at the new price, not the blended figure.' },
+    p12: { note: 'board', t: '23:10', who: 'Rory Aitken', text: 'And a second supplier quote for the Tarn frame, even if we stay with Veloma.' },
+    p13: { note: 'board', t: '41:55', who: 'Isla Morrison', text: 'Bring the dealer survey to the January meeting.' },
+    p14: { note: 'plan', t: 'p. 6', who: 'March plan', text: 'Hold pricing requires a minimum order of 50 frames.' },
+    p15: { note: 'plan', t: 'p. 8', who: 'March plan', text: 'Rotterdam lead time assumed at 6 weeks.' },
+    p16: { note: 'plan', t: 'p. 9', who: 'March plan', text: 'Freight paid by Harlaw on orders over 30 frames.' },
+    p17: { note: 'dealer', t: '01:12', who: 'Morag Sinclair', text: 'Three dealers asked for the Tarn in a 58. Worth raising with Anneke.' }
+  };
+  /* `share` is the part of the answer each passage supports, so it sums to 100. `read` was read and not used. */
+  const answers = [
+    { q: 'What did we agree with Veloma on the spring price list?', share: { p2: 34, p3: 31, p1: 21, p5: 14 }, read: ['p6', 'p8', 'p17'] },
+    { q: "Who owes what after Tuesday's call?", share: { p6: 38, p10: 27, p4: 26, p7: 9 }, read: ['p5', 'p13', 'p17'] },
+    { q: 'What has changed since the March plan?', share: { p8: 19, p9: 19, p14: 17, p5: 16, p15: 15, p16: 14 }, read: ['p2'] },
+    { q: 'What did the board ask for in October?', share: { p11: 46, p12: 33, p13: 21 }, read: ['p17', 'p1', 'p3', 'p6'] }
+  ];
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const STEPS = ['var(--a3)', 'var(--a2)', 'var(--a2)', 'var(--a1)', 'var(--a1)', 'var(--a1)'];
+  function leaderboard(ans) {
+    const used = Object.entries(ans.share).sort((a, b) => b[1] - a[1]);
+    const rows = [...used, ...ans.read.map(id => [id, 0])].slice(0, 7);
+    $('#lbQ').textContent = ans.q;
+    $('#lbRows').innerHTML = rows.map(([id, pct], i) => {
+      const p = passages[id], c = pct ? STEPS[Math.min(i, 5)] : 'var(--ink-4)';
+      return `<li class="row${pct ? '' : ' zero'}${i ? '' : ' on'}" data-id="${id}"><button type="button"><span class="rk">${i + 1}</span><i class="sq" style="--s:${c}"></i><span class="nm">${esc(p.who)}</span><span class="qu">${esc(notes[p.note])} · ${p.t}</span><span class="bar"><i style="--v:0;--s:${c}" data-v="${pct / 100}"></i></span><span class="pc">${pct}%</span></button></li>`;
+    }).join('');
+    requestAnimationFrame(() => requestAnimationFrame(() => $$('#lbRows [data-v]').forEach(b => b.style.setProperty('--v', b.dataset.v))));
+    pickRow(rows[0][0]);
+    $$('.lb-tabs button').forEach((b, i) => b.setAttribute('aria-pressed', answers[i] === ans));
+  }
+  function pickRow(id) {
+    const p = passages[id];
+    $$('#lbRows .row').forEach(r => r.classList.toggle('on', r.dataset.id === id));
+    $('#lbP').innerHTML = `<p>${esc(p.text)}</p><footer>${esc(p.who)}, ${esc(notes[p.note])}, ${p.t}</footer>`;
+  }
+  $('#lbRows').addEventListener('click', e => { const r = e.target.closest('.row'); if (r) pickRow(r.dataset.id); });
+  $$('.lb-tabs button').forEach(b => b.addEventListener('click', () => leaderboard(answers[+b.dataset.a])));
+  leaderboard(answers[0]);
+})();
+</script>
+</body></html>

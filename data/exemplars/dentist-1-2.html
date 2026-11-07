@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- What makes it good: a comparison with no ticks or crosses, where one solid blue slab overshoots the header and last row and the row rules run behind it, so the winning column is structure rather than a highlight. Eight rows each state a specific fact in both columns, including who pays when an estimate is wrong, and a footnote says what the rival column does and does not claim. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Practice comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000000;
+  --ink:#ffffff; --ink-2:#c6c9d2; --muted:#8a8d96;
+  --accent:#173075; --accent-up:#2a4aa8;
+  --line:rgb(255 255 255/.1);
+  --font:'Zalando Sans',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;
+  --soft:cubic-bezier(.33,1,.68,1);
+  --rail:max(clamp(16px,6.1vw,88px),calc((100vw - 1264px)/2)); --in:16px;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow-x:clip}
+h2,p{margin:0;padding:0}
+
+.band{position:relative;padding:112px calc(var(--rail) + var(--in))}
+.chapter{max-width:760px}
+h2{font-size:48px;font-weight:400;line-height:1.08;letter-spacing:-.025em;text-wrap:balance}
+.chapter p{margin-top:20px;max-width:620px;font-size:18px;line-height:1.5;color:var(--muted)}
+.note{margin-top:32px;max-width:560px;font-size:15px;color:var(--muted)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* Comparison: one slab overshoots the rows, and the rules pass behind it */
+.cmp{--me:320px;--ri:300px;position:relative;margin:96px calc(var(--in)*-1) 72px;isolation:isolate}
+.cmp::before{content:"";position:absolute;z-index:-1;top:-40px;bottom:-32px;right:var(--ri);width:var(--me);background:var(--accent);border-radius:2px}
+.cmp table{width:100%;border-collapse:collapse;table-layout:fixed}
+.cmp th:nth-child(2),.cmp td:nth-child(2){width:var(--me)}
+.cmp th:nth-child(3),.cmp td:nth-child(3){width:var(--ri)}
+.cmp thead th{height:56px;text-align:left;vertical-align:middle;padding:0 28px}
+.cmp thead .me{font-size:24px;font-weight:400;letter-spacing:-.02em}
+.cmp thead .ri{font-size:15px;font-weight:500;color:var(--muted)}
+.cmp tbody th,.cmp tbody td{height:64px;padding:10px 28px;text-align:left;font-size:16px;line-height:1.3;font-weight:400;border-top:1px solid var(--line);transition:background-color .2s var(--soft)}
+.cmp tbody th{padding-left:var(--in);color:var(--ink-2)}
+.cmp tbody .me{color:var(--ink);font-weight:500;border-top-color:rgb(255 255 255/.22)}
+.cmp tbody .ri{color:var(--muted)}
+.cmp tbody tr:hover th,.cmp tbody tr:hover .ri{background:rgb(255 255 255/.03)}
+.cmp tbody tr:hover .me{background:var(--accent-up)}
+
+@media(max-width:700px){
+  :root{--in:12px}
+  .band{padding-block:72px}
+  h2{font-size:34px;line-height:1.1}
+  .chapter p{font-size:16px}
+  .cmp{--me:120px;--ri:104px;margin-top:72px}
+  .cmp thead th{padding:0 8px}
+  .cmp thead .me{font-size:15px;font-weight:500;letter-spacing:0}
+  .cmp thead .ri{font-size:13px;line-height:1.2}
+  .cmp tbody th,.cmp tbody td{height:auto;min-height:72px;padding:10px 8px;font-size:13px;vertical-align:top}
+  .cmp tbody th{padding-left:var(--in);font-size:14px}
+}
+</style>
+</head>
+<body>
+<section class="band" id="compare" aria-labelledby="h-compare">
+  <div class="chapter">
+    <h2 id="h-compare">How Novosad Dental compares with a typical group practice</h2>
+    <p>Both can deliver sound dentistry. The differences lie in how treatment is priced, how dentists are paid and who absorbs an estimate that proves wrong.</p>
+  </div>
+  <div class="cmp">
+    <table>
+      <thead><tr><th scope="col"><span class="vh">Topic</span></th><th scope="col" class="me">Novosad Dental</th><th scope="col" class="ri">Typical group practice</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Treatment price</th><td class="me">Written to the dollar before we start</td><td class="ri">An estimate range at the front desk</td></tr>
+        <tr><th scope="row">If the bill exceeds the estimate</th><td class="me">We pay the difference</td><td class="ri">You pay the difference</td></tr>
+        <tr><th scope="row">How dentists are paid</th><td class="me">Salary, with no treatment bonus</td><td class="ri">A share of treatment billed</td></tr>
+        <tr><th scope="row">Your dentist from visit to visit</th><td class="me">The same one</td><td class="ri">Whoever is scheduled</td></tr>
+        <tr><th scope="row">Length of a first visit</th><td class="me">75 minutes</td><td class="ri">30 to 45 minutes</td></tr>
+        <tr><th scope="row">Cleaning appointments</th><td class="me">One patient, one hygienist, 60 minutes</td><td class="ri">One hygienist across two chairs</td></tr>
+        <tr><th scope="row">Your X-rays</th><td class="me">On your phone the same day</td><td class="ri">Released on written request</td></tr>
+        <tr><th scope="row">Without insurance</th><td class="me">$340 a year, prices published</td><td class="ri">Third-party medical credit</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note"><!-- invented: replace before launch -->The right-hand column describes common arrangements at Central Texas group practices. It does not describe any single company.</p>
+</section>
+</body>
+</html>

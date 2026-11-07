@@ -1,0 +1,188 @@
+<!doctype html>
+<!-- What makes it good: five different slices of the same client file instead of five icon cards: a text thread with a chartplotter drawn in inline SVG, a month grid paired with a deadline list using the solid and dashed code, an interpreter roster with response times, a bill read line by line, and documents sorted by who may see them. Every fragment is cut off by its tray, so it reads as a piece of something larger. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Client file fragments</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&family=Public+Sans:wght@400..500&display=swap">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion-on')</script>
+<style>
+:root{
+  --bg:#fff;--surface:#f5f5f4;--ink:#101114;
+  --ink-2:#55564d;--ink-3:#6c6d61;--ink-4:#a5a598;
+  --tone-2:#edece6;--tone-3:#e2e0d2;
+  --line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --display:'Literata',Georgia,serif;
+  --sans:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:24px;--gap:12px;
+  --r-l:20px;--r-m:12px;--r-s:6px;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg,canvas{display:block}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.mono{font-family:var(--mono)}
+.sec{padding:48px var(--g) 0}
+.split{display:grid;grid-template-columns:55% minmax(0,1fr);align-items:end;padding-bottom:40px;box-shadow:inset 0 -1px 0 var(--line)}
+.split h2{max-width:15em;font:400 44px/1.1 var(--display);letter-spacing:-.02em}
+.split p{max-width:540px;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.av{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font:500 9px/1 var(--sans);color:var(--ink);background:var(--tone-3)}
+/* fragment trays */
+.trays{display:grid;grid-template-columns:repeat(6,1fr);gap:var(--gap);margin-top:40px}
+.tray{position:relative;display:flex;flex-direction:column;height:520px;padding:28px 28px 0;overflow:hidden;border-radius:var(--r-l);background:var(--surface);transition:background-color .3s var(--ease)}
+.tray:hover{background:var(--tone-2)}
+.w3{grid-column:span 3}.w2{grid-column:span 2}
+.tray h3{font:400 24px/1.2 var(--display);letter-spacing:-.014em}
+.tray>p{max-width:32em;margin-top:8px;color:var(--ink-2)}
+.frag{margin-top:24px;flex:1;min-height:0;font:400 13px/1.4 var(--sans)}
+.frag.rows{margin-bottom:-12px;overflow:hidden;border-radius:var(--r-m) var(--r-m) 0 0;background:var(--bg)}
+.frag.rows>div{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:0 16px;border-top:1px solid var(--line)}
+.frag.rows>div:first-child{border-top:0}
+.frag.rows b{font-weight:500;white-space:nowrap}
+.frag.rows span{color:var(--ink-3);text-align:right}
+.frag.rows span.run{color:var(--ink-2)}
+.frag.bill b{width:44px;flex:none;font:400 12px/1 var(--mono);color:var(--ink-3)}
+.frag.bill span{flex:1;min-width:0;text-align:left;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frag.bill em{font-style:normal;font-size:12.5px}
+.frag.docs b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.frag.docs span{white-space:nowrap;font-size:12px}
+.frag.docs .ic{color:var(--ink-3)}
+.chat{position:relative;display:flex;flex-direction:column;gap:10px;align-items:flex-end;margin-bottom:-120px}
+.bub.me{width:320px;padding:6px 6px 8px;border-radius:14px;background:var(--bg)}
+.plot{width:100%;height:auto}
+.bub.me.txt{width:auto;max-width:400px;padding:11px 14px;background:var(--ink);color:var(--bg);font-size:13.5px}
+.bub.me small{display:block;margin:7px 6px 0;font-size:11.5px;color:var(--ink-3)}
+.bub.them{align-self:flex-start;display:flex;gap:10px;max-width:400px;padding:11px 14px;border-radius:14px;background:var(--bg)}
+.bub.typing{transition:opacity .4s var(--ease) .7s,translate .4s var(--ease) .7s}
+.bub.them p{font-size:13.5px;color:var(--ink)}
+.cal{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);grid-template-rows:auto 1fr;align-content:start;gap:16px 24px;margin-bottom:-12px;padding:18px 18px 0;border-radius:var(--r-m) var(--r-m) 0 0;background:var(--bg)}
+.cal-h{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center}
+.cal-h b{font-weight:500}
+.cal-h .mono{font-size:12px;color:var(--ink-3)}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;align-content:start;font-size:12px}
+.cal-g b{height:24px;display:grid;place-items:center;font-weight:400;color:var(--ink-3)}
+.cal-g i{aspect-ratio:1;display:grid;place-items:center;border-radius:var(--r-s);font-style:normal;color:var(--ink-2)}
+.cal-g .x{color:var(--ink-4)}
+.cal-g .d{background:var(--ink);color:var(--bg)}
+.cal-g .o{outline:1px dashed var(--ink-3);outline-offset:-1px;color:var(--ink)}
+.cal-l li{display:grid;grid-template-columns:10px 54px minmax(0,1fr);gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line);font:400 12px/1.3 var(--mono);color:var(--ink-3)}
+.cal-l li:first-child{border-top:0}
+.cal-l i{width:9px;height:9px;border-radius:2px}
+.cal-l i.d{background:var(--ink)}
+.cal-l i.o{outline:1px dashed var(--ink-3)}
+.cal-l span{font:400 13px/1.3 var(--sans);color:var(--ink)}
+/* only applied once motion is confirmed, so everything is visible without it */
+.motion-on [data-live]:not(.live) .bub.typing{opacity:0;translate:0 8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-doc" viewBox="0 0 16 16"><path d="M4 2.500h5.500L12.500 5.500v8h-8.500zM9.500 2.500v3h3"/></symbol>
+</defs></svg>
+<section class="sec" id="file" aria-labelledby="h-file">
+  <header class="split">
+    <h2 id="h-file">What you can see in your file at any hour</h2>
+    <p>Clients work from the same file the lawyers do, on a phone or a wheelhouse laptop. There is no separate client view to fall out of date, and no charge for it.</p>
+  </header>
+  <div class="trays">
+    <article class="tray w3" data-live>
+      <h3>Send the desk a photo from the wheelhouse</h3>
+      <p>Text the desk number from any phone and it lands in the file, time-stamped.</p>
+      <div class="frag chat">
+        <div class="bub me"><svg class="plot" viewBox="0 0 280 150" role="img" aria-label="Photo of a chartplotter screen showing the vessel track stopping in a narrow passage, depth 2.1 metres">
+          <rect width="280" height="150" rx="8" fill="#0a0d10"/>
+          <path d="M-10 20C40 34 70 12 112 24s50 26 88 18 60-22 92-12" fill="none" stroke="#2c3a40"/><path d="M-10 46C36 56 74 36 118 48s54 22 86 16 56-18 88-12" fill="none" stroke="#2c3a40"/><path d="M-10 120c40-14 72 8 116-6s52-22 92-14 60 18 96 8" fill="none" stroke="#2c3a40"/><path d="M-10 150v-16c48-12 78 8 122-4s56-24 94-16 56 14 86 6v30z" fill="#3a3423"/><path d="M-10 0v12C40 26 72 6 112 16s52 24 90 16 58-20 90-14V0z" fill="#3a3423"/>
+          <path d="M18 120 58 108l40-16 44-12 38-8" fill="none" stroke="#cac6b2" stroke-width="1.5" stroke-dasharray="4 3"/><circle cx="180" cy="72" r="4" fill="#fff"/><circle cx="180" cy="72" r="9" fill="none" stroke="#fff" stroke-opacity=".4"/>
+          <text x="196" y="26" fill="#fff" font-family="ui-monospace,Menlo,monospace" font-size="15">2.1 m</text><text x="196" y="42" fill="#8d9a9e" font-family="ui-monospace,Menlo,monospace" font-size="10">SOG 0.0 kn</text><text x="196" y="55" fill="#8d9a9e" font-family="ui-monospace,Menlo,monospace" font-size="10">HDG 318</text><text x="12" y="141" fill="#8d9a9e" font-family="ui-monospace,Menlo,monospace" font-size="10">57 56.1N 152 47.8W</text>
+        </svg><small class="mono">02:58, added to Timeline</small></div>
+        <div class="bub them typing"><span class="av">TA</span><p>Got it. Leave the plotter on. Next, photos of the depth sounder and the engine panel.</p></div>
+        <div class="bub me txt"><p>Engine panel coming. Alarm log shows low oil pressure at 02:39, two minutes before we touched.</p></div>
+        <div class="bub them"><span class="av">TA</span><p>That matters. Do not clear the alarm history. I am calling the surveyor now.</p></div>
+      </div>
+    </article>
+    <article class="tray w3">
+      <h3>Every deadline, on your own calendar</h3>
+      <p>Subscribe once. Dashed dates are still running, and solid ones are done.</p>
+      <div class="frag cal">
+        <div class="cal-h"><b>November 2026</b><span class="mono">Subscribe, .ics</span></div>
+        <div class="cal-g mono" aria-hidden="true">
+          <b>S</b><b>M</b><b>T</b><b>W</b><b>T</b><b>F</b><b>S</b>
+          <i>1</i><i>2</i><i class="d">3</i><i class="o">4</i><i>5</i><i>6</i><i>7</i>
+          <i class="o">8</i><i>9</i><i>10</i><i>11</i><i class="o">12</i><i class="o">13</i><i>14</i>
+          <i>15</i><i>16</i><i>17</i><i>18</i><i class="o">19</i><i>20</i><i>21</i>
+          <i>22</i><i>23</i><i>24</i><i>25</i><i>26</i><i>27</i><i>28</i>
+          <i>29</i><i>30</i><i class="x">1</i><i class="x">2</i><i class="x">3</i><i class="x">4</i><i class="x">5</i>
+        </div>
+        <ul class="cal-l">
+          <li><i class="d"></i>Nov 3<span>Alcohol tests, done</span></li>
+          <li><i class="o"></i>Nov 4<span>Drug tests due 10:41</span></li>
+          <li><i class="o"></i>Nov 8<span>CG-2692 due</span></li>
+          <li><i class="o"></i>Nov 12<span>Coast Guard interview</span></li>
+          <li><i class="o"></i>Nov 13<span>NOVA response due</span></li>
+          <li><i class="o"></i>Nov 19<span>Surgeon review, D.R.</span></li>
+          <li><i class="o"></i>Dec 1<span>Lien hearing, Anchorage</span></li>
+        </ul>
+      </div>
+    </article>
+    <article class="tray w2">
+      <h3>Interpreters for the crew</h3>
+      <p>Statements are taken in the language the crew member thinks in.</p>
+      <div class="frag rows">
+        <div><b>Tagalog</b><span>T. Aquino, on staff</span></div>
+        <div><b>Spanish</b><span>H. Medeiros, on staff</span></div>
+        <div><b>Portuguese</b><span>H. Medeiros, on staff</span></div>
+        <div><b>Vietnamese</b><span class="run">On call, 40 min</span></div>
+        <div><b>Russian</b><span class="run">On call, 1 hour</span></div>
+        <div><b>Samoan</b><span class="run">On call, 2 hours</span></div>
+        <div><b>Tongan</b><span class="run">On call, 2 hours</span></div>
+        <div><b>Korean</b><span class="run">On call, 3 hours</span></div>
+      </div>
+    </article>
+    <article class="tray w2">
+      <h3>Bills a skipper can read</h3>
+      <p>Who, what, how long, in plain words. Expenses at cost, receipts attached.</p>
+      <div class="frag rows bill">
+        <div><b>Nov 3</b><span>First 72 hours, flat</span><em class="mono">$4,800.00</em></div>
+        <div><b>Nov 6</b><span>R. Sundsby, survey</span><em class="mono">$1,350.00</em></div>
+        <div><b>Nov 6</b><span>Skiff charter, at cost</span><em class="mono">$265.00</em></div>
+        <div><b>Nov 6</b><span>Clinic, 3 drug panels</span><em class="mono">$318.75</em></div>
+        <div><b>Nov 9</b><span>Certified mail, 4 notices</span><em class="mono">$38.16</em></div>
+        <div><b>Nov 9</b><span>Interview prep, 2.4 h</span><em class="mono">$744.00</em></div>
+        <div><b>Nov 12</b><span>Coast Guard interview, 3.1 h</span><em class="mono">$961.00</em></div>
+        <div><b>Nov 12</b><span>Airfare, Anchorage, at cost</span><em class="mono">$412.60</em></div>
+      </div>
+    </article>
+    <article class="tray w2">
+      <h3>Documents sorted by who may see them</h3>
+      <p>Privileged papers stay apart from what the underwriter receives.</p>
+      <div class="frag rows docs">
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Master&rsquo;s statement, draft 2</b><span>Privileged</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Deck log, Nov 2 to 3</b><span>Original at Kodiak</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Survey, preliminary</b><span>Shared, H&amp;M</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Alcohol test custody form</b><span>Shared, USCG</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Notice to P&amp;I club</b><span>Shared, club</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Tender&rsquo;s letter of claim</b><span>Received Nov 9</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Soundings sheet</b><span>Privileged</span></div>
+        <div><svg class="ic"><use href="#i-doc"/></svg><b>Wheel repair quote</b><span>Shared, H&amp;M</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+<script>
+/* Product surfaces run once when they come into view. */
+(function(){
+  var live=[].slice.call(document.querySelectorAll('[data-live]'));
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('live');io.unobserve(e.target)})},{threshold:.3});
+  live.forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>

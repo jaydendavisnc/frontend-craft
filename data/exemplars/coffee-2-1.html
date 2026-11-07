@@ -1,0 +1,206 @@
+<!doctype html>
+<!-- A shop table that reads as a roaster's ledger: five coffees across five columns of tabular figures whose totals really add up (72.0 kg in, 61.6 kg out, 14.4% loss), a sold-out row that keeps its place and gives its return date, and on every row still in stock a mailto with the subject already written. The close turns that return date into the next action, and its blue date stamp, the mark from the real bags, lands once with a small overshoot. -->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mowat roast log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&family=Literata:opsz,wght@24,400&display=swap">
+<script>document.documentElement.classList.add('js')</script>
+<style>
+:root{
+  --bone:#f0ede6;
+  --tint:#d3dadd;
+  --ink:#1a1613;
+  --ink-2:rgb(26 22 19/.66);
+  --ink-3:rgb(26 22 19/.44);
+  --line:rgb(26 22 19/.14);
+  --accent:#2444c0;
+  --on-accent:#fff;
+  --font-display:"Literata",Georgia,serif;
+  --font-text:"Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --g:80px;
+  --ease-ui:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--ink);font:400 17px/1.5 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+h2,p{margin:0;padding:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.wrap{max-width:1440px;margin-inline:auto;padding-inline:var(--g)}
+.acts{display:flex;align-items:center;gap:24px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;height:48px;padding:0 24px;border-radius:3px;background:var(--accent);color:var(--on-accent);font-size:15px;font-weight:500;line-height:1;transition:background-color .15s var(--ease-ui)}
+.btn:hover{background:color-mix(in oklab,var(--accent) 84%,#000)}
+
+/* the signature: a date stamp, as it is on the bags */
+.stamp{display:inline-block;padding:3px 8px 2px;border:1.5px solid currentColor;font-size:13px;font-weight:500;line-height:1.3;letter-spacing:.04em;text-transform:uppercase;font-variant-numeric:lining-nums tabular-nums;white-space:nowrap}
+
+/* shared section system */
+.sec{padding-block:120px}
+h2{font:400 36px/1.16 var(--font-display);letter-spacing:-.015em}
+h2.two>span:first-child{color:var(--ink-3);display:block}
+.link{text-decoration:underline;text-decoration-color:var(--ink-3);text-underline-offset:3px;transition:text-decoration-color .15s var(--ease-ui)}
+.link:hover{text-decoration-color:var(--ink)}
+
+/* beans: the roast log */
+.tint{background:var(--tint)}
+.beans-head{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:end;margin-bottom:56px}
+.beans-head p{color:var(--ink-2);max-width:46ch}
+.log{width:100%;border-collapse:collapse;font-variant-numeric:lining-nums tabular-nums}
+.log thead th{padding:0 0 12px;font-size:14px;font-weight:500;color:var(--ink-2);text-align:left;border-bottom:1px solid var(--ink)}
+.log tbody th,.log td{padding:16px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.log tbody th{font-weight:500;text-align:left;padding-right:32px}
+.log tbody th span{display:block;font-weight:400;color:var(--ink-2)}
+.log .n{text-align:right;padding-left:24px;white-space:nowrap}
+.log thead th.n{text-align:right}
+.log .r{text-align:right;padding-left:32px;white-space:nowrap;width:128px}
+.log .out .n,.log .out th{color:var(--ink-2)}
+.log .back{color:var(--ink-2)}
+.log tfoot th,.log tfoot td{padding:16px 0 0;border-bottom:0;font-weight:500;text-align:left}
+.log tfoot .n{text-align:right}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.close{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px;align-items:end;margin-top:96px;padding-top:32px;border-top:1px solid var(--ink)}
+.close h2{font-size:48px;line-height:1.08;letter-spacing:-.02em}
+.close h2 span{display:block}
+.close p{max-width:46ch;color:var(--ink-2)}
+.close .acts{margin-top:20px}
+.stamp.ink{color:var(--accent);transform:rotate(-1deg)}
+/* the one flourish: the stamp lands once, when the close reaches the screen */
+@media (prefers-reduced-motion:no-preference){
+  .js .close .stamp.ink{opacity:0;transform:rotate(-1deg) scale(1.12)}
+  .js .close.in .stamp.ink{opacity:1;transform:rotate(-1deg);transition:transform .22s cubic-bezier(.3,1.4,.5,1),opacity .08s linear}
+}
+
+/* tablet */
+@media (max-width:1180px){
+  :root{--g:40px}
+}
+
+/* phone: the table becomes stacked rows, and the production columns drop out */
+@media (max-width:900px){
+  :root{--g:20px}
+  .sec{padding-block:72px}
+  h2{font-size:24px;line-height:1.25}
+  .beans-head,.close{grid-template-columns:minmax(0,1fr);gap:32px}
+  .log thead,.log tfoot td:empty{display:none}
+  .log,.log tbody,.log tr,.log tfoot{display:block}
+  .log tbody tr{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:16px 0;border-top:1px solid var(--line)}
+  .log tbody tr:first-child{border-top:1px solid var(--ink)}
+  .log tbody th,.log td{padding:0;border:0}
+  .log tbody th{grid-column:1/-1;padding:0 0 6px}
+  .log td[data-l]{display:none}
+  .log td.n{padding:0;text-align:left}
+  .log td.n:nth-of-type(5){text-align:right}
+  .log .r{grid-column:1/-1;padding:8px 0 0;text-align:left;width:auto}
+  .log .r a{display:inline-block;padding-block:6px}
+  .log tfoot{border-top:1px solid var(--ink);padding-top:12px}
+  .log tfoot tr{display:flex;justify-content:space-between}
+  .log tfoot th,.log tfoot td{padding:0}
+  .close{margin-top:56px}
+  .close h2{font-size:36px;line-height:1.1}
+}
+</style>
+</head>
+<body>
+<section class="sec tint" id="beans" aria-labelledby="beans-h">
+  <div class="wrap">
+    <div class="beans-head">
+      <h2 class="two" id="beans-h"><span>Roasted <span data-last-roast-long>Tuesday 3 November</span>.</span> Five coffees, 61.6 kg, twelve batches.</h2>
+      <p>The whole roast log, updated every morning we&rsquo;re open. Loss is the weight a coffee gives up in the roaster. Lighter roasts lose less. All bags are 250 g, as whole beans or ground to order.</p>
+    </div>
+    <!-- invented: replace before launch. Roast figures and stock are sample data. -->
+    <table class="log">
+      <thead>
+        <tr><th scope="col">Coffee</th><th scope="col" class="n">Green in</th><th scope="col" class="n">Roasted</th><th scope="col" class="n">Loss</th><th scope="col" class="n">Left today</th><th scope="col" class="n">250 g</th><th scope="col"><span class="vh">Reserve</span></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">House espresso<span>Brazil and Colombia. Hazelnut, dark chocolate.</span></th>
+          <td class="n" data-l="in">30.0 kg</td><td class="n" data-l="out">25.4 kg</td><td class="n" data-l="loss">15.3%</td><td class="n">38 bags</td><td class="n">&pound;11.50</td>
+          <td class="r"><a class="link" href="mailto:beans@mowatcoffee.example?subject=Reserve%20a%20bag%3A%20House%20espresso">Reserve</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Kenya, Nyeri<span>Washed. SL28 and SL34. Blackcurrant, grapefruit.</span></th>
+          <td class="n" data-l="in">12.0 kg</td><td class="n" data-l="out">10.4 kg</td><td class="n" data-l="loss">13.3%</td><td class="n">9 bags</td><td class="n">&pound;15.50</td>
+          <td class="r"><a class="link" href="mailto:beans@mowatcoffee.example?subject=Reserve%20a%20bag%3A%20Kenya%20Nyeri">Reserve</a></td>
+        </tr>
+        <tr class="out">
+          <th scope="row">Ethiopia, Guji<span>Natural. Local heirloom. Strawberry, cocoa.</span></th>
+          <td class="n" data-l="in">12.0 kg</td><td class="n" data-l="out">10.3 kg</td><td class="n" data-l="loss">14.2%</td><td class="n">Sold out</td><td class="n">&pound;14.00</td>
+          <td class="r"><span class="back">Back <span data-next-roast>Tue 10 Nov</span></span></td>
+        </tr>
+        <tr>
+          <th scope="row">Colombia, Huila<span>Washed. Caturra. Red apple, toffee.</span></th>
+          <td class="n" data-l="in">12.0 kg</td><td class="n" data-l="out">10.4 kg</td><td class="n" data-l="loss">13.3%</td><td class="n">21 bags</td><td class="n">&pound;13.00</td>
+          <td class="r"><a class="link" href="mailto:beans@mowatcoffee.example?subject=Reserve%20a%20bag%3A%20Colombia%20Huila">Reserve</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Decaf, Colombia<span>Sugarcane process. Milk chocolate, orange.</span></th>
+          <td class="n" data-l="in">6.0 kg</td><td class="n" data-l="out">5.1 kg</td><td class="n" data-l="loss">15.0%</td><td class="n">14 bags</td><td class="n">&pound;12.50</td>
+          <td class="r"><a class="link" href="mailto:beans@mowatcoffee.example?subject=Reserve%20a%20bag%3A%20Decaf%20Colombia">Reserve</a></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><th scope="row">All five</th><td class="n">72.0 kg</td><td class="n">61.6 kg</td><td class="n">14.4%</td><td colspan="3"></td></tr>
+      </tfoot>
+    </table>
+    <div class="close">
+      <h2>Next roast: <span data-next-roast-long>Tuesday 10 November</span></h2>
+      <div>
+        <p>Order by 6pm on Monday and we&rsquo;ll roast yours that week. Collect from Wednesday, or we&rsquo;ll post it.</p>
+        <div class="acts">
+          <a class="btn" href="mailto:beans@mowatcoffee.example?subject=Beans%20for%20the%20next%20roast">Order beans</a>
+          <span class="stamp ink" data-next-roast>Tue 10 Nov</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+// Every date is computed in the shop's own time zone, so it can't go stale.
+(function () {
+  const TZ = 'Europe/London';
+  const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function here(now) {
+    const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {
+      timeZone: TZ, weekday: 'short', day: 'numeric', month: 'numeric', year: 'numeric',
+    }).formatToParts(now).map(x => [x.type, x.value]));
+    const d = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(p.weekday);
+    return { d, date: new Date(Date.UTC(+p.year, +p.month - 1, +p.day)) };
+  }
+
+  const shift = (date, days) => new Date(date.getTime() + days * 864e5);
+  const short = d => `${DAYS[d.getUTCDay()].slice(0, 3)} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`;
+  const long = d => `${DAYS[d.getUTCDay()]} ${d.getUTCDate()} ${['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getUTCMonth()]}`;
+
+  const fill = (sel, text) => document.querySelectorAll(sel).forEach(e => { e.textContent = text; });
+
+  function paint() {
+    const t = here(new Date());
+    const back = (t.d - 2 + 7) % 7;            // days since the last Tuesday
+    const last = shift(t.date, -back);
+    const next = shift(last, 7);
+    fill('[data-next-roast]', short(next));
+    fill('[data-next-roast-long]', long(next));
+    fill('[data-last-roast-long]', long(last));
+  }
+  paint();
+  setInterval(paint, 60000);
+
+  // The stamp on the close lands once.
+  const close = document.querySelector('.close');
+  if (close && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.disconnect(); }
+    }), { threshold: .6 });
+    io.observe(close);
+  } else if (close) close.classList.add('in');
+})();
+</script>
+</body>
+</html>

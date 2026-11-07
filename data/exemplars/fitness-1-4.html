@@ -1,0 +1,207 @@
+<!doctype html>
+<!-- The hero's graphic is the product's own output: a canvas of 18 real rotation patterns over 84 days, where filled dots are finished sessions, rings are planned ones and a line marks today, all computed by the app's own rule (off days only, never the day after a night).
+     Every few seconds a shift gets picked up, one ring slides to a new day and the caption says exactly what moved, so the page demonstrates the product without a screenshot. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swingshift schedule field</title>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400..600&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+:root {
+  --bg: #ffffff; --ink: #101114; --accent: #e2c675;
+  --line: color-mix(in srgb, var(--ink) 9%, transparent);
+  --font: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --settle: cubic-bezier(.22, 1, .36, 1); --soft: cubic-bezier(.33, 1, .68, 1);
+  --rail: max(clamp(16px, 6.1vw, 88px), calc((100vw - 1264px) / 2)); --in: 24px; --nav: 64px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--font); -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+h1, p { margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.rails { position: relative; overflow-x: clip; }
+.rails::before { content: ""; position: absolute; inset: 0 var(--rail); z-index: 20; pointer-events: none; border-inline: 1px solid var(--line); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; padding: 0 20px; border-radius: 8px; font: 500 15px/1 var(--font); white-space: nowrap;
+  transition: background-color .2s var(--soft), color .2s var(--soft), box-shadow .2s var(--soft); }
+.on-dark .btn { background: rgba(255, 255, 255, .1); color: #fff; }
+.on-dark .btn:hover { background: rgba(255, 255, 255, .18); }
+.on-dark .btn.pick { background: #fff; color: var(--ink); }
+.on-dark .btn.pick:hover { background: var(--accent); color: var(--ink); }
+
+/* Hero: type inside one contained field, which runs down to the section rule and crops there */
+.hero-band { position: relative; padding: 0 var(--rail); }
+.hero { position: relative; overflow: hidden; display: flex; flex-direction: column; height: clamp(600px, calc(100vh - var(--nav) - 136px), 700px); background: var(--ink); color: #fff; }
+.hero-top { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: end; padding: 64px var(--in) 0; padding-left: calc(var(--in) + 32px); padding-right: calc(var(--in) + 32px); }
+h1 { font: 500 56px/1.08 var(--font); letter-spacing: -.016em; }
+h1 .w { display: inline-block; animation: resolve .75s var(--settle) both; animation-delay: calc(.15s + var(--i) * 140ms); }
+@keyframes resolve {
+  from { opacity: .1; filter: blur(10px); color: var(--accent); }
+  60% { opacity: 1; filter: blur(2px); color: var(--accent); }
+  to { filter: none; color: #fff; }
+}
+.lede { max-width: 30em; color: rgba(255, 255, 255, .72); font-size: 17px; line-height: 1.5; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; }
+.field { position: relative; flex: 1; min-height: 0; margin-top: 44px; }
+.field-head { display: flex; justify-content: space-between; gap: 32px; white-space: nowrap; height: 32px; padding: 0 calc(var(--in) + 32px); font-size: 13px; line-height: 32px; color: rgba(255, 255, 255, .56); border-top: 1px solid rgba(255, 255, 255, .1); }
+.field-head .now { color: rgba(255, 255, 255, .86); transition: opacity .25s linear; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.field canvas { position: absolute; left: 0; top: 32px; width: 100%; height: calc(100% - 32px); display: block; }
+html:not(.js) .field { display: none; }
+html:not(.js) .hero { height: auto; padding-bottom: 64px; }
+@media (max-width: 980px) {
+  .legend { display: none; }
+  h1 { font-size: 46px; }
+  .hero-top { grid-template-columns: 1fr; gap: 20px; padding-top: 44px; }
+  .hero { height: auto; }
+  .field { flex: none; height: 300px; margin-top: 36px; }
+}
+@media (max-width: 760px) {
+  :root { --nav: 56px; --in: 16px; }
+  h1 { font-size: 36px; }
+  .hero-top { padding: 32px 16px 0; }
+  .lede { font-size: 16px; }
+  .actions { flex-direction: column; align-items: stretch; }
+  .field { height: 268px; margin-top: 28px; }
+  .field-head { padding: 0 16px; }
+  .field-head .now { font-size: 12.5px; }
+}
+@media (prefers-reduced-motion: reduce) { h1 .w { animation: none; } }
+</style>
+</head>
+<body>
+<main class="rails">
+  <section class="hero-band">
+    <div class="hero on-dark">
+      <div class="hero-top">
+        <h1 aria-label="Strength training for shift workers"><span class="w" style="--i:0" aria-hidden="true">Strength</span> <span class="w" style="--i:1" aria-hidden="true">training</span><br><span class="w" style="--i:2" aria-hidden="true">for</span> <span class="w" style="--i:3" aria-hidden="true">shift</span> <span class="w" style="--i:4" aria-hidden="true">workers</span></h1>
+        <div class="hero-side">
+          <p class="lede">Swingshift reads your work schedule and plans each session around your nights, 24s and days off. When a shift changes, the week re-plans itself. $11 a month.</p>
+          <div class="actions" data-os-row>
+            <a class="btn pick" href="#download" data-os="ios">Download for iPhone</a>
+            <a class="btn" href="#download" data-os="android">Download for Android</a>
+          </div>
+        </div>
+      </div>
+      <div class="field" aria-hidden="true">
+        <div class="field-head"><span class="legend">Sample of 18 members over 12 weeks. Filled dots are finished sessions, rings are planned, the line is today.</span><span class="now" id="fieldNow">Panama, rotating: picked up Thu. Upper B moved to Sat.</span></div>
+        <canvas id="fieldCanvas"></canvas>
+      </div>
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* Hero field: real rotation patterns, one row per member. D day, N night, F 24-hour shift, . off */
+  const rep = (s, n) => s.repeat(Math.ceil(n / s.length)).slice(0, n);
+  const ROWS = [
+    ['Three 12s, nights', 'NN.N.....N.NN..NNN.......NN.N'], ['Three 12s, days', '.DD..D.D.D..D..DD.D....D.D.D.'],
+    ['24/48, A shift', 'F..F..F..F..F..F.....'], ['24/48, B shift', '.F..F..F..F..F..F....'],
+    ['DuPont, crew A', 'NNNN...DDD.NNN...DDDD.......'], ['DuPont, crew B', 'DDDD.......NNNN...DDD.NNN...'],
+    ['DuPont, crew C', 'NNN...DDDD.......NNNN...DDD.'], ['Panama 2-2-3, days', 'DD..DDD..DD...'],
+    ['Panama 2-2-3, nights', '..NN...NN..NNN'], ['Panama, rotating', 'DD..DDD..DD...NN..NNN..NN...'],
+    ['4 on, 4 off', 'DDDD....NNNN....'], ['7 on, 7 off', 'DDDDDDD.......NNNNNNN.......'],
+    ['5 on, 2 off, rotating', 'DDDDD..DDDDD..NNNNN..NNNNN..'], ['14 on, 14 off', 'DDDDDDDDDDDDDD..............'],
+    ['DuPont, crew D', '...DDDD.......NNNN...DDD.NNN'], ['Three 12s, weekends', '.....NN......NN..D...NN..D.NN'],
+    ['Pitman 2-2-3', 'DD...DD..DD...NN...NN..NN...'], ['24/48, C shift', '..F..F..F..F..F..F...'],
+  ];
+  const SESSIONS = ['Lower A', 'Upper A', 'Lower B', 'Upper B', 'Full body'];
+  const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const cv = $('#fieldCanvas'), now = $('#fieldNow'), ctx = cv.getContext('2d');
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const start = new Date(today); start.setDate(today.getDate() - ((today.getDay() + 6) % 7) - 7);
+  const todayCol = Math.round((today - start) / 864e5);
+  const dateAt = c => { const d = new Date(start); d.setDate(d.getDate() + c); return d; };
+  const COLS = 84;
+  const grid = ROWS.map(([label, p], r) => ({ label, cells: rep(p, COLS).split(''), sessions: [], added: {} }));
+  for (const row of grid) { // same rule as the app: off days only, never the day after a night, two days apart
+    let last = -9, inWeek = 0;
+    row.cells.forEach((c, i) => {
+      if (i % 7 === 0) inWeek = 0;
+      if (c === '.' && row.cells[i - 1] !== 'N' && i - last >= 2 && inWeek < 3) { row.sessions.push({ c: i, x: i, from: i, t: 1, name: SESSIONS[row.sessions.length % 5] }); last = i; inWeek++; }
+    });
+  }
+  let W = 0, H = 0, dpr = 1, reveal = reduce ? 1 : 0, raf = 0, visible = true, lastEvent = 0, flare = null;
+  const size = () => {
+    const r = cv.getBoundingClientRect(); dpr = Math.min(devicePixelRatio || 1, 2);
+    W = r.width; H = r.height; cv.width = W * dpr; cv.height = H * dpr; draw(performance.now());
+  };
+  const geom = () => {
+    const compact = W < 760, left = compact ? 16 : 56, labelW = compact ? 0 : 158, pitchX = compact ? 13 : 15.2, pitchY = compact ? 19 : 23;
+    return { left, labelW, pitchX, pitchY, x0: left + labelW, cw: compact ? 9 : 11, ch: compact ? 13 : 15 };
+  };
+  const ease = t => 1 - Math.pow(1 - t, 4);
+  function draw(t) {
+    if (!W) return;
+    const g = geom();
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+    const cols = Math.min(COLS, Math.ceil((W - g.x0) / g.pitchX) + 1);
+    ctx.font = '500 12.5px Archivo, system-ui, sans-serif'; ctx.textBaseline = 'middle';
+    const todayX = g.x0 + todayCol * g.pitchX + g.cw / 2;
+    // week ticks and today's line
+    for (let c = 0; c < cols; c += 7) { ctx.fillStyle = 'rgba(255,255,255,.07)'; ctx.fillRect(g.x0 + c * g.pitchX - 2.5, 0, 1, H); }
+    ctx.fillStyle = 'rgba(255,255,255,.34)'; ctx.fillRect(Math.round(todayX), 0, 1, H);
+    grid.forEach((row, r) => {
+      const y = 12 + r * g.pitchY; if (y > H + 20) return;
+      if (g.labelW) { ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.fillText(row.label, g.left, y + g.ch / 2 + .5); }
+      for (let c = 0; c < cols; c++) {
+        const a = Math.min(1, Math.max(0, reveal * (cols + 12) - c) / 12); if (a <= 0) continue;
+        const v = row.cells[c], x = g.x0 + c * g.pitchX, past = c < todayCol;
+        const on = row.added[c] != null ? Math.min(1, (t - row.added[c]) / 320) : 1;
+        let col = .055;
+        if (v === 'D') col = past ? .2 : .3; if (v === 'N') col = past ? .46 : .66; if (v === 'F') col = past ? .62 : .86;
+        if (row.added[c] != null) col = .055 + (col - .055) * on;
+        ctx.fillStyle = `rgba(255,255,255,${col * a})`;
+        ctx.beginPath(); ctx.roundRect(x, y, g.cw, g.ch, 2); ctx.fill();
+      }
+      for (const s of row.sessions) {
+        if (s.c >= cols) continue;
+        const a = Math.min(1, Math.max(0, reveal * (cols + 12) - s.c) / 12); if (a <= 0) continue;
+        const k = s.t < 1 ? ease(s.t) : 1, cx = g.x0 + (s.from + (s.x - s.from) * k) * g.pitchX + g.cw / 2, cy = y + g.ch / 2, rad = g.cw * .36;
+        ctx.globalAlpha = a; ctx.beginPath(); ctx.arc(cx, cy, rad, 0, 7);
+        if (s.c < todayCol) { ctx.fillStyle = '#e2c675'; ctx.fill(); }
+        else { ctx.fillStyle = '#101114'; ctx.fill(); ctx.strokeStyle = '#e2c675'; ctx.lineWidth = 1.5; ctx.stroke(); }
+        ctx.globalAlpha = 1;
+      }
+    });
+  }
+  function swap(t) { // a shift gets picked up on a planned session day, and the session moves off it
+    const g = geom(), visibleCols = Math.min(COLS, Math.floor((W - g.x0) / g.pitchX)), visibleRows = Math.min(grid.length, Math.floor((H - 12) / g.pitchY));
+    const candidates = [];
+    grid.forEach((row, r) => { if (r >= visibleRows) return; row.sessions.forEach(s => { if (s.c > todayCol + 1 && s.c < visibleCols - 6) candidates.push([row, s]); }); });
+    if (!candidates.length) return;
+    const [row, s] = candidates[Math.floor(Math.random() * candidates.length)];
+    let to = -1;
+    for (let c = s.c + 1; c < COLS; c++) if (row.cells[c] === '.' && row.cells[c - 1] !== 'N' && !row.sessions.some(o => o !== s && Math.abs(o.c - c) < 2)) { to = c; break; }
+    if (to < 0 || to - s.c > 5) return;
+    const old = s.c, d = dateAt(old), n = dateAt(to), dow = x => DAYS[(x.getDay() + 6) % 7];
+    row.cells[old] = 'D'; row.added[old] = t; s.from = old; s.x = to; s.c = to; s.t = 0; flare = s; s.began = t + 180;
+    now.style.opacity = 0;
+    setTimeout(() => { now.textContent = `${row.label}: picked up ${dow(d)} ${MON[d.getMonth()]} ${d.getDate()}. ${s.name} moved to ${dow(n)}.`; now.style.opacity = 1; }, 240);
+  }
+  function loop(t) {
+    raf = 0; if (!visible) return;
+    if (reveal < 1) reveal = Math.min(1, reveal + 1 / 66);
+    if (flare) { flare.t = Math.max(0, Math.min(1, (t - flare.began) / 900)); if (flare.t >= 1) flare = null; }
+    if (reveal >= 1 && t - lastEvent > 3400 && !flare) { lastEvent = t; swap(t); }
+    draw(t); raf = requestAnimationFrame(loop);
+  }
+  addEventListener('resize', size);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(size);
+  size();
+  if (!reduce) {
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible && !raf) raf = requestAnimationFrame(loop); }).observe(cv);
+    lastEvent = performance.now() - 1200;
+  }
+
+  /* Recommended button follows the visitor's phone */
+  const android = /android/i.test(navigator.userAgent);
+  $$('[data-os-row]').forEach(row => $$('[data-os]', row).forEach(a => a.classList.toggle('pick', (a.dataset.os === 'android') === android)));
+})();
+</script>
+</body>
+</html>

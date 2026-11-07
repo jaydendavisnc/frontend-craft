@@ -1,0 +1,7852 @@
+{
+"app.app-sidebar/workspace-sidebar": [
+"references/elements/app.md",
+138,
+166
+],
+"app.app-sidebar/filled-active-tree": [
+"references/elements/app.md",
+168,
+187
+],
+"app.app-sidebar/dark-compact-rail": [
+"references/elements/app.md",
+189,
+212
+],
+"app.app-sidebar/indicator-bar-rail": [
+"references/elements/app.md",
+214,
+234
+],
+"app.app-sidebar/nested-guide-tree": [
+"references/elements/app.md",
+236,
+252
+],
+"app.app-sidebar/quiet-text-rail": [
+"references/elements/app.md",
+254,
+263
+],
+"app.app-sidebar/icon-rail": [
+"references/elements/app.md",
+265,
+281
+],
+"app.app-sidebar/contextual-subnav": [
+"references/elements/app.md",
+283,
+292
+],
+"app.app-sidebar/onboarding-library-rail": [
+"references/elements/app.md",
+294,
+303
+],
+"app.app-sidebar/meta-right-rail": [
+"references/elements/app.md",
+305,
+314
+],
+"app.app-sidebar/tool-palette-panel": [
+"references/elements/app.md",
+316,
+325
+],
+"app.data-table/workbench-table": [
+"references/elements/app.md",
+358,
+379
+],
+"app.data-table/hairline-table": [
+"references/elements/app.md",
+381,
+396
+],
+"app.data-table/zebra-numeric-table": [
+"references/elements/app.md",
+398,
+418
+],
+"app.data-table/grouped-header-table": [
+"references/elements/app.md",
+420,
+442
+],
+"app.data-table/bar-behind-row": [
+"references/elements/app.md",
+444,
+463
+],
+"app.data-table/ledger-rows": [
+"references/elements/app.md",
+465,
+487
+],
+"app.data-table/feature-matrix": [
+"references/elements/app.md",
+489,
+512
+],
+"app.data-table/mono-spec-table": [
+"references/elements/app.md",
+514,
+532
+],
+"app.data-table/parameter-list": [
+"references/elements/app.md",
+534,
+552
+],
+"app.data-table/two-line-entity-list": [
+"references/elements/app.md",
+554,
+572
+],
+"app.data-table/ranked-leaderboard": [
+"references/elements/app.md",
+574,
+583
+],
+"app.data-table/key-value-list": [
+"references/elements/app.md",
+585,
+601
+],
+"app.data-table/row-selection-states": [
+"references/elements/app.md",
+603,
+620
+],
+"app.data-table/expandable-tree-rows": [
+"references/elements/app.md",
+622,
+631
+],
+"app.data-table/status-badge-set": [
+"references/elements/app.md",
+633,
+649
+],
+"app.data-table/pagination-footer": [
+"references/elements/app.md",
+651,
+667
+],
+"app.data-table/fade-show-more": [
+"references/elements/app.md",
+669,
+684
+],
+"app.data-table/filter-toolbar": [
+"references/elements/app.md",
+686,
+702
+],
+"app.data-table/avatar-stack": [
+"references/elements/app.md",
+704,
+719
+],
+"app.dashboard-layout/inset-console": [
+"references/elements/app.md",
+744,
+766
+],
+"app.dashboard-layout/floating-panels": [
+"references/elements/app.md",
+768,
+787
+],
+"app.dashboard-layout/analytics-column": [
+"references/elements/app.md",
+789,
+809
+],
+"app.dashboard-layout/kpi-tab-strip": [
+"references/elements/app.md",
+811,
+833
+],
+"app.dashboard-layout/kpi-tile-row": [
+"references/elements/app.md",
+835,
+858
+],
+"app.dashboard-layout/status-page-column": [
+"references/elements/app.md",
+860,
+880
+],
+"app.dashboard-layout/three-pane-tool": [
+"references/elements/app.md",
+882,
+899
+],
+"app.dashboard-layout/query-split-panes": [
+"references/elements/app.md",
+901,
+910
+],
+"app.dashboard-layout/resizable-panes": [
+"references/elements/app.md",
+912,
+927
+],
+"app.dashboard-layout/app-header-bar": [
+"references/elements/app.md",
+929,
+944
+],
+"app.dashboard-layout/underline-tab-row": [
+"references/elements/app.md",
+946,
+961
+],
+"app.dashboard-layout/card-header-slots": [
+"references/elements/app.md",
+963,
+979
+],
+"app.dashboard-layout/report-chart-grid": [
+"references/elements/app.md",
+981,
+990
+],
+"app.dashboard-layout/docs-three-column": [
+"references/elements/app.md",
+992,
+1001
+],
+"app.dashboard-layout/specimen-page": [
+"references/elements/app.md",
+1003,
+1012
+],
+"app.dashboard-layout/ruled-guide-grid": [
+"references/elements/app.md",
+1014,
+1023
+],
+"app.dashboard-layout/generated-tile-gallery": [
+"references/elements/app.md",
+1025,
+1034
+],
+"app.chart/line-with-fade-area": [
+"references/elements/app.md",
+1127,
+1142
+],
+"app.chart/single-line-reference": [
+"references/elements/app.md",
+1144,
+1157
+],
+"app.chart/uptime-strip": [
+"references/elements/app.md",
+1159,
+1174
+],
+"app.chart/time-bars-with-brush": [
+"references/elements/app.md",
+1176,
+1196
+],
+"app.chart/small-multiples": [
+"references/elements/app.md",
+1198,
+1207
+],
+"app.chart/stacked-share-bars": [
+"references/elements/app.md",
+1209,
+1223
+],
+"app.chart/monochrome-area": [
+"references/elements/app.md",
+1225,
+1234
+],
+"app.chart/direct-label-chips": [
+"references/elements/app.md",
+1236,
+1253
+],
+"app.chart/sorted-entity-bars": [
+"references/elements/app.md",
+1255,
+1264
+],
+"app.chart/scatter-frontier": [
+"references/elements/app.md",
+1266,
+1275
+],
+"app.chart/donut-or-gauge": [
+"references/elements/app.md",
+1277,
+1286
+],
+"app.chart/tabular-tooltip": [
+"references/elements/app.md",
+1288,
+1305
+],
+"app.chart/chart-card-frame": [
+"references/elements/app.md",
+1307,
+1321
+],
+"app.chart/dark-grid-timeseries": [
+"references/elements/app.md",
+1323,
+1332
+],
+"app.chart/thin-meter": [
+"references/elements/app.md",
+1334,
+1351
+],
+"app.chart/bump-chart": [
+"references/elements/app.md",
+1353,
+1362
+],
+"app.chart/flat-treemap": [
+"references/elements/app.md",
+1364,
+1373
+],
+"app.chart/tinted-choropleth": [
+"references/elements/app.md",
+1375,
+1384
+],
+"app.chart/inline-sparkline": [
+"references/elements/app.md",
+1386,
+1395
+],
+"app.form-control/outlined-field": [
+"references/elements/app.md",
+1422,
+1445
+],
+"app.form-control/input-group": [
+"references/elements/app.md",
+1447,
+1466
+],
+"app.form-control/filled-underline-field": [
+"references/elements/app.md",
+1468,
+1482
+],
+"app.form-control/underline-only-field": [
+"references/elements/app.md",
+1484,
+1493
+],
+"app.form-control/label-left-form": [
+"references/elements/app.md",
+1495,
+1510
+],
+"app.form-control/parameter-grid-form": [
+"references/elements/app.md",
+1512,
+1528
+],
+"app.form-control/validation-state": [
+"references/elements/app.md",
+1530,
+1545
+],
+"app.form-control/raised-segmented-track": [
+"references/elements/app.md",
+1547,
+1567
+],
+"app.form-control/hairline-segmented": [
+"references/elements/app.md",
+1569,
+1584
+],
+"app.form-control/inverted-thumb-toggle": [
+"references/elements/app.md",
+1586,
+1601
+],
+"app.form-control/joined-segments": [
+"references/elements/app.md",
+1603,
+1620
+],
+"app.form-control/toggle-switch": [
+"references/elements/app.md",
+1622,
+1640
+],
+"app.form-control/dense-settings-list": [
+"references/elements/app.md",
+1642,
+1659
+],
+"app.form-control/choice-tile": [
+"references/elements/app.md",
+1661,
+1683
+],
+"app.form-control/checkbox-radio-stack": [
+"references/elements/app.md",
+1685,
+1701
+],
+"app.form-control/filter-chip-row": [
+"references/elements/app.md",
+1703,
+1712
+],
+"app.form-control/prompt-composer": [
+"references/elements/app.md",
+1714,
+1735
+],
+"app.form-control/docked-ask-bar": [
+"references/elements/app.md",
+1737,
+1750
+],
+"app.form-control/thin-slider": [
+"references/elements/app.md",
+1752,
+1761
+],
+"app.form-control/usage-estimator": [
+"references/elements/app.md",
+1763,
+1779
+],
+"app.form-control/calendar-picker": [
+"references/elements/app.md",
+1781,
+1799
+],
+"app.form-control/centered-auth-card": [
+"references/elements/app.md",
+1801,
+1823
+],
+"app.form-control/split-auth-panel": [
+"references/elements/app.md",
+1825,
+1834
+],
+"app.form-control/otp-slots": [
+"references/elements/app.md",
+1836,
+1845
+],
+"app.form-control/inline-edit-field": [
+"references/elements/app.md",
+1847,
+1856
+],
+"app.form-control/dense-app-buttons": [
+"references/elements/app.md",
+1858,
+1876
+],
+"app.form-control/micro-feedback": [
+"references/elements/app.md",
+1878,
+1887
+],
+"app.empty-state/centered-icon-stack": [
+"references/elements/app.md",
+1918,
+1936
+],
+"app.empty-state/illustration-stack": [
+"references/elements/app.md",
+1938,
+1947
+],
+"app.empty-state/left-headline-cta": [
+"references/elements/app.md",
+1949,
+1958
+],
+"app.empty-state/route-list-empty": [
+"references/elements/app.md",
+1960,
+1976
+],
+"app.empty-state/voice-led-empty": [
+"references/elements/app.md",
+1978,
+1987
+],
+"app.empty-state/inline-placeholder": [
+"references/elements/app.md",
+1989,
+2004
+],
+"app.empty-state/shortcut-list-empty": [
+"references/elements/app.md",
+2006,
+2020
+],
+"app.empty-state/all-clear-state": [
+"references/elements/app.md",
+2022,
+2031
+],
+"app.empty-state/skeleton-loading": [
+"references/elements/app.md",
+2033,
+2047
+],
+"app.empty-state/inline-progress": [
+"references/elements/app.md",
+2049,
+2063
+],
+"app.empty-state/semantic-callout": [
+"references/elements/app.md",
+2065,
+2079
+],
+"app.command-palette/cmdk-dialog": [
+"references/elements/app.md",
+2100,
+2129
+],
+"app.command-palette/inline-command-list": [
+"references/elements/app.md",
+2131,
+2140
+],
+"app.command-palette/kbd-search-trigger": [
+"references/elements/app.md",
+2142,
+2156
+],
+"app.command-palette/dropdown-action-menu": [
+"references/elements/app.md",
+2158,
+2178
+],
+"app.command-palette/context-menu": [
+"references/elements/app.md",
+2180,
+2189
+],
+"app.command-palette/combobox-field": [
+"references/elements/app.md",
+2191,
+2206
+],
+"app.command-palette/kbd-chips": [
+"references/elements/app.md",
+2208,
+2221
+],
+"app.modal-sheet/form-dialog": [
+"references/elements/app.md",
+2252,
+2273
+],
+"app.modal-sheet/alert-confirm": [
+"references/elements/app.md",
+2275,
+2290
+],
+"app.modal-sheet/data-modal": [
+"references/elements/app.md",
+2292,
+2308
+],
+"app.modal-sheet/one-fact-notice": [
+"references/elements/app.md",
+2310,
+2325
+],
+"app.modal-sheet/split-offer-modal": [
+"references/elements/app.md",
+2327,
+2336
+],
+"app.modal-sheet/side-sheet": [
+"references/elements/app.md",
+2338,
+2354
+],
+"app.modal-sheet/bottom-drawer": [
+"references/elements/app.md",
+2356,
+2370
+],
+"app.modal-sheet/toast-stack": [
+"references/elements/app.md",
+2372,
+2390
+],
+"app.modal-sheet/tooltip-chip": [
+"references/elements/app.md",
+2392,
+2406
+],
+"app.modal-sheet/anchored-popover": [
+"references/elements/app.md",
+2408,
+2421
+],
+"app.modal-sheet/corner-consent-card": [
+"references/elements/app.md",
+2423,
+2432
+],
+"app.modal-sheet/equal-choice-dialog": [
+"references/elements/app.md",
+2434,
+2443
+],
+"atmosphere.dark-surface-ladder/near-black-hairline-ladder": [
+"references/elements/atmosphere.md",
+178,
+222
+],
+"atmosphere.dark-surface-ladder/brand-hue-ladder": [
+"references/elements/atmosphere.md",
+224,
+256
+],
+"atmosphere.dark-surface-ladder/single-dark-chapter": [
+"references/elements/atmosphere.md",
+258,
+281
+],
+"atmosphere.dark-surface-ladder/pure-black-grey-steps": [
+"references/elements/atmosphere.md",
+283,
+294
+],
+"atmosphere.dark-surface-ladder/warm-charcoal-ladder": [
+"references/elements/atmosphere.md",
+296,
+307
+],
+"atmosphere.dark-surface-ladder/hue-flood-sections": [
+"references/elements/atmosphere.md",
+309,
+320
+],
+"atmosphere.dark-surface-ladder/hard-flip-alternation": [
+"references/elements/atmosphere.md",
+322,
+333
+],
+"atmosphere.dark-surface-ladder/cool-navy-ladder": [
+"references/elements/atmosphere.md",
+335,
+346
+],
+"atmosphere.dark-surface-ladder/darker-inward-wells": [
+"references/elements/atmosphere.md",
+348,
+359
+],
+"atmosphere.dark-surface-ladder/flat-graphite-for-imagery": [
+"references/elements/atmosphere.md",
+361,
+370
+],
+"atmosphere.dark-surface-ladder/late-dark-act": [
+"references/elements/atmosphere.md",
+372,
+381
+],
+"atmosphere.dark-surface-ladder/tonal-chapter-steps": [
+"references/elements/atmosphere.md",
+383,
+392
+],
+"atmosphere.light-surface-ladder/cream-section-bands": [
+"references/elements/atmosphere.md",
+468,
+491
+],
+"atmosphere.light-surface-ladder/neutral-page-white-card": [
+"references/elements/atmosphere.md",
+493,
+516
+],
+"atmosphere.light-surface-ladder/warm-tone-only-ladder": [
+"references/elements/atmosphere.md",
+518,
+551
+],
+"atmosphere.light-surface-ladder/flat-colour-joins": [
+"references/elements/atmosphere.md",
+553,
+564
+],
+"atmosphere.light-surface-ladder/tinted-tonal-surfaces": [
+"references/elements/atmosphere.md",
+566,
+577
+],
+"atmosphere.light-surface-ladder/single-paper-surface": [
+"references/elements/atmosphere.md",
+579,
+590
+],
+"atmosphere.light-surface-ladder/graded-section-fades": [
+"references/elements/atmosphere.md",
+592,
+603
+],
+"atmosphere.light-surface-ladder/one-plane-alpha-ink": [
+"references/elements/atmosphere.md",
+605,
+616
+],
+"atmosphere.light-surface-ladder/cool-ground-white-tile": [
+"references/elements/atmosphere.md",
+618,
+629
+],
+"atmosphere.light-surface-ladder/page-tint-drift": [
+"references/elements/atmosphere.md",
+631,
+642
+],
+"atmosphere.gradient-field/skewed-ribbon": [
+"references/elements/atmosphere.md",
+697,
+729
+],
+"atmosphere.gradient-field/grain-section-band": [
+"references/elements/atmosphere.md",
+731,
+761
+],
+"atmosphere.gradient-field/horizon-from-the-base": [
+"references/elements/atmosphere.md",
+763,
+798
+],
+"atmosphere.gradient-field/pastel-panel-behind-product": [
+"references/elements/atmosphere.md",
+800,
+822
+],
+"atmosphere.gradient-field/sawtooth-slats-and-blinds": [
+"references/elements/atmosphere.md",
+824,
+863
+],
+"atmosphere.gradient-field/aura-rim": [
+"references/elements/atmosphere.md",
+865,
+891
+],
+"atmosphere.gradient-field/page-long-hue-journey": [
+"references/elements/atmosphere.md",
+893,
+904
+],
+"atmosphere.gradient-field/vertical-wash-into-page": [
+"references/elements/atmosphere.md",
+906,
+917
+],
+"atmosphere.gradient-field/one-gradient-tile": [
+"references/elements/atmosphere.md",
+919,
+930
+],
+"atmosphere.gradient-field/dark-diagonal-sheen": [
+"references/elements/atmosphere.md",
+932,
+943
+],
+"atmosphere.gradient-field/faceted-planes": [
+"references/elements/atmosphere.md",
+945,
+956
+],
+"atmosphere.gradient-field/small-top-wash": [
+"references/elements/atmosphere.md",
+958,
+969
+],
+"atmosphere.gradient-field/flat-colour-worlds": [
+"references/elements/atmosphere.md",
+971,
+982
+],
+"atmosphere.gradient-field/gradient-as-rule": [
+"references/elements/atmosphere.md",
+984,
+995
+],
+"atmosphere.gradient-field/starfield-field": [
+"references/elements/atmosphere.md",
+997,
+1006
+],
+"atmosphere.glow-or-light/lit-edge-horizon": [
+"references/elements/atmosphere.md",
+1039,
+1079
+],
+"atmosphere.glow-or-light/masked-light-stripes": [
+"references/elements/atmosphere.md",
+1081,
+1104
+],
+"atmosphere.glow-or-light/lens-streak": [
+"references/elements/atmosphere.md",
+1106,
+1129
+],
+"atmosphere.glow-or-light/subliminal-bloom": [
+"references/elements/atmosphere.md",
+1131,
+1157
+],
+"atmosphere.glow-or-light/light-inside-the-render": [
+"references/elements/atmosphere.md",
+1159,
+1170
+],
+"atmosphere.glow-or-light/warm-focal-radial": [
+"references/elements/atmosphere.md",
+1172,
+1183
+],
+"atmosphere.glow-or-light/colour-as-horizon-light": [
+"references/elements/atmosphere.md",
+1185,
+1194
+],
+"atmosphere.glow-or-light/corner-light": [
+"references/elements/atmosphere.md",
+1196,
+1205
+],
+"atmosphere.glow-or-light/neon-edge-on-frame": [
+"references/elements/atmosphere.md",
+1207,
+1216
+],
+"atmosphere.glow-or-light/hard-cut-inner-bloom": [
+"references/elements/atmosphere.md",
+1218,
+1227
+],
+"atmosphere.glow-or-light/light-ribbon-object": [
+"references/elements/atmosphere.md",
+1229,
+1238
+],
+"atmosphere.glow-or-light/underglow-behind-glass": [
+"references/elements/atmosphere.md",
+1240,
+1249
+],
+"atmosphere.glow-or-light/glow-reveals-grid": [
+"references/elements/atmosphere.md",
+1251,
+1260
+],
+"atmosphere.glow-or-light/rule-bleed": [
+"references/elements/atmosphere.md",
+1262,
+1271
+],
+"atmosphere.mesh-or-3d-backdrop/point-cloud": [
+"references/elements/atmosphere.md",
+1292,
+1318
+],
+"atmosphere.mesh-or-3d-backdrop/grain-shader-field": [
+"references/elements/atmosphere.md",
+1320,
+1360
+],
+"atmosphere.mesh-or-3d-backdrop/dot-terrain": [
+"references/elements/atmosphere.md",
+1362,
+1385
+],
+"atmosphere.mesh-or-3d-backdrop/stippled-mark-in-bars": [
+"references/elements/atmosphere.md",
+1387,
+1398
+],
+"atmosphere.mesh-or-3d-backdrop/voxel-flanks": [
+"references/elements/atmosphere.md",
+1400,
+1409
+],
+"atmosphere.mesh-or-3d-backdrop/smoke-field": [
+"references/elements/atmosphere.md",
+1411,
+1420
+],
+"atmosphere.mesh-or-3d-backdrop/glyph-vortex": [
+"references/elements/atmosphere.md",
+1422,
+1431
+],
+"atmosphere.mesh-or-3d-backdrop/lit-3d-sky": [
+"references/elements/atmosphere.md",
+1433,
+1442
+],
+"atmosphere.grid-or-lines/blueprint-rails-with-nodes": [
+"references/elements/atmosphere.md",
+1473,
+1501
+],
+"atmosphere.grid-or-lines/fading-square-grid": [
+"references/elements/atmosphere.md",
+1503,
+1526
+],
+"atmosphere.grid-or-lines/page-rails": [
+"references/elements/atmosphere.md",
+1528,
+1558
+],
+"atmosphere.grid-or-lines/perspective-room": [
+"references/elements/atmosphere.md",
+1560,
+1583
+],
+"atmosphere.grid-or-lines/exposed-column-guides": [
+"references/elements/atmosphere.md",
+1585,
+1596
+],
+"atmosphere.grid-or-lines/construction-geometry": [
+"references/elements/atmosphere.md",
+1598,
+1609
+],
+"atmosphere.grid-or-lines/graph-paper-ground": [
+"references/elements/atmosphere.md",
+1611,
+1622
+],
+"atmosphere.grid-or-lines/survey-rays-and-diagonals": [
+"references/elements/atmosphere.md",
+1624,
+1635
+],
+"atmosphere.grid-or-lines/crosshair-sight-grid": [
+"references/elements/atmosphere.md",
+1637,
+1646
+],
+"atmosphere.grid-or-lines/ghost-linework": [
+"references/elements/atmosphere.md",
+1648,
+1657
+],
+"atmosphere.grid-or-lines/textured-gutters-outside-rails": [
+"references/elements/atmosphere.md",
+1659,
+1668
+],
+"atmosphere.grid-or-lines/hairlines-over-media": [
+"references/elements/atmosphere.md",
+1670,
+1679
+],
+"atmosphere.grid-or-lines/working-field": [
+"references/elements/atmosphere.md",
+1681,
+1690
+],
+"atmosphere.pattern/pixel-dissolve-edge": [
+"references/elements/atmosphere.md",
+1712,
+1734
+],
+"atmosphere.pattern/stripe-rail": [
+"references/elements/atmosphere.md",
+1736,
+1760
+],
+"atmosphere.pattern/glyph-halftone-figure": [
+"references/elements/atmosphere.md",
+1762,
+1786
+],
+"atmosphere.pattern/dot-gutters": [
+"references/elements/atmosphere.md",
+1788,
+1810
+],
+"atmosphere.pattern/contour-moire": [
+"references/elements/atmosphere.md",
+1812,
+1832
+],
+"atmosphere.pattern/hatch-gutters-and-seams": [
+"references/elements/atmosphere.md",
+1834,
+1845
+],
+"atmosphere.pattern/type-as-texture": [
+"references/elements/atmosphere.md",
+1847,
+1858
+],
+"atmosphere.pattern/data-point-field": [
+"references/elements/atmosphere.md",
+1860,
+1871
+],
+"atmosphere.pattern/object-grid-fill": [
+"references/elements/atmosphere.md",
+1873,
+1884
+],
+"atmosphere.pattern/enlarged-brand-geometry": [
+"references/elements/atmosphere.md",
+1886,
+1897
+],
+"atmosphere.pattern/organic-blob-fields": [
+"references/elements/atmosphere.md",
+1899,
+1910
+],
+"atmosphere.pattern/poster-geometry": [
+"references/elements/atmosphere.md",
+1912,
+1923
+],
+"atmosphere.pattern/shaped-section-edge": [
+"references/elements/atmosphere.md",
+1925,
+1934
+],
+"atmosphere.pattern/sticker-scatter": [
+"references/elements/atmosphere.md",
+1936,
+1945
+],
+"atmosphere.pattern/line-illustration-break": [
+"references/elements/atmosphere.md",
+1947,
+1956
+],
+"atmosphere.texture/stippled-stage": [
+"references/elements/atmosphere.md",
+1995,
+2018
+],
+"atmosphere.texture/grain-on-dark-ground": [
+"references/elements/atmosphere.md",
+2020,
+2045
+],
+"atmosphere.texture/paper-grain-page": [
+"references/elements/atmosphere.md",
+2047,
+2076
+],
+"atmosphere.texture/film-grain-on-colour": [
+"references/elements/atmosphere.md",
+2078,
+2089
+],
+"atmosphere.texture/data-as-texture": [
+"references/elements/atmosphere.md",
+2091,
+2102
+],
+"atmosphere.texture/paper-colour-fills": [
+"references/elements/atmosphere.md",
+2104,
+2115
+],
+"atmosphere.texture/halftone-strip": [
+"references/elements/atmosphere.md",
+2117,
+2128
+],
+"atmosphere.texture/one-bit-dither": [
+"references/elements/atmosphere.md",
+2130,
+2141
+],
+"atmosphere.texture/stipple-watermark": [
+"references/elements/atmosphere.md",
+2143,
+2152
+],
+"atmosphere.texture/scanned-analogue": [
+"references/elements/atmosphere.md",
+2154,
+2163
+],
+"atmosphere.texture/wallpaper-ground": [
+"references/elements/atmosphere.md",
+2165,
+2174
+],
+"atmosphere.texture/atmospheric-mist": [
+"references/elements/atmosphere.md",
+2176,
+2185
+],
+"atmosphere.image-backdrop/ghosted-objects": [
+"references/elements/atmosphere.md",
+2208,
+2233
+],
+"atmosphere.image-backdrop/smeared-plate": [
+"references/elements/atmosphere.md",
+2235,
+2260
+],
+"atmosphere.image-backdrop/graduated-scrim": [
+"references/elements/atmosphere.md",
+2262,
+2282
+],
+"atmosphere.image-backdrop/graded-scene": [
+"references/elements/atmosphere.md",
+2284,
+2295
+],
+"atmosphere.image-backdrop/lit-from-within-on-black": [
+"references/elements/atmosphere.md",
+2297,
+2308
+],
+"atmosphere.image-backdrop/textural-photo-band": [
+"references/elements/atmosphere.md",
+2310,
+2321
+],
+"atmosphere.image-backdrop/defocused-crushed-photo": [
+"references/elements/atmosphere.md",
+2323,
+2334
+],
+"atmosphere.image-backdrop/flat-scrim-band": [
+"references/elements/atmosphere.md",
+2336,
+2345
+],
+"atmosphere.image-backdrop/photo-dissolve-seam": [
+"references/elements/atmosphere.md",
+2347,
+2358
+],
+"atmosphere.image-backdrop/footage-with-outline-card": [
+"references/elements/atmosphere.md",
+2360,
+2369
+],
+"atmosphere.image-backdrop/one-side-scrim": [
+"references/elements/atmosphere.md",
+2371,
+2380
+],
+"atmosphere.image-backdrop/world-wallpaper": [
+"references/elements/atmosphere.md",
+2382,
+2391
+],
+"atmosphere.image-backdrop/giant-watermark": [
+"references/elements/atmosphere.md",
+2393,
+2402
+],
+"atmosphere.image-backdrop/passe-partout": [
+"references/elements/atmosphere.md",
+2404,
+2413
+],
+"button.primary/neutral-chip": [
+"references/elements/button.md",
+193,
+212
+],
+"button.primary/neutral-pill": [
+"references/elements/button.md",
+214,
+233
+],
+"button.primary/saturated-rect": [
+"references/elements/button.md",
+235,
+263
+],
+"button.primary/saturated-pill": [
+"references/elements/button.md",
+265,
+274
+],
+"button.primary/compact-chevron-pill": [
+"references/elements/button.md",
+276,
+283
+],
+"button.primary/square-block": [
+"references/elements/button.md",
+285,
+294
+],
+"button.primary/mono-caps-block": [
+"references/elements/button.md",
+296,
+314
+],
+"button.primary/wide-tracked-caps": [
+"references/elements/button.md",
+316,
+323
+],
+"button.primary/top-lit-chip": [
+"references/elements/button.md",
+325,
+345
+],
+"button.primary/bevelled-light-key": [
+"references/elements/button.md",
+347,
+366
+],
+"button.primary/lit-colour-button": [
+"references/elements/button.md",
+368,
+387
+],
+"button.primary/lower-lip-key": [
+"references/elements/button.md",
+389,
+417
+],
+"button.primary/hard-offset-shelf": [
+"references/elements/button.md",
+419,
+426
+],
+"button.primary/ink-outlined-fill": [
+"references/elements/button.md",
+428,
+435
+],
+"button.primary/ringed-halo-pill": [
+"references/elements/button.md",
+437,
+455
+],
+"button.primary/spectral-edge-pill": [
+"references/elements/button.md",
+457,
+475
+],
+"button.primary/nested-arrow-chip": [
+"references/elements/button.md",
+477,
+498
+],
+"button.primary/signature-glyph-button": [
+"references/elements/button.md",
+500,
+507
+],
+"button.primary/cut-silhouette-block": [
+"references/elements/button.md",
+509,
+526
+],
+"button.primary/information-bearing-button": [
+"references/elements/button.md",
+528,
+537
+],
+"button.primary/recommended-fill-in-row": [
+"references/elements/button.md",
+539,
+557
+],
+"button.primary/keycap-hint-button": [
+"references/elements/button.md",
+559,
+584
+],
+"button.primary/split-choice-button": [
+"references/elements/button.md",
+586,
+593
+],
+"button.primary/display-scale-button": [
+"references/elements/button.md",
+595,
+602
+],
+"button.primary/docked-persistent-cta": [
+"references/elements/button.md",
+604,
+611
+],
+"button.primary/dark-page-quiet-button": [
+"references/elements/button.md",
+613,
+630
+],
+"button.secondary/pale-hairline-chip": [
+"references/elements/button.md",
+660,
+675
+],
+"button.secondary/ink-outline-square": [
+"references/elements/button.md",
+677,
+694
+],
+"button.secondary/serif-label-outline": [
+"references/elements/button.md",
+696,
+703
+],
+"button.secondary/outline-pill": [
+"references/elements/button.md",
+705,
+712
+],
+"button.secondary/tonal-fill": [
+"references/elements/button.md",
+714,
+732
+],
+"button.secondary/ghost-on-media": [
+"references/elements/button.md",
+734,
+751
+],
+"button.secondary/dark-raised-chip": [
+"references/elements/button.md",
+753,
+769
+],
+"button.secondary/white-raised-key": [
+"references/elements/button.md",
+771,
+788
+],
+"button.secondary/gradient-keyline": [
+"references/elements/button.md",
+790,
+804
+],
+"button.secondary/second-solid-colour": [
+"references/elements/button.md",
+806,
+813
+],
+"button.secondary/quiet-chip-row": [
+"references/elements/button.md",
+815,
+822
+],
+"button.secondary/drawn-shape-outline": [
+"references/elements/button.md",
+824,
+839
+],
+"button.secondary/menu-button": [
+"references/elements/button.md",
+841,
+848
+],
+"button.secondary/closing-bar": [
+"references/elements/button.md",
+850,
+857
+],
+"button.text-link/hairline-underline": [
+"references/elements/button.md",
+879,
+894
+],
+"button.text-link/dotted-term-underline": [
+"references/elements/button.md",
+896,
+910
+],
+"button.text-link/accent-chevron-link": [
+"references/elements/button.md",
+912,
+935
+],
+"button.text-link/ink-arrow-link": [
+"references/elements/button.md",
+937,
+944
+],
+"button.text-link/underline-detached-arrow": [
+"references/elements/button.md",
+946,
+966
+],
+"button.text-link/ring-arrow-link": [
+"references/elements/button.md",
+968,
+983
+],
+"button.text-link/mono-caps-underline": [
+"references/elements/button.md",
+985,
+999
+],
+"button.text-link/serif-voice-link": [
+"references/elements/button.md",
+1001,
+1016
+],
+"button.text-link/ruled-cell-link": [
+"references/elements/button.md",
+1018,
+1034
+],
+"button.text-link/marker-block-link": [
+"references/elements/button.md",
+1036,
+1050
+],
+"button.text-link/glyph-mark-link": [
+"references/elements/button.md",
+1052,
+1059
+],
+"button.text-link/section-exit-links": [
+"references/elements/button.md",
+1061,
+1081
+],
+"button.text-link/bare-label-link": [
+"references/elements/button.md",
+1083,
+1090
+],
+"button.icon-button/ghost-toolbar-icon": [
+"references/elements/button.md",
+1112,
+1129
+],
+"button.icon-button/carousel-arrow-pair": [
+"references/elements/button.md",
+1131,
+1148
+],
+"button.icon-button/media-control-chip": [
+"references/elements/button.md",
+1150,
+1169
+],
+"button.icon-button/tick-pager": [
+"references/elements/button.md",
+1171,
+1188
+],
+"button.icon-button/floating-assistant": [
+"references/elements/button.md",
+1190,
+1205
+],
+"button.icon-button/scroll-capsule": [
+"references/elements/button.md",
+1207,
+1214
+],
+"button.icon-button/arrow-disc-on-media": [
+"references/elements/button.md",
+1216,
+1231
+],
+"button.icon-button/seam-straddling-disc": [
+"references/elements/button.md",
+1233,
+1240
+],
+"button.icon-button/square-icon-tile": [
+"references/elements/button.md",
+1242,
+1249
+],
+"button.icon-button/social-circle-row": [
+"references/elements/button.md",
+1251,
+1258
+],
+"button.icon-button/desktop-icon-nav": [
+"references/elements/button.md",
+1260,
+1267
+],
+"button.cta-pair/filled-plus-outline-pill": [
+"references/elements/button.md",
+1289,
+1305
+],
+"button.cta-pair/filled-plus-outline-rect": [
+"references/elements/button.md",
+1307,
+1325
+],
+"button.cta-pair/solid-plus-tonal": [
+"references/elements/button.md",
+1327,
+1344
+],
+"button.cta-pair/solid-plus-bare-link": [
+"references/elements/button.md",
+1346,
+1365
+],
+"button.cta-pair/top-lit-twin": [
+"references/elements/button.md",
+1367,
+1374
+],
+"button.cta-pair/neutral-pair-on-dark": [
+"references/elements/button.md",
+1376,
+1393
+],
+"button.cta-pair/equal-twin-block": [
+"references/elements/button.md",
+1395,
+1402
+],
+"button.cta-pair/arrow-tile-pair": [
+"references/elements/button.md",
+1404,
+1421
+],
+"button.cta-pair/install-command-pair": [
+"references/elements/button.md",
+1423,
+1446
+],
+"button.cta-pair/agent-prompt-pair": [
+"references/elements/button.md",
+1448,
+1466
+],
+"button.cta-pair/keycap-lip-pair": [
+"references/elements/button.md",
+1468,
+1475
+],
+"button.cta-pair/sampled-tint-pair": [
+"references/elements/button.md",
+1477,
+1484
+],
+"button.cta-pair/crop-mark-ghost-pair": [
+"references/elements/button.md",
+1486,
+1504
+],
+"button.cta-pair/store-badge-pair": [
+"references/elements/button.md",
+1506,
+1513
+],
+"button.cta-pair/captioned-route-pair": [
+"references/elements/button.md",
+1515,
+1522
+],
+"button.cta-pair/mono-caps-pair": [
+"references/elements/button.md",
+1524,
+1531
+],
+"button.cta-pair/joined-pair": [
+"references/elements/button.md",
+1533,
+1540
+],
+"button.hover-response/tone-step": [
+"references/elements/button.md",
+1563,
+1576
+],
+"button.hover-response/alpha-dim": [
+"references/elements/button.md",
+1578,
+1585
+],
+"button.hover-response/ink-swap": [
+"references/elements/button.md",
+1587,
+1599
+],
+"button.hover-response/directional-fill-wipe": [
+"references/elements/button.md",
+1601,
+1617
+],
+"button.hover-response/arrow-travel": [
+"references/elements/button.md",
+1619,
+1626
+],
+"button.hover-response/label-roll": [
+"references/elements/button.md",
+1628,
+1648
+],
+"button.hover-response/hard-offset-lift": [
+"references/elements/button.md",
+1650,
+1663
+],
+"button.hover-response/light-moves-inside": [
+"references/elements/button.md",
+1665,
+1679
+],
+"button.hover-response/press-in-flatten": [
+"references/elements/button.md",
+1681,
+1688
+],
+"button.hover-response/edge-brightens": [
+"references/elements/button.md",
+1690,
+1703
+],
+"button.hover-response/spring-lift": [
+"references/elements/button.md",
+1705,
+1712
+],
+"button.hover-response/soft-glow": [
+"references/elements/button.md",
+1714,
+1721
+],
+"commerce.product-card/justified-caption-tile": [
+"references/elements/commerce.md",
+354,
+376
+],
+"commerce.product-card/stacked-caption-tile": [
+"references/elements/commerce.md",
+378,
+387
+],
+"commerce.product-card/no-caption-tile": [
+"references/elements/commerce.md",
+389,
+396
+],
+"commerce.product-card/swatch-row-card": [
+"references/elements/commerce.md",
+398,
+424
+],
+"commerce.product-card/cutout-swatch-card": [
+"references/elements/commerce.md",
+426,
+449
+],
+"commerce.product-card/spec-rows-card": [
+"references/elements/commerce.md",
+451,
+472
+],
+"commerce.product-card/quick-add-tile": [
+"references/elements/commerce.md",
+474,
+494
+],
+"commerce.product-card/visible-add-card": [
+"references/elements/commerce.md",
+496,
+505
+],
+"commerce.product-card/retail-dense-card": [
+"references/elements/commerce.md",
+507,
+516
+],
+"commerce.product-card/self-tinted-card": [
+"references/elements/commerce.md",
+518,
+527
+],
+"commerce.product-card/bare-product-no-card": [
+"references/elements/commerce.md",
+529,
+536
+],
+"commerce.product-card/ruled-spec-cell": [
+"references/elements/commerce.md",
+538,
+562
+],
+"commerce.product-card/bundle-contents-card": [
+"references/elements/commerce.md",
+564,
+571
+],
+"commerce.product-card/bookable-listing-card": [
+"references/elements/commerce.md",
+573,
+582
+],
+"commerce.product-card/cover-art-card": [
+"references/elements/commerce.md",
+584,
+591
+],
+"commerce.product-card/price-tag-over-photo": [
+"references/elements/commerce.md",
+593,
+600
+],
+"commerce.product-card/compact-product-row": [
+"references/elements/commerce.md",
+602,
+630
+],
+"commerce.collection-grid/one-ground-grid": [
+"references/elements/commerce.md",
+652,
+668
+],
+"commerce.collection-grid/seam-contact-sheet": [
+"references/elements/commerce.md",
+670,
+686
+],
+"commerce.collection-grid/ruled-column-grid": [
+"references/elements/commerce.md",
+688,
+706
+],
+"commerce.collection-grid/interleaved-grid": [
+"references/elements/commerce.md",
+708,
+726
+],
+"commerce.collection-grid/category-photo-panels": [
+"references/elements/commerce.md",
+728,
+737
+],
+"commerce.collection-grid/category-cutout-tiles": [
+"references/elements/commerce.md",
+739,
+746
+],
+"commerce.collection-grid/category-thumb-rail": [
+"references/elements/commerce.md",
+748,
+755
+],
+"commerce.collection-grid/peek-rail": [
+"references/elements/commerce.md",
+757,
+771
+],
+"commerce.collection-grid/model-chooser-row": [
+"references/elements/commerce.md",
+773,
+793
+],
+"commerce.collection-grid/product-stage-chapters": [
+"references/elements/commerce.md",
+795,
+802
+],
+"commerce.collection-grid/shelf-baseline-row": [
+"references/elements/commerce.md",
+804,
+817
+],
+"commerce.collection-grid/photo-beside-shop": [
+"references/elements/commerce.md",
+819,
+826
+],
+"commerce.collection-grid/thumbnail-wall": [
+"references/elements/commerce.md",
+828,
+835
+],
+"commerce.collection-grid/two-up-listing": [
+"references/elements/commerce.md",
+837,
+844
+],
+"commerce.collection-grid/place-and-date-grid": [
+"references/elements/commerce.md",
+846,
+853
+],
+"commerce.collection-grid/collection-header-band": [
+"references/elements/commerce.md",
+855,
+874
+],
+"commerce.filters/dropdown-bar": [
+"references/elements/commerce.md",
+898,
+924
+],
+"commerce.filters/chip-tray-bar": [
+"references/elements/commerce.md",
+926,
+933
+],
+"commerce.filters/category-pill-row": [
+"references/elements/commerce.md",
+935,
+951
+],
+"commerce.filters/pills-plus-launcher": [
+"references/elements/commerce.md",
+953,
+967
+],
+"commerce.filters/docking-pill-scroller": [
+"references/elements/commerce.md",
+969,
+976
+],
+"commerce.filters/accordion-rail": [
+"references/elements/commerce.md",
+978,
+1003
+],
+"commerce.filters/chip-facet-sidebar": [
+"references/elements/commerce.md",
+1005,
+1012
+],
+"commerce.filters/thumbnail-quickfilters": [
+"references/elements/commerce.md",
+1014,
+1021
+],
+"commerce.filters/quiet-text-filter": [
+"references/elements/commerce.md",
+1023,
+1030
+],
+"commerce.filters/taxonomy-index": [
+"references/elements/commerce.md",
+1032,
+1039
+],
+"commerce.filters/capsule-tabs-search": [
+"references/elements/commerce.md",
+1041,
+1060
+],
+"commerce.product-detail/split-gallery-buybox": [
+"references/elements/commerce.md",
+1086,
+1114
+],
+"commerce.product-detail/narrow-info-wide-gallery": [
+"references/elements/commerce.md",
+1116,
+1140
+],
+"commerce.product-detail/sticky-visual-configurator": [
+"references/elements/commerce.md",
+1142,
+1149
+],
+"commerce.product-detail/purchase-mode-radios": [
+"references/elements/commerce.md",
+1151,
+1169
+],
+"commerce.product-detail/option-tiles-with-price": [
+"references/elements/commerce.md",
+1171,
+1178
+],
+"commerce.product-detail/set-includes-bundle": [
+"references/elements/commerce.md",
+1180,
+1196
+],
+"commerce.product-detail/colourway-stage": [
+"references/elements/commerce.md",
+1198,
+1205
+],
+"commerce.product-detail/enquiry-spec-block": [
+"references/elements/commerce.md",
+1207,
+1214
+],
+"commerce.product-detail/inline-buy-box": [
+"references/elements/commerce.md",
+1216,
+1223
+],
+"commerce.product-detail/sticky-add-bar": [
+"references/elements/commerce.md",
+1225,
+1249
+],
+"commerce.product-detail/accordion-spec-list": [
+"references/elements/commerce.md",
+1251,
+1258
+],
+"commerce.product-detail/reassurance-stack": [
+"references/elements/commerce.md",
+1260,
+1278
+],
+"commerce.product-detail/cross-sell-row": [
+"references/elements/commerce.md",
+1280,
+1301
+],
+"commerce.cart/filled-drawer-lines": [
+"references/elements/commerce.md",
+1311,
+1339
+],
+"commerce.cart/cart-page-summary": [
+"references/elements/commerce.md",
+1341,
+1359
+],
+"commerce.cart/drawer-guided-rows": [
+"references/elements/commerce.md",
+1361,
+1379
+],
+"commerce.cart/drawer-voice-empty": [
+"references/elements/commerce.md",
+1381,
+1388
+],
+"commerce.cart/drawer-progress-upsell": [
+"references/elements/commerce.md",
+1390,
+1397
+],
+"commerce.cart/drawer-recommended-pair": [
+"references/elements/commerce.md",
+1399,
+1406
+],
+"commerce.cart/empty-bag-page": [
+"references/elements/commerce.md",
+1408,
+1415
+],
+"commerce.cart/running-total-header": [
+"references/elements/commerce.md",
+1417,
+1424
+],
+"commerce.cart/donation-amount-picker": [
+"references/elements/commerce.md",
+1426,
+1446
+],
+"hero.centered-with-product/centred-stack-cropped-window": [
+"references/elements/hero.md",
+183,
+234
+],
+"hero.centered-with-product/left-headline-cropped-window": [
+"references/elements/hero.md",
+236,
+261
+],
+"hero.centered-with-product/window-on-image-mat": [
+"references/elements/hero.md",
+263,
+271
+],
+"hero.centered-with-product/video-tile-under-stack": [
+"references/elements/hero.md",
+273,
+281
+],
+"hero.centered-with-product/phone-rising-from-fold": [
+"references/elements/hero.md",
+283,
+311
+],
+"hero.centered-with-product/diagram-instead-of-screenshot": [
+"references/elements/hero.md",
+313,
+341
+],
+"hero.centered-with-product/cards-instead-of-window": [
+"references/elements/hero.md",
+343,
+351
+],
+"hero.centered-with-product/live-object-above-headline": [
+"references/elements/hero.md",
+353,
+361
+],
+"hero.centered-with-product/headline-with-inline-objects": [
+"references/elements/hero.md",
+363,
+373
+],
+"hero.centered-with-product/wall-into-panels": [
+"references/elements/hero.md",
+375,
+383
+],
+"hero.centered-with-product/poster-over-product": [
+"references/elements/hero.md",
+385,
+393
+],
+"hero.centered-with-product/scene-around-copy": [
+"references/elements/hero.md",
+395,
+403
+],
+"hero.centered-with-product/work-strip-under-stack": [
+"references/elements/hero.md",
+405,
+413
+],
+"hero.split-copy-media/live-ui-overlap": [
+"references/elements/hero.md",
+440,
+467
+],
+"hero.split-copy-media/edge-bleeding-subject": [
+"references/elements/hero.md",
+469,
+477
+],
+"hero.split-copy-media/half-and-half": [
+"references/elements/hero.md",
+479,
+499
+],
+"hero.split-copy-media/diagram-or-illustration-right": [
+"references/elements/hero.md",
+501,
+509
+],
+"hero.split-copy-media/plain-plate": [
+"references/elements/hero.md",
+511,
+519
+],
+"hero.split-copy-media/copy-plus-utility-rail": [
+"references/elements/hero.md",
+521,
+529
+],
+"hero.split-copy-media/tilted-device": [
+"references/elements/hero.md",
+531,
+539
+],
+"hero.split-copy-media/product-still-right": [
+"references/elements/hero.md",
+541,
+549
+],
+"hero.split-copy-media/video-panel": [
+"references/elements/hero.md",
+551,
+559
+],
+"hero.split-copy-media/code-or-proof-as-picture": [
+"references/elements/hero.md",
+561,
+590
+],
+"hero.split-copy-media/headline-left-actions-right": [
+"references/elements/hero.md",
+592,
+600
+],
+"hero.split-copy-media/cell-frame": [
+"references/elements/hero.md",
+602,
+610
+],
+"hero.split-copy-media/app-bleeds-right": [
+"references/elements/hero.md",
+612,
+620
+],
+"hero.split-copy-media/story-mosaic": [
+"references/elements/hero.md",
+622,
+630
+],
+"hero.split-copy-media/product-on-plate": [
+"references/elements/hero.md",
+632,
+640
+],
+"hero.full-bleed-media/bottom-left-lockup": [
+"references/elements/hero.md",
+680,
+707
+],
+"hero.full-bleed-media/inset-rounded-panel": [
+"references/elements/hero.md",
+709,
+731
+],
+"hero.full-bleed-media/giant-type-over-image": [
+"references/elements/hero.md",
+733,
+754
+],
+"hero.full-bleed-media/card-docked-in-image": [
+"references/elements/hero.md",
+756,
+777
+],
+"hero.full-bleed-media/depth-layered-subject": [
+"references/elements/hero.md",
+779,
+787
+],
+"hero.full-bleed-media/designed-bottom-edge": [
+"references/elements/hero.md",
+789,
+803
+],
+"hero.full-bleed-media/panel-diptych": [
+"references/elements/hero.md",
+805,
+813
+],
+"hero.full-bleed-media/film-with-index": [
+"references/elements/hero.md",
+815,
+823
+],
+"hero.full-bleed-media/side-column-on-calm-side": [
+"references/elements/hero.md",
+825,
+833
+],
+"hero.full-bleed-media/centred-lockup": [
+"references/elements/hero.md",
+835,
+860
+],
+"hero.full-bleed-media/colour-wash-from-one-side": [
+"references/elements/hero.md",
+862,
+875
+],
+"hero.full-bleed-media/image-with-caption-only": [
+"references/elements/hero.md",
+877,
+885
+],
+"hero.full-bleed-media/contained-plate": [
+"references/elements/hero.md",
+887,
+895
+],
+"hero.full-bleed-media/graphic-plate": [
+"references/elements/hero.md",
+897,
+905
+],
+"hero.full-bleed-media/promo-carousel": [
+"references/elements/hero.md",
+907,
+915
+],
+"hero.video-loop/film-bottom-caption": [
+"references/elements/hero.md",
+942,
+950
+],
+"hero.video-loop/cinema-card": [
+"references/elements/hero.md",
+952,
+974
+],
+"hero.video-loop/product-film": [
+"references/elements/hero.md",
+976,
+984
+],
+"hero.video-loop/film-centred-lockup": [
+"references/elements/hero.md",
+986,
+994
+],
+"hero.video-loop/reel-as-identity": [
+"references/elements/hero.md",
+996,
+1004
+],
+"hero.video-loop/inset-reel": [
+"references/elements/hero.md",
+1006,
+1014
+],
+"hero.video-loop/texture-film": [
+"references/elements/hero.md",
+1016,
+1038
+],
+"hero.video-loop/film-narrative": [
+"references/elements/hero.md",
+1040,
+1048
+],
+"hero.type-only/paragraph-headline": [
+"references/elements/hero.md",
+1073,
+1096
+],
+"hero.type-only/type-over-one-field": [
+"references/elements/hero.md",
+1098,
+1119
+],
+"hero.type-only/statement-with-annotation": [
+"references/elements/hero.md",
+1121,
+1144
+],
+"hero.type-only/statement-above-rising-media": [
+"references/elements/hero.md",
+1146,
+1154
+],
+"hero.type-only/centred-statement": [
+"references/elements/hero.md",
+1156,
+1164
+],
+"hero.type-only/stack-with-proof-row": [
+"references/elements/hero.md",
+1166,
+1174
+],
+"hero.type-only/giant-wordmark": [
+"references/elements/hero.md",
+1176,
+1202
+],
+"hero.type-only/mark-plus-sentence": [
+"references/elements/hero.md",
+1204,
+1212
+],
+"hero.type-only/panel-field": [
+"references/elements/hero.md",
+1214,
+1222
+],
+"hero.type-only/headline-into-content": [
+"references/elements/hero.md",
+1224,
+1232
+],
+"hero.type-only/typographic-construction": [
+"references/elements/hero.md",
+1234,
+1242
+],
+"hero.type-only/quiet-paragraph": [
+"references/elements/hero.md",
+1244,
+1252
+],
+"hero.type-only/claim-with-logos-at-fold": [
+"references/elements/hero.md",
+1254,
+1262
+],
+"hero.collage/routing-tiles": [
+"references/elements/hero.md",
+1288,
+1312
+],
+"hero.collage/wired-perimeter": [
+"references/elements/hero.md",
+1314,
+1336
+],
+"hero.collage/fading-tile-field": [
+"references/elements/hero.md",
+1338,
+1353
+],
+"hero.collage/device-fan": [
+"references/elements/hero.md",
+1355,
+1363
+],
+"hero.collage/ring-around-headline": [
+"references/elements/hero.md",
+1365,
+1373
+],
+"hero.collage/scattered-prints": [
+"references/elements/hero.md",
+1375,
+1383
+],
+"hero.collage/type-split-by-prints": [
+"references/elements/hero.md",
+1385,
+1393
+],
+"hero.collage/cutout-on-grid": [
+"references/elements/hero.md",
+1395,
+1403
+],
+"hero.collage/bleeding-rail": [
+"references/elements/hero.md",
+1405,
+1413
+],
+"hero.collage/character-diorama": [
+"references/elements/hero.md",
+1415,
+1423
+],
+"hero.collage/single-image-stage": [
+"references/elements/hero.md",
+1425,
+1433
+],
+"hero.collage/tilted-tile-fan": [
+"references/elements/hero.md",
+1435,
+1443
+],
+"hero.collage/blob-masked-photos": [
+"references/elements/hero.md",
+1445,
+1453
+],
+"hero.object-3d/seamless-render-on-page-ground": [
+"references/elements/hero.md",
+1478,
+1486
+],
+"hero.object-3d/annotated-specimen": [
+"references/elements/hero.md",
+1488,
+1512
+],
+"hero.object-3d/inset-panel-render": [
+"references/elements/hero.md",
+1514,
+1537
+],
+"hero.object-3d/object-beside-headline": [
+"references/elements/hero.md",
+1539,
+1547
+],
+"hero.object-3d/spotlit-object-on-dark": [
+"references/elements/hero.md",
+1549,
+1557
+],
+"hero.object-3d/brand-machine-scene": [
+"references/elements/hero.md",
+1559,
+1567
+],
+"hero.object-3d/object-interleaved-with-type": [
+"references/elements/hero.md",
+1569,
+1577
+],
+"hero.object-3d/generative-figure": [
+"references/elements/hero.md",
+1579,
+1587
+],
+"hero.object-3d/explorable-world": [
+"references/elements/hero.md",
+1589,
+1597
+],
+"hero.input-first/email-field-inset-button": [
+"references/elements/hero.md",
+1622,
+1650
+],
+"hero.input-first/prompt-composer": [
+"references/elements/hero.md",
+1652,
+1679
+],
+"hero.input-first/install-command": [
+"references/elements/hero.md",
+1681,
+1710
+],
+"hero.input-first/multi-field-booking-bar": [
+"references/elements/hero.md",
+1712,
+1735
+],
+"hero.input-first/search-as-navigation": [
+"references/elements/hero.md",
+1737,
+1745
+],
+"hero.input-first/sso-stack": [
+"references/elements/hero.md",
+1747,
+1755
+],
+"hero.input-first/transaction-widget": [
+"references/elements/hero.md",
+1757,
+1765
+],
+"hero.interactive-demo/tabs-fused-to-product": [
+"references/elements/hero.md",
+1790,
+1815
+],
+"hero.interactive-demo/product-canvas": [
+"references/elements/hero.md",
+1817,
+1843
+],
+"hero.interactive-demo/try-it-now-card": [
+"references/elements/hero.md",
+1845,
+1853
+],
+"hero.interactive-demo/real-index-wall": [
+"references/elements/hero.md",
+1855,
+1863
+],
+"hero.interactive-demo/manual-walkthrough": [
+"references/elements/hero.md",
+1865,
+1873
+],
+"hero.interactive-demo/signature-instrument": [
+"references/elements/hero.md",
+1875,
+1883
+],
+"layout.grid-system/page-rails": [
+"references/elements/layout.md",
+155,
+184
+],
+"layout.grid-system/ruled-cell-frame": [
+"references/elements/layout.md",
+186,
+209
+],
+"layout.grid-system/dashed-column-guides": [
+"references/elements/layout.md",
+211,
+217
+],
+"layout.grid-system/construction-lines": [
+"references/elements/layout.md",
+219,
+225
+],
+"layout.grid-system/edge-to-edge-ledger": [
+"references/elements/layout.md",
+227,
+233
+],
+"layout.grid-system/newspaper-column-rules": [
+"references/elements/layout.md",
+235,
+241
+],
+"layout.grid-system/full-width-small-gutter": [
+"references/elements/layout.md",
+247,
+253
+],
+"layout.grid-system/fixed-column-grid": [
+"references/elements/layout.md",
+255,
+261
+],
+"layout.grid-system/two-up-seam-tiles": [
+"references/elements/layout.md",
+263,
+269
+],
+"layout.grid-system/label-left-content-right": [
+"references/elements/layout.md",
+275,
+291
+],
+"layout.grid-system/heading-rail-content-grid": [
+"references/elements/layout.md",
+293,
+299
+],
+"layout.grid-system/midline-heading-lede": [
+"references/elements/layout.md",
+301,
+327
+],
+"layout.grid-system/hard-midline-panels": [
+"references/elements/layout.md",
+329,
+335
+],
+"layout.grid-system/text-inset-from-media": [
+"references/elements/layout.md",
+337,
+343
+],
+"layout.grid-system/hanging-outdent": [
+"references/elements/layout.md",
+345,
+351
+],
+"layout.grid-system/rule-opened-title-body-split": [
+"references/elements/layout.md",
+353,
+359
+],
+"layout.grid-system/centred-spine-side-captions": [
+"references/elements/layout.md",
+361,
+367
+],
+"layout.grid-system/asymmetric-index-columns": [
+"references/elements/layout.md",
+369,
+375
+],
+"layout.grid-system/viewport-as-grid": [
+"references/elements/layout.md",
+381,
+387
+],
+"layout.grid-system/mosaic-feed": [
+"references/elements/layout.md",
+389,
+395
+],
+"layout.grid-system/spreadsheet-page": [
+"references/elements/layout.md",
+397,
+403
+],
+"layout.section-rhythm/quiet-tint-bands": [
+"references/elements/layout.md",
+433,
+439
+],
+"layout.section-rhythm/space-only-gaps": [
+"references/elements/layout.md",
+441,
+447
+],
+"layout.section-rhythm/repeating-unit-cadence": [
+"references/elements/layout.md",
+449,
+455
+],
+"layout.section-rhythm/hard-dark-cuts": [
+"references/elements/layout.md",
+457,
+481
+],
+"layout.section-rhythm/butted-colour-blocks": [
+"references/elements/layout.md",
+483,
+489
+],
+"layout.section-rhythm/chapter-colour-rooms": [
+"references/elements/layout.md",
+491,
+497
+],
+"layout.section-rhythm/rounded-colour-sheets": [
+"references/elements/layout.md",
+499,
+516
+],
+"layout.section-rhythm/width-step-panels": [
+"references/elements/layout.md",
+518,
+535
+],
+"layout.section-rhythm/panel-count-steps": [
+"references/elements/layout.md",
+537,
+543
+],
+"layout.section-rhythm/scene-per-viewport": [
+"references/elements/layout.md",
+545,
+551
+],
+"layout.section-rhythm/interlude-between-modules": [
+"references/elements/layout.md",
+553,
+559
+],
+"layout.section-rhythm/curved-section-seams": [
+"references/elements/layout.md",
+561,
+567
+],
+"layout.section-rhythm/collapsed-chapters": [
+"references/elements/layout.md",
+569,
+575
+],
+"layout.whitespace/single-measure-void": [
+"references/elements/layout.md",
+603,
+619
+],
+"layout.whitespace/gallery-wall-void": [
+"references/elements/layout.md",
+621,
+627
+],
+"layout.whitespace/one-screen-page": [
+"references/elements/layout.md",
+629,
+644
+],
+"layout.whitespace/edge-pinned-empty-centre": [
+"references/elements/layout.md",
+646,
+652
+],
+"layout.whitespace/one-object-per-scroll": [
+"references/elements/layout.md",
+654,
+660
+],
+"layout.whitespace/empty-label-column": [
+"references/elements/layout.md",
+662,
+668
+],
+"layout.whitespace/bottom-anchored-empty-panel": [
+"references/elements/layout.md",
+670,
+688
+],
+"layout.whitespace/tiny-type-huge-void": [
+"references/elements/layout.md",
+690,
+696
+],
+"layout.whitespace/pause-viewport": [
+"references/elements/layout.md",
+698,
+704
+],
+"layout.whitespace/measured-generosity": [
+"references/elements/layout.md",
+706,
+712
+],
+"layout.composition-shift/pinned-panel-scroll-column": [
+"references/elements/layout.md",
+739,
+762
+],
+"layout.composition-shift/staggered-hung-images": [
+"references/elements/layout.md",
+764,
+785
+],
+"layout.composition-shift/bleed-side-alternation": [
+"references/elements/layout.md",
+787,
+793
+],
+"layout.composition-shift/interlocked-panels": [
+"references/elements/layout.md",
+795,
+816
+],
+"layout.composition-shift/seam-straddling-object": [
+"references/elements/layout.md",
+818,
+824
+],
+"layout.composition-shift/angled-section-cut": [
+"references/elements/layout.md",
+826,
+832
+],
+"layout.composition-shift/half-flip-parallax-columns": [
+"references/elements/layout.md",
+834,
+840
+],
+"layout.composition-shift/opposite-margin-axis": [
+"references/elements/layout.md",
+842,
+848
+],
+"layout.composition-shift/product-as-page": [
+"references/elements/layout.md",
+850,
+856
+],
+"layout.composition-shift/essay-under-collage": [
+"references/elements/layout.md",
+858,
+864
+],
+"layout.composition-shift/noticeboard-cards": [
+"references/elements/layout.md",
+866,
+872
+],
+"layout.full-bleed-break/solid-colour-statement": [
+"references/elements/layout.md",
+899,
+929
+],
+"layout.full-bleed-break/dark-interlude-room": [
+"references/elements/layout.md",
+931,
+937
+],
+"layout.full-bleed-break/slanted-chapter": [
+"references/elements/layout.md",
+939,
+968
+],
+"layout.full-bleed-break/diagonal-split-panel": [
+"references/elements/layout.md",
+970,
+976
+],
+"layout.full-bleed-break/stepped-section-edge": [
+"references/elements/layout.md",
+978,
+984
+],
+"layout.full-bleed-break/film-band": [
+"references/elements/layout.md",
+986,
+992
+],
+"layout.full-bleed-break/pinned-photo-card-over": [
+"references/elements/layout.md",
+994,
+1010
+],
+"layout.full-bleed-break/inset-rounded-sheets": [
+"references/elements/layout.md",
+1012,
+1018
+],
+"layout.full-bleed-break/framed-single-screen": [
+"references/elements/layout.md",
+1020,
+1026
+],
+"layout.full-bleed-break/image-over-colour-seam": [
+"references/elements/layout.md",
+1028,
+1034
+],
+"layout.content-width/single-measure-column": [
+"references/elements/layout.md",
+1062,
+1068
+],
+"layout.content-width/one-shared-rail": [
+"references/elements/layout.md",
+1070,
+1076
+],
+"layout.content-width/nested-widths-one-axis": [
+"references/elements/layout.md",
+1078,
+1092
+],
+"layout.content-width/column-with-one-side-bleed": [
+"references/elements/layout.md",
+1094,
+1109
+],
+"layout.content-width/full-width-second-axis": [
+"references/elements/layout.md",
+1111,
+1117
+],
+"layout.content-width/right-weighted-feed": [
+"references/elements/layout.md",
+1119,
+1125
+],
+"layout.content-width/floating-content-sheet": [
+"references/elements/layout.md",
+1127,
+1148
+],
+"layout.content-width/one-screen-card-stack": [
+"references/elements/layout.md",
+1150,
+1156
+],
+"layout.content-width/fixed-portal-column": [
+"references/elements/layout.md",
+1158,
+1164
+],
+"media.photography/one-light-one-grade": [
+"references/elements/media.md",
+196,
+224
+],
+"media.photography/palette-tied-set": [
+"references/elements/media.md",
+226,
+235
+],
+"media.photography/studio-seamless-object": [
+"references/elements/media.md",
+237,
+246
+],
+"media.photography/cutout-on-flat": [
+"references/elements/media.md",
+248,
+259
+],
+"media.photography/macro-material-crop": [
+"references/elements/media.md",
+261,
+270
+],
+"media.photography/documentary-in-system-tile": [
+"references/elements/media.md",
+272,
+281
+],
+"media.photography/same-angle-grid": [
+"references/elements/media.md",
+283,
+292
+],
+"media.photography/contrast-pairing": [
+"references/elements/media.md",
+294,
+303
+],
+"media.photography/scrimless-campaign-plate": [
+"references/elements/media.md",
+307,
+334
+],
+"media.photography/uncropped-native-plate": [
+"references/elements/media.md",
+336,
+354
+],
+"media.photography/die-cut-shape-mask": [
+"references/elements/media.md",
+356,
+375
+],
+"media.photography/tilted-prints": [
+"references/elements/media.md",
+377,
+396
+],
+"media.photography/paste-up-collage": [
+"references/elements/media.md",
+398,
+407
+],
+"media.photography/annotated-photo": [
+"references/elements/media.md",
+409,
+441
+],
+"media.photography/halftone-or-mosaic-screen": [
+"references/elements/media.md",
+443,
+487
+],
+"media.photography/gradient-map-duotone": [
+"references/elements/media.md",
+489,
+512
+],
+"media.illustration/hairline-isometric": [
+"references/elements/media.md",
+553,
+587
+],
+"media.illustration/one-weight-system-diagram": [
+"references/elements/media.md",
+589,
+622
+],
+"media.illustration/flat-fill-kit": [
+"references/elements/media.md",
+624,
+653
+],
+"media.illustration/dimensioned-technical-drawing": [
+"references/elements/media.md",
+655,
+664
+],
+"media.illustration/dither-and-dot": [
+"references/elements/media.md",
+666,
+690
+],
+"media.illustration/cover-art-system": [
+"references/elements/media.md",
+692,
+719
+],
+"media.illustration/tonal-contour-field": [
+"references/elements/media.md",
+721,
+753
+],
+"media.illustration/hand-inked-line": [
+"references/elements/media.md",
+757,
+779
+],
+"media.illustration/single-thread-line": [
+"references/elements/media.md",
+781,
+790
+],
+"media.illustration/stipple-engraving": [
+"references/elements/media.md",
+794,
+803
+],
+"media.illustration/textured-commissioned-art": [
+"references/elements/media.md",
+805,
+814
+],
+"media.illustration/mascot-system": [
+"references/elements/media.md",
+816,
+825
+],
+"media.illustration/flat-geometric-world": [
+"references/elements/media.md",
+827,
+836
+],
+"media.illustration/die-cut-sticker": [
+"references/elements/media.md",
+838,
+847
+],
+"media.illustration/paper-craft-scene": [
+"references/elements/media.md",
+849,
+858
+],
+"media.icon-set/one-weight-line-set": [
+"references/elements/media.md",
+917,
+940
+],
+"media.icon-set/check-and-cross-system": [
+"references/elements/media.md",
+942,
+964
+],
+"media.icon-set/provenance-glyphs": [
+"references/elements/media.md",
+966,
+975
+],
+"media.icon-set/duotone-solid-glyphs": [
+"references/elements/media.md",
+979,
+1003
+],
+"media.icon-set/knockout-badge-tiles": [
+"references/elements/media.md",
+1005,
+1025
+],
+"media.icon-set/product-object-as-icon": [
+"references/elements/media.md",
+1027,
+1046
+],
+"media.icon-set/pattern-drawn-marks": [
+"references/elements/media.md",
+1048,
+1059
+],
+"media.icon-set/pixel-grid-icons": [
+"references/elements/media.md",
+1063,
+1072
+],
+"media.icon-set/clay-render-icons": [
+"references/elements/media.md",
+1074,
+1083
+],
+"media.icon-set/labelled-desktop-icons": [
+"references/elements/media.md",
+1085,
+1094
+],
+"media.logo-mark/constructed-geometric-mark": [
+"references/elements/media.md",
+1133,
+1156
+],
+"media.logo-mark/wordmark-with-device": [
+"references/elements/media.md",
+1158,
+1169
+],
+"media.logo-mark/pixel-cut-wordmark": [
+"references/elements/media.md",
+1171,
+1191
+],
+"media.logo-mark/cut-letterform": [
+"references/elements/media.md",
+1193,
+1204
+],
+"media.logo-mark/seal-monogram": [
+"references/elements/media.md",
+1206,
+1229
+],
+"media.logo-mark/logo-as-block": [
+"references/elements/media.md",
+1231,
+1240
+],
+"media.logo-mark/mark-as-image-system": [
+"references/elements/media.md",
+1244,
+1263
+],
+"media.logo-mark/pictogram-per-item": [
+"references/elements/media.md",
+1265,
+1285
+],
+"media.logo-mark/behaving-logo": [
+"references/elements/media.md",
+1287,
+1296
+],
+"media.logo-mark/app-icon-tile": [
+"references/elements/media.md",
+1298,
+1309
+],
+"media.logo-mark/dimensional-mark": [
+"references/elements/media.md",
+1311,
+1320
+],
+"media.logo-mark/hand-made-mark": [
+"references/elements/media.md",
+1322,
+1331
+],
+"media.render-3d/flat-shaded-isometric": [
+"references/elements/media.md",
+1371,
+1402
+],
+"media.render-3d/glass-plate-isometric": [
+"references/elements/media.md",
+1404,
+1433
+],
+"media.render-3d/glossy-object-tile": [
+"references/elements/media.md",
+1435,
+1465
+],
+"media.render-3d/machined-on-black": [
+"references/elements/media.md",
+1467,
+1503
+],
+"media.render-3d/matte-clay": [
+"references/elements/media.md",
+1505,
+1514
+],
+"media.render-3d/wireframe-to-solid": [
+"references/elements/media.md",
+1516,
+1525
+],
+"media.render-3d/exploded-part-view": [
+"references/elements/media.md",
+1529,
+1538
+],
+"media.render-3d/macro-crop-render": [
+"references/elements/media.md",
+1540,
+1549
+],
+"media.render-3d/material-story-render": [
+"references/elements/media.md",
+1551,
+1560
+],
+"media.render-3d/grainy-abstract-form": [
+"references/elements/media.md",
+1562,
+1571
+],
+"media.render-3d/product-cgi-on-flat": [
+"references/elements/media.md",
+1573,
+1582
+],
+"media.render-3d/toy-character-render": [
+"references/elements/media.md",
+1584,
+1593
+],
+"media.video/texture-first-loop": [
+"references/elements/media.md",
+1635,
+1646
+],
+"media.video/full-bleed-loop": [
+"references/elements/media.md",
+1648,
+1680
+],
+"media.video/autoplay-thumbnails": [
+"references/elements/media.md",
+1682,
+1691
+],
+"media.video/in-scene-caption": [
+"references/elements/media.md",
+1693,
+1704
+],
+"media.video/poster-with-designed-play": [
+"references/elements/media.md",
+1708,
+1731
+],
+"media.video/inline-clip-quiet-controls": [
+"references/elements/media.md",
+1733,
+1758
+],
+"media.video/portrait-tile-row": [
+"references/elements/media.md",
+1760,
+1783
+],
+"media.video/hero-thumbnail-chip": [
+"references/elements/media.md",
+1785,
+1805
+],
+"media.video/product-output-as-footage": [
+"references/elements/media.md",
+1809,
+1829
+],
+"mobile.phone-layout/copy-then-object-at-fold": [
+"references/elements/mobile.md",
+152,
+172
+],
+"mobile.phone-layout/object-first-stack": [
+"references/elements/mobile.md",
+174,
+191
+],
+"mobile.phone-layout/form-stays-first": [
+"references/elements/mobile.md",
+193,
+211
+],
+"mobile.phone-layout/bottom-anchored-on-full-art": [
+"references/elements/mobile.md",
+213,
+234
+],
+"mobile.phone-layout/inset-panels-kept": [
+"references/elements/mobile.md",
+236,
+253
+],
+"mobile.phone-layout/ui-bleeds-one-edge": [
+"references/elements/mobile.md",
+259,
+278
+],
+"mobile.phone-layout/flanks-bleed-both-edges": [
+"references/elements/mobile.md",
+280,
+298
+],
+"mobile.phone-layout/signature-art-cropped": [
+"references/elements/mobile.md",
+300,
+319
+],
+"mobile.phone-layout/ui-swapped-for-fragment": [
+"references/elements/mobile.md",
+321,
+338
+],
+"mobile.phone-layout/same-stage-scaled": [
+"references/elements/mobile.md",
+340,
+347
+],
+"mobile.phone-layout/art-directed-recrop": [
+"references/elements/mobile.md",
+349,
+365
+],
+"mobile.phone-layout/composition-rebuilt-for-portrait": [
+"references/elements/mobile.md",
+367,
+376
+],
+"mobile.phone-layout/art-cut-message-kept": [
+"references/elements/mobile.md",
+380,
+387
+],
+"mobile.phone-layout/phone-task-swap": [
+"references/elements/mobile.md",
+389,
+398
+],
+"mobile.phone-layout/full-width-cta-stack": [
+"references/elements/mobile.md",
+404,
+417
+],
+"mobile.phone-layout/paired-cta-row": [
+"references/elements/mobile.md",
+419,
+433
+],
+"mobile.phone-layout/hug-width-cta": [
+"references/elements/mobile.md",
+435,
+447
+],
+"mobile.phone-layout/sticky-bottom-cta": [
+"references/elements/mobile.md",
+449,
+475
+],
+"mobile.phone-layout/two-up-grid-kept": [
+"references/elements/mobile.md",
+481,
+498
+],
+"mobile.phone-layout/peek-rail": [
+"references/elements/mobile.md",
+500,
+518
+],
+"mobile.phone-layout/cards-stack-same-recipe": [
+"references/elements/mobile.md",
+520,
+529
+],
+"mobile.phone-layout/hairline-list-feed": [
+"references/elements/mobile.md",
+531,
+546
+],
+"mobile.phone-layout/image-caption-stack": [
+"references/elements/mobile.md",
+548,
+566
+],
+"mobile.phone-layout/stats-fold-to-grid": [
+"references/elements/mobile.md",
+568,
+585
+],
+"mobile.phone-layout/filters-collapse-to-control": [
+"references/elements/mobile.md",
+587,
+604
+],
+"mobile.phone-layout/compare-table-plan-stepper": [
+"references/elements/mobile.md",
+610,
+635
+],
+"mobile.phone-layout/plan-cards-stack": [
+"references/elements/mobile.md",
+637,
+653
+],
+"mobile.phone-layout/plan-swipe-rail": [
+"references/elements/mobile.md",
+655,
+669
+],
+"mobile.phone-layout/table-reduced-columns": [
+"references/elements/mobile.md",
+671,
+686
+],
+"mobile.phone-layout/code-clips-at-edge": [
+"references/elements/mobile.md",
+688,
+703
+],
+"mobile.phone-layout/tabs-become-select-or-stepper": [
+"references/elements/mobile.md",
+705,
+721
+],
+"mobile.phone-layout/rails-kept-at-gutter": [
+"references/elements/mobile.md",
+725,
+746
+],
+"mobile.phone-layout/ruled-cells-stack": [
+"references/elements/mobile.md",
+748,
+755
+],
+"mobile.phone-layout/asymmetry-kept": [
+"references/elements/mobile.md",
+757,
+771
+],
+"mobile.phone-layout/document-reflow-only": [
+"references/elements/mobile.md",
+773,
+780
+],
+"mobile.phone-layout/display-type-held-large": [
+"references/elements/mobile.md",
+784,
+799
+],
+"mobile.phone-layout/wordmark-refit-to-width": [
+"references/elements/mobile.md",
+801,
+820
+],
+"mobile.phone-nav/logo-action-menu": [
+"references/elements/mobile.md",
+855,
+874
+],
+"mobile.phone-nav/bare-logo-and-glyph": [
+"references/elements/mobile.md",
+876,
+883
+],
+"mobile.phone-nav/tiled-menu-control": [
+"references/elements/mobile.md",
+885,
+897
+],
+"mobile.phone-nav/word-for-the-menu": [
+"references/elements/mobile.md",
+899,
+911
+],
+"mobile.phone-nav/owned-menu-glyph": [
+"references/elements/mobile.md",
+913,
+920
+],
+"mobile.phone-nav/no-menu-at-all": [
+"references/elements/mobile.md",
+922,
+929
+],
+"mobile.phone-nav/mark-and-icon-row": [
+"references/elements/mobile.md",
+931,
+943
+],
+"mobile.phone-nav/icon-cell-bar": [
+"references/elements/mobile.md",
+945,
+952
+],
+"mobile.phone-nav/floating-card-bar": [
+"references/elements/mobile.md",
+954,
+968
+],
+"mobile.phone-nav/late-mark-bar": [
+"references/elements/mobile.md",
+970,
+977
+],
+"mobile.phone-nav/search-takes-the-bar": [
+"references/elements/mobile.md",
+979,
+986
+],
+"mobile.phone-nav/contact-action-row": [
+"references/elements/mobile.md",
+988,
+995
+],
+"mobile.phone-nav/bottom-tab-bar": [
+"references/elements/mobile.md",
+1001,
+1019
+],
+"mobile.phone-nav/bottom-tool-bar": [
+"references/elements/mobile.md",
+1021,
+1037
+],
+"mobile.phone-nav/bottom-action-dock": [
+"references/elements/mobile.md",
+1039,
+1053
+],
+"mobile.phone-nav/bottom-section-picker": [
+"references/elements/mobile.md",
+1055,
+1077
+],
+"mobile.phone-nav/docs-context-row": [
+"references/elements/mobile.md",
+1081,
+1096
+],
+"mobile.phone-nav/scrolling-row-under-bar": [
+"references/elements/mobile.md",
+1098,
+1124
+],
+"motion.load-sequence/instant-paint": [
+"references/elements/motion.md",
+236,
+243
+],
+"motion.load-sequence/opacity-settle": [
+"references/elements/motion.md",
+245,
+252
+],
+"motion.load-sequence/type-first-media-fills": [
+"references/elements/motion.md",
+254,
+267
+],
+"motion.load-sequence/colour-plate-then-media": [
+"references/elements/motion.md",
+269,
+291
+],
+"motion.load-sequence/exact-skeleton": [
+"references/elements/motion.md",
+293,
+300
+],
+"motion.load-sequence/staged-fade-stair": [
+"references/elements/motion.md",
+302,
+320
+],
+"motion.load-sequence/word-blur-resolve": [
+"references/elements/motion.md",
+322,
+339
+],
+"motion.load-sequence/line-or-word-rise": [
+"references/elements/motion.md",
+341,
+348
+],
+"motion.load-sequence/product-rises-last": [
+"references/elements/motion.md",
+350,
+357
+],
+"motion.load-sequence/product-story-assembles": [
+"references/elements/motion.md",
+359,
+366
+],
+"motion.load-sequence/one-brand-object-moves": [
+"references/elements/motion.md",
+368,
+387
+],
+"motion.load-sequence/light-arrives-last": [
+"references/elements/motion.md",
+389,
+401
+],
+"motion.load-sequence/headline-word-cycle": [
+"references/elements/motion.md",
+403,
+410
+],
+"motion.load-sequence/hero-media-cycle": [
+"references/elements/motion.md",
+412,
+419
+],
+"motion.load-sequence/typed-title": [
+"references/elements/motion.md",
+421,
+428
+],
+"motion.load-sequence/tiles-assemble": [
+"references/elements/motion.md",
+430,
+437
+],
+"motion.load-sequence/focus-pull": [
+"references/elements/motion.md",
+439,
+446
+],
+"motion.load-sequence/colour-plate-mark": [
+"references/elements/motion.md",
+448,
+455
+],
+"motion.load-sequence/percent-counter": [
+"references/elements/motion.md",
+457,
+464
+],
+"motion.load-sequence/mark-performs": [
+"references/elements/motion.md",
+466,
+473
+],
+"motion.load-sequence/wordmark-docks-to-nav": [
+"references/elements/motion.md",
+475,
+482
+],
+"motion.load-sequence/title-card-hold": [
+"references/elements/motion.md",
+484,
+491
+],
+"motion.load-sequence/iris-or-sheet-reveal": [
+"references/elements/motion.md",
+493,
+500
+],
+"motion.load-sequence/glyph-or-pixel-resolve": [
+"references/elements/motion.md",
+502,
+509
+],
+"motion.load-sequence/film-opening": [
+"references/elements/motion.md",
+511,
+518
+],
+"motion.scroll-reveal/word-ink-scrub": [
+"references/elements/motion.md",
+541,
+573
+],
+"motion.scroll-reveal/line-ink-resolve": [
+"references/elements/motion.md",
+575,
+589
+],
+"motion.scroll-reveal/blur-front-wipe": [
+"references/elements/motion.md",
+591,
+625
+],
+"motion.scroll-reveal/blur-in-on-entry": [
+"references/elements/motion.md",
+627,
+634
+],
+"motion.scroll-reveal/opacity-in-place": [
+"references/elements/motion.md",
+636,
+643
+],
+"motion.scroll-reveal/rise-stagger-row": [
+"references/elements/motion.md",
+645,
+664
+],
+"motion.scroll-reveal/viewport-focus-band": [
+"references/elements/motion.md",
+666,
+673
+],
+"motion.scroll-reveal/margin-drift": [
+"references/elements/motion.md",
+675,
+682
+],
+"motion.scroll-reveal/glyph-decode-entry": [
+"references/elements/motion.md",
+684,
+691
+],
+"motion.scroll-reveal/line-draws-on-entry": [
+"references/elements/motion.md",
+693,
+700
+],
+"motion.scroll-reveal/media-settles-on-entry": [
+"references/elements/motion.md",
+702,
+709
+],
+"motion.scroll-pin-or-scrub/sticky-card-deck": [
+"references/elements/motion.md",
+730,
+748
+],
+"motion.scroll-pin-or-scrub/sticky-utility-header": [
+"references/elements/motion.md",
+750,
+764
+],
+"motion.scroll-pin-or-scrub/scroll-progress-chrome": [
+"references/elements/motion.md",
+766,
+773
+],
+"motion.scroll-pin-or-scrub/pinned-step-swap": [
+"references/elements/motion.md",
+775,
+798
+],
+"motion.scroll-pin-or-scrub/pinned-photo-dissolve": [
+"references/elements/motion.md",
+800,
+807
+],
+"motion.scroll-pin-or-scrub/window-opens-to-full": [
+"references/elements/motion.md",
+809,
+828
+],
+"motion.scroll-pin-or-scrub/nested-zoom-through": [
+"references/elements/motion.md",
+830,
+837
+],
+"motion.scroll-pin-or-scrub/hero-retreats": [
+"references/elements/motion.md",
+839,
+846
+],
+"motion.scroll-pin-or-scrub/logo-docks-on-scroll": [
+"references/elements/motion.md",
+848,
+855
+],
+"motion.scroll-pin-or-scrub/horizontal-scrub-rail": [
+"references/elements/motion.md",
+857,
+864
+],
+"motion.scroll-pin-or-scrub/section-theme-shift": [
+"references/elements/motion.md",
+866,
+873
+],
+"motion.scroll-pin-or-scrub/before-after-collapse": [
+"references/elements/motion.md",
+875,
+882
+],
+"motion.scroll-pin-or-scrub/exploded-teardown": [
+"references/elements/motion.md",
+884,
+891
+],
+"motion.scroll-pin-or-scrub/path-draws-with-scroll": [
+"references/elements/motion.md",
+893,
+900
+],
+"motion.scroll-pin-or-scrub/companion-object": [
+"references/elements/motion.md",
+902,
+909
+],
+"motion.scroll-pin-or-scrub/camera-flight": [
+"references/elements/motion.md",
+911,
+918
+],
+"motion.scroll-pin-or-scrub/layers-cross": [
+"references/elements/motion.md",
+920,
+927
+],
+"motion.scroll-pin-or-scrub/pixel-boundary": [
+"references/elements/motion.md",
+929,
+936
+],
+"motion.scroll-pin-or-scrub/wheel-gated-stage": [
+"references/elements/motion.md",
+938,
+945
+],
+"motion.hover-state/tone-step": [
+"references/elements/motion.md",
+997,
+1006
+],
+"motion.hover-state/alpha-tint-chip": [
+"references/elements/motion.md",
+1008,
+1015
+],
+"motion.hover-state/opacity-dim": [
+"references/elements/motion.md",
+1017,
+1024
+],
+"motion.hover-state/dim-and-reveal-arrow": [
+"references/elements/motion.md",
+1026,
+1044
+],
+"motion.hover-state/dark-surface-ladder": [
+"references/elements/motion.md",
+1046,
+1060
+],
+"motion.hover-state/accent-flip": [
+"references/elements/motion.md",
+1062,
+1069
+],
+"motion.hover-state/full-invert": [
+"references/elements/motion.md",
+1071,
+1078
+],
+"motion.hover-state/instant-snap": [
+"references/elements/motion.md",
+1080,
+1087
+],
+"motion.hover-state/underline-language": [
+"references/elements/motion.md",
+1089,
+1103
+],
+"motion.hover-state/single-accent-on-hover": [
+"references/elements/motion.md",
+1105,
+1112
+],
+"motion.hover-state/arrow-nudge": [
+"references/elements/motion.md",
+1114,
+1128
+],
+"motion.hover-state/label-roll": [
+"references/elements/motion.md",
+1130,
+1150
+],
+"motion.hover-state/fill-wipe": [
+"references/elements/motion.md",
+1152,
+1166
+],
+"motion.hover-state/micro-lift": [
+"references/elements/motion.md",
+1168,
+1184
+],
+"motion.hover-state/hard-offset": [
+"references/elements/motion.md",
+1186,
+1198
+],
+"motion.hover-state/ring-grow": [
+"references/elements/motion.md",
+1200,
+1212
+],
+"motion.hover-state/scale-pop": [
+"references/elements/motion.md",
+1214,
+1221
+],
+"motion.hover-state/spring-overshoot": [
+"references/elements/motion.md",
+1223,
+1230
+],
+"motion.hover-state/glow": [
+"references/elements/motion.md",
+1232,
+1248
+],
+"motion.hover-state/media-zoom": [
+"references/elements/motion.md",
+1250,
+1263
+],
+"motion.hover-state/card-state-change": [
+"references/elements/motion.md",
+1265,
+1272
+],
+"motion.hover-state/dim-under-cursor": [
+"references/elements/motion.md",
+1274,
+1281
+],
+"motion.hover-state/border-only-card": [
+"references/elements/motion.md",
+1283,
+1290
+],
+"motion.hover-state/row-fill": [
+"references/elements/motion.md",
+1292,
+1299
+],
+"motion.hover-state/signature-row": [
+"references/elements/motion.md",
+1301,
+1320
+],
+"motion.hover-state/row-expands": [
+"references/elements/motion.md",
+1322,
+1329
+],
+"motion.hover-state/siblings-recede": [
+"references/elements/motion.md",
+1331,
+1343
+],
+"motion.hover-state/chevron-flip": [
+"references/elements/motion.md",
+1345,
+1358
+],
+"motion.hover-state/selective-restraint": [
+"references/elements/motion.md",
+1360,
+1367
+],
+"motion.marquee/edge-masked-logo-strip": [
+"references/elements/motion.md",
+1405,
+1416
+],
+"motion.marquee/blur-falloff-strip": [
+"references/elements/motion.md",
+1418,
+1435
+],
+"motion.marquee/clipped-to-frame": [
+"references/elements/motion.md",
+1437,
+1444
+],
+"motion.marquee/opposing-chip-rows": [
+"references/elements/motion.md",
+1446,
+1461
+],
+"motion.marquee/ticker-band-divider": [
+"references/elements/motion.md",
+1463,
+1470
+],
+"motion.marquee/giant-type-marquee": [
+"references/elements/motion.md",
+1472,
+1479
+],
+"motion.marquee/live-data-ticker": [
+"references/elements/motion.md",
+1481,
+1496
+],
+"motion.marquee/ghost-text-rows": [
+"references/elements/motion.md",
+1498,
+1505
+],
+"motion.marquee/media-ribbon": [
+"references/elements/motion.md",
+1507,
+1514
+],
+"motion.marquee/state-carrying-band": [
+"references/elements/motion.md",
+1516,
+1523
+],
+"motion.product-demo-loop/scripted-cursor-walkthrough": [
+"references/elements/motion.md",
+1545,
+1573
+],
+"motion.product-demo-loop/autoplay-tabs-with-timer": [
+"references/elements/motion.md",
+1575,
+1599
+],
+"motion.product-demo-loop/typed-input-loop": [
+"references/elements/motion.md",
+1601,
+1621
+],
+"motion.product-demo-loop/live-state-cards": [
+"references/elements/motion.md",
+1623,
+1630
+],
+"motion.product-demo-loop/camera-move-demo": [
+"references/elements/motion.md",
+1632,
+1639
+],
+"motion.product-demo-loop/muted-clip-tile": [
+"references/elements/motion.md",
+1641,
+1648
+],
+"motion.product-demo-loop/schematic-traffic": [
+"references/elements/motion.md",
+1650,
+1657
+],
+"motion.product-demo-loop/multiplayer-presence": [
+"references/elements/motion.md",
+1659,
+1666
+],
+"motion.product-demo-loop/generative-glyph-loop": [
+"references/elements/motion.md",
+1668,
+1675
+],
+"motion.product-demo-loop/media-pager-control": [
+"references/elements/motion.md",
+1677,
+1684
+],
+"motion.cursor-effect/context-label-tag": [
+"references/elements/motion.md",
+1707,
+1732
+],
+"motion.cursor-effect/instruction-disc": [
+"references/elements/motion.md",
+1734,
+1741
+],
+"motion.cursor-effect/brand-dot-cursor": [
+"references/elements/motion.md",
+1743,
+1750
+],
+"motion.cursor-effect/physics-object": [
+"references/elements/motion.md",
+1752,
+1759
+],
+"motion.cursor-effect/branded-pointer": [
+"references/elements/motion.md",
+1761,
+1768
+],
+"motion.cursor-effect/field-reacts-to-pointer": [
+"references/elements/motion.md",
+1770,
+1777
+],
+"motion.page-transition/colour-wipe": [
+"references/elements/motion.md",
+1797,
+1812
+],
+"motion.page-transition/slat-wipe": [
+"references/elements/motion.md",
+1814,
+1833
+],
+"motion.page-transition/in-place-swap": [
+"references/elements/motion.md",
+1835,
+1842
+],
+"motion.page-transition/theme-reskin-wipe": [
+"references/elements/motion.md",
+1844,
+1851
+],
+"motion.page-transition/exposure-flash": [
+"references/elements/motion.md",
+1853,
+1860
+],
+"motion.page-transition/disc-iris": [
+"references/elements/motion.md",
+1862,
+1869
+],
+"nav.top-bar/left-cluster-bar": [
+"references/elements/nav.md",
+193,
+231
+],
+"nav.top-bar/centred-links-bar": [
+"references/elements/nav.md",
+233,
+249
+],
+"nav.top-bar/right-grouped-bar": [
+"references/elements/nav.md",
+251,
+276
+],
+"nav.top-bar/even-spread-bar": [
+"references/elements/nav.md",
+278,
+287
+],
+"nav.top-bar/centred-wordmark-split": [
+"references/elements/nav.md",
+289,
+306
+],
+"nav.top-bar/menu-logo-action": [
+"references/elements/nav.md",
+308,
+317
+],
+"nav.top-bar/linkless-bar": [
+"references/elements/nav.md",
+319,
+328
+],
+"nav.top-bar/chromeless-type-row": [
+"references/elements/nav.md",
+330,
+339
+],
+"nav.top-bar/corner-anchored": [
+"references/elements/nav.md",
+341,
+350
+],
+"nav.top-bar/blend-inverting-nav": [
+"references/elements/nav.md",
+352,
+367
+],
+"nav.top-bar/progressive-blur-bar": [
+"references/elements/nav.md",
+369,
+390
+],
+"nav.top-bar/section-adaptive-bar": [
+"references/elements/nav.md",
+392,
+401
+],
+"nav.top-bar/transparent-to-solid": [
+"references/elements/nav.md",
+403,
+412
+],
+"nav.top-bar/two-tier-product-subnav": [
+"references/elements/nav.md",
+414,
+423
+],
+"nav.top-bar/two-row-masthead": [
+"references/elements/nav.md",
+425,
+434
+],
+"nav.top-bar/scroll-swap-bar": [
+"references/elements/nav.md",
+436,
+445
+],
+"nav.top-bar/search-led-bar": [
+"references/elements/nav.md",
+447,
+464
+],
+"nav.top-bar/category-retail-bar": [
+"references/elements/nav.md",
+466,
+475
+],
+"nav.top-bar/mono-instrument-bar": [
+"references/elements/nav.md",
+477,
+494
+],
+"nav.top-bar/ruled-cell-bar": [
+"references/elements/nav.md",
+496,
+505
+],
+"nav.top-bar/chip-link-bar": [
+"references/elements/nav.md",
+507,
+516
+],
+"nav.top-bar/solid-brand-bar": [
+"references/elements/nav.md",
+518,
+527
+],
+"nav.top-bar/map-nav": [
+"references/elements/nav.md",
+529,
+538
+],
+"nav.top-bar/bottom-docked-bar": [
+"references/elements/nav.md",
+540,
+549
+],
+"nav.top-bar/switch-led-bar": [
+"references/elements/nav.md",
+551,
+560
+],
+"nav.top-bar/system-chrome-bar": [
+"references/elements/nav.md",
+562,
+571
+],
+"nav.top-bar/hanging-tab-bar": [
+"references/elements/nav.md",
+573,
+582
+],
+"nav.floating-pill/inset-rounded-bar": [
+"references/elements/nav.md",
+611,
+632
+],
+"nav.floating-pill/condense-to-capsule": [
+"references/elements/nav.md",
+634,
+660
+],
+"nav.floating-pill/centred-capsule": [
+"references/elements/nav.md",
+662,
+671
+],
+"nav.floating-pill/hairline-tray": [
+"references/elements/nav.md",
+673,
+691
+],
+"nav.floating-pill/segmented-tab-bar": [
+"references/elements/nav.md",
+693,
+711
+],
+"nav.floating-pill/detached-corner-controls": [
+"references/elements/nav.md",
+713,
+722
+],
+"nav.floating-pill/split-bars": [
+"references/elements/nav.md",
+724,
+731
+],
+"nav.floating-pill/section-subnav-pill": [
+"references/elements/nav.md",
+733,
+740
+],
+"nav.floating-pill/bottom-nav-dock": [
+"references/elements/nav.md",
+742,
+749
+],
+"nav.floating-pill/travelling-action-dock": [
+"references/elements/nav.md",
+751,
+758
+],
+"nav.floating-pill/menu-lozenge": [
+"references/elements/nav.md",
+760,
+767
+],
+"nav.floating-pill/seamed-capsule": [
+"references/elements/nav.md",
+769,
+776
+],
+"nav.announcement-bar/ink-strip": [
+"references/elements/nav.md",
+802,
+822
+],
+"nav.announcement-bar/bar-behind-sheet": [
+"references/elements/nav.md",
+824,
+844
+],
+"nav.announcement-bar/brand-tone-strip": [
+"references/elements/nav.md",
+846,
+855
+],
+"nav.announcement-bar/accent-flood-strip": [
+"references/elements/nav.md",
+857,
+864
+],
+"nav.announcement-bar/pale-tint-strip": [
+"references/elements/nav.md",
+866,
+873
+],
+"nav.announcement-bar/tagged-strip": [
+"references/elements/nav.md",
+875,
+882
+],
+"nav.announcement-bar/textured-strip": [
+"references/elements/nav.md",
+884,
+916
+],
+"nav.announcement-bar/inset-notice": [
+"references/elements/nav.md",
+918,
+925
+],
+"nav.announcement-bar/under-nav-strip": [
+"references/elements/nav.md",
+927,
+934
+],
+"nav.announcement-bar/hero-pill": [
+"references/elements/nav.md",
+936,
+943
+],
+"nav.announcement-bar/ticker-marquee": [
+"references/elements/nav.md",
+945,
+952
+],
+"nav.announcement-bar/rotating-paged-strip": [
+"references/elements/nav.md",
+954,
+961
+],
+"nav.announcement-bar/utility-strip": [
+"references/elements/nav.md",
+963,
+970
+],
+"nav.announcement-bar/bottom-fixed-bar": [
+"references/elements/nav.md",
+972,
+979
+],
+"nav.announcement-bar/status-line": [
+"references/elements/nav.md",
+981,
+988
+],
+"nav.mega-menu/flush-text-columns": [
+"references/elements/nav.md",
+1045,
+1067
+],
+"nav.mega-menu/lead-list-sheet": [
+"references/elements/nav.md",
+1069,
+1092
+],
+"nav.mega-menu/ruled-column-panel": [
+"references/elements/nav.md",
+1094,
+1101
+],
+"nav.mega-menu/described-link-panel": [
+"references/elements/nav.md",
+1103,
+1112
+],
+"nav.mega-menu/icon-rows-panel": [
+"references/elements/nav.md",
+1114,
+1123
+],
+"nav.mega-menu/list-plus-feature": [
+"references/elements/nav.md",
+1125,
+1153
+],
+"nav.mega-menu/visual-card-row": [
+"references/elements/nav.md",
+1155,
+1175
+],
+"nav.mega-menu/retail-columns-photos": [
+"references/elements/nav.md",
+1177,
+1186
+],
+"nav.mega-menu/master-detail-panel": [
+"references/elements/nav.md",
+1188,
+1208
+],
+"nav.mega-menu/bordered-tile-grid": [
+"references/elements/nav.md",
+1210,
+1217
+],
+"nav.mega-menu/tone-zoned-panel": [
+"references/elements/nav.md",
+1219,
+1243
+],
+"nav.mega-menu/compact-dropdown": [
+"references/elements/nav.md",
+1245,
+1261
+],
+"nav.mega-menu/bar-becomes-panel": [
+"references/elements/nav.md",
+1263,
+1283
+],
+"nav.mega-menu/content-popover": [
+"references/elements/nav.md",
+1285,
+1292
+],
+"nav.mega-menu/bare-reveal": [
+"references/elements/nav.md",
+1294,
+1301
+],
+"nav.mobile-menu/accordion-sheet-pinned-cta": [
+"references/elements/nav.md",
+1348,
+1380
+],
+"nav.mobile-menu/plain-row-sheet": [
+"references/elements/nav.md",
+1382,
+1389
+],
+"nav.mobile-menu/flat-grouped-sheet": [
+"references/elements/nav.md",
+1391,
+1407
+],
+"nav.mobile-menu/cta-first-sheet": [
+"references/elements/nav.md",
+1409,
+1416
+],
+"nav.mobile-menu/display-type-takeover": [
+"references/elements/nav.md",
+1418,
+1438
+],
+"nav.mobile-menu/colour-room-takeover": [
+"references/elements/nav.md",
+1440,
+1447
+],
+"nav.mobile-menu/indexed-takeover": [
+"references/elements/nav.md",
+1449,
+1456
+],
+"nav.mobile-menu/curtain-reveal-list": [
+"references/elements/nav.md",
+1458,
+1472
+],
+"nav.mobile-menu/inset-card-dropdown": [
+"references/elements/nav.md",
+1474,
+1495
+],
+"nav.mobile-menu/inline-push-down": [
+"references/elements/nav.md",
+1497,
+1504
+],
+"nav.mobile-menu/side-drawer": [
+"references/elements/nav.md",
+1506,
+1521
+],
+"nav.mobile-menu/docs-tree-drawer": [
+"references/elements/nav.md",
+1523,
+1530
+],
+"nav.mobile-menu/rich-entry-sheet": [
+"references/elements/nav.md",
+1532,
+1539
+],
+"nav.mobile-menu/pill-stack": [
+"references/elements/nav.md",
+1541,
+1548
+],
+"nav.mobile-menu/search-first-sheet": [
+"references/elements/nav.md",
+1550,
+1557
+],
+"nav.mobile-menu/thumb-zone-sheet": [
+"references/elements/nav.md",
+1559,
+1572
+],
+"nav.sidebar-nav/sticky-index-rail": [
+"references/elements/nav.md",
+1600,
+1625
+],
+"nav.sidebar-nav/thin-brand-rail": [
+"references/elements/nav.md",
+1627,
+1644
+],
+"nav.sidebar-nav/fixed-link-column": [
+"references/elements/nav.md",
+1646,
+1653
+],
+"nav.sidebar-nav/desktop-icon-nav": [
+"references/elements/nav.md",
+1655,
+1662
+],
+"nav.sidebar-nav/edge-frame-nav": [
+"references/elements/nav.md",
+1664,
+1677
+],
+"nav.sidebar-nav/numbered-rail": [
+"references/elements/nav.md",
+1679,
+1686
+],
+"nav.sidebar-nav/section-tab-band": [
+"references/elements/nav.md",
+1688,
+1695
+],
+"nav.sidebar-nav/edge-tab": [
+"references/elements/nav.md",
+1697,
+1704
+],
+"nav.sidebar-nav/page-index-as-content": [
+"references/elements/nav.md",
+1706,
+1713
+],
+"nav.sidebar-nav/app-tree-rail": [
+"references/elements/nav.md",
+1715,
+1722
+],
+"nav.docs-nav/guide-line-tree": [
+"references/elements/nav.md",
+1743,
+1761
+],
+"nav.docs-nav/filter-first-tree": [
+"references/elements/nav.md",
+1763,
+1783
+],
+"nav.docs-nav/icon-head-tree": [
+"references/elements/nav.md",
+1785,
+1792
+],
+"nav.docs-nav/pill-active-tree": [
+"references/elements/nav.md",
+1794,
+1801
+],
+"nav.docs-nav/three-pane-shell": [
+"references/elements/nav.md",
+1803,
+1817
+],
+"nav.docs-nav/scrollspy-toc": [
+"references/elements/nav.md",
+1819,
+1834
+],
+"nav.docs-nav/product-tabs-plus-rail": [
+"references/elements/nav.md",
+1836,
+1843
+],
+"nav.docs-nav/index-landing": [
+"references/elements/nav.md",
+1845,
+1852
+],
+"nav.docs-nav/book-contents": [
+"references/elements/nav.md",
+1854,
+1867
+],
+"nav.docs-nav/docs-header-strip": [
+"references/elements/nav.md",
+1869,
+1876
+],
+"nav.docs-nav/filter-row": [
+"references/elements/nav.md",
+1878,
+1885
+],
+"product.app-window/fold-peek-rebuilt-window": [
+"references/elements/product.md",
+189,
+229
+],
+"product.app-window/inset-sheet-window": [
+"references/elements/product.md",
+231,
+261
+],
+"product.app-window/dissolving-window": [
+"references/elements/product.md",
+263,
+272
+],
+"product.app-window/window-on-colour-plate": [
+"references/elements/product.md",
+274,
+299
+],
+"product.app-window/window-on-photo-plate": [
+"references/elements/product.md",
+301,
+310
+],
+"product.app-window/section-edge-cut-dashboard": [
+"references/elements/product.md",
+312,
+321
+],
+"product.app-window/window-plus-floating-panel": [
+"references/elements/product.md",
+323,
+332
+],
+"product.app-window/chromeless-product-canvas": [
+"references/elements/product.md",
+334,
+343
+],
+"product.app-window/dimmed-app-spotlit-modal": [
+"references/elements/product.md",
+345,
+354
+],
+"product.app-window/split-tool-window": [
+"references/elements/product.md",
+356,
+365
+],
+"product.app-window/stage-cropped-window": [
+"references/elements/product.md",
+367,
+376
+],
+"product.app-window/tabbed-frame-window": [
+"references/elements/product.md",
+378,
+387
+],
+"product.app-window/side-bleed-capture": [
+"references/elements/product.md",
+389,
+398
+],
+"product.app-window/glow-bezel-window": [
+"references/elements/product.md",
+400,
+409
+],
+"product.app-window/recorded-loop-with-pause": [
+"references/elements/product.md",
+411,
+420
+],
+"product.app-window/tilted-backplates": [
+"references/elements/product.md",
+422,
+431
+],
+"product.app-window/mini-window-grid": [
+"references/elements/product.md",
+433,
+442
+],
+"product.ui-fragment/mini-ui-in-wells": [
+"references/elements/product.md",
+474,
+483
+],
+"product.ui-fragment/brand-redrawn-ui": [
+"references/elements/product.md",
+485,
+494
+],
+"product.ui-fragment/card-on-photo": [
+"references/elements/product.md",
+496,
+522
+],
+"product.ui-fragment/frozen-interaction": [
+"references/elements/product.md",
+524,
+533
+],
+"product.ui-fragment/workflow-node-graph": [
+"references/elements/product.md",
+535,
+561
+],
+"product.ui-fragment/agent-chat-panel": [
+"references/elements/product.md",
+563,
+572
+],
+"product.ui-fragment/data-table-crop": [
+"references/elements/product.md",
+574,
+604
+],
+"product.ui-fragment/embedded-working-product": [
+"references/elements/product.md",
+606,
+615
+],
+"product.ui-fragment/fading-live-feed": [
+"references/elements/product.md",
+617,
+626
+],
+"product.ui-fragment/layered-panels-on-gradient": [
+"references/elements/product.md",
+628,
+637
+],
+"product.ui-fragment/admin-panel-fragment": [
+"references/elements/product.md",
+639,
+648
+],
+"product.ui-fragment/handled-object": [
+"references/elements/product.md",
+650,
+659
+],
+"product.ui-fragment/masked-dissolve-crop": [
+"references/elements/product.md",
+661,
+687
+],
+"product.ui-fragment/single-control-enlarged": [
+"references/elements/product.md",
+689,
+698
+],
+"product.ui-fragment/traced-flow-of-cards": [
+"references/elements/product.md",
+700,
+709
+],
+"product.ui-fragment/vertical-step-timeline": [
+"references/elements/product.md",
+711,
+720
+],
+"product.ui-fragment/side-by-side-proof": [
+"references/elements/product.md",
+722,
+731
+],
+"product.ui-fragment/float-card-on-wash": [
+"references/elements/product.md",
+733,
+742
+],
+"product.ui-fragment/persistent-overlay": [
+"references/elements/product.md",
+744,
+753
+],
+"product.ui-fragment/metric-card-cluster": [
+"references/elements/product.md",
+755,
+764
+],
+"product.ui-fragment/prompt-and-tone-controls": [
+"references/elements/product.md",
+766,
+775
+],
+"product.code-block/code-with-rendered-result": [
+"references/elements/product.md",
+805,
+814
+],
+"product.code-block/editor-with-rail": [
+"references/elements/product.md",
+816,
+825
+],
+"product.code-block/light-editor-card": [
+"references/elements/product.md",
+827,
+852
+],
+"product.code-block/tabbed-sample-panel": [
+"references/elements/product.md",
+854,
+863
+],
+"product.code-block/dark-card-on-colour-band": [
+"references/elements/product.md",
+865,
+874
+],
+"product.code-block/api-call-card": [
+"references/elements/product.md",
+876,
+885
+],
+"product.code-block/code-over-product-stack": [
+"references/elements/product.md",
+887,
+896
+],
+"product.code-block/diff-panel": [
+"references/elements/product.md",
+898,
+928
+],
+"product.code-block/double-framed-panel": [
+"references/elements/product.md",
+930,
+939
+],
+"product.code-block/line-state-gutter": [
+"references/elements/product.md",
+941,
+967
+],
+"product.code-block/one-bright-line": [
+"references/elements/product.md",
+969,
+978
+],
+"product.code-block/request-response-split": [
+"references/elements/product.md",
+980,
+989
+],
+"product.code-block/one-line-command-box": [
+"references/elements/product.md",
+991,
+1000
+],
+"product.code-block/inline-command-chip": [
+"references/elements/product.md",
+1002,
+1011
+],
+"product.terminal/status-run-log": [
+"references/elements/product.md",
+1040,
+1064
+],
+"product.terminal/install-command-cta": [
+"references/elements/product.md",
+1066,
+1093
+],
+"product.terminal/tabbed-cli-switcher": [
+"references/elements/product.md",
+1095,
+1104
+],
+"product.terminal/agent-setup-console": [
+"references/elements/product.md",
+1106,
+1115
+],
+"product.terminal/character-framed-command": [
+"references/elements/product.md",
+1117,
+1126
+],
+"product.terminal/terminal-overlapped-by-result": [
+"references/elements/product.md",
+1128,
+1137
+],
+"product.terminal/terminal-cropped-in-card": [
+"references/elements/product.md",
+1139,
+1148
+],
+"product.terminal/typed-install": [
+"references/elements/product.md",
+1150,
+1159
+],
+"product.device-mockup/dissolving-rim-phone": [
+"references/elements/product.md",
+1186,
+1195
+],
+"product.device-mockup/phone-overlapping-window": [
+"references/elements/product.md",
+1197,
+1217
+],
+"product.device-mockup/hand-held-device": [
+"references/elements/product.md",
+1219,
+1228
+],
+"product.device-mockup/phone-with-breakout-cards": [
+"references/elements/product.md",
+1230,
+1239
+],
+"product.device-mockup/gradient-stroke-phone-cluster": [
+"references/elements/product.md",
+1241,
+1250
+],
+"product.device-mockup/soft-rim-phone": [
+"references/elements/product.md",
+1252,
+1276
+],
+"product.device-mockup/phone-group": [
+"references/elements/product.md",
+1278,
+1287
+],
+"product.device-mockup/tilted-device": [
+"references/elements/product.md",
+1289,
+1298
+],
+"product.device-mockup/phone-flanked-by-notes": [
+"references/elements/product.md",
+1300,
+1309
+],
+"product.device-mockup/multi-surface-rail": [
+"references/elements/product.md",
+1311,
+1320
+],
+"product.device-mockup/same-phone-state-chapters": [
+"references/elements/product.md",
+1322,
+1331
+],
+"product.device-mockup/bezel-crop-across-seam": [
+"references/elements/product.md",
+1333,
+1342
+],
+"product.annotated-shot/floating-tag-pills": [
+"references/elements/product.md",
+1369,
+1378
+],
+"product.annotated-shot/leader-line-callouts": [
+"references/elements/product.md",
+1380,
+1389
+],
+"product.annotated-shot/selection-handle-marks": [
+"references/elements/product.md",
+1391,
+1400
+],
+"product.annotated-shot/labelled-layer-stack": [
+"references/elements/product.md",
+1402,
+1411
+],
+"product.annotated-shot/numbered-architecture-diagram": [
+"references/elements/product.md",
+1413,
+1439
+],
+"product.annotated-shot/magnifier-lens": [
+"references/elements/product.md",
+1441,
+1450
+],
+"product.annotated-shot/margin-notes-on-code": [
+"references/elements/product.md",
+1452,
+1476
+],
+"product.annotated-shot/spotlight-dim-and-callout": [
+"references/elements/product.md",
+1478,
+1500
+],
+"product.annotated-shot/verb-stack-beside-player": [
+"references/elements/product.md",
+1502,
+1511
+],
+"product.annotated-shot/hotspot-rings": [
+"references/elements/product.md",
+1513,
+1522
+],
+"product.annotated-shot/layered-screens-in-frame": [
+"references/elements/product.md",
+1524,
+1533
+],
+"product.data-viz/node-state-diagram": [
+"references/elements/product.md",
+1561,
+1570
+],
+"product.data-viz/dot-globe-with-chips": [
+"references/elements/product.md",
+1572,
+1581
+],
+"product.data-viz/race-bars": [
+"references/elements/product.md",
+1583,
+1611
+],
+"product.data-viz/analyst-grade-dark-panel": [
+"references/elements/product.md",
+1613,
+1622
+],
+"product.data-viz/single-claim-line": [
+"references/elements/product.md",
+1624,
+1633
+],
+"product.data-viz/compact-leaderboard": [
+"references/elements/product.md",
+1635,
+1644
+],
+"product.data-viz/hairline-radial-map": [
+"references/elements/product.md",
+1646,
+1655
+],
+"product.data-viz/kpi-strip-drives-chart": [
+"references/elements/product.md",
+1657,
+1687
+],
+"product.data-viz/micro-instrument": [
+"references/elements/product.md",
+1689,
+1698
+],
+"product.data-viz/one-filled-shape": [
+"references/elements/product.md",
+1700,
+1709
+],
+"product.data-viz/unit-block-diagram": [
+"references/elements/product.md",
+1711,
+1720
+],
+"product.data-viz/annotated-scenario-chart": [
+"references/elements/product.md",
+1722,
+1731
+],
+"product.data-viz/margin-between-two-lines": [
+"references/elements/product.md",
+1733,
+1755
+],
+"product.data-viz/uptime-barcode": [
+"references/elements/product.md",
+1757,
+1766
+],
+"product.data-viz/brand-grouped-bars": [
+"references/elements/product.md",
+1768,
+1777
+],
+"product.data-viz/personal-range-chart": [
+"references/elements/product.md",
+1779,
+1788
+],
+"product.data-viz/inked-map": [
+"references/elements/product.md",
+1790,
+1799
+],
+"product.animated-demo/flow-with-travelling-token": [
+"references/elements/product.md",
+1826,
+1835
+],
+"product.animated-demo/typing-composer": [
+"references/elements/product.md",
+1837,
+1866
+],
+"product.animated-demo/self-playing-window": [
+"references/elements/product.md",
+1868,
+1906
+],
+"product.animated-demo/stepper-synced-simulator": [
+"references/elements/product.md",
+1908,
+1917
+],
+"product.animated-demo/live-canvas-hero": [
+"references/elements/product.md",
+1919,
+1928
+],
+"product.animated-demo/live-status-matrix": [
+"references/elements/product.md",
+1930,
+1954
+],
+"product.animated-demo/video-stage-with-controls": [
+"references/elements/product.md",
+1956,
+1965
+],
+"product.animated-demo/ambient-signal-rings": [
+"references/elements/product.md",
+1967,
+1976
+],
+"product.animated-demo/conveyor-transform": [
+"references/elements/product.md",
+1978,
+1987
+],
+"product.animated-demo/parameter-drives-preview": [
+"references/elements/product.md",
+1989,
+1998
+],
+"product.animated-demo/before-after-slider": [
+"references/elements/product.md",
+2000,
+2009
+],
+"product.animated-demo/feedback-loop-sample-app": [
+"references/elements/product.md",
+2011,
+2020
+],
+"product.animated-demo/focus-pull-on-code": [
+"references/elements/product.md",
+2022,
+2031
+],
+"product.animated-demo/scrubbable-slow-motion": [
+"references/elements/product.md",
+2033,
+2042
+],
+"product.animated-demo/spotlight-filter-row": [
+"references/elements/product.md",
+2044,
+2053
+],
+"section.pricing-table/ruled-plan-grid": [
+"references/elements/section-conversion.md",
+136,
+176
+],
+"section.pricing-table/hairline-plan-cards": [
+"references/elements/section-conversion.md",
+178,
+187
+],
+"section.pricing-table/tonal-plan-cards": [
+"references/elements/section-conversion.md",
+189,
+218
+],
+"section.pricing-table/one-inverted-plan": [
+"references/elements/section-conversion.md",
+220,
+227
+],
+"section.pricing-table/raised-plan-column": [
+"references/elements/section-conversion.md",
+229,
+236
+],
+"section.pricing-table/signal-only-featured": [
+"references/elements/section-conversion.md",
+238,
+245
+],
+"section.pricing-table/pane-window-plans": [
+"references/elements/section-conversion.md",
+247,
+272
+],
+"section.pricing-table/plan-sheet-with-strips": [
+"references/elements/section-conversion.md",
+274,
+281
+],
+"section.pricing-table/header-tile-plans": [
+"references/elements/section-conversion.md",
+283,
+290
+],
+"section.pricing-table/single-offer-split-card": [
+"references/elements/section-conversion.md",
+292,
+316
+],
+"section.pricing-table/single-plan-leaders": [
+"references/elements/section-conversion.md",
+318,
+325
+],
+"section.pricing-table/single-price-statement": [
+"references/elements/section-conversion.md",
+327,
+334
+],
+"section.pricing-table/twin-plan-pair": [
+"references/elements/section-conversion.md",
+336,
+343
+],
+"section.pricing-table/standard-vs-custom-pair": [
+"references/elements/section-conversion.md",
+345,
+352
+],
+"section.pricing-table/price-list-rows": [
+"references/elements/section-conversion.md",
+354,
+361
+],
+"section.pricing-table/usage-calculator": [
+"references/elements/section-conversion.md",
+363,
+370
+],
+"section.pricing-table/plan-cards-on-colour-field": [
+"references/elements/section-conversion.md",
+372,
+379
+],
+"section.pricing-table/plan-link-tiles": [
+"references/elements/section-conversion.md",
+381,
+388
+],
+"section.pricing-table/flip-board-price": [
+"references/elements/section-conversion.md",
+390,
+397
+],
+"section.comparison-table/sticky-plan-header-matrix": [
+"references/elements/section-conversion.md",
+438,
+480
+],
+"section.comparison-table/vertical-rule-matrix": [
+"references/elements/section-conversion.md",
+482,
+503
+],
+"section.comparison-table/group-rhythm-matrix": [
+"references/elements/section-conversion.md",
+505,
+512
+],
+"section.comparison-table/dot-for-no-matrix": [
+"references/elements/section-conversion.md",
+514,
+521
+],
+"section.comparison-table/bordered-matrix-show-all": [
+"references/elements/section-conversion.md",
+523,
+530
+],
+"section.comparison-table/collapsed-category-accordion": [
+"references/elements/section-conversion.md",
+532,
+539
+],
+"section.comparison-table/tabbed-category-table": [
+"references/elements/section-conversion.md",
+541,
+548
+],
+"section.comparison-table/tinted-featured-column": [
+"references/elements/section-conversion.md",
+550,
+557
+],
+"section.comparison-table/winner-slab-column": [
+"references/elements/section-conversion.md",
+559,
+581
+],
+"section.comparison-table/own-row-highlight": [
+"references/elements/section-conversion.md",
+583,
+590
+],
+"section.comparison-table/before-after-pair": [
+"references/elements/section-conversion.md",
+592,
+599
+],
+"section.comparison-table/cost-bars": [
+"references/elements/section-conversion.md",
+601,
+621
+],
+"section.comparison-table/rate-card-rows": [
+"references/elements/section-conversion.md",
+623,
+630
+],
+"section.comparison-table/option-cards": [
+"references/elements/section-conversion.md",
+632,
+639
+],
+"section.comparison-table/plain-reference-table": [
+"references/elements/section-conversion.md",
+641,
+648
+],
+"section.comparison-table/compatibility-columns": [
+"references/elements/section-conversion.md",
+650,
+657
+],
+"section.faq/reading-column-rows": [
+"references/elements/section-conversion.md",
+712,
+727
+],
+"section.faq/split-title-rows": [
+"references/elements/section-conversion.md",
+729,
+747
+],
+"section.faq/split-title-with-art": [
+"references/elements/section-conversion.md",
+749,
+756
+],
+"section.faq/tile-row-stack": [
+"references/elements/section-conversion.md",
+758,
+782
+],
+"section.faq/boxed-row-stack": [
+"references/elements/section-conversion.md",
+784,
+791
+],
+"section.faq/numbered-index-rows": [
+"references/elements/section-conversion.md",
+793,
+812
+],
+"section.faq/big-type-rows": [
+"references/elements/section-conversion.md",
+814,
+821
+],
+"section.faq/strong-control-rows": [
+"references/elements/section-conversion.md",
+823,
+830
+],
+"section.faq/hover-fill-rows": [
+"references/elements/section-conversion.md",
+832,
+839
+],
+"section.faq/open-document-faq": [
+"references/elements/section-conversion.md",
+841,
+861
+],
+"section.faq/two-pane-answer": [
+"references/elements/section-conversion.md",
+863,
+870
+],
+"section.faq/category-grouped-faq": [
+"references/elements/section-conversion.md",
+872,
+879
+],
+"section.faq/two-column-all-visible": [
+"references/elements/section-conversion.md",
+881,
+888
+],
+"section.faq/compact-disclosure-rows": [
+"references/elements/section-conversion.md",
+890,
+897
+],
+"section.faq/tinted-panel-faq": [
+"references/elements/section-conversion.md",
+899,
+906
+],
+"section.faq/faq-beside-closing-cta": [
+"references/elements/section-conversion.md",
+908,
+915
+],
+"section.cta-band/plain-centred-close": [
+"references/elements/section-conversion.md",
+963,
+980
+],
+"section.cta-band/split-plain-close": [
+"references/elements/section-conversion.md",
+982,
+989
+],
+"section.cta-band/ruled-break-close": [
+"references/elements/section-conversion.md",
+991,
+1008
+],
+"section.cta-band/oversized-button-close": [
+"references/elements/section-conversion.md",
+1010,
+1017
+],
+"section.cta-band/hero-reprise-close": [
+"references/elements/section-conversion.md",
+1019,
+1026
+],
+"section.cta-band/tone-panel-close": [
+"references/elements/section-conversion.md",
+1028,
+1044
+],
+"section.cta-band/inset-colour-panel": [
+"references/elements/section-conversion.md",
+1046,
+1066
+],
+"section.cta-band/pattern-edged-panel": [
+"references/elements/section-conversion.md",
+1068,
+1089
+],
+"section.cta-band/full-bleed-colour-band": [
+"references/elements/section-conversion.md",
+1091,
+1098
+],
+"section.cta-band/glow-field-close": [
+"references/elements/section-conversion.md",
+1100,
+1120
+],
+"section.cta-band/photo-sign-off": [
+"references/elements/section-conversion.md",
+1122,
+1129
+],
+"section.cta-band/split-photo-panel": [
+"references/elements/section-conversion.md",
+1131,
+1138
+],
+"section.cta-band/half-width-card-close": [
+"references/elements/section-conversion.md",
+1140,
+1147
+],
+"section.cta-band/giant-type-sign-off": [
+"references/elements/section-conversion.md",
+1149,
+1156
+],
+"section.cta-band/link-rows-close": [
+"references/elements/section-conversion.md",
+1158,
+1165
+],
+"section.cta-band/route-cards-close": [
+"references/elements/section-conversion.md",
+1167,
+1188
+],
+"section.cta-band/composer-close": [
+"references/elements/section-conversion.md",
+1190,
+1208
+],
+"section.cta-band/download-close": [
+"references/elements/section-conversion.md",
+1210,
+1217
+],
+"section.cta-band/product-object-close": [
+"references/elements/section-conversion.md",
+1219,
+1226
+],
+"section.cta-band/seam-overlap-close": [
+"references/elements/section-conversion.md",
+1228,
+1249
+],
+"section.cta-band/floating-object-ring": [
+"references/elements/section-conversion.md",
+1251,
+1258
+],
+"section.cta-band/character-or-joke-close": [
+"references/elements/section-conversion.md",
+1260,
+1267
+],
+"section.cta-band/signature-art-close": [
+"references/elements/section-conversion.md",
+1269,
+1276
+],
+"section.cta-band/contact-as-headline": [
+"references/elements/section-conversion.md",
+1278,
+1285
+],
+"section.cta-band/sticky-signup-bar": [
+"references/elements/section-conversion.md",
+1287,
+1294
+],
+"section.newsletter/underline-only-field": [
+"references/elements/section-conversion.md",
+1333,
+1351
+],
+"section.newsletter/ruled-statement-row": [
+"references/elements/section-conversion.md",
+1353,
+1370
+],
+"section.newsletter/inline-field-row": [
+"references/elements/section-conversion.md",
+1372,
+1379
+],
+"section.newsletter/inset-button-field": [
+"references/elements/section-conversion.md",
+1381,
+1401
+],
+"section.newsletter/borderless-tone-field": [
+"references/elements/section-conversion.md",
+1403,
+1410
+],
+"section.newsletter/oversized-input": [
+"references/elements/section-conversion.md",
+1412,
+1419
+],
+"section.newsletter/link-not-field": [
+"references/elements/section-conversion.md",
+1421,
+1436
+],
+"section.newsletter/footer-row-signup": [
+"references/elements/section-conversion.md",
+1438,
+1456
+],
+"section.newsletter/photo-band-signup": [
+"references/elements/section-conversion.md",
+1458,
+1465
+],
+"section.newsletter/split-photo-signup": [
+"references/elements/section-conversion.md",
+1467,
+1474
+],
+"section.newsletter/colour-band-signup": [
+"references/elements/section-conversion.md",
+1476,
+1483
+],
+"section.newsletter/illustrated-signup": [
+"references/elements/section-conversion.md",
+1485,
+1492
+],
+"section.newsletter/object-scene-signup": [
+"references/elements/section-conversion.md",
+1494,
+1501
+],
+"section.newsletter/offer-modal": [
+"references/elements/section-conversion.md",
+1503,
+1510
+],
+"section.newsletter/sticky-edge-cue": [
+"references/elements/section-conversion.md",
+1512,
+1519
+],
+"section.newsletter/rail-card-signup": [
+"references/elements/section-conversion.md",
+1521,
+1528
+],
+"section.newsletter/stacked-fields-panel": [
+"references/elements/section-conversion.md",
+1530,
+1537
+],
+"section.contact-form/proof-beside-form": [
+"references/elements/section-conversion.md",
+1577,
+1602
+],
+"section.contact-form/underline-field-form": [
+"references/elements/section-conversion.md",
+1604,
+1630
+],
+"section.contact-form/tinted-panel-form": [
+"references/elements/section-conversion.md",
+1632,
+1651
+],
+"section.contact-form/stepped-form": [
+"references/elements/section-conversion.md",
+1653,
+1673
+],
+"section.contact-form/one-question-sheet": [
+"references/elements/section-conversion.md",
+1675,
+1682
+],
+"section.contact-form/booking-embed": [
+"references/elements/section-conversion.md",
+1684,
+1691
+],
+"section.contact-form/headline-beside-form-card": [
+"references/elements/section-conversion.md",
+1693,
+1700
+],
+"section.contact-form/form-card-over-art": [
+"references/elements/section-conversion.md",
+1702,
+1709
+],
+"section.contact-form/contact-without-form": [
+"references/elements/section-conversion.md",
+1711,
+1718
+],
+"section.contact-form/routing-list": [
+"references/elements/section-conversion.md",
+1720,
+1740
+],
+"section.contact-form/plain-stacked-form": [
+"references/elements/section-conversion.md",
+1742,
+1749
+],
+"section.contact-form/visit-and-directions": [
+"references/elements/section-conversion.md",
+1751,
+1758
+],
+"section.feature-grid/ruled-table-cells": [
+"references/elements/section-features.md",
+75,
+123
+],
+"section.feature-grid/rule-topped-columns": [
+"references/elements/section-features.md",
+125,
+132
+],
+"section.feature-grid/gridline-tick-columns": [
+"references/elements/section-features.md",
+134,
+157
+],
+"section.feature-grid/schematic-diagram-cells": [
+"references/elements/section-features.md",
+159,
+181
+],
+"section.feature-grid/bare-icon-columns": [
+"references/elements/section-features.md",
+185,
+192
+],
+"section.feature-grid/text-only-columns": [
+"references/elements/section-features.md",
+194,
+201
+],
+"section.feature-grid/spec-checklist-columns": [
+"references/elements/section-features.md",
+203,
+210
+],
+"section.feature-grid/media-plate-then-caption": [
+"references/elements/section-features.md",
+214,
+248
+],
+"section.feature-grid/photo-overlay-cards": [
+"references/elements/section-features.md",
+250,
+269
+],
+"section.feature-grid/poster-tiles": [
+"references/elements/section-features.md",
+271,
+278
+],
+"section.feature-grid/ui-fragment-cards": [
+"references/elements/section-features.md",
+284,
+291
+],
+"section.feature-grid/media-header-cards": [
+"references/elements/section-features.md",
+293,
+300
+],
+"section.feature-grid/outline-cards": [
+"references/elements/section-features.md",
+302,
+309
+],
+"section.feature-grid/filled-cards": [
+"references/elements/section-features.md",
+311,
+318
+],
+"section.feature-grid/asymmetric-tile-rows": [
+"references/elements/section-features.md",
+322,
+341
+],
+"section.feature-grid/card-rail": [
+"references/elements/section-features.md",
+343,
+350
+],
+"section.feature-grid/index-rows": [
+"references/elements/section-features.md",
+352,
+367
+],
+"section.feature-grid/routing-link-tiles": [
+"references/elements/section-features.md",
+369,
+376
+],
+"section.feature-grid/broken-grid-set-piece": [
+"references/elements/section-features.md",
+378,
+385
+],
+"section.feature-grid/reassurance-icon-band": [
+"references/elements/section-features.md",
+387,
+394
+],
+"section.feature-alternating/copy-beside-tinted-stage": [
+"references/elements/section-features.md",
+427,
+453
+],
+"section.feature-alternating/split-card": [
+"references/elements/section-features.md",
+455,
+476
+],
+"section.feature-alternating/anchored-copy-rows": [
+"references/elements/section-features.md",
+478,
+498
+],
+"section.feature-alternating/bleed-past-the-edge": [
+"references/elements/section-features.md",
+500,
+507
+],
+"section.feature-alternating/shifting-ratio-tiles": [
+"references/elements/section-features.md",
+509,
+516
+],
+"section.feature-alternating/full-width-tinted-panels": [
+"references/elements/section-features.md",
+518,
+525
+],
+"section.feature-alternating/half-and-half-colour-split": [
+"references/elements/section-features.md",
+527,
+534
+],
+"section.feature-alternating/viewport-chapters": [
+"references/elements/section-features.md",
+536,
+543
+],
+"section.feature-alternating/plain-zigzag": [
+"references/elements/section-features.md",
+545,
+552
+],
+"section.feature-alternating/structured-copy-column": [
+"references/elements/section-features.md",
+554,
+561
+],
+"section.feature-alternating/editorial-scale-play": [
+"references/elements/section-features.md",
+563,
+570
+],
+"section.feature-alternating/interactive-comparison": [
+"references/elements/section-features.md",
+572,
+577
+],
+"section.feature-tabs/pill-tabs-over-stage": [
+"references/elements/section-features.md",
+603,
+655
+],
+"section.feature-tabs/timed-progress-tabs": [
+"references/elements/section-features.md",
+657,
+700
+],
+"section.feature-tabs/accordion-beside-stage": [
+"references/elements/section-features.md",
+702,
+734
+],
+"section.feature-tabs/typographic-index": [
+"references/elements/section-features.md",
+736,
+743
+],
+"section.feature-tabs/selected-row-list": [
+"references/elements/section-features.md",
+745,
+752
+],
+"section.feature-tabs/underline-text-tabs": [
+"references/elements/section-features.md",
+754,
+761
+],
+"section.feature-tabs/segmented-control": [
+"references/elements/section-features.md",
+763,
+770
+],
+"section.feature-tabs/large-card-tabs": [
+"references/elements/section-features.md",
+772,
+779
+],
+"section.feature-tabs/file-tabs": [
+"references/elements/section-features.md",
+781,
+788
+],
+"section.feature-tabs/peek-carousel": [
+"references/elements/section-features.md",
+790,
+797
+],
+"section.feature-tabs/index-on-media": [
+"references/elements/section-features.md",
+799,
+806
+],
+"section.feature-tabs/expanding-column-accordion": [
+"references/elements/section-features.md",
+808,
+815
+],
+"section.feature-tabs/diagram-bound-selector": [
+"references/elements/section-features.md",
+817,
+822
+],
+"section.feature-tabs/filter-row": [
+"references/elements/section-features.md",
+824,
+829
+],
+"section.feature-sticky-scroll/list-drives-pinned-stage": [
+"references/elements/section-features.md",
+855,
+905
+],
+"section.feature-sticky-scroll/pinned-index-scrolling-column": [
+"references/elements/section-features.md",
+907,
+946
+],
+"section.feature-sticky-scroll/pinned-chapter-stage": [
+"references/elements/section-features.md",
+948,
+955
+],
+"section.feature-sticky-scroll/stacked-sheets": [
+"references/elements/section-features.md",
+957,
+976
+],
+"section.feature-sticky-scroll/split-pinned-half": [
+"references/elements/section-features.md",
+978,
+985
+],
+"section.feature-sticky-scroll/scroll-spine": [
+"references/elements/section-features.md",
+987,
+994
+],
+"section.feature-sticky-scroll/scrubbed-statement": [
+"references/elements/section-features.md",
+996,
+1003
+],
+"section.feature-sticky-scroll/horizontal-pin": [
+"references/elements/section-features.md",
+1005,
+1008
+],
+"section.feature-sticky-scroll/scale-to-fill": [
+"references/elements/section-features.md",
+1010,
+1013
+],
+"section.steps-process/steps-showing-the-real-thing": [
+"references/elements/section-features.md",
+1036,
+1063
+],
+"section.steps-process/vertical-numbered-rail": [
+"references/elements/section-features.md",
+1065,
+1091
+],
+"section.steps-process/rail-across-columns": [
+"references/elements/section-features.md",
+1093,
+1115
+],
+"section.steps-process/numbered-rule-list": [
+"references/elements/section-features.md",
+1117,
+1122
+],
+"section.steps-process/ruled-method-columns": [
+"references/elements/section-features.md",
+1124,
+1129
+],
+"section.steps-process/active-step-beside-media": [
+"references/elements/section-features.md",
+1131,
+1136
+],
+"section.steps-process/drawn-path-or-diagram": [
+"references/elements/section-features.md",
+1138,
+1143
+],
+"section.steps-process/tilted-paper-cards": [
+"references/elements/section-features.md",
+1145,
+1150
+],
+"section.steps-process/code-walkthrough": [
+"references/elements/section-features.md",
+1152,
+1157
+],
+"section.steps-process/numeral-as-image": [
+"references/elements/section-features.md",
+1159,
+1162
+],
+"section.steps-process/dated-agenda-rows": [
+"references/elements/section-features.md",
+1164,
+1169
+],
+"section.steps-process/stacking-step-cards": [
+"references/elements/section-features.md",
+1171,
+1174
+],
+"section.steps-process/plain-step-cards": [
+"references/elements/section-features.md",
+1176,
+1181
+],
+"section.footer/offset-sitemap": [
+"references/elements/section-info.md",
+158,
+178
+],
+"section.footer/full-width-directory": [
+"references/elements/section-info.md",
+180,
+202
+],
+"section.footer/fine-print-directory": [
+"references/elements/section-info.md",
+204,
+211
+],
+"section.footer/brand-column-with-proof": [
+"references/elements/section-info.md",
+213,
+241
+],
+"section.footer/newsletter-led-footer": [
+"references/elements/section-info.md",
+243,
+250
+],
+"section.footer/grid-locked-footer": [
+"references/elements/section-info.md",
+252,
+293
+],
+"section.footer/page-lifts-off-footer": [
+"references/elements/section-info.md",
+295,
+318
+],
+"section.footer/inset-card-footer": [
+"references/elements/section-info.md",
+320,
+338
+],
+"section.footer/colour-flood-footer": [
+"references/elements/section-info.md",
+340,
+347
+],
+"section.footer/giant-wordmark-finish": [
+"references/elements/section-info.md",
+349,
+384
+],
+"section.footer/ghost-wordmark-crop": [
+"references/elements/section-info.md",
+386,
+402
+],
+"section.footer/masked-wordmark": [
+"references/elements/section-info.md",
+404,
+419
+],
+"section.footer/statement-closer": [
+"references/elements/section-info.md",
+421,
+428
+],
+"section.footer/contact-first-footer": [
+"references/elements/section-info.md",
+430,
+463
+],
+"section.footer/local-hours-footer": [
+"references/elements/section-info.md",
+465,
+488
+],
+"section.footer/one-line-colophon": [
+"references/elements/section-info.md",
+490,
+497
+],
+"section.footer/closing-scene-footer": [
+"references/elements/section-info.md",
+499,
+508
+],
+"section.footer/final-image-footer": [
+"references/elements/section-info.md",
+510,
+517
+],
+"section.footer/typeset-legal-footer": [
+"references/elements/section-info.md",
+519,
+526
+],
+"section.footer/large-link-index": [
+"references/elements/section-info.md",
+528,
+535
+],
+"section.footer/accordion-footer": [
+"references/elements/section-info.md",
+537,
+544
+],
+"section.footer/object-signoff": [
+"references/elements/section-info.md",
+546,
+553
+],
+"section.footer/app-download-card": [
+"references/elements/section-info.md",
+555,
+562
+],
+"section.gallery-portfolio/caption-row-grid": [
+"references/elements/section-info.md",
+599,
+620
+],
+"section.gallery-portfolio/rhythm-rows": [
+"references/elements/section-info.md",
+622,
+629
+],
+"section.gallery-portfolio/on-image-title-tiles": [
+"references/elements/section-info.md",
+631,
+638
+],
+"section.gallery-portfolio/lead-mosaic": [
+"references/elements/section-info.md",
+640,
+662
+],
+"section.gallery-portfolio/true-ratio-gallery": [
+"references/elements/section-info.md",
+664,
+680
+],
+"section.gallery-portfolio/dense-image-wall": [
+"references/elements/section-info.md",
+682,
+689
+],
+"section.gallery-portfolio/peek-rail": [
+"references/elements/section-info.md",
+691,
+713
+],
+"section.gallery-portfolio/centred-slide-carousel": [
+"references/elements/section-info.md",
+715,
+722
+],
+"section.gallery-portfolio/fixed-height-filmstrip": [
+"references/elements/section-info.md",
+724,
+731
+],
+"section.gallery-portfolio/ruled-project-rows": [
+"references/elements/section-info.md",
+733,
+752
+],
+"section.gallery-portfolio/tabular-project-index": [
+"references/elements/section-info.md",
+754,
+769
+],
+"section.gallery-portfolio/side-caption-pairs": [
+"references/elements/section-info.md",
+771,
+778
+],
+"section.gallery-portfolio/pinned-project-stage": [
+"references/elements/section-info.md",
+780,
+787
+],
+"section.gallery-portfolio/single-file-spine": [
+"references/elements/section-info.md",
+789,
+796
+],
+"section.gallery-portfolio/scattered-collage": [
+"references/elements/section-info.md",
+798,
+805
+],
+"section.gallery-portfolio/tilted-drift-row": [
+"references/elements/section-info.md",
+807,
+814
+],
+"section.gallery-portfolio/sliver-index": [
+"references/elements/section-info.md",
+816,
+823
+],
+"section.blog-index/cards-then-ledger": [
+"references/elements/section-info.md",
+848,
+855
+],
+"section.blog-index/front-page-lead": [
+"references/elements/section-info.md",
+857,
+882
+],
+"section.blog-index/feature-then-grid": [
+"references/elements/section-info.md",
+884,
+891
+],
+"section.blog-index/compact-row-ledger": [
+"references/elements/section-info.md",
+893,
+913
+],
+"section.blog-index/large-feature-rows": [
+"references/elements/section-info.md",
+915,
+933
+],
+"section.blog-index/text-only-cells": [
+"references/elements/section-info.md",
+935,
+956
+],
+"section.blog-index/thumbnail-card-grid": [
+"references/elements/section-info.md",
+958,
+965
+],
+"section.blog-index/sidebar-filter-grid": [
+"references/elements/section-info.md",
+967,
+974
+],
+"section.blog-index/flush-story-row": [
+"references/elements/section-info.md",
+976,
+983
+],
+"section.blog-index/peek-news-rail": [
+"references/elements/section-info.md",
+985,
+992
+],
+"section.blog-index/narrowing-filmstrip": [
+"references/elements/section-info.md",
+994,
+1001
+],
+"section.blog-index/mixed-span-bento": [
+"references/elements/section-info.md",
+1003,
+1010
+],
+"section.blog-index/designed-cover-system": [
+"references/elements/section-info.md",
+1012,
+1019
+],
+"section.blog-index/quiet-filter-row": [
+"references/elements/section-info.md",
+1021,
+1028
+],
+"section.blog-index/wire-feed": [
+"references/elements/section-info.md",
+1030,
+1037
+],
+"section.changelog/date-rail-feed": [
+"references/elements/section-info.md",
+1060,
+1082
+],
+"section.changelog/sticky-rail-timeline": [
+"references/elements/section-info.md",
+1084,
+1091
+],
+"section.changelog/month-index-rail": [
+"references/elements/section-info.md",
+1093,
+1100
+],
+"section.changelog/release-split-rows": [
+"references/elements/section-info.md",
+1102,
+1109
+],
+"section.changelog/typed-log": [
+"references/elements/section-info.md",
+1111,
+1132
+],
+"section.changelog/homepage-timeline-row": [
+"references/elements/section-info.md",
+1134,
+1156
+],
+"section.changelog/update-card-grid": [
+"references/elements/section-info.md",
+1158,
+1165
+],
+"section.changelog/incident-history": [
+"references/elements/section-info.md",
+1167,
+1174
+],
+"section.changelog/dated-history-log": [
+"references/elements/section-info.md",
+1176,
+1183
+],
+"section.menu-or-catalog/name-price-rows": [
+"references/elements/section-info.md",
+1211,
+1236
+],
+"section.menu-or-catalog/inline-price-lines": [
+"references/elements/section-info.md",
+1238,
+1259
+],
+"section.menu-or-catalog/centred-menu-column": [
+"references/elements/section-info.md",
+1261,
+1282
+],
+"section.menu-or-catalog/photo-interleaved-menu": [
+"references/elements/section-info.md",
+1284,
+1291
+],
+"section.menu-or-catalog/plate-photo-grid": [
+"references/elements/section-info.md",
+1293,
+1316
+],
+"section.menu-or-catalog/menu-index-buttons": [
+"references/elements/section-info.md",
+1318,
+1325
+],
+"section.menu-or-catalog/service-price-panels": [
+"references/elements/section-info.md",
+1327,
+1346
+],
+"section.menu-or-catalog/running-text-index": [
+"references/elements/section-info.md",
+1348,
+1355
+],
+"section.menu-or-catalog/scene-per-product": [
+"references/elements/section-info.md",
+1357,
+1364
+],
+"section.menu-or-catalog/tabbed-shelf": [
+"references/elements/section-info.md",
+1366,
+1373
+],
+"section.menu-or-catalog/stacked-browse-rails": [
+"references/elements/section-info.md",
+1375,
+1382
+],
+"section.menu-or-catalog/whats-on-list": [
+"references/elements/section-info.md",
+1384,
+1391
+],
+"section.location-hours/plain-hours-list": [
+"references/elements/section-info.md",
+1423,
+1455
+],
+"section.location-hours/hours-card-beside-map": [
+"references/elements/section-info.md",
+1457,
+1483
+],
+"section.location-hours/open-today-strip": [
+"references/elements/section-info.md",
+1485,
+1505
+],
+"section.location-hours/location-card-grid": [
+"references/elements/section-info.md",
+1507,
+1536
+],
+"section.location-hours/location-story-rows": [
+"references/elements/section-info.md",
+1538,
+1545
+],
+"section.location-hours/city-clock-columns": [
+"references/elements/section-info.md",
+1547,
+1564
+],
+"section.location-hours/plain-city-directory": [
+"references/elements/section-info.md",
+1566,
+1573
+],
+"section.location-hours/map-as-figure": [
+"references/elements/section-info.md",
+1575,
+1582
+],
+"section.location-hours/three-column-info-band": [
+"references/elements/section-info.md",
+1584,
+1591
+],
+"section.location-hours/multi-venue-panels": [
+"references/elements/section-info.md",
+1593,
+1600
+],
+"section.location-hours/live-conditions-panel": [
+"references/elements/section-info.md",
+1602,
+1609
+],
+"section.location-hours/visit-page-sections": [
+"references/elements/section-info.md",
+1611,
+1618
+],
+"section.testimonial/hanging-quote-on-grid": [
+"references/elements/section-proof.md",
+177,
+197
+],
+"section.testimonial/display-pull-quote": [
+"references/elements/section-proof.md",
+199,
+219
+],
+"section.testimonial/quiet-interlude-quote": [
+"references/elements/section-proof.md",
+221,
+230
+],
+"section.testimonial/quote-with-outcome-metrics": [
+"references/elements/section-proof.md",
+232,
+241
+],
+"section.testimonial/logo-led-quote-cards": [
+"references/elements/section-proof.md",
+243,
+262
+],
+"section.testimonial/pinned-foot-quote-cards": [
+"references/elements/section-proof.md",
+264,
+271
+],
+"section.testimonial/logo-tab-switcher": [
+"references/elements/section-proof.md",
+273,
+300
+],
+"section.testimonial/quote-beside-portrait": [
+"references/elements/section-proof.md",
+302,
+323
+],
+"section.testimonial/colour-flood-quote": [
+"references/elements/section-proof.md",
+325,
+344
+],
+"section.testimonial/masonry-wall": [
+"references/elements/section-proof.md",
+346,
+370
+],
+"section.testimonial/drifting-double-row": [
+"references/elements/section-proof.md",
+372,
+381
+],
+"section.testimonial/peek-card-rail": [
+"references/elements/section-proof.md",
+383,
+390
+],
+"section.testimonial/portrait-story-cards": [
+"references/elements/section-proof.md",
+392,
+401
+],
+"section.testimonial/mixed-proof-mosaic": [
+"references/elements/section-proof.md",
+403,
+410
+],
+"section.testimonial/video-testimonials": [
+"references/elements/section-proof.md",
+412,
+419
+],
+"section.testimonial/press-quotes": [
+"references/elements/section-proof.md",
+421,
+428
+],
+"section.testimonial/verified-review-cards": [
+"references/elements/section-proof.md",
+430,
+439
+],
+"section.testimonial/open-quote-columns": [
+"references/elements/section-proof.md",
+441,
+448
+],
+"section.testimonial/speech-shape-quotes": [
+"references/elements/section-proof.md",
+454,
+461
+],
+"section.testimonial/letter-or-interview": [
+"references/elements/section-proof.md",
+463,
+470
+],
+"section.testimonial/drawn-mark-quote": [
+"references/elements/section-proof.md",
+472,
+479
+],
+"section.testimonial/client-accordion-table": [
+"references/elements/section-proof.md",
+481,
+488
+],
+"section.testimonial/quote-beside-interaction": [
+"references/elements/section-proof.md",
+490,
+497
+],
+"section.logo-wall/masked-grey-marquee": [
+"references/elements/section-proof.md",
+524,
+547
+],
+"section.logo-wall/opposing-double-marquee": [
+"references/elements/section-proof.md",
+549,
+556
+],
+"section.logo-wall/flattened-grey-logos": [
+"references/elements/section-proof.md",
+558,
+565
+],
+"section.logo-wall/full-strength-mono-logos": [
+"references/elements/section-proof.md",
+567,
+574
+],
+"section.logo-wall/full-colour-on-rails": [
+"references/elements/section-proof.md",
+576,
+583
+],
+"section.logo-wall/ruled-cell-grid": [
+"references/elements/section-proof.md",
+585,
+601
+],
+"section.logo-wall/linked-cell-grid": [
+"references/elements/section-proof.md",
+603,
+621
+],
+"section.logo-wall/filled-logo-tiles": [
+"references/elements/section-proof.md",
+623,
+638
+],
+"section.logo-wall/one-lit-logo": [
+"references/elements/section-proof.md",
+640,
+647
+],
+"section.logo-wall/logos-as-controls": [
+"references/elements/section-proof.md",
+649,
+656
+],
+"section.logo-wall/logos-inside-another-block": [
+"references/elements/section-proof.md",
+658,
+665
+],
+"section.logo-wall/few-logos-big-room": [
+"references/elements/section-proof.md",
+667,
+674
+],
+"section.logo-wall/press-masthead-row": [
+"references/elements/section-proof.md",
+676,
+683
+],
+"section.logo-wall/award-and-seal-row": [
+"references/elements/section-proof.md",
+685,
+692
+],
+"section.logo-wall/compliance-seals": [
+"references/elements/section-proof.md",
+694,
+701
+],
+"section.logo-wall/typeset-client-names": [
+"references/elements/section-proof.md",
+703,
+724
+],
+"section.logo-wall/customers-as-product-objects": [
+"references/elements/section-proof.md",
+726,
+733
+],
+"section.logo-wall/tiered-sponsor-grid": [
+"references/elements/section-proof.md",
+737,
+744
+],
+"section.logo-wall/logos-plus-rating": [
+"references/elements/section-proof.md",
+746,
+753
+],
+"section.logo-wall/logo-wall-with-a-joke": [
+"references/elements/section-proof.md",
+755,
+762
+],
+"section.stats/open-numeral-columns": [
+"references/elements/section-proof.md",
+784,
+791
+],
+"section.stats/rule-bound-numerals": [
+"references/elements/section-proof.md",
+793,
+810
+],
+"section.stats/ruled-stat-cells": [
+"references/elements/section-proof.md",
+812,
+828
+],
+"section.stats/figure-ledger": [
+"references/elements/section-proof.md",
+830,
+847
+],
+"section.stats/customer-attributed-numbers": [
+"references/elements/section-proof.md",
+849,
+866
+],
+"section.stats/stat-tiles": [
+"references/elements/section-proof.md",
+868,
+875
+],
+"section.stats/staggered-stat-cards": [
+"references/elements/section-proof.md",
+877,
+884
+],
+"section.stats/colour-band-numerals": [
+"references/elements/section-proof.md",
+886,
+893
+],
+"section.stats/number-as-diagram": [
+"references/elements/section-proof.md",
+895,
+915
+],
+"section.stats/sentence-stats": [
+"references/elements/section-proof.md",
+917,
+934
+],
+"section.stats/one-giant-number": [
+"references/elements/section-proof.md",
+936,
+943
+],
+"section.stats/numerals-on-photo": [
+"references/elements/section-proof.md",
+945,
+952
+],
+"section.stats/fact-strip": [
+"references/elements/section-proof.md",
+954,
+969
+],
+"section.stats/rating-row": [
+"references/elements/section-proof.md",
+971,
+978
+],
+"section.stats/inline-with-cta": [
+"references/elements/section-proof.md",
+980,
+987
+],
+"section.stats/benchmark-race": [
+"references/elements/section-proof.md",
+991,
+998
+],
+"section.stats/live-counter": [
+"references/elements/section-proof.md",
+1000,
+1007
+],
+"section.stats/stat-and-quote-mosaic": [
+"references/elements/section-proof.md",
+1009,
+1016
+],
+"section.case-study/story-index-rows": [
+"references/elements/section-proof.md",
+1039,
+1056
+],
+"section.case-study/logo-tile-cards": [
+"references/elements/section-proof.md",
+1058,
+1065
+],
+"section.case-study/brand-poster-tiles": [
+"references/elements/section-proof.md",
+1067,
+1083
+],
+"section.case-study/logo-tabs-over-story": [
+"references/elements/section-proof.md",
+1085,
+1092
+],
+"section.case-study/expanding-story-strip": [
+"references/elements/section-proof.md",
+1094,
+1101
+],
+"section.case-study/quote-media-split": [
+"references/elements/section-proof.md",
+1103,
+1124
+],
+"section.case-study/story-bento": [
+"references/elements/section-proof.md",
+1126,
+1146
+],
+"section.case-study/full-bleed-project": [
+"references/elements/section-proof.md",
+1148,
+1155
+],
+"section.case-study/photo-overlay-story-cards": [
+"references/elements/section-proof.md",
+1157,
+1164
+],
+"section.case-study/paged-story-carousel": [
+"references/elements/section-proof.md",
+1166,
+1173
+],
+"section.case-study/outcome-text-cards": [
+"references/elements/section-proof.md",
+1175,
+1182
+],
+"section.case-study/work-grid": [
+"references/elements/section-proof.md",
+1184,
+1191
+],
+"section.case-study/written-story": [
+"references/elements/section-proof.md",
+1193,
+1200
+],
+"section.case-study/product-in-scene": [
+"references/elements/section-proof.md",
+1202,
+1209
+],
+"section.case-study/video-proof-cards": [
+"references/elements/section-proof.md",
+1211,
+1218
+],
+"section.team/mono-portrait-grid": [
+"references/elements/section-proof.md",
+1239,
+1253
+],
+"section.team/one-backdrop-portraits": [
+"references/elements/section-proof.md",
+1255,
+1262
+],
+"section.team/colour-backdrop-portraits": [
+"references/elements/section-proof.md",
+1264,
+1271
+],
+"section.team/portrait-tile-cards": [
+"references/elements/section-proof.md",
+1273,
+1280
+],
+"section.team/credentialed-practitioners": [
+"references/elements/section-proof.md",
+1282,
+1289
+],
+"section.team/compact-people-directory": [
+"references/elements/section-proof.md",
+1291,
+1309
+],
+"section.team/plain-name-columns": [
+"references/elements/section-proof.md",
+1311,
+1318
+],
+"section.team/founder-bio-split": [
+"references/elements/section-proof.md",
+1320,
+1338
+],
+"section.team/candid-group-photo": [
+"references/elements/section-proof.md",
+1340,
+1347
+],
+"section.team/contributor-wall": [
+"references/elements/section-proof.md",
+1351,
+1358
+],
+"section.team/authored-portraits": [
+"references/elements/section-proof.md",
+1360,
+1367
+],
+"section.team/investor-row": [
+"references/elements/section-proof.md",
+1369,
+1376
+],
+"section.team/no-team-contact-rows": [
+"references/elements/section-proof.md",
+1378,
+1385
+],
+"section.integrations/ruled-directory": [
+"references/elements/section-proof.md",
+1406,
+1422
+],
+"section.integrations/hub-and-spoke-map": [
+"references/elements/section-proof.md",
+1424,
+1444
+],
+"section.integrations/logo-tile-grid": [
+"references/elements/section-proof.md",
+1446,
+1463
+],
+"section.integrations/hairline-link-list": [
+"references/elements/section-proof.md",
+1465,
+1472
+],
+"section.integrations/fading-tile-rows": [
+"references/elements/section-proof.md",
+1474,
+1481
+],
+"section.integrations/orbit-and-arc": [
+"references/elements/section-proof.md",
+1483,
+1490
+],
+"section.integrations/offset-app-card-rows": [
+"references/elements/section-proof.md",
+1492,
+1499
+],
+"section.integrations/brand-chip-row": [
+"references/elements/section-proof.md",
+1501,
+1508
+],
+"section.integrations/mono-mark-field": [
+"references/elements/section-proof.md",
+1510,
+1517
+],
+"section.integrations/live-repo-row": [
+"references/elements/section-proof.md",
+1519,
+1526
+],
+"surface.card/hairline-object-card": [
+"references/elements/surface.md",
+137,
+156
+],
+"surface.card/hairline-text-card": [
+"references/elements/surface.md",
+158,
+165
+],
+"surface.card/link-row-card": [
+"references/elements/surface.md",
+167,
+188
+],
+"surface.card/mat-card": [
+"references/elements/surface.md",
+190,
+211
+],
+"surface.card/shell-and-well-card": [
+"references/elements/surface.md",
+213,
+220
+],
+"surface.card/tonal-card": [
+"references/elements/surface.md",
+222,
+231
+],
+"surface.card/crop-bleed-card": [
+"references/elements/surface.md",
+233,
+253
+],
+"surface.card/caption-outside-tile": [
+"references/elements/surface.md",
+255,
+262
+],
+"surface.card/photo-overlay-tile": [
+"references/elements/surface.md",
+264,
+271
+],
+"surface.card/media-over-tinted-body": [
+"references/elements/surface.md",
+273,
+280
+],
+"surface.card/grain-paper-tile": [
+"references/elements/surface.md",
+282,
+305
+],
+"surface.card/figure-led-card": [
+"references/elements/surface.md",
+307,
+314
+],
+"surface.card/colour-block-card": [
+"references/elements/surface.md",
+316,
+323
+],
+"surface.card/edge-signature-card": [
+"references/elements/surface.md",
+325,
+332
+],
+"surface.card/soft-shadow-card": [
+"references/elements/surface.md",
+334,
+341
+],
+"surface.panel/tonal-feature-panel": [
+"references/elements/surface.md",
+366,
+383
+],
+"surface.panel/contrast-flip-panel": [
+"references/elements/surface.md",
+385,
+392
+],
+"surface.panel/brand-slab": [
+"references/elements/surface.md",
+394,
+401
+],
+"surface.panel/sheet-stack": [
+"references/elements/surface.md",
+403,
+410
+],
+"surface.panel/inset-sheet": [
+"references/elements/surface.md",
+412,
+419
+],
+"surface.panel/nested-gutter-window": [
+"references/elements/surface.md",
+421,
+439
+],
+"surface.panel/ruled-cell-panel": [
+"references/elements/surface.md",
+441,
+461
+],
+"surface.panel/product-stage": [
+"references/elements/surface.md",
+463,
+470
+],
+"surface.panel/cut-silhouette-panel": [
+"references/elements/surface.md",
+472,
+479
+],
+"surface.panel/os-window": [
+"references/elements/surface.md",
+481,
+488
+],
+"surface.panel/floating-utility": [
+"references/elements/surface.md",
+490,
+497
+],
+"surface.panel/crop-mark-frame": [
+"references/elements/surface.md",
+499,
+506
+],
+"surface.panel/split-tone-stage": [
+"references/elements/surface.md",
+508,
+515
+],
+"surface.panel/editorial-module": [
+"references/elements/surface.md",
+517,
+524
+],
+"surface.panel/true-ratio-placeholder": [
+"references/elements/surface.md",
+526,
+533
+],
+"surface.bento/tonal-squircle-bento": [
+"references/elements/surface.md",
+577,
+604
+],
+"surface.bento/hairline-tile-bento": [
+"references/elements/surface.md",
+606,
+613
+],
+"surface.bento/double-rim-bento": [
+"references/elements/surface.md",
+615,
+639
+],
+"surface.bento/ruled-no-gap-bento": [
+"references/elements/surface.md",
+641,
+661
+],
+"surface.bento/gradient-per-tile-bento": [
+"references/elements/surface.md",
+663,
+670
+],
+"surface.bento/colour-owned-bento": [
+"references/elements/surface.md",
+672,
+679
+],
+"surface.bento/mixed-media-bento": [
+"references/elements/surface.md",
+681,
+688
+],
+"surface.bento/dark-tilted-device-bento": [
+"references/elements/surface.md",
+690,
+697
+],
+"surface.bento/masonry-feed-bento": [
+"references/elements/surface.md",
+699,
+706
+],
+"surface.radius-system/concentric-ladder": [
+"references/elements/surface.md",
+753,
+760
+],
+"surface.radius-system/container-vs-control": [
+"references/elements/surface.md",
+762,
+775
+],
+"surface.radius-system/role-tiers": [
+"references/elements/surface.md",
+777,
+784
+],
+"surface.radius-system/near-square-scale": [
+"references/elements/surface.md",
+786,
+793
+],
+"surface.radius-system/zero-radius": [
+"references/elements/surface.md",
+795,
+802
+],
+"surface.radius-system/oversize-scale": [
+"references/elements/surface.md",
+804,
+811
+],
+"surface.radius-system/outer-corners-only": [
+"references/elements/surface.md",
+813,
+820
+],
+"surface.border-treatment/hairline-only": [
+"references/elements/surface.md",
+839,
+846
+],
+"surface.border-treatment/page-rails": [
+"references/elements/surface.md",
+848,
+870
+],
+"surface.border-treatment/crop-marks": [
+"references/elements/surface.md",
+872,
+879
+],
+"surface.border-treatment/specular-edge": [
+"references/elements/surface.md",
+881,
+895
+],
+"surface.border-treatment/recommended-keyline": [
+"references/elements/surface.md",
+897,
+912
+],
+"surface.border-treatment/double-frame": [
+"references/elements/surface.md",
+914,
+921
+],
+"surface.border-treatment/line-style-as-meaning": [
+"references/elements/surface.md",
+923,
+930
+],
+"surface.border-treatment/quiet-rim-nesting": [
+"references/elements/surface.md",
+932,
+939
+],
+"surface.border-treatment/interlocking-cut": [
+"references/elements/surface.md",
+941,
+948
+],
+"surface.border-treatment/viewport-frame": [
+"references/elements/surface.md",
+950,
+957
+],
+"surface.divider/inset-hairline": [
+"references/elements/surface.md",
+974,
+985
+],
+"surface.divider/full-bleed-hairline": [
+"references/elements/surface.md",
+987,
+994
+],
+"surface.divider/heavy-rule": [
+"references/elements/surface.md",
+996,
+1003
+],
+"surface.divider/typed-rules": [
+"references/elements/surface.md",
+1005,
+1019
+],
+"surface.divider/leader-row": [
+"references/elements/surface.md",
+1021,
+1037
+],
+"surface.divider/timeline-hairline": [
+"references/elements/surface.md",
+1039,
+1046
+],
+"surface.divider/double-rule-band": [
+"references/elements/surface.md",
+1048,
+1055
+],
+"surface.divider/shaped-transition": [
+"references/elements/surface.md",
+1057,
+1064
+],
+"surface.divider/tick-marks": [
+"references/elements/surface.md",
+1066,
+1073
+],
+"surface.divider/colour-band-break": [
+"references/elements/surface.md",
+1075,
+1082
+],
+"surface.elevation/tinted-negative-stack": [
+"references/elements/surface.md",
+1134,
+1153
+],
+"surface.elevation/ring-contact-ambient": [
+"references/elements/surface.md",
+1155,
+1175
+],
+"surface.elevation/hard-offset": [
+"references/elements/surface.md",
+1177,
+1194
+],
+"surface.elevation/wide-bloom": [
+"references/elements/surface.md",
+1196,
+1203
+],
+"surface.elevation/shadow-on-moving-layers": [
+"references/elements/surface.md",
+1205,
+1212
+],
+"surface.elevation/sheet-overlap": [
+"references/elements/surface.md",
+1214,
+1221
+],
+"surface.elevation/physical-paper": [
+"references/elements/surface.md",
+1223,
+1230
+],
+"surface.glass-or-blur/heavy-nav-smear": [
+"references/elements/surface.md",
+1259,
+1275
+],
+"surface.glass-or-blur/theme-flip-nav": [
+"references/elements/surface.md",
+1277,
+1284
+],
+"surface.glass-or-blur/feathered-blur": [
+"references/elements/surface.md",
+1286,
+1299
+],
+"surface.glass-or-blur/media-tinted-tray": [
+"references/elements/surface.md",
+1301,
+1315
+],
+"surface.glass-or-blur/glass-card-over-photo": [
+"references/elements/surface.md",
+1317,
+1324
+],
+"surface.glass-or-blur/frosted-panel-over-art": [
+"references/elements/surface.md",
+1326,
+1341
+],
+"surface.glass-or-blur/straddling-frost": [
+"references/elements/surface.md",
+1343,
+1350
+],
+"type.display-headline/medium-tight-grotesk": [
+"references/elements/type.md",
+112,
+132
+],
+"type.display-headline/crushed-tracking": [
+"references/elements/type.md",
+134,
+153
+],
+"type.display-headline/regular-weight-quiet": [
+"references/elements/type.md",
+155,
+169
+],
+"type.display-headline/light-large-sans": [
+"references/elements/type.md",
+171,
+185
+],
+"type.display-headline/heavy-tight-sentence": [
+"references/elements/type.md",
+187,
+201
+],
+"type.display-headline/quiet-serif-over-sans-ui": [
+"references/elements/type.md",
+203,
+222
+],
+"type.display-headline/roman-italic-turn": [
+"references/elements/type.md",
+224,
+251
+],
+"type.display-headline/sans-with-serif-italic-insert": [
+"references/elements/type.md",
+253,
+273
+],
+"type.display-headline/same-size-two-voices": [
+"references/elements/type.md",
+275,
+294
+],
+"type.display-headline/flat-accent-phrase": [
+"references/elements/type.md",
+296,
+310
+],
+"type.display-headline/tonal-gradient-fill": [
+"references/elements/type.md",
+312,
+326
+],
+"type.display-headline/hue-gradient-phrase": [
+"references/elements/type.md",
+328,
+342
+],
+"type.display-headline/marked-word": [
+"references/elements/type.md",
+344,
+358
+],
+"type.display-headline/caps-block": [
+"references/elements/type.md",
+360,
+374
+],
+"type.display-headline/wide-heavy-display": [
+"references/elements/type.md",
+376,
+390
+],
+"type.display-headline/soft-or-character-face": [
+"references/elements/type.md",
+392,
+406
+],
+"type.display-headline/under-scaled-title": [
+"references/elements/type.md",
+408,
+422
+],
+"type.display-headline/name-as-headline": [
+"references/elements/type.md",
+424,
+436
+],
+"type.display-headline/poster-anchored": [
+"references/elements/type.md",
+438,
+452
+],
+"type.display-headline/ruled-lines": [
+"references/elements/type.md",
+454,
+468
+],
+"type.display-headline/swapping-word": [
+"references/elements/type.md",
+470,
+482
+],
+"type.display-headline/statement-as-hero": [
+"references/elements/type.md",
+484,
+495
+],
+"type.section-heading/ink-then-grey-run-in": [
+"references/elements/type.md",
+517,
+536
+],
+"type.section-heading/grey-lead-ink-payoff": [
+"references/elements/type.md",
+538,
+550
+],
+"type.section-heading/eyebrow-title-lede-stack": [
+"references/elements/type.md",
+552,
+572
+],
+"type.section-heading/bare-statement": [
+"references/elements/type.md",
+574,
+586
+],
+"type.section-heading/split-heading-and-note": [
+"references/elements/type.md",
+588,
+600
+],
+"type.section-heading/heading-row-with-action": [
+"references/elements/type.md",
+602,
+614
+],
+"type.section-heading/ruled-opener": [
+"references/elements/type.md",
+616,
+640
+],
+"type.section-heading/indexed-cell-heading": [
+"references/elements/type.md",
+642,
+654
+],
+"type.section-heading/italic-turn-heading": [
+"references/elements/type.md",
+656,
+668
+],
+"type.section-heading/accent-word-or-line": [
+"references/elements/type.md",
+670,
+682
+],
+"type.section-heading/marked-phrase": [
+"references/elements/type.md",
+684,
+698
+],
+"type.section-heading/poster-caps-opener": [
+"references/elements/type.md",
+700,
+712
+],
+"type.section-heading/tracked-caps-heading": [
+"references/elements/type.md",
+714,
+726
+],
+"type.section-heading/emblem-opener": [
+"references/elements/type.md",
+728,
+740
+],
+"type.section-heading/scroll-held-heading": [
+"references/elements/type.md",
+742,
+754
+],
+"type.section-heading/two-voice-heading-system": [
+"references/elements/type.md",
+756,
+768
+],
+"type.section-heading/anaphora-list": [
+"references/elements/type.md",
+770,
+781
+],
+"type.eyebrow-or-label/mono-caps-eyebrow": [
+"references/elements/type.md",
+799,
+818
+],
+"type.eyebrow-or-label/marker-plus-mono": [
+"references/elements/type.md",
+820,
+840
+],
+"type.eyebrow-or-label/syntax-prefixed-label": [
+"references/elements/type.md",
+842,
+854
+],
+"type.eyebrow-or-label/boxed-mono-tag": [
+"references/elements/type.md",
+856,
+870
+],
+"type.eyebrow-or-label/sentence-case-colour-eyebrow": [
+"references/elements/type.md",
+872,
+886
+],
+"type.eyebrow-or-label/tracked-caps-eyebrow": [
+"references/elements/type.md",
+888,
+902
+],
+"type.eyebrow-or-label/plain-caps-label": [
+"references/elements/type.md",
+904,
+916
+],
+"type.eyebrow-or-label/tinted-or-outlined-tag": [
+"references/elements/type.md",
+918,
+930
+],
+"type.eyebrow-or-label/announcement-link": [
+"references/elements/type.md",
+932,
+951
+],
+"type.eyebrow-or-label/plan-badge": [
+"references/elements/type.md",
+953,
+965
+],
+"type.eyebrow-or-label/rule-or-tick-label": [
+"references/elements/type.md",
+967,
+979
+],
+"type.eyebrow-or-label/margin-and-corner-labels": [
+"references/elements/type.md",
+981,
+993
+],
+"type.eyebrow-or-label/media-caption-pair": [
+"references/elements/type.md",
+995,
+1007
+],
+"type.eyebrow-or-label/hand-placed-label": [
+"references/elements/type.md",
+1009,
+1020
+],
+"type.subhead/plain-grey-lede": [
+"references/elements/type.md",
+1039,
+1058
+],
+"type.subhead/keyword-lit-sentence": [
+"references/elements/type.md",
+1060,
+1078
+],
+"type.subhead/same-face-muted-lead": [
+"references/elements/type.md",
+1080,
+1092
+],
+"type.subhead/butted-two-tone-block": [
+"references/elements/type.md",
+1094,
+1114
+],
+"type.subhead/statement-lead-no-headline": [
+"references/elements/type.md",
+1116,
+1128
+],
+"type.subhead/line-on-image": [
+"references/elements/type.md",
+1130,
+1142
+],
+"type.subhead/coloured-clause": [
+"references/elements/type.md",
+1144,
+1156
+],
+"type.subhead/demonstrating-sentence": [
+"references/elements/type.md",
+1158,
+1169
+],
+"type.body-copy/reading-column": [
+"references/elements/type.md",
+1187,
+1210
+],
+"type.body-copy/muted-with-ink-keywords": [
+"references/elements/type.md",
+1212,
+1231
+],
+"type.body-copy/bold-run-in": [
+"references/elements/type.md",
+1233,
+1256
+],
+"type.body-copy/one-size-page": [
+"references/elements/type.md",
+1258,
+1270
+],
+"type.body-copy/serif-prose-grotesk-labels": [
+"references/elements/type.md",
+1272,
+1284
+],
+"type.body-copy/display-set-paragraph": [
+"references/elements/type.md",
+1286,
+1298
+],
+"type.body-copy/mono-or-duospace-body": [
+"references/elements/type.md",
+1300,
+1312
+],
+"type.body-copy/marked-prose": [
+"references/elements/type.md",
+1314,
+1326
+],
+"type.body-copy/typeset-legal": [
+"references/elements/type.md",
+1328,
+1342
+],
+"type.body-copy/structured-rows": [
+"references/elements/type.md",
+1344,
+1356
+],
+"type.body-copy/small-caption-column": [
+"references/elements/type.md",
+1358,
+1370
+],
+"type.body-copy/hanging-quote": [
+"references/elements/type.md",
+1372,
+1383
+],
+"type.numerals/price-large-unit-small": [
+"references/elements/type.md",
+1402,
+1422
+],
+"type.numerals/quiet-rate-stack": [
+"references/elements/type.md",
+1424,
+1436
+],
+"type.numerals/display-stat-with-caption": [
+"references/elements/type.md",
+1438,
+1460
+],
+"type.numerals/ruled-ledger-stat": [
+"references/elements/type.md",
+1462,
+1480
+],
+"type.numerals/mono-metric-cells": [
+"references/elements/type.md",
+1482,
+1494
+],
+"type.numerals/oldstyle-figures": [
+"references/elements/type.md",
+1496,
+1508
+],
+"type.numerals/live-counter": [
+"references/elements/type.md",
+1510,
+1522
+],
+"type.numerals/folio-numerals": [
+"references/elements/type.md",
+1524,
+1536
+],
+"type.numerals/rate-plaque": [
+"references/elements/type.md",
+1538,
+1549
+],
+"type.type-as-image/cropped-footer-wordmark": [
+"references/elements/type.md",
+1568,
+1604
+],
+"type.type-as-image/wordmark-masthead": [
+"references/elements/type.md",
+1606,
+1618
+],
+"type.type-as-image/full-width-statement": [
+"references/elements/type.md",
+1620,
+1639
+],
+"type.type-as-image/title-behind-object": [
+"references/elements/type.md",
+1641,
+1653
+],
+"type.type-as-image/inline-objects-in-sentence": [
+"references/elements/type.md",
+1655,
+1676
+],
+"type.type-as-image/image-through-letters": [
+"references/elements/type.md",
+1678,
+1690
+],
+"type.type-as-image/chapter-numeral-or-word": [
+"references/elements/type.md",
+1692,
+1704
+],
+"type.type-as-image/scroll-resolved-text": [
+"references/elements/type.md",
+1706,
+1718
+],
+"type.type-as-image/outline-type": [
+"references/elements/type.md",
+1720,
+1734
+],
+"type.type-as-image/list-as-display": [
+"references/elements/type.md",
+1736,
+1748
+],
+"type.type-as-image/constructed-letters": [
+"references/elements/type.md",
+1750,
+1762
+],
+"type.type-as-image/annotated-type": [
+"references/elements/type.md",
+1764,
+1776
+],
+"type.type-as-image/highlight-strip-on-photo": [
+"references/elements/type.md",
+1778,
+1790
+],
+"type.type-as-image/concept-typography": [
+"references/elements/type.md",
+1792,
+1803
+]
+}

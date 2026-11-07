@@ -1,0 +1,188 @@
+<!doctype html>
+<!-- What makes it good: where a template would give each practice area a paragraph, each tab here opens a different real document type with its own structure: a checklist with 6 of 8 secured, a payment ledger, a chain of title on a timeline, and a violation notice with a 10 day countdown and response options. The tabs are real (arrow keys, aria), and they step on their own with a progress line until someone touches them. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Practice document tabs</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&family=Public+Sans:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#fff;--surface:#f5f5f4;--ink:#101114;
+  --ink-2:#55564d;--ink-3:#6c6d61;
+  --line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --line-2:color-mix(in srgb,var(--ink) 24%,transparent);
+  --tint:color-mix(in srgb,var(--ink) 5%,transparent);
+  --warn:#9a6a14;
+  --display:'Literata',Georgia,serif;
+  --sans:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:24px;
+  --r-l:20px;--r-m:12px;--r-s:6px;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg,canvas{display:block}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px;border-radius:4px}
+.mono{font-family:var(--mono)}
+.num{font-variant-numeric:tabular-nums}
+.sec{padding:48px var(--g)}
+.split{display:grid;grid-template-columns:55% minmax(0,1fr);align-items:end;padding-bottom:40px;box-shadow:inset 0 -1px 0 var(--line)}
+.split h2{max-width:15em;font:400 44px/1.1 var(--display);letter-spacing:-.02em}
+.split p{max-width:540px;font-size:18px;line-height:1.5;color:var(--ink-2)}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:44px;padding:0 10px}
+.tp .sh-top{padding:0 18px;box-shadow:inset 0 -1px 0 var(--line)}
+.sh-top b{font-weight:500}
+.sh-top .mono{font-size:11.5px;color:var(--ink-3)}
+/* document tables */
+.ledger{width:100%;border-collapse:collapse}
+.ledger th{height:34px;padding:0 18px;font-weight:400;font-size:12px;color:var(--ink-3);text-align:left}
+.ledger td{height:44px;padding:0 18px;color:var(--ink)}
+.ledger td:first-child{color:var(--ink-2)}
+.ledger td.r{color:var(--ink);white-space:nowrap}
+.r{text-align:right!important}
+.ledger td.mono{font-size:12.5px}
+/* practice tabs */
+.tabs-wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:8px;margin-top:40px;padding:8px;border-radius:var(--r-l);background:var(--surface)}
+.trows{display:flex;flex-direction:column;gap:2px}
+.trows button{position:relative;display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;align-items:start;flex:1;width:100%;padding:18px 20px;overflow:hidden;border-radius:var(--r-m);text-align:left;color:var(--ink-3);transition:background-color .2s var(--ease),color .2s var(--ease)}
+.trows button:hover{background:var(--tint)}
+.trows button[aria-selected=true]{background:var(--bg);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+.trows .tic{width:48px;height:48px;opacity:.72;transition:opacity .2s var(--ease)}
+.trows button:hover img,.trows button[aria-selected=true] img{opacity:1}
+.trows b{display:block;font:400 19px/1.25 var(--display);letter-spacing:-.008em}
+.trows small{display:block;margin-top:5px;font-size:14px;line-height:1.45}
+.trows button[aria-selected=true] small{color:var(--ink-2)}
+.prog{position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--ink);transform:scaleX(0);transform-origin:left}
+.auto .trows button[aria-selected=true] .prog{animation:prog 7s linear forwards}
+.tabs-wrap:hover .prog,.tabs-wrap.paused .prog{animation-play-state:paused!important}
+@keyframes prog{to{transform:scaleX(1)}}
+.tp{min-height:504px;height:100%;overflow:hidden;border-radius:var(--r-m);background:var(--bg);box-shadow:inset 0 0 0 1px var(--line);font:400 13.5px/1.4 var(--sans)}
+.tp[hidden]{display:none}
+.chk li{display:grid;grid-template-columns:20px minmax(0,1fr) auto;gap:12px;align-items:center;min-height:53px;padding:0 18px;border-top:1px solid var(--line)}
+.chk li:first-child{border-top:0}
+.chk li.n{border-top:1px dashed var(--line-2);color:var(--ink-2)}
+.chk .mono{font-size:12px;color:var(--ink-3)}
+.box{width:18px;height:18px;display:grid;place-items:center;border-radius:4px;background:var(--ink);color:var(--bg)}
+.box .ic{width:12px;height:12px;stroke-width:2}
+.chk .n .box{background:none;border:1px dashed var(--ink-3)}
+.foot-note{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 18px 0;padding:12px 14px;border-radius:8px;background:var(--surface)}
+.foot-note .mono{font-size:12px;color:var(--ink-3)}
+.st{display:inline-flex;align-items:center;gap:8px}
+.st i{width:7px;height:7px;border-radius:50%;background:var(--warn)}
+.title-chain{padding:6px 18px}
+.title-chain li{position:relative;display:grid;grid-template-columns:72px minmax(0,1fr);gap:26px;padding:16px 0}
+.title-chain li::before{content:"";position:absolute;left:84px;top:23px;width:7px;height:7px;border-radius:50%;background:var(--ink)}
+.title-chain li::after{content:"";position:absolute;left:87px;top:34px;bottom:-22px;border-left:1px solid var(--line-2)}
+.title-chain li:last-child::after{display:none}
+.title-chain li.run::before{background:var(--bg);box-shadow:inset 0 0 0 1px var(--ink-3)}
+.title-chain .mono{font-size:12px;line-height:20px;color:var(--ink-3)}
+.title-chain b{display:block;font-weight:500}
+.title-chain small{display:block;font-size:13px;color:var(--ink-3)}
+.nova{padding:20px 18px}
+.bigclock{display:flex;align-items:center;gap:16px;padding-bottom:18px;border-bottom:1px dashed var(--line-2)}
+.bigclock>span{font-size:52px;line-height:1;letter-spacing:-.04em}
+.bigclock p{font-weight:500}
+.bigclock small{display:block;font-size:13px;font-weight:400;color:var(--ink-3)}
+.nova dl>div{display:grid;grid-template-columns:120px minmax(0,1fr);padding:12px 0;border-bottom:1px solid var(--line)}
+.nova dt{color:var(--ink-3)}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.opts li{display:inline-flex;align-items:center;height:30px;padding:0 11px;border-radius:var(--r-s);color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.opts li.on{background:var(--ink);color:var(--bg);box-shadow:none}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.500l3.200 3L13 4.500"/></symbol>
+</defs></svg>
+<section class="sec" id="practice" aria-labelledby="h-prac">
+  <header class="split">
+    <h2 id="h-prac">What we do for vessel owners</h2>
+    <p>Four kinds of work, all of it for owners and operators with fewer than ten boats. We do not take cruise lines, oil majors or insurer panels, and we do not act for crew against an owner.</p>
+  </header>
+  <div class="tabs-wrap" data-tabs>
+    <div class="trows" role="tablist" aria-label="Practice areas" aria-orientation="vertical">
+      <button role="tab" id="t0" aria-controls="p0" aria-selected="true"><svg class="tic" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="7.5" r="3.5" fill="none" stroke="#716a48" stroke-width="2"/><path d="M24 11c-6 0-9 5-10 12h20c-1-7-4-12-10-12z" fill="#cac6b2"/><path d="M14 23h20l5 13c-6 6-24 6-30 0z" fill="#a5a598"/><path d="M12 23h24v2.5H12z" fill="#716a48"/></svg><span><b>Casualty, collision and salvage</b><small>Groundings, sinkings, fires and allisions, from the first call through the Coast Guard inquiry.</small></span><i class="prog"></i></button>
+      <button role="tab" id="t1" aria-controls="p1" aria-selected="false" tabindex="-1"><svg class="tic" viewBox="0 0 48 48" aria-hidden="true"><path d="M10 31c0-11 6-18 14-18s14 7 14 18z" fill="#cac6b2"/><path d="M21 13.300c5-1 8 7 8 17.700h-5c0-8-1-14-3-17.700z" fill="#a5a598"/><path d="M4 33c8-3 32-3 40 0-8 4-32 4-40 0z" fill="#716a48"/></svg><span><b>Crew injury, maintenance and cure</b><small>What an owner owes an injured seaman, paid correctly from day one, and Jones Act defence after that.</small></span><i class="prog"></i></button>
+      <button role="tab" id="t2" aria-controls="p2" aria-selected="false" tabindex="-1"><svg class="tic" viewBox="0 0 48 48" aria-hidden="true"><g transform="rotate(35 24 24)"><circle cx="24" cy="12" r="7" fill="none" stroke="#a5a598" stroke-width="4"/><path d="M22.500 19h3v23h-3z" fill="#a5a598"/><path d="M25.500 33h5v3h-5zM25.500 38h4v3h-4z" fill="#716a48"/></g></svg><span><b>Vessel sales, mortgages and liens</b><small>Abstracts of title, preferred mortgages, yard bills and vessel arrests under Supplemental Rule C.</small></span><i class="prog"></i></button>
+      <button role="tab" id="t3" aria-controls="p3" aria-selected="false" tabindex="-1"><svg class="tic" viewBox="0 0 48 48" aria-hidden="true"><path d="M5 25c5-8 20-11 30-2l9-7c-1 6-1 12 1 18l-10-6c-10 8-25 5-30-3z" fill="#cac6b2"/><path d="M18 17c3-4 9-6 14-4-2 2-3 5-4 7z" fill="#716a48"/><circle cx="13" cy="24" r="1.5" fill="#101114"/></svg><span><b>Fisheries permits and NOAA enforcement</b><small>IFQ and limited-entry transfers, and answers to a Notice of Violation inside its 30 days.</small></span><i class="prog"></i></button>
+    </div>
+    <div class="tpanels">
+      <div class="tp" role="tabpanel" id="p0" aria-labelledby="t0">
+        <div class="sh-top"><b>Preservation list</b><span class="mono">LP-26-1187, 6 of 8 secured</span></div>
+        <ul class="chk">
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>Plotter track, photographed before power-off<span class="mono">02:58</span></li>
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>Deck log, original held by counsel<span class="mono">Nov 3</span></li>
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>Engine alarm history, exported<span class="mono">Nov 3</span></li>
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>VHF and sat phone call records<span class="mono">Nov 3</span></li>
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>Crew told not to delete messages or photos<span class="mono">Nov 3</span></li>
+          <li class="y"><span class="box"><svg class="ic"><use href="#i-check"/></svg></span>Damaged wheel tagged, stored at the yard<span class="mono">Nov 4</span></li>
+          <li class="n"><span class="box"></span>AIS track requested from the Marine Exchange<span class="mono">Waiting</span></li>
+          <li class="n"><span class="box"></span>Salvor&rsquo;s contract, read before anyone signs<span class="mono">Waiting</span></li>
+        </ul>
+      </div>
+      <div class="tp" role="tabpanel" id="p1" aria-labelledby="t1" hidden>
+        <div class="sh-top"><b>Maintenance and cure ledger</b><span class="mono">Deckhand D.R., injured Oct 11</span></div>
+        <table class="ledger">
+          <thead><tr><th>Date</th><th>Item</th><th class="r">Paid</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">Oct 12</td><td>Air ambulance, St. Paul to Anchorage</td><td class="r mono">$38,410.00</td></tr>
+            <tr><td class="mono">Oct 12</td><td>Hand surgery, Anchorage</td><td class="r mono">$21,276.55</td></tr>
+            <tr><td class="mono">Oct 16</td><td>Maintenance, 5 days at $60</td><td class="r mono">$300.00</td></tr>
+            <tr><td class="mono">Oct 23</td><td>Maintenance, 7 days at $60</td><td class="r mono">$420.00</td></tr>
+            <tr><td class="mono">Oct 28</td><td>Occupational therapy, 4 of 12 visits</td><td class="r mono">$612.00</td></tr>
+            <tr><td class="mono">Oct 30</td><td>Maintenance, 7 days at $60</td><td class="r mono">$420.00</td></tr>
+          </tbody>
+        </table>
+        <div class="foot-note"><span class="st"><i></i>Maximum cure not reached</span><span class="mono">Next surgeon review Nov 19</span></div>
+      </div>
+      <div class="tp" role="tabpanel" id="p2" aria-labelledby="t2" hidden>
+        <div class="sh-top"><b>Abstract of title, CG-1332</b><span class="mono">F/V Sitkalidak, O.N. 958214</span></div>
+        <ol class="title-chain">
+          <li><time class="mono">Mar 2009</time><div><b>Master carpenter&rsquo;s certificate</b><small>Built Bellingham, WA. 46 ft, 21 net tons.</small></div></li>
+          <li><time class="mono">Jun 2017</time><div><b>Bill of sale to Alder Point Fisheries LLC</b><small>Recorded at the National Vessel Documentation Center.</small></div></li>
+          <li><time class="mono">Jun 2017</time><div><b>First preferred ship mortgage, $412,000</b><small>Gastineau Marine Credit. Satisfied Feb 2024.</small></div></li>
+          <li class="run"><time class="mono">Oct 2026</time><div><b>Notice of claim of lien, $61,412.07</b><small>Filed by the yard. Disputed, under review.</small></div></li>
+        </ol>
+      </div>
+      <div class="tp" role="tabpanel" id="p3" aria-labelledby="t3" hidden>
+        <div class="sh-top"><b>Notice of Violation and Assessment</b><span class="mono">AK-2026-0418</span></div>
+        <div class="nova">
+          <div class="bigclock"><span class="mono num">10</span><p>days left to respond<small>Received Oct 14. Response due Nov 13 under 15 CFR 904.102.</small></p></div>
+          <dl>
+            <div><dt>Alleged</dt><dd>Landing 1,140 lb of halibut over IFQ balance, Area 3A</dd></div>
+            <div><dt>Assessed</dt><dd class="mono">$18,500</dd></div>
+            <div><dt>Permit sanction</dt><dd>None proposed</dd></div>
+          </dl>
+          <ul class="opts"><li class="on">Request a hearing</li><li>Ask NOAA counsel to modify</li><li>Pay in full</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* Practice tabs: real tabs, which also step along on their own until someone touches them. */
+(function(){
+  var wrap=document.querySelector('[data-tabs]');if(!wrap)return;
+  var tabs=[].slice.call(wrap.querySelectorAll('[role=tab]')),panels=[].slice.call(wrap.querySelectorAll('[role=tabpanel]'));
+  function sel(i,focus){tabs.forEach(function(t,k){var on=k===i;t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1;panels[k].hidden=!on});if(focus)tabs[i].focus()}
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){wrap.classList.remove('auto');sel(i);if(innerWidth<=980)panels[i].scrollIntoView({behavior:reduce?'auto':'smooth',block:'nearest'})});
+    t.addEventListener('keydown',function(e){var d=e.key==='ArrowDown'||e.key==='ArrowRight'?1:e.key==='ArrowUp'||e.key==='ArrowLeft'?-1:0;if(!d)return;e.preventDefault();wrap.classList.remove('auto');sel((i+d+tabs.length)%tabs.length,true)});
+    t.querySelector('.prog').addEventListener('animationend',function(){sel((i+1)%tabs.length)});
+  });
+  if(reduce)return;
+  new IntersectionObserver(function(e){var on=e[0].isIntersecting;wrap.classList.toggle('paused',!on);if(on&&!wrap.dataset.ran){wrap.dataset.ran=1;wrap.classList.add('auto')}},{threshold:.4}).observe(wrap);
+})();
+</script>
+</body>
+</html>

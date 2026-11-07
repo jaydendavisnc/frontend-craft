@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- A track record set as a ledger instead of a logo wall or testimonial cards: eight engagements across five facts each (40 distinct data points), and the last column, seconds of write pause, is the metric the buyer actually fears.
+     It admits a failure in a row ("rolled back once, second attempt held"), the caption states the privacy rule, weight 500 on the client column alone carries the hierarchy, and hover inverts the row and indents its first cell by 10px. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moves ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#fff; --ink:#111; --ink-2:#6a6a6a; --accent:#f5b8cf;
+  --line-2:rgba(17,17,17,.16);
+  --text:'Libre Franklin',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --m:clamp(16px,4.45vw,64px); --gut:16px; --page:1600px;
+  --ease:cubic-bezier(.22,.8,.2,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:tabular-nums;overflow-x:clip}
+::selection{background:var(--accent);color:var(--ink)}
+.wrap{width:min(100%,var(--page));margin-inline:auto;padding-inline:var(--m)}
+.sec{position:relative;z-index:1;padding-bottom:clamp(64px,7vw,100px)}
+.index{margin-top:clamp(56px,6vw,88px)}
+
+/* columns sit on the page's five-part grid: 1, 1, 2 (merged for the long cell), then the last fifth split in two */
+.tbl{grid-column:1/-1;width:100%;border-collapse:collapse;table-layout:fixed;font-size:14px}
+.tbl caption{text-align:left;padding:0 var(--gut) 14px calc(20% + var(--gut));font-size:14px;color:var(--ink-2);caption-side:top}
+.tbl th{font-weight:400;color:var(--ink-2);text-align:left;padding:0 var(--gut) 8px}
+.tbl thead tr{border-bottom:1px solid var(--line-2)}
+.tbl td{padding:0 var(--gut);height:44px;transition:background-color .2s ease,color .2s ease,padding .25s var(--ease)}
+.tbl tbody tr{border-bottom:1px solid var(--line-2)}
+.tbl tbody tr:hover td{background:var(--ink);color:var(--bg)}
+.tbl tbody tr:hover td:first-child{padding-left:calc(var(--gut) + 10px)}
+.tbl .n{font-weight:500}
+
+@media (max-width:899px){
+  :root{--gut:0px}
+  .tbl caption{padding-left:0}
+  .tbl .c3,.tbl .c4{display:none}
+  .tbl col.c3,.tbl col.c4{display:none}
+  .tbl th,.tbl td{padding-inline:0 10px}
+  .tbl td{height:auto;padding-block:11px}
+  .tbl tbody tr:hover td{background:none;color:inherit}
+  .tbl tbody tr:hover td:first-child{padding-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<section class="sec" id="work">
+  <div class="wrap index">
+    <table class="tbl">
+      <caption>The last eight moves. Client names stay private unless they say otherwise.</caption>
+      <colgroup><col style="width:20%"><col class="c2" style="width:20%"><col class="c3" style="width:40%"><col class="c4" style="width:10%"><col style="width:10%"></colgroup>
+      <thead><tr><th scope="col">Client</th><th scope="col" class="c2">Year</th><th scope="col" class="c3">What moved</th><th scope="col" class="c4">Size</th><th scope="col">Pause</th></tr></thead>
+      <tbody>
+        <tr><td class="n">Ferry ticketing, Norway</td><td class="c2">2026</td><td class="c3">Postgres 12 on bare metal to Postgres 17 on new hosts</td><td class="c4">14.2 TB</td><td>4.1 s</td></tr>
+        <tr><td class="n">Salmon farm telemetry</td><td class="c2">2026</td><td class="c3">Timescale hypertables to native partitions</td><td class="c4">9.7 TB</td><td>2.8 s</td></tr>
+        <tr><td class="n">Grocery loyalty, Sweden</td><td class="c2">2025</td><td class="c3">Managed cloud Postgres to self-hosted, 60% lower bill</td><td class="c4">6.2 TB</td><td>3.4 s</td></tr>
+        <tr><td class="n">Payments, Denmark</td><td class="c2">2025</td><td class="c3">One primary split into twelve shards</td><td class="c4">3.9 TB</td><td>6.0 s</td></tr>
+        <tr><td class="n">Meter readings, Finland</td><td class="c2">2025</td><td class="c3">Postgres 11 to 16, rolled back once, second attempt held</td><td class="c4">11.4 TB</td><td>5.2 s</td></tr>
+        <tr><td class="n">University library</td><td class="c2">2024</td><td class="c3">Postgres 10 to 16 and off a failing SAN</td><td class="c4">410 GB</td><td>1.2 s</td></tr>
+        <tr><td class="n">Job board, Netherlands</td><td class="c2">2024</td><td class="c3">One cloud region to another, across the Channel</td><td class="c4">1.8 TB</td><td>1.9 s</td></tr>
+        <tr><td class="n">Grain trading, Canada</td><td class="c2">2023</td><td class="c3">Two primaries merged into one</td><td class="c4">2.6 TB</td><td>3.0 s</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

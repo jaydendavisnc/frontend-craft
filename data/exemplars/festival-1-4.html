@@ -1,0 +1,128 @@
+<!doctype html>
+<!-- Practical travel copy treated as a designed object: eight 28px icons hand-built from rects so they match the logo tile, two exclusive accordion groups using native details[name] with a CSS-only height animation through ::details-content, and a plus that loses its bar to become a minus, all without a script.
+     Every answer carries a fee, a time or a limit ($10 a day, 12 people at a time, 16 stairs and no lift), and the printed tide card is a real eight-row table of road windows.
+     Extraction note: the page paired these columns with large site-plan images and showed the card as a render; here the card is rebuilt in CSS with its printed values and takes the third column. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hadlock getting here</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0f13; --s1:#16171b; --s2:#1d1e22; --s3:#2a2b31;
+  --ink:#e3e5f1; --ink-2:#b4b6c0; --mut:#8b8d94; --accent:#86ec7b; --on-accent:#0c1a0a;
+  --rule:rgba(227,229,241,.11);
+  --m:48px; --in:24px; --nav:0px;
+  --ease:cubic-bezier(.25,.1,.3,1);
+  --font:"TikTok Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%;height:auto}
+button,input{font:inherit;color:inherit}
+ul,ol{list-style:none}
+b{font-weight:500}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.g{color:var(--mut)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.frame{width:100%;max-width:1440px;margin-inline:auto;padding-inline:var(--m)}
+.ruled{--r:linear-gradient(var(--rule),var(--rule));--c:calc((100% - 2*var(--m))/3);
+  background-image:var(--r),var(--r),var(--r),var(--r);background-repeat:no-repeat;background-size:1px 100%;
+  background-position:var(--m) 0,calc(var(--m) + var(--c)) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.ruled.r2{background-image:var(--r),var(--r),var(--r);background-position:var(--m) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.cell{padding-inline:var(--in)}
+h2{font-size:48px;font-weight:400;letter-spacing:-.022em;line-height:1.08}
+.band{position:sticky;top:var(--nav);z-index:20;background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.band-g{display:grid;grid-template-columns:2fr 1fr;align-items:end;padding-block:22px 20px}
+.aside{font-size:15px;line-height:20px;color:var(--mut);padding-bottom:3px}
+.aside-m{display:none}
+/* Getting here: structured copy column */
+.feat>*{padding-top:24px;padding-bottom:48px}
+.feat:last-child>*{padding-bottom:104px}
+.fcopy h3{font-size:28px;font-weight:450;line-height:1.14;letter-spacing:-.015em;margin-bottom:12px}
+.fcopy>p{font-size:16px;line-height:23px;color:var(--ink-2)}
+.accs{margin-top:20px;border-bottom:1px solid var(--rule)}
+.acc{border-top:1px solid var(--rule)}
+.acc summary{display:flex;align-items:center;gap:12px;min-height:46px;cursor:pointer;list-style:none;transition:color .2s}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary span{flex:1}
+.acc summary:hover{color:var(--accent)}
+.acc summary:focus-visible{outline-offset:-2px}
+.tile{width:28px;height:28px;flex:none}
+.tile .b{fill:var(--ink)} .tile .k{fill:var(--bg)} .tile .o{fill:var(--ink)} .tile .dim{opacity:.32}
+.mk{position:relative;flex:none;width:14px;height:14px;transition:rotate .3s var(--ease)}
+.mk::before,.mk::after{content:"";position:absolute;background:currentColor;transition:scale .3s var(--ease)}
+.mk::before{left:0;right:0;top:calc(50% - .75px);height:1.5px}
+.mk::after{top:0;bottom:0;left:calc(50% - .75px);width:1.5px}
+[open]>summary .mk{rotate:180deg}
+[open]>summary .mk::after{scale:1 0}
+.acc::details-content{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .3s var(--ease),opacity .2s linear,content-visibility .3s allow-discrete}
+.acc[open]::details-content{grid-template-rows:1fr;opacity:1;transition:grid-template-rows .42s var(--ease),opacity .24s linear .1s,content-visibility .42s allow-discrete}
+.acc-b{overflow:hidden;min-height:0}
+.acc-b p{font-size:15px;line-height:22px;color:var(--ink-2);padding:0 26px 14px 40px}
+/* The printed tide card: a real table on a flat colour plate */
+.fart{padding-top:24px;padding-bottom:104px}
+.cap1{font-size:15px;line-height:20px;color:var(--mut);margin-top:10px}
+.plate{position:relative;aspect-ratio:4/5;background:#e3b845;overflow:hidden}
+.sheet,.tcard{position:absolute;left:9.25%;top:8.8%;width:81.5%;height:82.4%;background:#dfdcd3;box-shadow:0 1px 0 #f4f2ea inset,0 14px 26px -8px rgba(90,60,0,.38)}
+.sheet:nth-child(1){transform:rotate(-7deg) translate(-8px,8px)}.sheet:nth-child(2){transform:rotate(5deg) translate(6px,4px)}
+.tcard{transform:rotate(-1.5deg);color:#17181c;padding:24px 22px;font-size:12px;line-height:18px}
+.tcard .mark{width:32px;height:32px;flex:none}.tcard .mark .b{fill:#17181c}.tcard .mark .k{fill:#dfdcd3}
+.thead{display:flex;align-items:center;gap:10px;margin-bottom:14px}.thead b{display:block;font-size:17px;line-height:20px;letter-spacing:-.01em}.thead span{color:#6c6d70}
+.tcard table{width:100%;border-collapse:collapse;border-top:1px solid #17181c;font-variant-numeric:tabular-nums}
+.tcard th{text-align:left;font-weight:500;padding:5px 0;border-bottom:1px solid #17181c}.tcard td{padding:4px 0;border-bottom:1px solid rgba(23,24,28,.14)}
+.warn{margin-top:14px;color:#6c6d70}.warn b{display:block;color:#17181c;font-size:13px}.print{margin-top:6px;font-size:11px;color:#85867f}
+@media (max-width:960px){
+  :root{--m:16px;--in:16px}
+  .ruled,.ruled.r2{background-image:var(--r),var(--r);background-position:var(--m) 0,calc(100% - var(--m)) 0}
+  .g3{grid-template-columns:minmax(0,1fr)}
+  h2{font-size:28px}
+  .band-g{grid-template-columns:1fr;padding-block:13px 12px}
+  .aside{display:none}
+  .aside-m{display:block;padding:14px var(--in) 0;font-size:15px;line-height:21px;color:var(--mut)}
+  .feat>*,.feat:last-child>*{padding-bottom:16px}.fcopy{padding-top:16px}.plate{max-width:400px}
+}
+</style>
+</head>
+<body>
+<section id="island" class="sect">
+<div class="band"><div class="frame ruled r2"><div class="band-g"><h2 class="cell">Getting here, and where to sleep</h2><p class="cell aside">Every crossing runs on the same tide table. Your ticket comes with a printed copy, so plan the drive around it.</p></div></div></div><div class="frame ruled"><p class="aside-m">Every crossing runs on the same tide table. Your ticket comes with a printed copy, so plan the drive around it.</p></div>
+<div class="frame ruled"><div class="feat g3">
+<div class="cell fcopy"><h3>Crossing the bar</h3><p>Hadlock Bar is 0.6 miles of gravel, and it is dry for about three and a half hours around each low water. The shuttle stops 20 minutes before the road floods, and it will not wait for you.</p>
+      <div class="accs">
+  <details class="acc" name="go" open><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="6" y="14" width="16" height="5"/><rect x="9" y="9.5" width="10" height="5"/><circle cx="10" cy="20.5" r="2.3"/><circle cx="18" cy="20.5" r="2.3"/></g></svg><span>By car</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>Park at the Grange field in Steuben, $10 a day, and take the free shuttle across while the road is open. Private cars stay off the bar. Steuben is 90 minutes from Bangor on Route 1.</p></div></details>
+  <details class="acc" name="go"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="5" y="8" width="18" height="11"/><circle cx="10" cy="20.5" r="2.3"/><circle cx="18" cy="20.5" r="2.3"/><g class="o"><rect x="7.5" y="10.5" width="3.4" height="3.6"/><rect x="12.3" y="10.5" width="3.4" height="3.6"/><rect x="17.1" y="10.5" width="3.4" height="3.6"/></g></g></svg><span>By bus from Bangor</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>Route 1 Coach runs $38 each way from Bangor airport, leaving at 7:15 am on Thursday and returning from the island at 1:00 pm on Monday. Book it with your ticket.</p></div></details>
+  <details class="acc" name="go"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="13" y="6" width="2.2" height="10"/><rect x="15.8" y="7.5" width="5" height="7"/><rect x="5" y="17" width="18" height="2.6"/><rect x="7" y="19.6" width="14" height="2.4"/></g></svg><span>By water taxi</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>If you miss the road, the taxi runs from Milbridge town wharf at high water, $14 each way, until 1:00 am. It carries 12 people at a time and no bikes.</p></div></details>
+  <details class="acc" name="go"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><circle cx="14" cy="7.6" r="2.4"/><rect x="12.8" y="11" width="2.4" height="8"/><rect x="8" y="12.4" width="12" height="2.2"/><rect x="9.6" y="19" width="2.3" height="3.6"/><rect x="16.1" y="19" width="2.3" height="3.6"/></g></svg><span>Step-free access</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>Accessible shuttles cross in every road window. The yard and the Packing Floor are level, and beach wheelchairs are free at the Bar. The Net Loft is up 16 stairs and has no lift.</p></div></details>
+</div></div>
+<div class="cell fcopy"><h3>Sleeping on the island</h3><p>If you camp, you are on the island from Thursday morning, and the tide stops being your problem. Hotels in Milbridge and Ellsworth sell out by March.</p>
+      <div class="accs">
+  <details class="acc" name="stay" open><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="13" y="7" width="2" height="2"/><rect x="11" y="9" width="6" height="2.6"/><rect x="9" y="11.6" width="10" height="2.6"/><rect x="7" y="14.2" width="14" height="2.6"/><rect x="5" y="16.8" width="18" height="4"/></g></svg><span>Tent pitches</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>Every Weekend with camping pass gets one 10 by 10 ft pitch on the west field, first come, first pitched. The gate opens with the road at 9:13 am on Thursday.</p></div></details>
+  <details class="acc" name="stay"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="8" y="6.5" width="12" height="3"/><rect x="18" y="9.5" width="2.2" height="3"/><circle cx="17" cy="15" r="1.3"/><circle cx="20.5" cy="15" r="1.3"/><circle cx="13.5" cy="15" r="1.3"/><circle cx="15.2" cy="19" r="1.3"/><circle cx="18.8" cy="19" r="1.3"/><circle cx="11.6" cy="19" r="1.3"/></g></svg><span>Water and showers</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>There are six taps on the west field and a washhouse with 14 cold showers. The hot ones are $4 a token, and the line is shortest during the headliner.</p></div></details>
+  <details class="acc" name="stay"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="7.5" y="6.5" width="2" height="7"/><rect x="11" y="6.5" width="2" height="7"/><rect x="7.5" y="12" width="5.5" height="2.4"/><rect x="9.2" y="14" width="2" height="8"/><rect x="16" y="6.5" width="4.2" height="9"/><rect x="17.2" y="15" width="2" height="7"/></g></svg><span>Food on the island</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>Eleven local stalls in the cannery yard, including lobster rolls at $24 and a vegan chowder that people drive back for. The whole island is cashless, and you top up at the token booth.</p></div></details>
+  <details class="acc" name="stay"><summary><svg class="tile" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><g class="k"><rect x="6.5" y="17" width="3.2" height="4.5"/><rect x="11.2" y="13" width="3.2" height="8.5"/><rect x="15.9" y="9" width="3.2" height="12.5"/><rect class="dim" x="20.3" y="6" width="1.6" height="15.5"/></g></svg><span>Phone signal</span><i class="mk" aria-hidden="true"></i></summary><div class="acc-b"><p>One bar at the south end of the wharf and none on the west field. There are charging lockers at the token booth for $6 a day.</p></div></details>
+</div></div>
+<figure class="cell fart"><div class="plate"><div class="sheet"></div><div class="sheet"></div><div class="tcard">
+  <div class="thead"><svg class="mark" viewBox="0 0 28 28" aria-hidden="true"><rect class="b" width="28" height="28"/><rect class="k" x="6" y="5" width="4.5" height="18"/><rect class="k" x="17.5" y="5" width="4.5" height="18"/><rect class="k" x="6" y="12" width="16" height="3.5"/></svg><p><b>Hadlock Bar, Maine</b><span>Road crossings, August 2027</span></p></div>
+  <table><thead><tr><th>Date</th><th>Low water</th><th>Road open</th></tr></thead><tbody>
+    <tr><td>Thu 19</td><td>10:58 am</td><td>9:13 am to 12:43 pm</td></tr>
+    <tr><td>Thu 19</td><td>11:23 pm</td><td>9:38 pm to 1:08 am</td></tr>
+    <tr><td>Fri 20</td><td>11:48 am</td><td>10:03 am to 1:33 pm</td></tr>
+    <tr><td>Sat 21</td><td>12:13 am</td><td>10:28 pm to 1:58 am</td></tr>
+    <tr><td>Sat 21</td><td>12:38 pm</td><td>10:53 am to 2:23 pm</td></tr>
+    <tr><td>Sun 22</td><td>1:03 am</td><td>11:18 pm to 2:48 am</td></tr>
+    <tr><td>Sun 22</td><td>1:28 pm</td><td>11:43 am to 3:13 pm</td></tr>
+    <tr><td>Mon 23</td><td>1:53 am</td><td>12:08 am to 3:38 am</td></tr>
+  </tbody></table>
+  <p class="warn"><b>The bar floods faster than you can walk it.</b>If the marker poles are wet, turn around.</p>
+  <p class="print">Eastern time. Printed in Ellsworth, Maine.</p>
+</div></div><figcaption class="cap1">Your ticket comes with this card. Keep it in the glovebox.</figcaption></figure>
+</div></div>
+</section>
+</body>
+</html>

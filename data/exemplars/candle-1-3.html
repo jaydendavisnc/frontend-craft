@@ -1,0 +1,191 @@
+<!doctype html>
+<!-- A bag that runs the shop's actual rules: $12 off per six tins, free shipping over $60 counted on goods only so a $130 class does not qualify, a progress bar to that line, and a ship date taken from the latest-curing batch in the bag. Each line keeps its batch stamp, Remove gives an undo toast instead of a confirm dialog, and an inline SVG vessel stands in for the product photo. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bag with shop rules</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,450&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#f3eee8;--surface:#fdfcfb;--ink:#291e21;--ink-2:#6b6366;--accent:#4f2414;
+  --ink-3:color-mix(in srgb,var(--ink) 46%,var(--bg));
+  --line:color-mix(in srgb,var(--ink) 10%,transparent);
+  --line-strong:color-mix(in srgb,var(--ink) 20%,transparent);
+  --fill:color-mix(in srgb,var(--ink) 5%,transparent);
+  --tile:#e7e1d9;--gut:clamp(16px,3.9vw,56px);--wide:1328px;
+  --font-display:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --font-text:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input{font:inherit;color:inherit}
+h1,h3,p,ul{margin:0;padding:0}
+ul{list-style:none}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:calc(var(--wide) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;height:55px;padding:0 32px;background:var(--ink);color:var(--bg);font:500 14px/1 var(--font-text);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:background-color .2s,color .2s,opacity .2s}
+.btn:hover{background:var(--accent)}
+.btn.block{display:flex;width:100%}
+.sub{display:inline-flex;align-items:center;height:40px;padding:0 20px;background:none;box-shadow:inset 0 0 0 1px var(--ink);font:500 14px/1 var(--font-text);text-decoration:none;transition:background-color .2s,color .2s}
+.sub:hover{background:var(--ink);color:var(--bg)}
+.stamp{display:flex;align-items:center;gap:8px;font:400 13px/18px var(--font-text);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.stamp b{display:inline-block;padding:0 5px;font:500 12px/18px var(--font-text);letter-spacing:.02em;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.stamp.low{color:var(--accent)}
+.step{display:inline-flex;align-items:center;box-shadow:inset 0 0 0 1px var(--line-strong)}
+.step button{width:36px;height:36px;display:grid;place-items:center;font-size:17px;transition:background-color .15s}
+.step button:hover:not([disabled]){background:var(--fill)}
+.step button[disabled]{color:var(--ink-3);cursor:not-allowed}
+.step output{min-width:28px;text-align:center;font-variant-numeric:tabular-nums}
+.facts{margin-top:10px;font-size:14px;line-height:21px;color:var(--ink-2)}
+.facts b{font-weight:500;color:var(--ink)}
+
+.view{min-height:70vh;padding-top:112px;padding-bottom:96px}
+.view h1{font:450 44px/1.14 var(--font-display);letter-spacing:-.016em;text-wrap:balance}
+.w{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:64px;align-items:start;margin-top:32px}
+.line{position:relative;display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:20px;padding-block:20px;border-top:1px solid var(--line)}
+.line:last-child{border-bottom:1px solid var(--line)}
+.line .th{position:relative;width:120px;height:120px;overflow:hidden;background:var(--tile)}
+.line .th svg{display:block;width:100%;height:100%}
+.line h3{font:500 16px/22px var(--font-text)}
+.line .v{font-size:15px;line-height:22px;color:var(--ink-2)}
+.line .stamp{margin-top:6px}
+.line .ctl{display:flex;align-items:center;gap:16px;margin-top:12px}
+.line .rm{font-size:14px;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px}
+.line .amt{font-variant-numeric:tabular-nums}
+.sum{position:sticky;top:96px;background:var(--tile);padding:24px}
+.s{display:flex;justify-content:space-between;font-size:15px;line-height:28px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.s.t{color:var(--ink);font-size:18px;font-weight:500;line-height:26px;border-top:1px solid var(--line-strong);margin-top:10px;padding-top:12px}
+.sum summary{cursor:pointer;color:var(--ink-2);list-style:none;text-decoration:underline;text-underline-offset:3px;font-size:14px;margin-top:12px}
+.sum summary::-webkit-details-marker{display:none}
+.promo{display:flex;gap:8px;margin-top:8px}
+.promo input{flex:1;min-width:0;height:40px;padding:0 10px;border:0;box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--surface);border-radius:0}
+.sum .btn{margin-top:16px}
+.sum .facts{margin-top:12px}
+.progress{height:3px;margin:12px 0 4px;background:var(--line);overflow:hidden}
+.progress i{display:block;height:100%;background:var(--ink);transform-origin:left;transition:transform .4s var(--ease)}
+.progress-t{font-size:14px;line-height:20px;color:var(--ink-2)}
+.empty{max-width:520px;padding-top:12px}
+.empty p{color:var(--ink-2)}
+.empty ul{margin-top:24px}
+.empty li a{display:flex;align-items:center;gap:16px;height:72px;padding:0 16px;margin-bottom:8px;box-shadow:inset 0 0 0 1px var(--line-strong);text-decoration:none;font-size:15px;font-weight:500;transition:background-color .15s}
+.empty li a:hover{background:var(--fill)}
+.empty li span{margin-left:auto;font-weight:400;color:var(--ink-2)}
+.toast{position:fixed;left:50%;bottom:20px;z-index:70;display:flex;align-items:center;gap:16px;padding:12px 16px;background:var(--ink);color:var(--bg);font-size:14px;line-height:20px;transform:translate(-50%,calc(100% + 28px));transition:transform .32s var(--ease);max-width:calc(100vw - 24px)}
+.toast.on{transform:translate(-50%,0)}
+.toast button{font-weight:500;text-decoration:underline;text-underline-offset:3px}
+@media (max-width:760px){
+  .w{grid-template-columns:1fr;gap:24px;margin-top:20px}
+  .view{padding-top:88px;padding-bottom:104px}
+  .view h1{font-size:34px}
+  .sum{position:static;padding:16px}
+  .sum .co{position:fixed;left:12px;right:12px;bottom:12px;width:auto;z-index:5;margin:0}
+  .line{grid-template-columns:88px minmax(0,1fr) auto;gap:12px}
+  .line .th{width:88px;height:88px}
+  .toast{width:calc(100vw - 24px);justify-content:space-between}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<section class="view wrap" id="view-bag" aria-label="Your bag"></section>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  var SHELF = {
+    cherry: { name: 'Door County Cherry', wax: '#a80f2a', batch: 522, poured: '2026-10-27', left: 37 },
+    'pine-tar': { name: 'Pine Tar', wax: '#16261d', batch: 517, poured: '2026-10-09', left: 9 },
+    'lake-effect': { name: 'Lake Effect', wax: '#8db6d0', batch: 521, poured: '2026-10-23', left: 29 }
+  };
+  var SIZES = { tin: { label: 'Tin', oz: 4, price: 16 }, jar: { label: 'Jar', oz: 8, price: 28 }, three: { label: 'Three-wick', oz: 16, price: 48 } };
+  var bag = [
+    { key: 'cherry:tin', id: 'cherry', size: 'tin', qty: 1 },
+    { key: 'pine-tar:tin', id: 'pine-tar', size: 'tin', qty: 2 },
+    { key: 'pour:2026-11-07:1:00 pm', pour: true, label: 'Sat, Nov 7, 1:00 pm', qty: 2 }
+  ];
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var money = function (n) { return '$' + n; };
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var now = new Date('2026-11-06T11:00:00-06:00'); // pinned so the sample batches keep their states; a live page uses new Date()
+  function day(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function fmt(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtD(d) { return DAYS[d.getDay()] + ', ' + fmt(d); }
+  function parse(s) { var a = s.split('-'); return new Date(+a[0], +a[1] - 1, +a[2]); }
+  function plus(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function nextBiz(d) { var x = new Date(d); do { x = plus(x, 1); } while (x.getDay() === 0 || x.getDay() === 6); return x; }
+  function arrive(d) { var x = d; for (var i = 0; i < 3; i++) x = nextBiz(x); return x; }
+  function readyDate(p) { return plus(parse(p.poured), 14); }
+  function curing(p) { return readyDate(p) > day(now); }
+  function stamp(p) {
+    var b = '<b>B' + p.batch + '</b> ';
+    if (curing(p)) return '<p class="stamp">' + b + 'Curing, ships ' + fmt(readyDate(p)) + '</p>';
+    return '<p class="stamp' + (p.left <= 12 ? ' low' : '') + '">' + b + p.left + ' left</p>';
+  }
+  function vessel(size, wax, name) {
+    var tin = size === 'tin', w = tin ? 190 : 140, h = tin ? 74 : 146, x = 150 - w / 2, y = 226 - h, t = y + (tin ? 7 : h * .24), lw = w * .72, lx = 150 - lw / 2, lh = tin ? 36 : 62, ly = 226 - lh - (tin ? 10 : 20), fs = Math.min(tin ? 13 : 19, lw * .9 / (name.length * .56));
+    var body = function (top) { return 'M' + x + ' ' + top + 'V216q0 10 10 10H' + (x + w - 10) + 'q10 0 10-10V' + top + 'Z'; }, top = function (cy, r, a) { return '<ellipse cx="150" cy="' + cy + '" rx="' + r + '" ry="' + w * .075 + '" ' + a + '/>'; };
+    return '<svg viewBox="' + (tin ? '38 84 224 224' : '50 56 200 200') + '" aria-hidden="true" style="font-family:var(--font-display)"><defs><linearGradient id="g"><stop offset="0" stop-opacity=".22"/><stop offset=".14" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-opacity="0"/><stop offset="1" stop-opacity=".3"/></linearGradient></defs><ellipse cx="164" cy="228" rx="' + w * .54 + '" ry="7" fill="#291e21" opacity=".18"/>' +
+      '<path d="' + body(t) + '" fill="' + (tin ? '#c9c4bb' : wax) + '"/>' + top(t, w / 2 - (tin ? 4 : 1), 'fill="' + wax + '"') + '<path d="M150 ' + (t + 4) + 'q3-12 0-22" fill="none" stroke="#4a403c" stroke-width="2.5"/><path d="' + body(y) + '" fill="url(#g)" stroke="#291e21" stroke-opacity=".22" stroke-width="1.5"/>' + (tin ? '' : top(y, w / 2, 'fill="#fff" fill-opacity=".1" stroke="#291e21" stroke-opacity=".22" stroke-width="1.5"')) +
+      '<rect x="' + lx + '" y="' + ly + '" width="' + lw + '" height="' + lh + '" fill="#f4efe6"/><text x="' + (lx + 7) + '" y="' + (ly + 10) + '" font-size="6" font-weight="700" letter-spacing=".5" fill="#291e21">BRANDT</text><text x="150" y="' + (ly + lh * .7) + '" text-anchor="middle" font-size="' + fs + '" fill="#291e21">' + name + '</text></svg>';
+  }
+  function shipsFor(p) { return curing(p) ? readyDate(p) : day(now); }
+  function lineData(i) {
+    if (i.pour) return { title: 'Saturday pour', v: i.label, unit: 65, svg: vessel('jar', '#c9942a', 'Malt House'), stamp: '<p class="stamp">Joan Brandt, Kinnickinnic Ave</p>', physical: false };
+    var p = SHELF[i.id], z = SIZES[i.size];
+    return { title: p.name, v: z.label + ', ' + z.oz + ' oz', unit: z.price, svg: vessel(i.size, p.wax, p.name), stamp: stamp(p), physical: true };
+  }
+  function totals() {
+    var sub = 0, phys = 0, tins = 0;
+    bag.forEach(function (i) { var l = lineData(i); sub += l.unit * i.qty; if (l.physical) phys += l.unit * i.qty; if (i.size === 'tin') tins += i.qty; });
+    var off = Math.floor(tins / 6) * 12, goods = phys - off, ship = goods === 0 ? 0 : (goods >= 60 ? 0 : 6);
+    return { sub: sub, off: off, goods: goods, ship: ship, total: sub - off + ship };
+  }
+  function drawBag() {
+    var v = $('#view-bag');
+    if (!bag.length) {
+      v.innerHTML = '<h1>Your bag is empty</h1><div class="empty"><p>Start with whatever you can smell from here.</p><ul><li><a href="#shelf">Scented jars<span>$28</span></a></li><li><a href="#shelf">Beeswax tapers and pillars<span>From $18</span></a></li><li><a href="#pours">A Saturday pour<span>$65</span></a></li></ul></div>';
+      return;
+    }
+    var t = totals(), left = 60 - t.goods;
+    var lines = bag.map(function (i) {
+      var l = lineData(i);
+      return '<div class="line" data-key="' + i.key + '"><a class="th" href="#shelf">' + l.svg + '</a><div><h3>' + l.title + '</h3><p class="v">' + l.v + '</p>' + l.stamp +
+        '<div class="ctl"><span class="step"><button type="button" data-q="-1" aria-label="One fewer"' + (i.qty < 2 ? ' disabled' : '') + '>&minus;</button><output>' + i.qty + '</output><button type="button" data-q="1" aria-label="One more">+</button></span><button class="rm" type="button" data-rm>Remove</button></div></div>' +
+        '<span class="amt">' + money(l.unit * i.qty) + '</span></div>';
+    }).join('');
+    var earliest = bag.reduce(function (m, i) { if (!i.id) return m; var s = shipsFor(SHELF[i.id]); return s > m ? s : m; }, day(now));
+    v.innerHTML = '<h1>Your bag</h1><div class="w"><div>' + lines + '</div><aside class="sum" aria-label="Summary">' +
+      '<div class="s"><span>Subtotal</span><span>' + money(t.sub) + '</span></div>' +
+      (t.off ? '<div class="s"><span>Case of six</span><span>-' + money(t.off) + '</span></div>' : '') +
+      '<div class="s"><span>Shipping</span><span>' + (t.ship ? money(t.ship) : (t.goods ? 'Free' : 'None')) + '</span></div>' +
+      '<div class="s"><span>Tax</span><span>At checkout</span></div>' +
+      '<div class="s t"><span>Total before tax</span><span>' + money(t.total) + '</span></div>' +
+      (t.goods && left > 0 ? '<div class="progress"><i style="transform:scaleX(' + (t.goods / 60) + ')"></i></div><p class="progress-t">' + money(left) + ' away from free shipping</p>' : '') +
+      '<details><summary>Have a refill credit?</summary><div class="promo"><input aria-label="Refill credit" placeholder="Credit code"><button class="sub" type="button" id="promo-go">Apply</button></div><p class="facts" id="promo-msg"></p></details>' +
+      '<a class="btn block co" href="#checkout">Checkout</a>' +
+      '<p class="facts"><b>' + (t.goods ? 'Ships ' + fmtD(earliest) + ', arrives by ' + fmt(arrive(earliest)) + '.' : 'Booking only, no shipping.') + '</b> 30 days to return it, even if you have burned it.</p></aside></div>';
+  }
+  var undo = null, toastT;
+  function toast(html, ms) { var t = $('#toast'); t.innerHTML = html; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('on'); }, ms || 5000); }
+  document.addEventListener('click', function (e) {
+    var t = e.target, line = t.closest('.line');
+    if (line) {
+      var it = bag.filter(function (i) { return i.key === line.dataset.key; })[0], q = t.closest('[data-q]');
+      if (q) { it.qty = Math.max(1, it.qty + (+q.dataset.q)); drawBag(); return; }
+      if (t.closest('[data-rm]')) {
+        var idx = bag.indexOf(it); bag.splice(idx, 1); undo = { it: it, idx: idx }; drawBag();
+        toast('Removed ' + lineData(it).title + '. <button type="button" id="undo">Undo</button>', 6000); return;
+      }
+    }
+    if (t.id === 'undo' && undo) { bag.splice(undo.idx, 0, undo.it); undo = null; drawBag(); $('#toast').classList.remove('on'); return; }
+    if (t.id === 'promo-go') { $('#promo-msg').textContent = 'We can\'t find that code. Refill credits come on the slip in your returned box.'; }
+  });
+  drawBag();
+})();
+</script>
+</body>
+</html>

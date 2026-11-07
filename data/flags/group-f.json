@@ -1,0 +1,14 @@
+{
+"exclude": {
+"atmosphere.grid-or-lines/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/blueprint-rails-with-nodes": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/exposed-column-guides": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"atmosphere.grid-or-lines/textured-gutters-outside-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/ruled-cell-frame": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"layout.grid-system/dashed-column-guides": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"surface.border-treatment/page-rails": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do.",
+"surface.border-treatment/viewport-frame": "Boxes the page in visible rails with dead strips outside. Blind and human review found it reads as odd, and models cannot carry it the way a few real sites do."
+},
+"downweight": {}
+}

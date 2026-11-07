@@ -1,0 +1,209 @@
+<!doctype html>
+<!-- A four-day timetable that is also a chart: 29 sets on four stage lanes share one 9 am to 2 am axis with a tide curve, a dashed 2.4 ft flood line and shaded road-open windows, so the page shows why the Bar stage only plays while the road is dry.
+     A connected rail doubles as the day tabs, the hover cursor reads time, tide height, road state and the set on stage from the same formula that draws the curve, and under 1020px the chart swaps for a plain running list instead of squeezing.
+     Extraction note: the curve is computed from that formula in the script, matching the 241 points the page baked into its markup. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hadlock running order</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0f13; --s1:#16171b; --s2:#1d1e22; --s3:#2a2b31;
+  --ink:#e3e5f1; --ink-2:#b4b6c0; --mut:#8b8d94; --accent:#86ec7b; --on-accent:#0c1a0a;
+  --rule:rgba(227,229,241,.11);
+  --m:48px; --in:24px; --nav:0px;
+  --ease:cubic-bezier(.25,.1,.3,1);
+  --font:"TikTok Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);overflow-x:clip}
+img,svg{display:block;max-width:100%;height:auto}
+ul,ol{list-style:none}
+b{font-weight:500}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.g{color:var(--mut)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.frame{width:100%;max-width:1440px;margin-inline:auto;padding-inline:var(--m)}
+.ruled{--r:linear-gradient(var(--rule),var(--rule));--c:calc((100% - 2*var(--m))/3);
+  background-image:var(--r),var(--r),var(--r),var(--r);background-repeat:no-repeat;background-size:1px 100%;
+  background-position:var(--m) 0,calc(var(--m) + var(--c)) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.ruled.r2{background-image:var(--r),var(--r),var(--r);background-position:var(--m) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.cell{padding-inline:var(--in)}
+h2{font-size:48px;font-weight:400;letter-spacing:-.022em;line-height:1.08}
+.band{position:sticky;top:var(--nav);z-index:20;background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.band-g{display:grid;grid-template-columns:2fr 1fr;align-items:end;padding-block:22px 20px}
+.aside{font-size:15px;line-height:20px;color:var(--mut);padding-bottom:3px}
+.aside-m{display:none}
+/* Running order: rail doubles as tabs */
+.mask{margin-inline:1px;background:var(--bg);padding-inline:calc(var(--in) - 1px);padding-bottom:104px}
+.rail{position:relative;display:grid;grid-template-columns:repeat(4,1fr);padding-top:36px}
+.rail::before{content:"";position:absolute;left:12.5%;right:12.5%;top:44px;height:1px;background:rgba(227,229,241,.22)}
+.stop{all:unset;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:0 16px;text-align:center;cursor:pointer}
+.stop:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.dot{flex:none;display:block;width:17px;height:17px;margin:0 0 12px;border-radius:50%;position:relative;z-index:1;background:var(--bg);box-shadow:inset 0 0 0 1px var(--mut);transition:box-shadow .2s,background-color .2s}
+.stop:hover .dot{box-shadow:inset 0 0 0 1px var(--ink)}
+.stop[aria-selected="true"] .dot{background:var(--accent);box-shadow:inset 0 0 0 2px var(--accent),inset 0 0 0 5px var(--bg)}
+.stop .i{display:block;font-size:13px;font-weight:500;line-height:18px;color:var(--mut)}.stop .t{display:block;font-size:20px;font-weight:450;line-height:26px;color:var(--ink-2);transition:color .2s}.stop[aria-selected="true"] .t{color:var(--ink)}.stop .c{display:block;font-size:15px;line-height:21px;color:var(--mut);margin:4px auto 0;max-width:15.5em}
+.panels{margin-top:32px}
+.tabs-ready .panel:not(.on){display:none}
+.chart{--ll:104px;position:relative;border-top:1px solid var(--rule);cursor:crosshair}
+.ov{position:absolute;left:var(--ll);right:0;top:0;bottom:0;pointer-events:none}
+.vl{position:absolute;top:30px;bottom:0;width:1px;background:rgba(227,229,241,.05)}
+.win{position:absolute;top:0;bottom:0;background:rgba(134,236,123,.06);box-shadow:inset 1px 0 rgba(134,236,123,.22),inset -1px 0 rgba(134,236,123,.22)}
+.win span{position:absolute;left:8px;top:34px;font-style:normal;font-size:13px;font-weight:500;color:var(--accent);white-space:nowrap}
+.axis,.tideRow,.lane{display:grid;grid-template-columns:var(--ll) 1fr;position:relative}
+.axis{height:30px;font-size:13px;font-weight:500;color:var(--mut)}.axis .lt{position:relative}.axis span{position:absolute;top:6px;transform:translateX(-50%);white-space:nowrap}.axis span:last-child{transform:translateX(-100%)}
+.tideRow{height:112px}
+.ll{font-size:13px;font-weight:500;line-height:18px;color:var(--ink-2);padding-right:8px;align-self:center}
+.tideRow .ll .g{display:block;font-weight:400}.tideRow .lt{position:relative}.tideRow svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.tideRow path{fill:none;vector-effect:non-scaling-stroke}
+.curve{stroke:var(--ink);stroke-width:1.5}
+.road{stroke:var(--accent);stroke-width:1;stroke-dasharray:3 4;opacity:.7}
+.panel.on .curve{stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s var(--ease) forwards}
+.lw{position:absolute;bottom:-1px;transform:translateX(-50%);font-size:13px;font-weight:500;color:var(--ink);background:var(--bg);padding-inline:6px;white-space:nowrap}
+.lw.end{transform:translateX(-100%)}
+.lane{height:60px;border-top:1px solid var(--rule)}
+.lane .lt{position:relative}
+.set{position:absolute;top:9px;bottom:0;white-space:nowrap}
+.set i{display:block;height:6px;background:var(--ink-2);margin-bottom:6px;transition:background-color .15s}
+.set b{display:block;font-size:13px;line-height:15px;transition:color .15s}.set span{display:block;font-size:13px;line-height:17px;color:var(--mut)}
+.set.end{display:flex;flex-direction:column;align-items:flex-end}.set.end i{width:100%}
+.panel.on .set{animation:setin .45s var(--ease) both;animation-delay:calc(var(--i)*38ms + 120ms)}
+.set.hot i{background:var(--accent)}
+.set.hot b{color:var(--accent)}
+.cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--ink);pointer-events:none;z-index:4}
+.cursor i{position:absolute;left:-3px;top:-3px;width:7px;height:7px;background:var(--ink)}
+.read{position:absolute;top:8px;left:12px;width:220px;background:var(--s2);box-shadow:0 0 0 1px var(--rule);padding:10px 12px;font-size:13px;line-height:19px;color:var(--ink-2)}
+.read b{display:block;color:var(--ink);font-size:15px}
+.cursor.flip .read{left:auto;right:12px}
+.dfacts{border-top:1px solid var(--rule);margin-inline:calc(var(--in) * -1);padding-block:18px 0}.dfacts dt{font-size:13px;font-weight:500;color:var(--mut);line-height:18px;margin-bottom:2px}.dfacts dd{font-size:15px;line-height:21px}
+.plist{display:none}
+/* Motion: the curve draws, sets rise in running order, peers stagger once */
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes setin{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.js .stagger .r{opacity:0;transform:translateY(10px)}
+.js .stagger.in .r{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.stagger .r:nth-child(2){--i:1}.stagger .r:nth-child(3){--i:2}.stagger .r:nth-child(4){--i:3}
+@media (prefers-reduced-motion:reduce){.panel.on .curve,.panel.on .set{animation:none;stroke-dashoffset:0;stroke-dasharray:none}*{transition-duration:1ms!important;transition-delay:0s!important}}
+/* Under about 1000px the time chart cannot hold its labels, so it swaps for the running list */
+@media (max-width:1020px){
+  .chart{display:none}.plist{display:block;border-top:1px solid var(--rule)}
+  .plist li{display:grid;grid-template-columns:84px 1fr;padding-block:11px;border-bottom:1px solid var(--rule);font-size:16px;line-height:22px}.plist .t{font-size:13px;font-weight:500;color:var(--mut);padding-top:1px;font-variant-numeric:tabular-nums}.plist .n{display:flex;justify-content:space-between;gap:12px}.plist .g{font-size:15px;flex:none}
+  .dfacts{border-top:0;margin-inline:calc(var(--in) * -1)}
+}
+@media (max-width:960px){
+  :root{--m:16px;--in:16px}.ruled,.ruled.r2{background-image:var(--r),var(--r);background-position:var(--m) 0,calc(100% - var(--m)) 0}.g3{grid-template-columns:minmax(0,1fr)}h2{font-size:28px}.band-g{grid-template-columns:1fr;padding-block:13px 12px}.aside{display:none}.aside-m{display:block;padding:14px var(--in) 0;font-size:15px;line-height:21px;color:var(--mut)}
+  .rail{display:flex;overflow-x:auto;padding-top:14px;scrollbar-width:none;gap:6px;margin-inline:calc(var(--in) * -1 + 0px);padding-inline:var(--in)}.rail::-webkit-scrollbar{display:none}.rail::before{display:none}.mask{background:none;margin-inline:0;padding-inline:var(--in)}.mask{padding-bottom:0}
+  .stop{flex:1 0 0;padding:8px 6px;box-shadow:inset 0 0 0 1px var(--rule)}.stop[aria-selected="true"]{box-shadow:inset 0 0 0 1px var(--accent)}.dot,.stop .i,.stop .c{display:none}.stop .t{font-size:15px;line-height:22px}.panels{margin-top:16px}.dfacts{row-gap:14px;margin-inline:calc(var(--in) * -1);padding-top:16px}
+}
+</style>
+</head>
+<body>
+<section id="running-order" class="sect">
+<div class="band"><div class="frame ruled r2"><div class="band-g"><h2 class="cell">Running order, Thursday to Sunday</h2><p class="cell aside">Pick a day. Sets never overlap, and the green bands show when the road is open.</p></div></div></div><div class="frame ruled"><p class="aside-m">Pick a day. Sets never overlap, and the green bands show when the road is open.</p></div>
+<div class="frame ruled"><div class="mask">
+<div class="rail stagger" role="tablist" aria-label="Festival days">
+  <button class="stop r" role="tab" id="t-thu" aria-controls="p-thu" aria-selected="false" tabindex="-1"><i class="dot"></i><span class="i">Aug 19</span><span class="t">Thursday</span><span class="c">Camp opens with the morning road. Arrival night, weekend campers only.</span></button>
+  <button class="stop r" role="tab" id="t-fri" aria-controls="p-fri" aria-selected="true" tabindex="0"><i class="dot"></i><span class="i">Aug 20</span><span class="t">Friday</span><span class="c">Nine sets, starting on the sand at low water.</span></button>
+  <button class="stop r" role="tab" id="t-sat" aria-controls="p-sat" aria-selected="false" tabindex="-1"><i class="dot"></i><span class="i">Aug 21</span><span class="t">Saturday</span><span class="c">Nine sets. The Slip gets the last of the light.</span></button>
+  <button class="stop r" role="tab" id="t-sun" aria-controls="p-sun" aria-selected="false" tabindex="-1"><i class="dot"></i><span class="i">Aug 22</span><span class="t">Sunday</span><span class="c">Nine sets, and the crew band plays last.</span></button>
+</div>
+
+<div class="panels">
+<div class="panel" role="tabpanel" id="p-thu" aria-labelledby="t-thu"><h3 class="vh">Thursday, August 19</h3>
+<div class="chart" data-date="2027-08-19"><div class="ov"><i class="vl" style="left:5.882%"></i><i class="vl" style="left:17.647%"></i><i class="vl" style="left:29.412%"></i><i class="vl" style="left:41.176%"></i><i class="vl" style="left:52.941%"></i><i class="vl" style="left:64.706%"></i><i class="vl" style="left:76.471%"></i><i class="vl" style="left:88.235%"></i><i class="vl" style="left:100.0%"></i><i class="win" style="left:1.275%;width:20.588%"><span>Road open</span></i><i class="win" style="left:74.314%;width:20.588%"><span>Road open</span></i></div><div class="axis"><div class="ll"></div><div class="lt"><span style="left:5.882%">10 am</span><span style="left:17.647%">12 pm</span><span style="left:29.412%">2 pm</span><span style="left:41.176%">4 pm</span><span style="left:52.941%">6 pm</span><span style="left:64.706%">8 pm</span><span style="left:76.471%">10 pm</span><span style="left:88.235%">12 am</span><span style="left:100.0%">2 am</span></div></div>
+<div class="tideRow"><div class="ll"><span>Tide</span><span class="g">Road floods above 2.4 ft</span></div><div class="lt"><svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path class="road" d="M0 91.2H1000"/><path class="curve" pathLength="1"/></svg><span class="lw" style="left:11.569%">Low 10:58 am</span><span class="lw" style="left:84.608%">Low 11:23 pm</span></div></div>
+<div class="lane"><div class="ll">Bar</div><div class="lt"></div></div>
+<div class="lane"><div class="ll">Slip</div><div class="lt"></div></div>
+<div class="lane"><div class="ll">Net Loft</div><div class="lt"><div class="set" style="left:70.588%;width:5.883%;--i:1" data-a="1260" data-b="1320" data-s="The Net Loft" data-n="The Last Shift, 16mm film"><i></i><b>The Last Shift, 16mm film</b><span>9:00 pm</span></div></div></div>
+<div class="lane"><div class="ll">Packing Floor</div><div class="lt"><div class="set" style="left:55.882%;width:8.824%;--i:0" data-a="1110" data-b="1200" data-s="The Packing Floor" data-n="Contra dance with Peg Beal calling"><i></i><b>Contra dance with Peg Beal calling</b><span>6:30 pm</span></div></div></div><div class="cursor" hidden><i></i><div class="read"></div></div></div>
+<ol class="plist"><li><span class="t">6:30 pm</span><span class="n">Contra dance with Peg Beal calling<span class="g">Packing Floor</span></span></li><li><span class="t">9:00 pm</span><span class="n">The Last Shift, 16mm film<span class="g">Net Loft</span></span></li></ol><dl class="dfacts g3"><div class="cell"><dt>Low water</dt><dd>10:58 am and 11:23 pm</dd></div><div class="cell"><dt>Road open</dt><dd>9:13 am to 12:43 pm and 9:38 pm to 1:08 am</dd></div><div class="cell"><dt>Crossing</dt><dd>Campers cross from 9:13 am to 12:43 pm. No day tickets.</dd></div></dl></div>
+<div class="panel on" role="tabpanel" id="p-fri" aria-labelledby="t-fri"><h3 class="vh">Friday, August 20</h3>
+<div class="chart" data-date="2027-08-20"><div class="ov"><i class="vl" style="left:5.882%"></i><i class="vl" style="left:17.647%"></i><i class="vl" style="left:29.412%"></i><i class="vl" style="left:41.176%"></i><i class="vl" style="left:52.941%"></i><i class="vl" style="left:64.706%"></i><i class="vl" style="left:76.471%"></i><i class="vl" style="left:88.235%"></i><i class="vl" style="left:100.0%"></i><i class="win" style="left:6.176%;width:20.589%"><span>Road open</span></i><i class="win" style="left:79.216%;width:20.588%"><span>Road open</span></i></div><div class="axis"><div class="ll"></div><div class="lt"><span style="left:5.882%">10 am</span><span style="left:17.647%">12 pm</span><span style="left:29.412%">2 pm</span><span style="left:41.176%">4 pm</span><span style="left:52.941%">6 pm</span><span style="left:64.706%">8 pm</span><span style="left:76.471%">10 pm</span><span style="left:88.235%">12 am</span><span style="left:100.0%">2 am</span></div></div>
+<div class="tideRow"><div class="ll"><span>Tide</span><span class="g">Road floods above 2.4 ft</span></div><div class="lt"><svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path class="road" d="M0 91.2H1000"/><path class="curve" pathLength="1"/></svg><span class="lw" style="left:16.471%">Low 11:48 am</span><span class="lw" style="left:89.51%">Low 12:13 am</span></div></div>
+<div class="lane"><div class="ll">Bar</div><div class="lt"><div class="set" style="left:13.235%;width:5.883%;--i:0" data-a="675" data-b="735" data-s="The Bar" data-n="The Lubec Steel Orchestra"><i></i><b>The Lubec Steel Orchestra</b><span>11:15 am</span></div><div class="set" style="left:84.314%;width:5.882%;--i:8" data-a="1400" data-b="1460" data-s="The Bar" data-n="DJ Bait Shop"><i></i><b>DJ Bait Shop</b><span>11:20 pm</span></div></div></div>
+<div class="lane"><div class="ll">Slip</div><div class="lt"><div class="set" style="left:29.412%;width:5.882%;--i:1" data-a="840" data-b="900" data-s="The Slip" data-n="Ines Cardoso"><i></i><b>Ines Cardoso</b><span>2:00 pm</span></div><div class="set" style="left:44.118%;width:5.882%;--i:3" data-a="990" data-b="1050" data-s="The Slip" data-n="Wide Load"><i></i><b>Wide Load</b><span>4:30 pm</span></div><div class="set" style="left:58.824%;width:5.882%;--i:5" data-a="1140" data-b="1200" data-s="The Slip" data-n="Cold Frame"><i></i><b>Cold Frame</b><span>7:00 pm</span></div></div></div>
+<div class="lane"><div class="ll">Net Loft</div><div class="lt"><div class="set" style="left:36.765%;width:5.882%;--i:2" data-a="915" data-b="975" data-s="The Net Loft" data-n="Bunny Arsenault"><i></i><b>Bunny Arsenault</b><span>3:15 pm</span></div><div class="set" style="left:66.176%;width:5.883%;--i:6" data-a="1215" data-b="1275" data-s="The Net Loft" data-n="Yusra Haddad"><i></i><b>Yusra Haddad</b><span>8:15 pm</span></div></div></div>
+<div class="lane"><div class="ll">Packing Floor</div><div class="lt"><div class="set" style="left:51.471%;width:5.882%;--i:4" data-a="1065" data-b="1125" data-s="The Packing Floor" data-n="Hotel Ghana"><i></i><b>Hotel Ghana</b><span>5:45 pm</span></div><div class="set" style="left:73.529%;width:8.824%;--i:7" data-a="1290" data-b="1380" data-s="The Packing Floor" data-n="Marlene Aubry"><i></i><b>Marlene Aubry</b><span>9:30 pm</span></div></div></div><div class="cursor" hidden><i></i><div class="read"></div></div></div>
+<ol class="plist"><li><span class="t">11:15 am</span><span class="n">The Lubec Steel Orchestra<span class="g">Bar</span></span></li><li><span class="t">2:00 pm</span><span class="n">Ines Cardoso<span class="g">Slip</span></span></li><li><span class="t">3:15 pm</span><span class="n">Bunny Arsenault<span class="g">Net Loft</span></span></li><li><span class="t">4:30 pm</span><span class="n">Wide Load<span class="g">Slip</span></span></li><li><span class="t">5:45 pm</span><span class="n">Hotel Ghana<span class="g">Packing Floor</span></span></li><li><span class="t">7:00 pm</span><span class="n">Cold Frame<span class="g">Slip</span></span></li><li><span class="t">8:15 pm</span><span class="n">Yusra Haddad<span class="g">Net Loft</span></span></li><li><span class="t">9:30 pm</span><span class="n">Marlene Aubry<span class="g">Packing Floor</span></span></li><li><span class="t">11:20 pm</span><span class="n">DJ Bait Shop<span class="g">Bar</span></span></li></ol><dl class="dfacts g3"><div class="cell"><dt>Low water</dt><dd>11:48 am and 12:13 am</dd></div><div class="cell"><dt>Road open</dt><dd>10:03 am to 1:33 pm and 10:28 pm to 1:58 am</dd></div><div class="cell"><dt>On a day ticket</dt><dd>Arrive by 1:33 pm. Earliest way home is 10:28 pm.</dd></div></dl></div>
+<div class="panel" role="tabpanel" id="p-sat" aria-labelledby="t-sat"><h3 class="vh">Saturday, August 21</h3>
+<div class="chart" data-date="2027-08-21"><div class="ov"><i class="vl" style="left:5.882%"></i><i class="vl" style="left:17.647%"></i><i class="vl" style="left:29.412%"></i><i class="vl" style="left:41.176%"></i><i class="vl" style="left:52.941%"></i><i class="vl" style="left:64.706%"></i><i class="vl" style="left:76.471%"></i><i class="vl" style="left:88.235%"></i><i class="vl" style="left:100.0%"></i><i class="win" style="left:11.078%;width:20.589%"><span>Road open</span></i><i class="win" style="left:84.118%;width:15.882%"><span>Road open</span></i></div><div class="axis"><div class="ll"></div><div class="lt"><span style="left:5.882%">10 am</span><span style="left:17.647%">12 pm</span><span style="left:29.412%">2 pm</span><span style="left:41.176%">4 pm</span><span style="left:52.941%">6 pm</span><span style="left:64.706%">8 pm</span><span style="left:76.471%">10 pm</span><span style="left:88.235%">12 am</span><span style="left:100.0%">2 am</span></div></div>
+<div class="tideRow"><div class="ll"><span>Tide</span><span class="g">Road floods above 2.4 ft</span></div><div class="lt"><svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path class="road" d="M0 91.2H1000"/><path class="curve" pathLength="1"/></svg><span class="lw" style="left:21.373%">Low 12:38 pm</span><span class="lw end" style="left:94.412%">Low 1:03 am</span></div></div>
+<div class="lane"><div class="ll">Bar</div><div class="lt"><div class="set" style="left:17.647%;width:5.882%;--i:0" data-a="720" data-b="780" data-s="The Bar" data-n="Bethel Road Singers"><i></i><b>Bethel Road Singers</b><span>12:00 pm</span></div><div class="set end" style="left:88.725%;width:5.883%;--i:8" data-a="1445" data-b="1505" data-s="The Bar" data-n="Vinalhaven Sound System"><i></i><b>Vinalhaven Sound System</b><span>12:05 am</span></div></div></div>
+<div class="lane"><div class="ll">Slip</div><div class="lt"><div class="set" style="left:33.824%;width:5.882%;--i:1" data-a="885" data-b="945" data-s="The Slip" data-n="The Fourth Cousins"><i></i><b>The Fourth Cousins</b><span>2:45 pm</span></div><div class="set" style="left:55.882%;width:5.883%;--i:4" data-a="1110" data-b="1170" data-s="The Slip" data-n="Wet Season"><i></i><b>Wet Season</b><span>6:30 pm</span></div><div class="set" style="left:70.588%;width:5.883%;--i:6" data-a="1260" data-b="1320" data-s="The Slip" data-n="Sister Cousteau"><i></i><b>Sister Cousteau</b><span>9:00 pm</span></div></div></div>
+<div class="lane"><div class="ll">Net Loft</div><div class="lt"><div class="set" style="left:41.176%;width:5.883%;--i:2" data-a="960" data-b="1020" data-s="The Net Loft" data-n="Nwosu &amp; Holm"><i></i><b>Nwosu &amp; Holm</b><span>4:00 pm</span></div><div class="set" style="left:63.235%;width:5.883%;--i:5" data-a="1185" data-b="1245" data-s="The Net Loft" data-n="Nadia Sow"><i></i><b>Nadia Sow</b><span>7:45 pm</span></div></div></div>
+<div class="lane"><div class="ll">Packing Floor</div><div class="lt"><div class="set" style="left:48.529%;width:5.883%;--i:3" data-a="1035" data-b="1095" data-s="The Packing Floor" data-n="Slow Clutch"><i></i><b>Slow Clutch</b><span>5:15 pm</span></div><div class="set" style="left:77.941%;width:8.824%;--i:7" data-a="1335" data-b="1425" data-s="The Packing Floor" data-n="The Big Thaw"><i></i><b>The Big Thaw</b><span>10:15 pm</span></div></div></div><div class="cursor" hidden><i></i><div class="read"></div></div></div>
+<ol class="plist"><li><span class="t">12:00 pm</span><span class="n">Bethel Road Singers<span class="g">Bar</span></span></li><li><span class="t">2:45 pm</span><span class="n">The Fourth Cousins<span class="g">Slip</span></span></li><li><span class="t">4:00 pm</span><span class="n">Nwosu &amp; Holm<span class="g">Net Loft</span></span></li><li><span class="t">5:15 pm</span><span class="n">Slow Clutch<span class="g">Packing Floor</span></span></li><li><span class="t">6:30 pm</span><span class="n">Wet Season<span class="g">Slip</span></span></li><li><span class="t">7:45 pm</span><span class="n">Nadia Sow<span class="g">Net Loft</span></span></li><li><span class="t">9:00 pm</span><span class="n">Sister Cousteau<span class="g">Slip</span></span></li><li><span class="t">10:15 pm</span><span class="n">The Big Thaw<span class="g">Packing Floor</span></span></li><li><span class="t">12:05 am</span><span class="n">Vinalhaven Sound System<span class="g">Bar</span></span></li></ol><dl class="dfacts g3"><div class="cell"><dt>Low water</dt><dd>12:38 pm and 1:03 am</dd></div><div class="cell"><dt>Road open</dt><dd>10:53 am to 2:23 pm and 11:18 pm to 2:48 am</dd></div><div class="cell"><dt>On a day ticket</dt><dd>Arrive by 2:23 pm. Earliest way home is 11:18 pm.</dd></div></dl></div>
+<div class="panel" role="tabpanel" id="p-sun" aria-labelledby="t-sun"><h3 class="vh">Sunday, August 22</h3>
+<div class="chart" data-date="2027-08-22"><div class="ov"><i class="vl" style="left:5.882%"></i><i class="vl" style="left:17.647%"></i><i class="vl" style="left:29.412%"></i><i class="vl" style="left:41.176%"></i><i class="vl" style="left:52.941%"></i><i class="vl" style="left:64.706%"></i><i class="vl" style="left:76.471%"></i><i class="vl" style="left:88.235%"></i><i class="vl" style="left:100.0%"></i><i class="win" style="left:15.98%;width:20.589%"><span>Road open</span></i><i class="win" style="left:89.02%;width:10.98%"><span>Road open</span></i></div><div class="axis"><div class="ll"></div><div class="lt"><span style="left:5.882%">10 am</span><span style="left:17.647%">12 pm</span><span style="left:29.412%">2 pm</span><span style="left:41.176%">4 pm</span><span style="left:52.941%">6 pm</span><span style="left:64.706%">8 pm</span><span style="left:76.471%">10 pm</span><span style="left:88.235%">12 am</span><span style="left:100.0%">2 am</span></div></div>
+<div class="tideRow"><div class="ll"><span>Tide</span><span class="g">Road floods above 2.4 ft</span></div><div class="lt"><svg viewBox="0 0 1000 120" preserveAspectRatio="none" aria-hidden="true"><path class="road" d="M0 91.2H1000"/><path class="curve" pathLength="1"/></svg><span class="lw" style="left:26.275%">Low 1:28 pm</span><span class="lw end" style="left:99.314%">Low 1:53 am</span></div></div>
+<div class="lane"><div class="ll">Bar</div><div class="lt"><div class="set" style="left:22.059%;width:5.882%;--i:0" data-a="765" data-b="825" data-s="The Bar" data-n="Kenny Dubé’s Accordion Party"><i></i><b>Kenny Dubé’s Accordion Party</b><span>12:45 pm</span></div><div class="set end" style="left:93.137%;width:5.883%;--i:8" data-a="1490" data-b="1550" data-s="The Bar" data-n="The Hadlock Crew Band"><i></i><b>The Hadlock Crew Band</b><span>12:50 am</span></div></div></div>
+<div class="lane"><div class="ll">Slip</div><div class="lt"><div class="set" style="left:38.235%;width:5.883%;--i:1" data-a="930" data-b="990" data-s="The Slip" data-n="Tomasi &amp; Daughter"><i></i><b>Tomasi &amp; Daughter</b><span>3:30 pm</span></div><div class="set" style="left:52.941%;width:5.883%;--i:3" data-a="1080" data-b="1140" data-s="The Slip" data-n="Mirabel Oyelaran"><i></i><b>Mirabel Oyelaran</b><span>6:00 pm</span></div><div class="set" style="left:75.0%;width:5.882%;--i:6" data-a="1305" data-b="1365" data-s="The Slip" data-n="Las Amaya"><i></i><b>Las Amaya</b><span>9:45 pm</span></div></div></div>
+<div class="lane"><div class="ll">Net Loft</div><div class="lt"><div class="set" style="left:45.588%;width:5.883%;--i:2" data-a="1005" data-b="1065" data-s="The Net Loft" data-n="Lake Effect Choir"><i></i><b>Lake Effect Choir</b><span>4:45 pm</span></div><div class="set" style="left:67.647%;width:5.882%;--i:5" data-a="1230" data-b="1290" data-s="The Net Loft" data-n="Jonah Ruiz"><i></i><b>Jonah Ruiz</b><span>8:30 pm</span></div></div></div>
+<div class="lane"><div class="ll">Packing Floor</div><div class="lt"><div class="set" style="left:60.294%;width:5.882%;--i:4" data-a="1155" data-b="1215" data-s="The Packing Floor" data-n="Loretta Ouellette"><i></i><b>Loretta Ouellette</b><span>7:15 pm</span></div><div class="set" style="left:82.353%;width:8.823%;--i:7" data-a="1380" data-b="1470" data-s="The Packing Floor" data-n="Rhoda Mae Pettigrew"><i></i><b>Rhoda Mae Pettigrew</b><span>11:00 pm</span></div></div></div><div class="cursor" hidden><i></i><div class="read"></div></div></div>
+<ol class="plist"><li><span class="t">12:45 pm</span><span class="n">Kenny Dubé’s Accordion Party<span class="g">Bar</span></span></li><li><span class="t">3:30 pm</span><span class="n">Tomasi &amp; Daughter<span class="g">Slip</span></span></li><li><span class="t">4:45 pm</span><span class="n">Lake Effect Choir<span class="g">Net Loft</span></span></li><li><span class="t">6:00 pm</span><span class="n">Mirabel Oyelaran<span class="g">Slip</span></span></li><li><span class="t">7:15 pm</span><span class="n">Loretta Ouellette<span class="g">Packing Floor</span></span></li><li><span class="t">8:30 pm</span><span class="n">Jonah Ruiz<span class="g">Net Loft</span></span></li><li><span class="t">9:45 pm</span><span class="n">Las Amaya<span class="g">Slip</span></span></li><li><span class="t">11:00 pm</span><span class="n">Rhoda Mae Pettigrew<span class="g">Packing Floor</span></span></li><li><span class="t">12:50 am</span><span class="n">The Hadlock Crew Band<span class="g">Bar</span></span></li></ol><dl class="dfacts g3"><div class="cell"><dt>Low water</dt><dd>1:28 pm and 1:53 am</dd></div><div class="cell"><dt>Road open</dt><dd>11:43 am to 3:13 pm and 12:08 am to 3:38 am</dd></div><div class="cell"><dt>On a day ticket</dt><dd>Arrive by 3:13 pm. Earliest way home is 12:08 am.</dd></div></dl></div></div>
+</div></div>
+</section>
+<script>
+/* Hadlock. One tide model for everything on this chart that moves with the water. */
+(() => {
+  const root = document.documentElement;
+  root.classList.add('tabs-ready');
+  const moving = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+  if (moving) root.classList.add('js');
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  /* Tide model: low water every 12 h 25 min, road dry 1 h 45 either side. Anchored to Fri Aug 20 2027, 11:48 EDT. */
+  const LW0 = Date.UTC(2027, 7, 20, 15, 48), T = 745 * 6e4, W = 105 * 6e4, MEAN = 5.9, AMP = 5.5;
+  const level = t => MEAN - AMP * Math.cos(2 * Math.PI * (t - LW0) / T);
+  const roadOpen = t => Math.abs(t - (LW0 + Math.round((t - LW0) / T) * T)) <= W;
+
+  /* Rise-stagger: rows of peers only, once. The row is observed so it starts together. */
+  if (moving) {
+    const io = new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    $$('.stagger').forEach(el => io.observe(el));
+  }
+
+  /* Rail doubles as tabs */
+  const stops = $$('.stop');
+  function pick(s, focus) {
+    stops.forEach(x => { const on = x === s; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $('#' + x.getAttribute('aria-controls')).classList.toggle('on', on); });
+    if (focus) s.focus();
+  }
+  stops.forEach((s, i) => {
+    s.addEventListener('click', () => pick(s));
+    s.addEventListener('keydown', e => {
+      const d = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+      if (d) { e.preventDefault(); pick(stops[(i + d + stops.length) % stops.length], true); }
+    });
+  });
+
+  /* Chart: the curve is 241 samples of the model; the cursor reads time, tide height, road state and whichever set is on */
+  const A0 = 540, A1 = 1560;
+  const clock = m => { m = ((m % 1440) + 1440) % 1440; const h = Math.floor(m / 60), mm = String(Math.floor(m % 60)).padStart(2, '0'); return `${h % 12 || 12}:${mm} ${h < 12 ? 'am' : 'pm'}`; };
+  $$('.chart').forEach(c => {
+    const cur = $('.cursor', c), read = $('.read', c), track = $('.ov', c), sets = $$('.set', c);
+    const [y, mo, d] = c.dataset.date.split('-').map(Number), midnight = Date.UTC(y, mo - 1, d, 4);
+    $('.curve', c).setAttribute('d', 'M' + Array.from({ length: 241 }, (_, i) => `${+(i / 240 * 1000).toFixed(1)} ${+(112 - level(midnight + (A0 + (A1 - A0) * i / 240) * 6e4) / 12 * 104).toFixed(2)}`).join(' L'));
+    let hot = null;
+    c.addEventListener('pointermove', e => {
+      const r = track.getBoundingClientRect(), f = (e.clientX - r.left) / r.width;
+      if (f < 0 || f > 1) { cur.hidden = true; return; }
+      const m = A0 + f * (A1 - A0), t = midnight + m * 6e4, h = level(t);
+      const on = sets.find(s => m >= +s.dataset.a && m < +s.dataset.b);
+      if (hot !== on) { hot?.classList.remove('hot'); on?.classList.add('hot'); hot = on; }
+      read.innerHTML = `<b>${clock(m)}</b>Tide ${h.toFixed(1)} ft. ${roadOpen(t) ? 'Road open' : 'Road closed'}<br>${on ? on.dataset.n + ', ' + on.dataset.s.replace('The ', '') : 'Between sets'}`;
+      cur.style.left = (r.left - c.getBoundingClientRect().left + f * r.width) + 'px';
+      cur.classList.toggle('flip', f > .76);
+      cur.hidden = false;
+    });
+    c.addEventListener('pointerleave', () => { cur.hidden = true; hot?.classList.remove('hot'); hot = null; });
+  });
+})();
+</script>
+</body>
+</html>

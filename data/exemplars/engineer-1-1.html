@@ -1,0 +1,209 @@
+<!doctype html>
+<!-- A process section drawn as the job itself: one wire leaves the old-primary lane and crosses to the new-primary lane at cut over, with a dashed reverse-replication line and a "Shut down, day 14" end, instead of five numbered circles.
+     Every stop is measured from the real text columns, so diagram and copy cannot drift, unreached stages sit at 40% ink, and three stages count up a real number from one named job (184 ms, 1.92 bn, 4.1 s). -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Move route</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Franklin:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#fff; --ink:#111; --muted:#8a8a8a; --ink-2:#6a6a6a; --accent:#f5b8cf;
+  --display:'Libre Caslon Display','Times New Roman',serif;
+  --text:'Libre Franklin',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --m:clamp(16px,4.45vw,64px); --gut:16px; --page:1600px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-variant-numeric:tabular-nums;overflow-x:clip}
+h2,h3,p,ol{margin:0;padding:0}
+ol{list-style:none}
+.wrap{width:min(100%,var(--page));margin-inline:auto;padding-inline:var(--m)}
+.g5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.ticks{position:relative;height:8px;width:min(100%,var(--page));margin-inline:auto}
+.ticks i{position:absolute;top:0;width:2px;height:8px;background:var(--muted)}
+.ticks i:nth-child(1){left:var(--m)}
+.ticks i:nth-child(2){left:calc(var(--m) + (100% - 2*var(--m))*.2)}
+.ticks i:nth-child(3){left:calc(var(--m) + (100% - 2*var(--m))*.8)}
+.ticks i:nth-child(4){left:calc(var(--m) + (100% - 2*var(--m)) - 2px)}
+h2{font-family:var(--display);font-weight:400;letter-spacing:-.012em;font-synthesis:none;font-size:clamp(36px,3.9vw,56px);line-height:1.07;text-wrap:balance}
+.side{font-size:14px;line-height:1.45;color:var(--ink-2);padding-inline:var(--gut);max-width:236px}
+.sec{position:relative;z-index:1;padding-bottom:clamp(64px,7vw,100px)}
+.head{padding-top:clamp(56px,6.8vw,96px);padding-bottom:clamp(32px,3.6vw,52px);align-items:start}
+.head .side{grid-column:1;padding-top:10px}
+.head h2{grid-column:2/5;padding-inline:var(--gut)}
+.process{padding-bottom:clamp(48px,6vw,84px)}
+.route{position:relative}
+.route-svg{display:block;width:100%;height:clamp(170px,22vh,220px);overflow:visible}
+.route-svg path{fill:none}
+.r-track{stroke:rgba(17,17,17,.24);stroke-width:1}
+.r-rev{stroke:rgba(17,17,17,.42);stroke-width:1;stroke-dasharray:3 4}
+.r-ghost{stroke:rgba(17,17,17,.24);stroke-width:1}
+.r-wire{stroke:var(--ink);stroke-width:2.5}
+.r-head{fill:var(--accent);stroke:var(--ink);stroke-width:1.5}
+.r-stop{fill:var(--bg);stroke:var(--ink);stroke-width:1.5;transition:fill .25s linear}
+.r-stop.on{fill:var(--ink)}
+.route-svg text{font:400 13px var(--text);fill:var(--ink-2)}
+.stage{padding:18px 20px 0 var(--gut);transition:color .3s ease}
+.stage h3{font-family:var(--display);font-weight:400;font-size:clamp(26px,2.3vw,32px);line-height:1.1}
+.stage .when{font-size:14px;color:var(--ink-2);margin-top:4px}
+.stage .what{margin-top:12px;font-size:15px;line-height:1.5}
+.stage .read{margin-top:12px;font-size:14px;color:var(--ink-2);min-height:21px}
+.stage .read b{font-weight:500;color:var(--ink)}
+.route.live .stage:not(.on) :is(h3,.when,.what,.read,.read b){color:rgba(17,17,17,.4)}
+.stage :is(h3,.when,.what,.read,.read b){transition:color .35s ease}
+@media (max-width:899px){
+  :root{--gut:0px}
+  .ticks i:nth-child(2),.ticks i:nth-child(3){display:none}
+  .head{display:flex;flex-direction:column-reverse;gap:0}
+  .head .side{max-width:none;padding-top:14px}
+  .head h2{padding-inline:0;margin-bottom:0}
+  .route-wrap{position:relative;padding-left:56px}
+  .route-svg{position:absolute;left:0;top:0;width:56px;height:100%}
+  .route-svg text{display:none}
+  .stages{display:block}
+  .stage{padding:0 0 30px}
+  .stage:last-child{padding-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<section class="sec process" id="process" aria-labelledby="h-process">
+  <div class="ticks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="wrap g5 head">
+    <p class="side">Numbers from the ferry ticketing job, March 2026: 14.2 TB, Postgres 12 to 17.</p>
+    <h2 id="h-process">Every move runs through the same five stages</h2>
+  </div>
+  <div class="wrap">
+    <div class="route route-wrap" id="route">
+      <svg class="route-svg" aria-hidden="true">
+        <path class="r-track" id="r-old"/><path class="r-track" id="r-new"/><path class="r-rev" id="r-rev"/>
+        <path class="r-ghost" id="r-ghost"/><path class="r-wire" id="r-wire" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="0"/>
+        <g id="r-stops"></g><g id="r-labels"></g>
+        <circle class="r-head" id="r-head" r="7" cx="-20" cy="-20"/>
+      </svg>
+      <ol class="stages g5">
+        <li class="stage">
+          <h3>Audit</h3><p class="when">2 days, €3,400 fixed</p>
+          <p class="what">I read pg_stat_statements, your replication setup and your last three incident reports. You get a written plan and a price, and you can take that plan to someone else.</p>
+        </li>
+        <li class="stage">
+          <h3>Copy</h3><p class="when">11 days</p>
+          <p class="what">Schema first, then each table, then logical replication. The old primary keeps serving everything while the new one catches up.</p>
+          <p class="read"><b data-from="3412" data-to="184" data-suffix=" ms">184 ms</b> lag at peak hour</p>
+        </li>
+        <li class="stage">
+          <h3>Shadow</h3><p class="when">3 weeks</p>
+          <p class="what">Real read traffic is mirrored to the new primary and every result is compared. All 41 mismatches on this job came from one collation change.</p>
+          <p class="read"><b data-from="0" data-to="1.92" data-dec="2" data-suffix=" bn">1.92 bn</b> rows compared</p>
+        </li>
+        <li class="stage">
+          <h3>Cut over</h3><p class="when">A Tuesday, 07:00</p>
+          <p class="what">PgBouncer holds connections while the last WAL lands and I promote the new primary. Queries wait a few seconds and none of them fail.</p>
+          <p class="read"><b data-from="0" data-to="4.1" data-dec="1" data-suffix=" s">4.1 s</b> write pause</p>
+        </li>
+        <li class="stage">
+          <h3>Hold</h3><p class="when">14 days</p>
+          <p class="what">Replication runs backwards, new to old, so you can return with one command. Then I shut the old primary down and hand your team the runbook.</p>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+<script>
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const route = $('#route'), svg = $('.route-svg', route), stages = $$('.stage', route);
+const old = $('#r-old'), nw = $('#r-new'), rev = $('#r-rev'), ghost = $('#r-ghost'), wire = $('#r-wire'), head = $('#r-head');
+const stopsG = $('#r-stops'), labels = $('#r-labels');
+const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let len = 0, marks = [], stops = [], vertical = false, curP = 0;
+
+/* built from the real column positions, so it survives any width and flips to vertical on phones */
+function build() {
+  const b = svg.getBoundingClientRect();
+  vertical = innerWidth < 900;
+  svg.setAttribute('viewBox', `0 0 ${b.width} ${b.height}`);
+  const pt = (along, lane) => vertical ? [lane, along] : [along, lane];
+  const pos = stages.map(s => { const q = s.getBoundingClientRect(); return vertical ? q.top - b.top + 14 : q.left - b.left + 1; });
+  const endA = vertical ? b.height - 6 : b.width;
+  const laneOld = vertical ? 9 : 44, laneNew = vertical ? 37 : b.height - 50;
+  const R = vertical ? 44 : 84;
+  const curve = (a, from, to) => { const [x1, y1] = pt(a + R * .5, from), [x2, y2] = pt(a + R * .5, to), [x3, y3] = pt(a + R, to); return `C${x1},${y1} ${x2},${y2} ${x3},${y3}`; };
+  const M = (a, l) => 'M' + pt(a, l).join(','), L = (a, l) => 'L' + pt(a, l).join(',');
+  const a1 = pos[1] + (vertical ? 0 : 40), cross = pos[3] + (vertical ? 60 : (pos[4] - pos[3]) * .3), a4 = pos[4] + (vertical ? 30 : 48);
+  old.setAttribute('d', M(pos[0], laneOld) + L(endA - (vertical ? 20 : 46), laneOld));
+  nw.setAttribute('d', M(a1, laneOld) + curve(a1, laneOld, laneNew) + L(endA, laneNew));
+  rev.setAttribute('d', M(a4, laneNew) + curve(a4, laneNew, laneOld));
+  const d = M(pos[0], laneOld) + L(cross, laneOld) + curve(cross, laneOld, laneNew) + L(endA, laneNew);
+  ghost.setAttribute('d', d); wire.setAttribute('d', d);
+  len = wire.getTotalLength();
+  /* where each stage sits along the wire, by the fraction of length */
+  marks = pos.map(p => {
+    const onNew = p > cross + R * .5, tgt = pt(p, onNew ? laneNew : laneOld);
+    let best = 0, bd = 1e9;
+    for (let k = 0; k <= 400; k++) { const q = wire.getPointAtLength(len * k / 400), e = Math.hypot(q.x - tgt[0], q.y - tgt[1]); if (e < bd) { bd = e; best = k / 400; } }
+    return best;
+  });
+  stopsG.textContent = '';
+  stops = pos.map(p => {
+    const onNew = p > cross + R * .5, [x, y] = pt(p, onNew ? laneNew : laneOld);
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', 4.5); c.setAttribute('class', 'r-stop');
+    stopsG.append(c); return c;
+  });
+  labels.textContent = '';
+  if (!vertical) {
+    const txt = (x, y, s, anchor) => { const t = document.createElementNS('http://www.w3.org/2000/svg', 'text'); t.setAttribute('x', x); t.setAttribute('y', y); if (anchor) t.setAttribute('text-anchor', anchor); t.textContent = s; labels.append(t); };
+    txt(pos[0] + 16, laneOld - 14, 'Old primary, Postgres 12');
+    txt(a1 + R + 12, laneNew + 24, 'New primary, Postgres 17');
+    txt(cross - 12, laneOld - 14, 'All writes', 'end');
+    txt(endA - 10, laneNew - 34, 'Reverse replication', 'end');
+    txt(endA - 46, laneOld - 14, 'Shut down, day 14', 'end');
+  }
+}
+const fmt = (b, v) => { const dec = +(b.dataset.dec || 0); return v.toLocaleString('en-GB', { minimumFractionDigits: dec, maximumFractionDigits: dec }) + (b.dataset.suffix || ''); };
+function count(stage) {                                 /* 0.9 s, expo out */
+  const b = $('b[data-to]', stage); if (!b || still) return;
+  const from = +b.dataset.from, to = +b.dataset.to, t0 = performance.now();
+  (function step(t) {
+    const k = Math.min(1, (t - t0) / 900);
+    b.textContent = fmt(b, k < 1 ? from + (to - from) * (1 - 2 ** (-10 * k)) : to);
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+}
+function place(p) {                                     /* the whole component is a function of p, 0 to 1 */
+  curP = p;
+  const q = wire.getPointAtLength(p * len);
+  head.setAttribute('cx', q.x); head.setAttribute('cy', q.y);
+  wire.style.strokeDashoffset = 1 - p;
+  stages.forEach((s, i) => {
+    const on = p >= marks[i] - .002;
+    if (on && !s.classList.contains('on')) count(s);
+    if (!on && s.classList.contains('on')) { const b = $('b[data-to]', s); if (b) b.textContent = fmt(b, +b.dataset.from); }
+    s.classList.toggle('on', on); stops[i] && stops[i].classList.toggle('on', on);
+  });
+}
+addEventListener('resize', () => { build(); place(curP); });
+/* On the full page a scroll scrub drives p while the section is pinned for 150% of the viewport.
+   Here it plays once on entry so the file stands alone. */
+document.fonts.ready.then(() => {
+  build();
+  if (still) { place(1); return; }                      /* the markup already holds the final numbers */
+  route.classList.add('live');
+  $$('b[data-to]', route).forEach(b => { b.textContent = fmt(b, +b.dataset.from); });
+  place(0);
+  new IntersectionObserver(([e], io) => {
+    if (!e.isIntersecting) return;
+    io.disconnect();
+    const t0 = performance.now();
+    (function run(t) { const p = Math.min(1, (t - t0) / 2000); place(p); if (p < 1) requestAnimationFrame(run); })(t0);
+  }, { threshold: .4 }).observe(route);
+});
+</script>
+</body>
+</html>

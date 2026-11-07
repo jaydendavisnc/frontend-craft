@@ -1,0 +1,410 @@
+[
+{
+"file": "landing-software-1.md",
+"surface": "landing",
+"genre": "software",
+"register": "dark-precision"
+},
+{
+"file": "landing-software-2.md",
+"surface": "landing",
+"genre": "software",
+"register": "warm-neutral"
+},
+{
+"file": "landing-software-3.md",
+"surface": "landing",
+"genre": "software",
+"register": "warm-neutral"
+},
+{
+"file": "landing-software-4.md",
+"surface": "landing",
+"genre": "software",
+"register": "photo-led"
+},
+{
+"file": "landing-developer-tool-1.md",
+"surface": "landing",
+"genre": "developer-tool",
+"register": "photo-led"
+},
+{
+"file": "landing-developer-tool-2.md",
+"surface": "landing",
+"genre": "developer-tool",
+"register": "light-precision"
+},
+{
+"file": "landing-developer-tool-3.md",
+"surface": "landing",
+"genre": "developer-tool",
+"register": "mono-technical"
+},
+{
+"file": "landing-developer-tool-4.md",
+"surface": "landing",
+"genre": "developer-tool",
+"register": "warm-neutral"
+},
+{
+"file": "landing-ai-product-1.md",
+"surface": "landing",
+"genre": "ai-product",
+"register": "light-precision"
+},
+{
+"file": "landing-ai-product-2.md",
+"surface": "landing",
+"genre": "ai-product",
+"register": "warm-neutral"
+},
+{
+"file": "landing-ai-product-3.md",
+"surface": "landing",
+"genre": "ai-product",
+"register": "light-precision"
+},
+{
+"file": "landing-ai-product-4.md",
+"surface": "landing",
+"genre": "ai-product",
+"register": "light-precision"
+},
+{
+"file": "landing-finance-1.md",
+"surface": "landing",
+"genre": "finance",
+"register": "gradient-light"
+},
+{
+"file": "landing-finance-2.md",
+"surface": "landing",
+"genre": "finance",
+"register": "photo-led"
+},
+{
+"file": "landing-finance-3.md",
+"surface": "landing",
+"genre": "finance",
+"register": "light-precision"
+},
+{
+"file": "landing-finance-4.md",
+"surface": "landing",
+"genre": "finance",
+"register": "light-precision"
+},
+{
+"file": "landing-food-drink-1.md",
+"surface": "landing",
+"genre": "food-drink",
+"register": "photo-led"
+},
+{
+"file": "landing-food-drink-2.md",
+"surface": "landing",
+"genre": "food-drink",
+"register": "photo-led"
+},
+{
+"file": "landing-food-drink-3.md",
+"surface": "landing",
+"genre": "food-drink",
+"register": "light-precision"
+},
+{
+"file": "landing-food-drink-4.md",
+"surface": "landing",
+"genre": "food-drink",
+"register": "photo-led"
+},
+{
+"file": "landing-shop-brand-1.md",
+"surface": "landing",
+"genre": "shop-brand",
+"register": "photo-led"
+},
+{
+"file": "landing-shop-brand-2.md",
+"surface": "landing",
+"genre": "shop-brand",
+"register": "photo-led"
+},
+{
+"file": "landing-shop-brand-3.md",
+"surface": "landing",
+"genre": "shop-brand",
+"register": "photo-led"
+},
+{
+"file": "landing-shop-brand-4.md",
+"surface": "landing",
+"genre": "shop-brand",
+"register": "dark-precision"
+},
+{
+"file": "landing-health-1.md",
+"surface": "landing",
+"genre": "health",
+"register": "light-precision"
+},
+{
+"file": "landing-health-2.md",
+"surface": "landing",
+"genre": "health",
+"register": "light-precision"
+},
+{
+"file": "landing-health-3.md",
+"surface": "landing",
+"genre": "health",
+"register": "light-precision"
+},
+{
+"file": "landing-health-4.md",
+"surface": "landing",
+"genre": "health",
+"register": "photo-led"
+},
+{
+"file": "landing-services-1.md",
+"surface": "landing",
+"genre": "services",
+"register": "warm-neutral"
+},
+{
+"file": "landing-services-2.md",
+"surface": "landing",
+"genre": "services",
+"register": "photo-led"
+},
+{
+"file": "landing-services-3.md",
+"surface": "landing",
+"genre": "services",
+"register": "photo-led"
+},
+{
+"file": "landing-services-4.md",
+"surface": "landing",
+"genre": "services",
+"register": "warm-neutral"
+},
+{
+"file": "landing-culture-1.md",
+"surface": "landing",
+"genre": "culture",
+"register": "bold-colour"
+},
+{
+"file": "landing-culture-2.md",
+"surface": "landing",
+"genre": "culture",
+"register": "type-led"
+},
+{
+"file": "landing-culture-3.md",
+"surface": "landing",
+"genre": "culture",
+"register": "type-led"
+},
+{
+"file": "landing-culture-4.md",
+"surface": "landing",
+"genre": "culture",
+"register": "photo-led"
+},
+{
+"file": "landing-creative-1.md",
+"surface": "landing",
+"genre": "creative",
+"register": "light-precision"
+},
+{
+"file": "landing-creative-2.md",
+"surface": "landing",
+"genre": "creative",
+"register": "light-precision"
+},
+{
+"file": "landing-creative-3.md",
+"surface": "landing",
+"genre": "creative",
+"register": "warm-neutral"
+},
+{
+"file": "landing-creative-4.md",
+"surface": "landing",
+"genre": "creative",
+"register": "photo-led"
+},
+{
+"file": "store-shop-brand-1.md",
+"surface": "store",
+"genre": "shop-brand",
+"register": "photo-led"
+},
+{
+"file": "store-shop-brand-2.md",
+"surface": "store",
+"genre": "shop-brand",
+"register": "photo-led"
+},
+{
+"file": "store-shop-brand-3.md",
+"surface": "store",
+"genre": "shop-brand",
+"register": "render-3d"
+},
+{
+"file": "store-food-drink-1.md",
+"surface": "store",
+"genre": "food-drink",
+"register": "warm-neutral"
+},
+{
+"file": "store-food-drink-2.md",
+"surface": "store",
+"genre": "food-drink",
+"register": "type-led"
+},
+{
+"file": "store-food-drink-3.md",
+"surface": "store",
+"genre": "food-drink",
+"register": "photo-led"
+},
+{
+"file": "app-software-1.md",
+"surface": "app",
+"genre": "software",
+"register": "light-precision"
+},
+{
+"file": "app-software-2.md",
+"surface": "app",
+"genre": "software",
+"register": "light-precision"
+},
+{
+"file": "app-software-3.md",
+"surface": "app",
+"genre": "software",
+"register": "render-3d"
+},
+{
+"file": "app-finance-1.md",
+"surface": "app",
+"genre": "finance",
+"register": "light-precision"
+},
+{
+"file": "app-finance-2.md",
+"surface": "app",
+"genre": "finance",
+"register": "light-precision"
+},
+{
+"file": "app-finance-3.md",
+"surface": "app",
+"genre": "finance",
+"register": "gradient-light"
+},
+{
+"file": "app-ai-product-1.md",
+"surface": "app",
+"genre": "ai-product",
+"register": "dark-precision"
+},
+{
+"file": "app-ai-product-2.md",
+"surface": "app",
+"genre": "ai-product",
+"register": "light-precision"
+},
+{
+"file": "app-ai-product-3.md",
+"surface": "app",
+"genre": "ai-product",
+"register": "light-precision"
+},
+{
+"file": "pricing-software-1.md",
+"surface": "pricing",
+"genre": "software",
+"register": "light-precision"
+},
+{
+"file": "pricing-software-2.md",
+"surface": "pricing",
+"genre": "software",
+"register": "gradient-light"
+},
+{
+"file": "pricing-developer-tool-1.md",
+"surface": "pricing",
+"genre": "developer-tool",
+"register": "light-precision"
+},
+{
+"file": "pricing-developer-tool-2.md",
+"surface": "pricing",
+"genre": "developer-tool",
+"register": "light-precision"
+},
+{
+"file": "docs-developer-tool-1.md",
+"surface": "docs",
+"genre": "developer-tool",
+"register": "light-precision"
+},
+{
+"file": "docs-developer-tool-2.md",
+"surface": "docs",
+"genre": "developer-tool",
+"register": "warm-neutral"
+},
+{
+"file": "docs-developer-tool-3.md",
+"surface": "docs",
+"genre": "developer-tool",
+"register": "light-precision"
+},
+{
+"file": "portfolio-creative-1.md",
+"surface": "portfolio",
+"genre": "creative",
+"register": "light-precision"
+},
+{
+"file": "portfolio-creative-2.md",
+"surface": "portfolio",
+"genre": "creative",
+"register": "light-precision"
+},
+{
+"file": "portfolio-creative-3.md",
+"surface": "portfolio",
+"genre": "creative",
+"register": "type-led"
+},
+{
+"file": "portfolio-services-1.md",
+"surface": "portfolio",
+"genre": "services",
+"register": "photo-led"
+},
+{
+"file": "portfolio-services-2.md",
+"surface": "portfolio",
+"genre": "services",
+"register": "gradient-light"
+},
+{
+"file": "portfolio-services-3.md",
+"surface": "portfolio",
+"genre": "services",
+"register": "light-precision"
+}
+]

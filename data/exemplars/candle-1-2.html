@@ -1,0 +1,218 @@
+<!doctype html>
+<!-- A stock table with the maker's voice in it: 14 batches at 5 columns, with a wax-coloured dot, a 3px meter beside every count, and hover brackets drawn in that row's own wax colour. Any row opens a quick-view sheet whose shipping sentence is computed from the batch's cure date and stock, so one record drives the stamp, the price and the promise, with an inline SVG vessel standing in for the product photo. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Batch log</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,450&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..500&display=swap">
+<style>
+:root{
+  --bg:#f3eee8;--surface:#fdfcfb;--ink:#291e21;--ink-2:#6b6366;--accent:#4f2414;
+  --line:color-mix(in srgb,var(--ink) 10%,transparent);
+  --line-strong:color-mix(in srgb,var(--ink) 20%,transparent);
+  --fill:color-mix(in srgb,var(--ink) 5%,transparent);
+  --tile:#e7e1d9;--gut:clamp(16px,3.9vw,56px);--wide:1328px;
+  --font-display:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --font-text:'Hanken Grotesk',ui-sans-serif,system-ui,-apple-system,'Segoe UI',sans-serif;
+  --wipe:cubic-bezier(.76,0,.24,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+h2,h3,p{margin:0;padding:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.wrap{max-width:calc(var(--wide) + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.num{font-variant-numeric:tabular-nums}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.55em;height:55px;padding:0 32px;background:var(--ink);color:var(--bg);font:500 14px/1 var(--font-text);letter-spacing:.2em;text-transform:uppercase;text-decoration:none;transition:background-color .2s,color .2s,opacity .2s}
+.btn:hover{background:var(--accent)}
+.btn[disabled]{background:var(--fill);color:var(--ink-2);cursor:not-allowed}
+.btn.block{display:flex;width:100%}
+.tlink{font:500 15px/1.3 var(--font-text);text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:4px}
+.stamp{display:flex;align-items:center;gap:8px;font:400 13px/18px var(--font-text);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.stamp b{display:inline-block;padding:0 5px;font:500 12px/18px var(--font-text);letter-spacing:.02em;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.stamp.low{color:var(--accent)}
+.grain{position:relative}
+.grain::after{content:"";position:absolute;inset:0;z-index:2;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .4 0 0 0 0 .36 0 0 0 0 .32 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='170' height='170' filter='url(%23n)'/%3E%3C/svg%3E") 0 0/170px 170px;opacity:.26;pointer-events:none}
+
+.shelf{padding-bottom:120px}
+.log{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:24px;margin-top:96px;padding-top:32px;border-top:1px solid var(--line)}
+.log h3{font:500 20px/28px var(--font-text)}
+.log .side p{margin-top:8px;color:var(--ink-2);max-width:18em;font-size:15px;line-height:22px}
+.table{width:100%;border-collapse:collapse;font-size:15px;font-variant-numeric:tabular-nums}
+.table th{padding:0 16px 10px;font-weight:400;text-align:left;color:var(--ink-2);font-size:14px}
+.table td{padding:0 16px;height:46px;white-space:nowrap}
+.table .r{text-align:right}
+.table tbody tr{position:relative;cursor:pointer;box-shadow:inset 0 1px 0 var(--line);transition:background-color .2s}
+.table tbody tr:hover{background:color-mix(in srgb,var(--surface) 70%,transparent);box-shadow:inset 0 1px 0 var(--line-strong),inset 0 -1px 0 var(--line-strong)}
+.table td:first-child{position:relative}.table td:first-child::before,.table td:first-child::after{content:"";position:absolute;left:0;width:110px;height:1px;background:var(--w,var(--ink));opacity:0;transition:opacity .2s}
+.table td:first-child::before{top:0}.table td:first-child::after{bottom:0}
+.table tr:hover td:first-child::before,.table tr:hover td:first-child::after{opacity:1}
+.table .sw{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:10px;background:var(--w);vertical-align:0}
+.table button{display:inline;font-weight:500;text-align:left;text-decoration:none}
+.table td:nth-child(2){padding-left:34px;text-indent:-20px}
+.meter{display:inline-block;width:96px;height:3px;margin-left:12px;vertical-align:3px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--ink);transform-origin:left}
+
+.scrim{position:fixed;inset:0;z-index:60;background:color-mix(in srgb,var(--ink) 42%,transparent);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}.scrim.on{opacity:1;visibility:visible}
+.sheet{position:fixed;top:0;right:0;bottom:0;z-index:61;display:flex;flex-direction:column;width:min(540px,100vw);background:var(--surface);transform:translateX(102%);visibility:hidden;transition:transform .42s var(--wipe),visibility .42s}.sheet.on{transform:none;visibility:visible}
+.sheet-top{display:flex;justify-content:space-between;align-items:center;flex:none;height:60px;padding:0 24px;border-bottom:1px solid var(--line);font-size:15px}
+.sheet-top button{display:grid;place-items:center;height:36px;padding:0 4px;font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong)}
+.sheet-body{flex:1;overflow:auto;overscroll-behavior:contain}
+.sheet-foot{flex:none;padding:16px 24px 20px;border-top:1px solid var(--line);background:var(--surface)}
+.qv-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--tile)}
+.qv-media svg{position:absolute;inset:0;width:100%;height:100%}
+.qv-info{padding:24px}
+.qv-info h2{font:450 34px/1.12 var(--font-display);letter-spacing:-.014em}
+.qv-info .notes{margin-top:6px;color:var(--ink-2)}
+.qv-info .story{margin-top:12px;font-size:15px;line-height:23px}
+.qv-info .stamp{margin-top:12px}
+.opt{margin:20px 0 0;padding:0;border:0}
+.opt legend{padding:0;font-size:14px;margin-bottom:8px;color:var(--ink-2)}
+.opt legend b{font-weight:500;color:var(--ink)}
+.opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.opts label{position:relative;display:block;padding:10px 12px;box-shadow:inset 0 0 0 1px var(--line-strong);cursor:pointer;font-size:14px;line-height:20px;transition:box-shadow .15s}
+.opts label b{display:block;font-weight:500}
+.opts label span{color:var(--ink-2);font-variant-numeric:tabular-nums}
+.opts input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opts label:has(input:checked){box-shadow:inset 0 0 0 1.5px var(--ink)}
+.opts label:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
+.facts{margin-top:10px;font-size:14px;line-height:21px;color:var(--ink-2)}
+.facts b{font-weight:500;color:var(--ink)}
+.added{display:none;align-items:center;justify-content:space-between;gap:16px;margin-bottom:12px;font-size:14px;line-height:20px}.added.on{display:flex}.added b{font-weight:500}
+details.acc{border-top:1px solid var(--line)}
+details.acc summary{display:flex;justify-content:space-between;align-items:center;height:48px;cursor:pointer;list-style:none;font-size:15px;font-weight:500}
+details.acc summary::after{content:"+";font-weight:400;color:var(--ink-2);transition:transform .2s}details.acc[open] summary::after{transform:rotate(45deg)}
+details.acc div{padding-bottom:14px;font-size:15px;line-height:23px;color:var(--ink-2)}
+.qv-acc{margin-top:20px}
+@media (max-width:1100px){.log{grid-template-columns:1fr}}
+@media (max-width:760px){.log{margin-top:64px}.table th:nth-child(3),.table td:nth-child(3),.meter,.table .of{display:none}.table td,.table th{padding-inline:8px}.table td{white-space:normal}.sheet{width:100vw}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<section class="shelf wrap" id="shelf">
+  <div class="log" id="log">
+    <div class="side">
+      <h3>Batch log</h3>
+      <p>Joan ran the lab at a brewery for eight years and still keeps a log. This is every scented batch on the shelf.</p>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="table">
+        <thead><tr><th scope="col">Batch</th><th scope="col">Scent</th><th scope="col">Poured</th><th scope="col">Cure ends</th><th scope="col" class="r">Left</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" tabindex="-1">
+  <div class="sheet-top"><span id="sheet-title"></span><button type="button" id="sheet-close">Close</button></div>
+  <div class="sheet-body" id="sheet-body"></div>
+  <div class="sheet-foot" id="sheet-foot"></div>
+</aside>
+<script>
+(function () {
+  var B = [
+    { id: 'deer-camp', name: 'Deer Camp', wax: '#ee5a14', notes: 'Woodstove, wet wool, black coffee', batch: 524, poured: '2026-11-03', left: 48, story: 'Woodstove smoke up front, then wet wool and black coffee after the first hour. Blaze orange on purpose. November only.' },
+    { id: 'hot-radiator', name: 'Hot Radiator', wax: '#8c3517', notes: 'Dust on hot iron, clove, orange peel', batch: 523, poured: '2026-10-30', left: 44, story: 'The first cold night in a Milwaukee duplex, when the heat comes on. Clove and orange peel keep it from being all dust.' },
+    { id: 'cherry', name: 'Door County Cherry', wax: '#a80f2a', notes: 'Tart cherry, almond skin, cold smoke', batch: 522, poured: '2026-10-27', left: 37, story: 'Door County Montmorency cherries, sour and not sweet, with almond skin at the back and a thread of smoke.' },
+    { id: 'lake-effect', name: 'Lake Effect', wax: '#8db6d0', notes: 'Snow, ozone, cold iron', batch: 521, poured: '2026-10-23', left: 29, story: 'Cold, clean and a bit metallic. The one people keep in the bathroom.' },
+    { id: 'malt-house', name: 'Malt House', wax: '#c9942a', notes: 'Toasted barley, hops, wet oak', batch: 520, poured: '2026-10-20', left: 31, story: 'Joan\'s old job in a jar: toasted barley, a little hop, wet oak staves.' },
+    { id: 'burnt-sugar', name: 'Burnt Sugar', wax: '#9c5213', notes: 'Caramel a minute too long, salt, dark rum', batch: 519, poured: '2026-10-16', left: 12, story: 'Caramel taken a minute too far, then salted. The sweetest thing we make, and it still isn\'t very sweet.' },
+    { id: 'black-walnut', name: 'Black Walnut', wax: '#2e1c10', notes: 'Walnut husk, pipe tobacco, damp bark', batch: 518, poured: '2026-10-13', left: 22, story: 'Green husk, pipe tobacco and damp bark. Dark and dry, with no vanilla to soften it.' },
+    { id: 'pine-tar', name: 'Pine Tar', wax: '#16261d', notes: 'Pine tar, birch smoke, saddle leather', batch: 517, poured: '2026-10-09', left: 9, story: 'The loudest thing on the shelf. Start with a tin.' },
+    { id: 'cream-city', name: 'Cream City Brick', wax: '#ecd8a0', notes: 'Wet brick, lake fog, iron railing', batch: 516, poured: '2026-10-06', left: 26, story: 'Milwaukee\'s yellow brick after rain, with lake fog and an iron railing.' },
+    { id: 'fish-fry', name: 'Fish Fry', wax: '#e6b722', notes: 'Rye bread, lemon, beer batter', batch: 515, poured: '2026-10-02', left: 41, story: 'Rye bread, lemon and beer batter. It started as a dare and it is now on its ninth batch.' },
+    { id: 'concord', name: 'Concord Arbor', wax: '#47196a', notes: 'Concord grape, vine, warm stone', batch: 514, poured: '2026-09-29', left: 15, story: 'Concord grape over warm stone. Purple in every sense.' },
+    { id: 'rhubarb', name: 'Rhubarb Diesel', wax: '#e63c7b', notes: 'Rhubarb, diesel, tonka', batch: 513, poured: '2026-09-25', left: 6, story: 'Sharp rhubarb with one drop of diesel underneath. People either reorder it or send it back.' },
+    { id: 'tomato-leaf', name: 'Tomato Leaf', wax: '#4c8a2c', notes: 'Tomato vine, black pepper, wet soil', batch: 512, poured: '2026-09-22', left: 18, story: 'Snapped tomato vine, black pepper and wet soil. It smells like your hands in August.' },
+    { id: 'lilac-alley', name: 'Lilac Alley', wax: '#b49ad8', notes: 'Lilac, gravel, rain', batch: 509, poured: '2026-09-11', left: 0, story: 'Bay View alleys in the third week of May. Lilac, gravel, rain.' }
+  ];
+  var SIZES = { tin: { label: 'Tin', oz: 4, hours: 22, price: 16 }, jar: { label: 'Jar', oz: 8, hours: 45, price: 28 }, three: { label: 'Three-wick', oz: 16, hours: 60, price: 48 } };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var money = function (n) { return '$' + n; };
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var now = new Date('2026-11-06T11:00:00-06:00'); // pinned so the sample batches keep their states; a live page uses new Date()
+  function day(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function fmt(d) { return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
+  function fmtD(d) { return DAYS[d.getDay()] + ', ' + fmt(d); }
+  function parse(s) { var a = s.split('-'); return new Date(+a[0], +a[1] - 1, +a[2]); }
+  function plus(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+  function nextBiz(d) { var x = new Date(d); do { x = plus(x, 1); } while (x.getDay() === 0 || x.getDay() === 6); return x; }
+  function central() { var o = {}; new Intl.DateTimeFormat('en-US', { timeZone: 'America/Chicago', hour: 'numeric', hour12: false, weekday: 'short' }).formatToParts(now).forEach(function (x) { o[x.type] = x.value; }); return { hour: +o.hour % 24, wd: DAYS.indexOf(o.weekday) }; }
+  function shipDay() { var c = central(), t = day(now); if (c.wd > 0 && c.wd < 6 && c.hour < 14) return { d: t, today: true }; return { d: c.wd === 0 || c.wd === 6 || c.hour >= 14 ? nextBiz(t) : t, today: false }; }
+  function arrive(d) { var x = d; for (var i = 0; i < 3; i++) x = nextBiz(x); return x; }
+  function readyDate(p) { return plus(parse(p.poured), 14); }
+  function state(p) { if (p.left === 0) return 'out'; return readyDate(p) > day(now) ? 'curing' : 'ready'; }
+  function stamp(p) {
+    var b = '<b>B' + p.batch + '</b> ', st = state(p);
+    if (st === 'out') return '<p class="stamp">' + b + 'Sold out, next pour Nov 24</p>';
+    if (st === 'curing') return '<p class="stamp">' + b + 'Curing, ships ' + fmt(readyDate(p)) + '</p>';
+    return '<p class="stamp' + (p.left <= 12 ? ' low' : '') + '">' + b + p.left + ' left</p>';
+  }
+  function delivery(p) {
+    var st = state(p), s = shipDay();
+    if (st === 'out') return '<b>Next pour Nov 24.</b> It ships after its 14-day cure, around Dec 8.';
+    if (st === 'curing') return '<b>Ships ' + fmtD(readyDate(p)) + '</b> when batch ' + p.batch + ' finishes curing. Arrives by ' + fmt(arrive(readyDate(p))) + '.';
+    return '<b>' + (s.today ? 'Ships today' : 'Ships ' + fmtD(s.d)) + ', arrives by ' + fmt(arrive(s.d)) + '.</b>' + (s.today ? ' Order by 2 pm Central.' : '') + ' $6 flat, free over $60.';
+  }
+  function vessel(size, p) {
+    var v = { tin: [190, 74, 1], jar: [140, 146, 1], three: [214, 116, 3] }[size], tin = size === 'tin', w = v[0], h = v[1], x = 150 - w / 2, y = 226 - h, t = y + (tin ? 7 : h * .24), lw = w * .72, lx = 150 - lw / 2, lh = tin ? 36 : 62, ly = 226 - lh - (tin ? 10 : 20), fs = Math.min(tin ? 13 : 19, lw * .9 / (p.name.length * .56)), wk = '';
+    var body = function (top) { return 'M' + x + ' ' + top + 'V216q0 10 10 10H' + (x + w - 10) + 'q10 0 10-10V' + top + 'Z'; }, top = function (cy, r, a) { return '<ellipse cx="150" cy="' + cy + '" rx="' + r + '" ry="' + w * .075 + '" ' + a + '/>'; };
+    for (var i = 0; i < v[2]; i++) { var cx = 150 + (i - (v[2] - 1) / 2) * 56; wk += '<path d="M' + cx + ' ' + (t + 4) + 'q3-12 0-22" fill="none" stroke="#4a403c" stroke-width="2.5"/>'; }
+    return '<svg viewBox="0 0 300 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true" style="font-family:var(--font-display)"><defs><linearGradient id="g"><stop offset="0" stop-opacity=".22"/><stop offset=".14" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-opacity="0"/><stop offset="1" stop-opacity=".3"/></linearGradient></defs><ellipse cx="164" cy="228" rx="' + w * .54 + '" ry="7" fill="#291e21" opacity=".18"/>' +
+      '<path d="' + body(t) + '" fill="' + (tin ? '#c9c4bb' : p.wax) + '"/>' + top(t, w / 2 - (tin ? 4 : 1), 'fill="' + p.wax + '"') + wk + '<path d="' + body(y) + '" fill="url(#g)" stroke="#291e21" stroke-opacity=".22" stroke-width="1.5"/>' + (tin ? '' : top(y, w / 2, 'fill="#fff" fill-opacity=".1" stroke="#291e21" stroke-opacity=".22" stroke-width="1.5"')) +
+      '<rect x="' + lx + '" y="' + ly + '" width="' + lw + '" height="' + lh + '" fill="#f4efe6"/><text x="' + (lx + 7) + '" y="' + (ly + 10) + '" font-size="6" font-weight="700" letter-spacing=".5" fill="#291e21">BRANDT</text><text x="150" y="' + (ly + lh * .7) + '" text-anchor="middle" font-size="' + fs + '" fill="#291e21">' + p.name + '</text></svg>';
+  }
+  var byId = {}; B.forEach(function (p) { byId[p.id] = p; });
+  $('#rows').innerHTML = B.map(function (p) {
+    return '<tr data-open="' + p.id + '" style="--w:' + p.wax + '"><td>B' + p.batch + '</td><td><span class="sw" aria-hidden="true"></span><button type="button" class="nm">' + p.name + '</button></td><td>' + fmt(parse(p.poured)) + '</td><td>' + fmt(readyDate(p)) + '</td><td class="r">' + p.left + '<span class="of"> of 48</span><span class="meter" aria-hidden="true"><i style="transform:scaleX(' + (p.left / 48).toFixed(3) + ')"></i></span></td></tr>';
+  }).join('');
+
+  var sheet = $('#sheet'), scrim = $('#scrim'), lastFocus = null, bagTotal = 0, QV = { p: null, size: 'jar' };
+  function closeSheet() { sheet.classList.remove('on'); scrim.classList.remove('on'); document.documentElement.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  function tick(el, to) {
+    var from = +el.textContent.replace(/\D/g, ''), t0 = performance.now(); if (from === to || matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = money(to); return; }
+    (function step(t) { var k = Math.min(1, (t - t0) / 320); k = 1 - Math.pow(1 - k, 3); el.textContent = money(Math.round(from + (to - from) * k)); if (k < 1) requestAnimationFrame(step); })(t0);
+  }
+  function openQV(id) {
+    var p = byId[id], size = QV.size = 'jar', sold = state(p) === 'out'; QV.p = p; lastFocus = document.activeElement;
+    var label = function (k) { return SIZES[k].label + ', ' + SIZES[k].oz + ' oz'; };
+    $('#sheet-title').textContent = 'Batch B' + p.batch;
+    $('#sheet-body').innerHTML = '<div class="qv-media grain" id="qv-img">' + vessel(size, p) + '</div><div class="qv-info"><h2>' + p.name + '</h2><p class="notes">' + p.notes + '</p>' + stamp(p) + '<p class="story">' + p.story + '</p>' +
+      '<fieldset class="opt"><legend>Size: <b id="qv-sel">' + label(size) + '</b></legend><div class="opts">' + ['tin', 'jar', 'three'].map(function (k) { var z = SIZES[k]; return '<label><input type="radio" name="qvsize" value="' + k + '"' + (k === size ? ' checked' : '') + '><b>' + z.label + '</b><span>' + z.oz + ' oz, ' + money(z.price) + '</span></label>'; }).join('') + '</div></fieldset>' +
+      '<div class="qv-acc"><details class="acc"><summary>What is in it</summary><div id="qv-in">Soy wax from US soybeans, 10% fragrance by weight, cotton wick, a skin-safe candle dye. No paraffin. Burn time is ' + SIZES[size].hours + ' hours.</div></details><details class="acc"><summary>Burn care</summary><div>First burn: let the whole top go liquid, about 2 hours for a jar. Trim the wick to 1/4 in each time. Stop with 1/2 in of wax left.</div></details></div></div>';
+    $('#sheet-foot').innerHTML = '<div class="added" id="added"><span id="added-t"></span><a class="tlink" href="#bag">View bag</a></div><button class="btn block" type="button" id="qv-add"' + (sold ? ' disabled' : '') + '>' + (sold ? 'Sold out' : 'Add to bag, <span class="num" id="qv-price">' + money(SIZES[size].price) + '</span>') + '</button>' +
+      '<p class="facts">' + delivery(p) + (sold ? ' <a class="tlink" href="mailto:joan@brandtcandle.example">Email me when it is back</a>' : ' 30 days to return it, even if you have burned it.') + '</p>';
+    $$('input[name=qvsize]').forEach(function (r) {
+      r.addEventListener('change', function () { QV.size = r.value; $('#qv-img').innerHTML = vessel(r.value, p); $('#qv-sel').textContent = label(r.value); if ($('#qv-price')) tick($('#qv-price'), SIZES[r.value].price); $('#qv-in').textContent = $('#qv-in').textContent.replace(/\d+ hours/, SIZES[r.value].hours + ' hours'); });
+    });
+    var b = $('#qv-add');
+    b.addEventListener('click', function () {
+      if (b.dataset.busy) return; b.dataset.busy = '1'; b.textContent = 'Adding';
+      setTimeout(function () {
+        bagTotal += SIZES[QV.size].price;
+        $('#added-t').innerHTML = '<b>Added:</b> ' + p.name + ', ' + SIZES[QV.size].label + '. Bag total ' + money(bagTotal) + '.'; $('#added').classList.add('on');
+        b.innerHTML = 'Add another, <span class="num" id="qv-price">' + money(SIZES[QV.size].price) + '</span>'; delete b.dataset.busy;
+      }, 320);
+    });
+    sheet.classList.add('on'); scrim.classList.add('on'); document.documentElement.style.overflow = 'hidden';
+    setTimeout(function () { $('#sheet-close').focus(); }, 30);
+  }
+  sheet.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var f = $$('a[href],button:not([disabled]),input,summary', sheet).filter(function (x) { return x.offsetParent !== null; }), a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+  });
+  $('#rows').addEventListener('click', function (e) { var r = e.target.closest('[data-open]'); if (r) openQV(r.dataset.open); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet.classList.contains('on')) closeSheet(); });
+  scrim.addEventListener('click', closeSheet);
+  $('#sheet-close').addEventListener('click', closeSheet);
+})();
+</script>
+</body>
+</html>

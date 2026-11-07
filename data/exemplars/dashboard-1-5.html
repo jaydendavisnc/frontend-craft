@@ -1,0 +1,202 @@
+<!doctype html>
+<!-- A complete date-range picker, not a stock input: seven named presets that stay in sync with whatever range is picked, typed fields that accept "Oct 1" or "10/1/26" and only commit on Apply, and two linked months whose band previews the range under the pointer. Days outside the ledger are disabled and today carries a small tick. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Date range picker</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f1f1f; --ink-2:#6b7280; --ink-3:#9ca3af; --accent:#d77600; --bad:#e5484d;
+  --line:color-mix(in srgb,var(--ink) 9%,transparent); --rule:#e4e5e7; --line-strong:color-mix(in srgb,var(--ink) 18%,transparent);
+  --fill-hover:color-mix(in srgb,var(--ink) 4%,transparent); --fill-active:color-mix(in srgb,var(--ink) 7%,transparent);
+  --focus:color-mix(in srgb,var(--accent) 34%,transparent);
+  --font-text:"Zalando Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.215,.61,.355,1); --pad:40px;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/20px var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+h2{font-weight:500}
+.i{width:15px;height:15px;flex:none;fill:currentColor}
+:focus{outline:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+input:focus-visible,select:focus-visible{outline:0;box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}
+main{padding:32px var(--pad) 56px;max-width:1360px;margin:0 auto}
+.report-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;padding-top:4px}
+.report-head h2{font-size:17px;line-height:24px}
+.controls{display:flex;align-items:center;gap:8px}
+.date-trigger{display:inline-flex;align-items:center;gap:8px;height:36px;padding:0 10px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);white-space:nowrap;transition:box-shadow .15s var(--ease),background-color .15s var(--ease)}
+.date-trigger:hover{box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--fill-hover)}
+.date-trigger .i{color:var(--ink-2)}
+.select{position:relative;display:inline-flex;align-items:center;height:36px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow .15s var(--ease),background-color .15s var(--ease)}
+.select:hover{box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--fill-hover)}
+.select span{padding-left:10px;color:var(--ink-2);white-space:nowrap}
+.select select{appearance:none;-webkit-appearance:none;border:0;background:none;height:36px;padding:0 28px 0 6px;font-weight:500;border-radius:6px;cursor:pointer;max-width:180px}
+.select .i{position:absolute;right:8px;top:10px;pointer-events:none;color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;border-radius:6px;font-weight:500;white-space:nowrap;box-shadow:inset 0 0 0 1px var(--rule);transition:background-color .15s var(--ease),box-shadow .15s var(--ease)}
+.btn:hover{background:var(--fill-hover);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.btn:active{background:var(--fill-active)}
+.icon{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:6px;color:var(--ink-2);transition:background-color .15s var(--ease),color .15s var(--ease)}
+.icon:hover{background:var(--fill-hover);color:var(--ink)}
+.icon[disabled]{opacity:.45;cursor:not-allowed}
+/* Popover */
+.pop{position:fixed;inset:auto;margin:0;border:0;padding:0;background:var(--bg);color:var(--ink);border-radius:10px;box-shadow:0 0 0 1px var(--line),0 8px 24px -8px rgba(0,0,0,.2)}
+.pop:popover-open{animation:drop .15s var(--ease)}
+@keyframes drop{from{opacity:0;transform:translateY(-4px)}}
+.cal-pop{display:none;padding:0}
+.cal-pop:popover-open{display:grid;grid-template-columns:152px auto}
+.presets{display:grid;align-content:start;gap:2px;padding:12px 8px;border-right:1px solid var(--line)}
+.presets button{height:32px;padding:0 8px;border-radius:6px;white-space:nowrap;color:var(--ink-2);transition:background-color .15s var(--ease),color .15s var(--ease)}
+.presets button:hover{background:var(--fill-hover);color:var(--ink)}
+.presets button[aria-pressed="true"]{background:var(--fill-active);color:var(--ink);font-weight:500}
+.cal-main{padding:12px 16px 16px}
+.typed{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto;align-items:center;gap:8px;margin-bottom:12px;color:var(--ink-2)}
+.typed .btn{height:32px;padding:0 12px;color:var(--ink)}
+.typed input{min-width:0;width:100%;height:32px;padding:0 10px;border:0;border-radius:6px;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule)}
+.typed input.bad{box-shadow:inset 0 0 0 1px var(--bad)}
+.months{display:flex;gap:24px}
+.month header{display:grid;grid-template-columns:32px 1fr 32px;align-items:center;height:32px;margin-bottom:4px;text-align:center;font-weight:500}
+.dow,.cal{display:grid;grid-template-columns:repeat(7,32px);text-align:center}
+.dow{height:24px;font-size:12px;line-height:24px;color:var(--ink-2)}
+.cal{gap:2px 0;font-size:14px}
+.cal button,.cal span{position:relative;height:32px;border-radius:8px;line-height:32px;text-align:center;transition:background-color .1s var(--ease)}
+.cal button:hover{background:var(--fill-hover)}
+.cal button[disabled]{color:var(--ink-3);cursor:default;background:none}
+.cal .range{background:var(--fill-active);border-radius:0}
+.cal .on{background:var(--ink);color:var(--bg)}
+.cal .on:hover{background:var(--ink)}
+.cal .today::after{content:"";position:absolute;left:50%;bottom:4px;width:8px;height:1px;margin-left:-4px;background:currentColor}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calendar" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M5 1v1.5h6V1h1.5v1.5h1c.28 0 .5.22.5.5v10.5a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3c0-.28.22-.5.5-.5h1V1zM3.5 6.5v6h9v-6z"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-left" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M10 3L5 8l5 5"/></symbol>
+  <symbol id="i-right" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M6 3l5 5-5 5"/></symbol>
+</svg>
+<main>
+  <div class="report-head">
+    <h2 id="rhead">Quarter to date</h2>
+    <div class="controls">
+      <button class="date-trigger" id="trigger" aria-haspopup="dialog"><svg class="i" aria-hidden="true"><use href="#i-calendar"/></svg><span id="rangeLabel"></span></button>
+      <label class="select"><span>vs</span><select aria-label="Compare with"><option>Previous period</option><option>Last year</option><option>Nothing</option></select><svg class="i" aria-hidden="true"><use href="#i-down"/></svg></label>
+    </div>
+  </div>
+</main>
+<div id="cal" class="pop cal-pop" popover="auto" role="dialog" aria-label="Choose dates"></div>
+<script>(function () {
+  'use strict';
+  /* Days are whole integers since 1970, so a range is two numbers and every comparison is plain arithmetic. */
+  const DAY = 864e5, MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const dayOf = (y, m, d) => Math.round(Date.UTC(y, m, d) / DAY);
+  const parts = d => { const x = new Date(d * DAY); return { y: x.getUTCFullYear(), m: x.getUTCMonth(), d: x.getUTCDate(), w: x.getUTCDay() }; };
+  const fmtDay = d => { const p = parts(d); return `${MONTHS[p.m]} ${p.d}`; };
+  const fmtDayY = d => { const p = parts(d); return `${MONTHS[p.m]} ${p.d}, ${p.y}`; };
+  const fmtRange = (a, b) => a === b ? fmtDayY(a) : parts(a).y === parts(b).y ? `${fmtDay(a)} to ${fmtDay(b)}, ${parts(b).y}` : `${fmtDayY(a)} to ${fmtDayY(b)}`;
+  const quarterOf = d => { const p = parts(d); return p.y * 10 + Math.floor(p.m / 3) + 1; };
+  const quarterRange = q => { const y = Math.floor(q / 10), n = q % 10; return [dayOf(y, (n - 1) * 3, 1), dayOf(y, n * 3, 1) - 1]; };
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const ic = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const TODAY = dayOf(2026, 10, 6), START = dayOf(2025, 0, 1), CUR_Q = quarterOf(TODAY), [Q_FROM] = quarterRange(CUR_Q);
+  const PRESETS = [
+    ['l7', 'Last 7 days', () => [TODAY - 6, TODAY]],
+    ['l30', 'Last 30 days', () => [TODAY - 29, TODAY]],
+    ['qtd', 'Quarter to date', () => [Q_FROM, TODAY]],
+    ['lq', 'Last quarter', () => quarterRange(CUR_Q % 10 === 1 ? CUR_Q - 7 : CUR_Q - 1)],
+    ['ytd', 'Year to date', () => [dayOf(parts(TODAY).y, 0, 1), TODAY]],
+    ['l12', 'Last 12 months', () => [dayOf(parts(TODAY).y - 1, parts(TODAY).m, parts(TODAY).d + 1), TODAY]],
+    ['all', 'All time', () => [START, TODAY]],
+  ];
+  const S = { from: Q_FROM, to: TODAY, preset: 'qtd' };
+  const cal = { view: null, a: null, b: null, hover: null };
+  function monthHTML(y, m, nav) {
+    const first = dayOf(y, m, 1), last = dayOf(y, m + 1, 0), lead = parts(first).w;
+    const lo = cal.b == null && cal.hover != null ? Math.min(cal.a, cal.hover) : cal.a, hi = cal.b == null && cal.hover != null ? Math.max(cal.a, cal.hover) : cal.b;
+    let cells = '';
+    for (let i = 0; i < lead; i++) cells += '<span></span>';
+    for (let d = first; d <= last; d++) {
+      const caps = d === cal.a || d === cal.b, band = lo != null && hi != null && d > lo && d < hi, off = d > TODAY || d < START;
+      cells += `<button type="button" data-day="${d}" class="${caps ? 'on' : band ? 'range' : ''}${d === TODAY ? ' today' : ''}"${off ? ' disabled' : ''}${d === TODAY ? ' aria-current="date"' : ''} aria-label="${fmtDayY(d)}">${parts(d).d}</button>`;
+    }
+    return `<div class="month"><header>
+        ${nav === 'left' ? `<button type="button" class="icon" data-cal="prev" aria-label="Earlier month">${ic('left')}</button>` : '<span></span>'}
+        <span>${MONTHS[m]} ${y}</span>
+        ${nav === 'right' ? `<button type="button" class="icon" data-cal="next" aria-label="Later month"${dayOf(y, m + 1, 1) > TODAY ? ' disabled' : ''}>${ic('right')}</button>` : '<span></span>'}
+      </header><div class="dow">${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(w => `<span>${w}</span>`).join('')}</div><div class="cal">${cells}</div></div>`;
+  }
+  function paintCal() {
+    const pop = $('#cal'), [y, m] = cal.view, left = m === 0 ? [y - 1, 11] : [y, m - 1];
+    if (!$('#calFrom')) {
+      pop.innerHTML = `<div class="presets">${PRESETS.map(([k, l]) => `<button type="button" data-preset="${k}" aria-pressed="${S.preset === k}">${l}</button>`).join('')}</div>
+        <div class="cal-main"><form class="typed" id="calTyped"><input id="calFrom" aria-label="Start date" autocomplete="off"><span>to</span><input id="calTo" aria-label="End date" autocomplete="off"><button class="btn" type="submit">Apply</button></form><div id="calMonths"></div></div>`;
+    }
+    $('#calMonths').innerHTML = `<div class="months">${monthHTML(left[0], left[1], 'left') + monthHTML(y, m, 'right')}</div>`;
+    if (document.activeElement !== $('#calFrom')) $('#calFrom').value = cal.a != null ? fmtDayY(cal.a) : '';
+    if (document.activeElement !== $('#calTo')) $('#calTo').value = cal.b != null ? fmtDayY(cal.b) : '';
+    $$('.presets button').forEach(x => x.setAttribute('aria-pressed', x.dataset.preset === S.preset));
+  }
+  function placePop(pop, anchor) {
+    pop.style.left = '0px'; pop.style.top = '0px';
+    const r = anchor.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    let left = r.right - w, top = r.bottom + 8;
+    if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 8);
+    pop.style.left = Math.max(8, Math.min(left, innerWidth - w - 8)) + 'px'; pop.style.top = Math.max(8, top) + 'px';
+  }
+  function openCal(anchor) {
+    const pop = $('#cal');
+    Object.assign(cal, { a: S.from, b: S.to, hover: null });
+    const p = parts(cal.b); cal.view = [p.y, p.m];
+    pop.innerHTML = '';
+    paintCal();
+    pop.showPopover();
+    placePop(pop, anchor);
+  }
+  function parseTyped(s) {
+    const t = s.trim();
+    let m = t.match(/^([a-z]{3,9})\.?\s+(\d{1,2})(?:,?\s+(\d{4}))?$/i);
+    if (m) { const i = MONTHS.findIndex(x => x.toLowerCase() === m[1].slice(0, 3).toLowerCase()); if (i >= 0) return dayOf(+(m[3] || parts(TODAY).y), i, +m[2]); }
+    m = t.match(/^(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?$/);
+    if (m) return dayOf(+(m[3] ? (m[3].length === 2 ? '20' + m[3] : m[3]) : parts(TODAY).y), +m[1] - 1, +m[2]);
+    return null;
+  }
+  function paintHead() { $('#rangeLabel').textContent = fmtRange(S.from, S.to); $('#rhead').textContent = PRESETS.find(p => p[0] === S.preset)?.[1] || 'Selected dates'; }
+  function applyRange(a, b, preset) { S.from = a; S.to = b; S.preset = preset; $('#cal').hidePopover(); paintHead(); }
+  const presetFor = (a, b) => PRESETS.find(p => { const [x, y] = p[2](); return x === a && y === b; })?.[0] || '';
+  document.addEventListener('click', e => {
+    const dayBtn = e.target.closest('[data-day]');
+    if (dayBtn) {
+      const d = +dayBtn.dataset.day;
+      if (cal.b != null || cal.a == null) { cal.a = d; cal.b = null; paintCal(); return; }
+      cal.b = Math.max(cal.a, d); cal.a = Math.min(cal.a, d); paintCal(); return applyRange(cal.a, cal.b, presetFor(cal.a, cal.b));
+    }
+    const nav = e.target.closest('[data-cal]');
+    if (nav) { let [y, m] = cal.view; m += nav.dataset.cal === 'next' ? 1 : -1; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } cal.view = [y, m]; return paintCal(); }
+    const pre = e.target.closest('.presets [data-preset]');
+    if (pre) { const p = PRESETS.find(x => x[0] === pre.dataset.preset), [a, b] = p[2](); return applyRange(a, b, p[0]); }
+    const t = e.target.closest('#trigger'); if (t) openCal(t);
+  });
+  document.addEventListener('pointerover', e => {
+    const b = e.target.closest?.('.cal [data-day]');
+    if (b && cal.a != null && cal.b == null) { const d = +b.dataset.day; if (cal.hover !== d) { cal.hover = d; paintCal(); } }
+  });
+  // Typed dates stay a draft until Enter or Apply, so moving between the two fields never closes the picker.
+  document.addEventListener('submit', e => {
+    if (e.target.id !== 'calTyped') return;
+    e.preventDefault();
+    const a = parseTyped($('#calFrom').value), b = parseTyped($('#calTo').value);
+    const badFrom = a == null || a < START || (b != null && a > b), badTo = b == null || b > TODAY;
+    $('#calFrom').classList.toggle('bad', badFrom); $('#calTo').classList.toggle('bad', badTo);
+    if (badFrom || badTo) return;
+    cal.a = a; cal.b = b; applyRange(a, b, presetFor(a, b));
+  });
+  paintHead();
+  openCal($('#trigger'));
+})();
+</script>
+</body>
+</html>

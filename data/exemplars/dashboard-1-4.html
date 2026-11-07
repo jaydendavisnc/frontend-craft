@@ -1,0 +1,202 @@
+<!doctype html>
+<!-- The four stage totals are the filter control: they, the search, the rep select and the two flags all narrow one table of 46 deals, whose footer keeps a live count and dollar total. Each cell carries its own signal: stage pips, a red dot past 14 days without a touch, a Rebate chip on the deadline, and a Log PO link that removes the deal and offers Undo. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f1f1f; --ink-2:#6b7280; --accent:#d77600; --ok:#17b58a; --bad:#e5484d;
+  --line:color-mix(in srgb,var(--ink) 9%,transparent); --rule:#e4e5e7; --line-strong:color-mix(in srgb,var(--ink) 18%,transparent);
+  --fill-hover:color-mix(in srgb,var(--ink) 4%,transparent); --fill-active:color-mix(in srgb,var(--ink) 7%,transparent);
+  --focus:color-mix(in srgb,var(--accent) 34%,transparent); --ok-ink:color-mix(in oklab,var(--ok) 65%,var(--ink));
+  --font-text:"Zalando Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.215,.61,.355,1); --pad:40px;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/20px var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input,select{font:inherit;color:inherit}button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+table{width:100%;border-collapse:collapse}
+.i{width:15px;height:15px;flex:none;fill:currentColor}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus{outline:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+input:focus-visible,select:focus-visible{outline:0;box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}
+main{padding:32px var(--pad) 56px;max-width:1360px;margin:0 auto}
+.page-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:24px}.page-head h1{font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.018em}
+.page-head p{color:var(--ink-2);margin-top:4px;max-width:68ch}
+/* Stage totals double as filters */
+.panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.span-4{grid-column:span 4}
+.kpis{display:grid;grid-template-columns:subgrid;gap:1px}
+.kpi{display:block;width:100%;background:var(--bg);min-width:0;padding:16px 24px 18px;position:relative;transition:background-color .15s var(--ease)}
+.kpi:hover{background:color-mix(in srgb,var(--ink) 2.5%,var(--bg))}
+.kpi::after{content:"";position:absolute;inset:auto 0 -1px 0;height:2px;background:transparent;transition:background-color .15s var(--ease);z-index:1}
+.kpi[aria-selected="true"]::after{background:var(--accent)}.kpi>span{display:block;color:var(--ink-2)}
+.kpi strong{display:block;font-size:28px;line-height:36px;font-weight:400;letter-spacing:-.018em;margin-top:2px}
+.kpi em{display:block;font-style:normal;font-size:12px;line-height:16px;margin-top:4px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Filter bar */
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.find{flex:1;min-width:200px;display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2);transition:box-shadow .15s var(--ease)}
+.find:hover{box-shadow:inset 0 0 0 1px var(--line-strong)}.find:focus-within{box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}
+.find input{flex:1;min-width:0;border:0;background:none;outline:0;height:34px;color:var(--ink);box-shadow:none!important}.find input::placeholder{color:var(--ink-2)}
+.select{position:relative;display:inline-flex;align-items:center;height:36px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);transition:box-shadow .15s var(--ease),background-color .15s var(--ease)}
+.select:hover{box-shadow:inset 0 0 0 1px var(--line-strong);background:var(--fill-hover)}.select span{padding-left:10px;color:var(--ink-2);white-space:nowrap}
+.select select{appearance:none;-webkit-appearance:none;border:0;background:none;height:36px;padding:0 28px 0 6px;font-weight:500;border-radius:6px;cursor:pointer;max-width:180px}
+.select .i{position:absolute;right:8px;top:10px;pointer-events:none;color:var(--ink-2)}
+.toggle{height:36px;padding:0 12px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2);font-weight:500;white-space:nowrap;transition:background-color .15s var(--ease),color .15s var(--ease),box-shadow .15s var(--ease)}
+.toggle:hover{box-shadow:inset 0 0 0 1px var(--line-strong);color:var(--ink)}.toggle[aria-pressed="true"]{background:var(--ink);color:var(--bg);box-shadow:none}
+/* Table */
+.panel.flat{display:block;container-type:inline-size}
+.tbl{overflow-x:auto;background:var(--bg)}
+@container (max-width:1060px){.hide-t{display:none}}
+@container (max-width:860px){.hide-s,.tbl .soft{display:none}}
+.tbl th{height:36px;padding:0 10px;font-size:12px;line-height:16px;font-weight:500;color:var(--ink-2);text-align:left;white-space:nowrap;border-bottom:1px solid var(--rule);background:var(--bg)}
+.tbl td{height:36px;padding:0 10px;white-space:nowrap;border-bottom:1px solid var(--line);max-width:260px;overflow:hidden;text-overflow:ellipsis;transition:background-color .15s var(--ease)}
+.tbl tbody tr:last-child td{border-bottom:0}.tbl th:first-child,.tbl td:first-child{padding-left:24px}.tbl th:last-child,.tbl td:last-child{padding-right:24px}
+.tbl tbody tr:hover td{background:var(--fill-hover)}.tbl .r{text-align:right}.tbl td.num{font-variant-numeric:tabular-nums}.tbl td.strong{font-weight:500}.tbl td.clip{max-width:176px}
+.tbl td.dim{color:var(--ink-2)}.tbl th button{display:inline-flex;align-items:center;gap:4px;font-weight:500;color:inherit;height:36px;transition:color .15s var(--ease)}
+.tbl th button:hover{color:var(--ink)}.tbl th button .i{width:12px;height:12px;opacity:0;transition:opacity .15s var(--ease),transform .15s var(--ease)}.tbl th[aria-sort] button{color:var(--ink)}
+.tbl th[aria-sort] button .i{opacity:1}.tbl th[aria-sort="ascending"] button .i{transform:rotate(180deg)}
+.pips{display:inline-flex;gap:2px;margin-right:8px;vertical-align:-1px}.pips i{width:3px;height:10px;border-radius:1px;background:var(--fill-active)}.pips i.on{background:var(--ink)}
+.late{display:inline-flex;align-items:center;gap:6px}.late i{width:7px;height:7px;border-radius:50%;background:var(--bad)}
+.soft{display:inline-flex;align-items:center;height:20px;padding:0 6px;margin-left:6px;border-radius:4px;font-size:12px;font-weight:500;background:color-mix(in srgb,var(--accent) 14%,var(--bg));color:color-mix(in oklab,var(--accent) 52%,var(--ink))}
+.go{display:inline-flex;align-items:center;gap:4px;font-weight:500;white-space:nowrap;transition:opacity .15s var(--ease)}
+.go svg{width:12px;height:12px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.go .stem{opacity:0;transition:opacity .15s var(--ease)}
+.go .chev{transition:transform .15s var(--ease)}.go:hover{opacity:.6}.go:hover .stem{opacity:1}.go:hover .chev{transform:translateX(3px)}
+.empty{padding:40px 24px;text-align:center;color:var(--ink-2)}.empty b{display:block;font-weight:500;color:var(--ink);margin-bottom:4px}
+.empty button{color:var(--ink);font-weight:500;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line-strong);margin-top:8px;transition:opacity .15s var(--ease)}
+.empty button:hover{opacity:.6}
+.more{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 24px;border-top:1px solid var(--rule);background:var(--bg);color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:36px;padding:0 14px;border-radius:6px;font-weight:500;color:var(--ink);white-space:nowrap;box-shadow:inset 0 0 0 1px var(--rule);transition:background-color .15s var(--ease),box-shadow .15s var(--ease)}
+.btn:hover{background:var(--fill-hover);box-shadow:inset 0 0 0 1px var(--line-strong)}
+/* Toast */
+.stack{position:fixed;right:24px;bottom:24px;z-index:70;width:min(356px,calc(100vw - 32px))}
+.t{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:10px;align-items:start;padding:14px 16px;background:var(--bg);border-radius:10px;box-shadow:0 0 0 1px var(--line),0 8px 24px -8px rgba(0,0,0,.16);animation:rise .18s var(--ease);margin-top:8px}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}}
+.t .i{color:var(--ok-ink);margin-top:2px}.t b{display:block;font-weight:500;font-size:14px;line-height:18px}.t p{font-size:12px;line-height:18px;color:var(--ink-2)}
+.t button{font-weight:500;height:24px;padding:0 8px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);transition:background-color .15s var(--ease)}.t button:hover{background:var(--fill-hover)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-search" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zM14 14l-3.4-3.4"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 6l4 4 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3 8.5L6.5 12 13 4.5"/></symbol>
+</svg>
+<main id="main"></main>
+<div class="stack" id="toasts" aria-live="polite"></div>
+<script>(function () {
+  'use strict';
+  const DEALS = [ // id, account, project, rep, stage, days since last touch, close day, close label, rebate, value
+    ['D-3187', 'Cuyahoga Bend Freight', 'Racking aisles, two buildings', 'Darnell Pruitt', 'Verbal', 3, 20777, 'Nov 20', 1, 118264], ['D-3194', 'Fox Bend School District', 'Gym high-bays, three schools', 'Cal Brandt', 'Proposal sent', 19, 20791, 'Dec 4', 1, 96316],
+    ['D-3201', 'Calumet Intermodal', 'Dock and staging', 'Marisol Ibarra', 'Verbal', 6, 20774, 'Nov 17', 1, 74902], ['D-3208', 'Wolf River Schools', 'Field house', 'Cal Brandt', 'Photometrics', 16, 20796, 'Dec 9', 1, 61740],
+    ['D-3215', 'Mercy East Hospital', 'Patient floor 3', 'Noor Haddad', 'Proposal sent', 15, 20790, 'Dec 3', 1, 52488], ['D-3222', 'St. Brendan Medical Center', 'After-hours schedules', 'Deb Hoekstra', 'Photometrics', 16, 20819, 'Jan 1', 0, 30680],
+    ['D-3229', 'Lakeshore Pallet & Crate', 'Cold room bays', 'Deb Hoekstra', 'Site audit', 24, 20819, 'Jan 1', 0, 29532], ['D-3236', 'St. Brendan Medical Center', 'Loading dock', 'Deb Hoekstra', 'Site audit', 7, 20791, 'Dec 4', 1, 38948],
+    ['D-3243', 'Sable Point Area Schools', 'Parking lot poles', 'Deb Hoekstra', 'Photometrics', 8, 20807, 'Dec 20', 0, 25092], ['D-3250', 'St. Brendan Medical Center', 'Exit signs, west tower', 'Deb Hoekstra', 'Photometrics', 15, 20830, 'Jan 12', 0, 6496],
+    ['D-3257', 'Fulton Street Stamping', 'Paint line', 'Deb Hoekstra', 'Site audit', 0, 20836, 'Jan 18', 0, 19046], ['D-3264', 'Lakeshore Pallet & Crate', 'Break rooms', 'Ty Bouwman', 'Photometrics', 5, 20838, 'Jan 20', 0, 15552],
+    ['D-3271', 'Sable Point Public Works', 'City hall offices', 'Ty Bouwman', 'Site audit', 1, 20834, 'Jan 16', 0, 19872], ['D-3278', 'Thornapple Valley Schools', 'Science labs', 'Ty Bouwman', 'Site audit', 2, 20807, 'Dec 20', 0, 74496],
+    ['D-3285', 'Lakeshore Pallet & Crate', 'Front offices', 'Ty Bouwman', 'Site audit', 2, 20800, 'Dec 13', 0, 41376], ['D-3292', 'Grand Bend Furniture Works', 'Shift schedules', 'Ty Bouwman', 'Proposal sent', 7, 20801, 'Dec 14', 0, 7080],
+    ['D-3299', 'Coopersfield Transit Authority', 'Transit lot', 'Ty Bouwman', 'Photometrics', 3, 20780, 'Nov 23', 1, 17748], ['D-3306', 'Ambassador Freight Terminal', 'Egress path', 'Noor Haddad', 'Site audit', 1, 20797, 'Dec 10', 1, 12238],
+    ['D-3313', 'Gratiot Avenue Plating', 'Paint line', 'Noor Haddad', 'Photometrics', 12, 20851, 'Feb 2', 0, 25680], ['D-3320', 'Gratiot Avenue Plating', 'Paint line', 'Noor Haddad', 'Proposal sent', 17, 20789, 'Dec 2', 1, 34240],
+    ['D-3327', 'Ambassador Freight Terminal', 'Front offices', 'Noor Haddad', 'Verbal', 1, 20800, 'Dec 13', 0, 58272], ['D-3334', 'Ambassador Freight Terminal', 'Aisle motion sensors', 'Noor Haddad', 'Verbal', 0, 20801, 'Dec 14', 0, 7080],
+    ['D-3341', 'Mercy East Hospital', 'Parking deck', 'Noor Haddad', 'Site audit', 25, 20831, 'Jan 13', 0, 12240], ['D-3348', 'Eastline Community Schools', 'Classroom wing', 'Stan Nowak', 'Site audit', 6, 20811, 'Dec 24', 0, 16416],
+    ['D-3355', 'Ambassador Freight Terminal', 'Racking aisles', 'Stan Nowak', 'Photometrics', 18, 20801, 'Dec 14', 0, 59920], ['D-3362', 'Woodward Logistics Park', 'Dock and staging', 'Stan Nowak', 'Photometrics', 5, 20823, 'Jan 5', 0, 50076],
+    ['D-3369', 'Lakepointe Public Works', 'Library reading rooms', 'Stan Nowak', 'Site audit', 0, 20833, 'Jan 15', 0, 22848], ['D-3376', 'Port Clement Public Works', 'Library reading rooms', 'Darnell Pruitt', 'Verbal', 17, 20780, 'Nov 23', 1, 35616],
+    ['D-3383', 'Erie Shore Medical Group', 'Central plant', 'Darnell Pruitt', 'Site audit', 18, 20825, 'Jan 7', 0, 54784], ['D-3390', 'Cuyahoga Bend Freight', 'Egress path', 'Darnell Pruitt', 'Site audit', 6, 20832, 'Jan 14', 0, 5510],
+    ['D-3397', 'Black River Castings', 'Weld cells', 'Darnell Pruitt', 'Site audit', 3, 20774, 'Nov 17', 1, 21828], ['D-3404', 'Black River Castings', 'Inspection lab', 'Darnell Pruitt', 'Proposal sent', 2, 20791, 'Dec 4', 0, 18336],
+    ['D-3411', 'Joliet Road Cold Storage', 'Dock and staging', 'Marisol Ibarra', 'Site audit', 9, 20790, 'Dec 3', 0, 40018], ['D-3418', 'Midway Foods Distribution', 'Racking aisles', 'Marisol Ibarra', 'Proposal sent', 5, 20799, 'Dec 12', 0, 125832],
+    ['D-3425', 'Midway Foods Distribution', 'Cold room bays', 'Marisol Ibarra', 'Site audit', 0, 20853, 'Feb 4', 0, 50718], ['D-3432', 'Joliet Road Cold Storage', 'Break rooms', 'Marisol Ibarra', 'Site audit', 24, 20832, 'Jan 14', 0, 25632],
+    ['D-3439', 'Des Plaines Valley District 208', 'Classroom wing', 'Marisol Ibarra', 'Site audit', 9, 20847, 'Jan 29', 0, 21408], ['D-3446', 'Waukesha Pattern Foundry', 'Shipping yard', 'Cal Brandt', 'Site audit', 7, 20793, 'Dec 6', 0, 15912],
+    ['D-3453', 'Waukesha Pattern Foundry', 'Weld cells', 'Cal Brandt', 'Site audit', 8, 20789, 'Dec 2', 0, 13696], ['D-3460', 'Lakeland Regional Health', 'Central plant', 'Cal Brandt', 'Proposal sent', 11, 20797, 'Dec 10', 0, 20972],
+    ['D-3467', 'Lakeland Regional Health', 'Loading dock', 'Cal Brandt', 'Verbal', 0, 20772, 'Nov 15', 1, 93304], ['D-3474', 'Riverbend Academy', 'Field house', 'Kou Vang', 'Proposal sent', 7, 20781, 'Nov 24', 0, 14980],
+    ['D-3481', 'Nicollet Cold Storage', 'Racking aisles', 'Kou Vang', 'Verbal', 9, 20777, 'Nov 20', 1, 63986], ['D-3488', 'Nicollet Cold Storage', 'Racking aisles', 'Kou Vang', 'Site audit', 0, 20834, 'Jan 16', 0, 31672],
+    ['D-3495', 'Mississippi Bluffs ISD 914', 'Field house', 'Kou Vang', 'Site audit', 6, 20800, 'Dec 13', 0, 65056], ['D-3502', 'Nicollet Cold Storage', 'Dock and staging', 'Kou Vang', 'Photometrics', 8, 20829, 'Jan 11', 0, 34026],
+  ].map(([id, acct, project, rep, stage, touch, close, closeLabel, rebate, amount]) => ({ id, acct, project, rep, stage, touch, close, closeLabel, rebate, amount }));
+  const STAGES = ['Site audit', 'Photometrics', 'Proposal sent', 'Verbal'], STALLED = 14;
+  const REPS = ['Deb Hoekstra', 'Ty Bouwman', 'Noor Haddad', 'Stan Nowak', 'Darnell Pruitt', 'Marisol Ibarra', 'Cal Brandt', 'Kou Vang'];
+  const T = { q: '', rep: '', stage: '', stalled: false, rebate: false, sort: 'amount', dir: -1, limit: 40 };
+  let lastPO = 23451; // highest PO in the ledger, which numbers in twos
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = n => (n < 0 ? '−' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const sum = list => list.reduce((a, o) => a + o.amount, 0);
+  const ic = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const GO = '<svg viewBox="0 0 12 12" aria-hidden="true"><path class="stem" d="M2 6h8"/><path class="chev" d="M5.5 2 9.5 6l-4 4"/></svg>';
+  const stageCell = st => { const i = STAGES.indexOf(st); return `<span class="pips" aria-hidden="true">${STAGES.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</span>${esc(st)}`; };
+  const touchCell = x => x.touch >= STALLED ? `<span class="late"><i></i>${x.touch} days</span>` : x.touch === 0 ? 'Today' : x.touch === 1 ? '1 day' : `${x.touch} days`;
+  const COLS = [
+    { k: 'acct', label: 'Account', cell: x => esc(x.acct), strong: true },
+    { k: 'project', label: 'Project', cell: x => esc(x.project), dim: true, cls: 'hide-t clip' },
+    { k: 'rep', label: 'Rep', cell: x => esc(x.rep), cls: 'hide-s' },
+    { k: 'stage', label: 'Stage', cell: x => stageCell(x.stage) },
+    { k: 'touch', label: 'Last touch', cell: touchCell },
+    { k: 'close', label: 'Close by', cell: x => x.closeLabel + (x.rebate ? '<span class="soft">Rebate</span>' : '') },
+    { k: 'amount', label: 'Value', cell: x => money(x.amount), r: true, num: true },
+    { k: 'act', label: '', sort: false, r: true, cell: x => `<button class="go" data-act="winDeal" data-id="${x.id}">Log PO ${GO}<span class="sr"> for ${esc(x.acct)}</span></button>` },
+  ];
+  function rows() {
+    const q = T.q.trim().toLowerCase(); let list = DEALS;
+    if (T.stage) list = list.filter(x => x.stage === T.stage);
+    if (T.rep) list = list.filter(x => x.rep === T.rep);
+    if (T.stalled) list = list.filter(x => x.touch >= STALLED);
+    if (T.rebate) list = list.filter(x => x.rebate);
+    if (q) list = list.filter(x => `${x.id} ${x.acct} ${x.project} ${x.rep}`.toLowerCase().includes(q));
+    const f = { acct: x => x.acct, project: x => x.project, rep: x => x.rep, stage: x => STAGES.indexOf(x.stage), touch: x => x.touch, close: x => x.close, amount: x => x.amount }[T.sort];
+    return list.slice().sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * T.dir; });
+  }
+  function tableHTML() {
+    const list = rows();
+    const head = COLS.map(c => `<th scope="col" class="${c.r ? 'r ' : ''}${c.cls || ''}"${T.sort === c.k ? ` aria-sort="${T.dir > 0 ? 'ascending' : 'descending'}"` : ''}>${c.sort === false ? '' : `<button data-act="sort" data-key="${c.k}">${esc(c.label)}${ic('down')}</button>`}</th>`).join('');
+    const body = list.length ? list.slice(0, T.limit).map(r => `<tr>${COLS.map(c => `<td class="${c.r ? 'r ' : ''}${c.num ? 'num ' : ''}${c.dim ? 'dim ' : ''}${c.strong ? 'strong ' : ''}${c.cls || ''}">${c.cell(r)}</td>`).join('')}</tr>`).join('')
+      : `<tr><td colspan="${COLS.length}" style="max-width:none;white-space:normal"><div class="empty"><b>${DEALS.length ? 'No open deals match these filters' : 'No open deals in this territory'}</b><br><button data-act="clear">Clear filters</button></div></td></tr>`;
+    return `<div class="tbl"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
+      <div class="more"><span>${Math.min(T.limit, list.length)} of ${list.length} deals, ${money(sum(list))}</span>${list.length > T.limit ? '<button class="btn" data-act="more">Show 40 more</button>' : ''}</div>`;
+  }
+  const stageCells = () => STAGES.map(st => { const mine = DEALS.filter(x => x.stage === st); return `<button class="kpi" role="tab" aria-selected="${T.stage === st}" data-act="stage" data-stage="${esc(st)}"><span>${esc(st)}</span><strong>${money(sum(mine))}</strong><em>${mine.length} ${mine.length === 1 ? 'deal' : 'deals'}</em></button>`; }).join('');
+  const lede = () => `${money(sum(DEALS))} across ${DEALS.length} deals at face value. Nothing here is weighted by stage, and none of it counts until the PO is signed.`;
+  function paintData() { $('#lede').textContent = lede(); $('#stages').innerHTML = stageCells(); $('#tbl').innerHTML = tableHTML(); }
+  function render() {
+    $('#main').innerHTML = `<div class="page-head"><div><h1>Open pipeline</h1><p id="lede"></p></div></div>
+      <div class="panel" style="margin-bottom:16px"><div class="span-4 kpis" role="tablist" aria-label="Stage" id="stages"></div></div>
+      <div class="bar">
+        <label class="find">${ic('search')}<input data-filter="q" value="${esc(T.q)}" placeholder="Search account, project or rep" aria-label="Search pipeline"></label>
+        <label class="select"><span>Rep</span><select data-filter="rep" aria-label="Rep"><option value="">All</option>${REPS.map(r => `<option${T.rep === r ? ' selected' : ''}>${esc(r)}</option>`).join('')}</select>${ic('down')}</label>
+        <button class="toggle" data-act="flag" data-flag="stalled" aria-pressed="${T.stalled}">Stalled ${STALLED} days</button>
+        <button class="toggle" data-act="flag" data-flag="rebate" aria-pressed="${T.rebate}">Rebate deadline</button>
+      </div>
+      <div class="panel flat" id="tbl"></div>`;
+    paintData();
+  }
+  function toast(title, line, undo) {
+    const t = document.createElement('div'); t.className = 't';
+    t.innerHTML = `${ic('check')}<div><b>${esc(title)}</b><p>${esc(line)}</p></div><button>Undo</button>`;
+    const box = $('#toasts'); box.append(t);
+    while (box.children.length > 3) box.firstChild.remove();
+    let timer = setTimeout(() => t.remove(), 6000);
+    t.onpointerenter = () => clearTimeout(timer);
+    t.onpointerleave = () => { timer = setTimeout(() => t.remove(), 3000); };
+    t.querySelector('button').onclick = () => { undo(); t.remove(); };
+  }
+  const ACT = {
+    sort(t) { const k = t.dataset.key; if (T.sort === k) T.dir = -T.dir; else { T.sort = k; T.dir = ['acct', 'rep', 'project'].includes(k) ? 1 : -1; } $('#tbl').innerHTML = tableHTML(); },
+    more() { T.limit += 40; $('#tbl').innerHTML = tableHTML(); },
+    stage(t) { T.stage = T.stage === t.dataset.stage ? '' : t.dataset.stage; paintData(); },
+    flag(t) { const f = t.dataset.flag; T[f] = !T[f]; t.setAttribute('aria-pressed', T[f]); $('#tbl').innerHTML = tableHTML(); },
+    clear() { Object.assign(T, { q: '', rep: '', stage: '', stalled: false, rebate: false }); render(); },
+    winDeal(t) {
+      const i = DEALS.findIndex(x => x.id === t.dataset.id), deal = DEALS[i];
+      DEALS.splice(i, 1); paintData();
+      toast(`PO-${lastPO += 2} logged`, `${money(deal.amount)} from ${deal.acct}`, () => { DEALS.splice(Math.min(i, DEALS.length), 0, deal); paintData(); });
+    },
+  };
+  document.addEventListener('click', e => { const t = e.target.closest('[data-act]'); if (t) ACT[t.dataset.act](t); });
+  document.addEventListener('input', e => { const f = e.target.dataset?.filter; if (!f) return; T[f] = e.target.value; T.limit = 40; $('#tbl').innerHTML = tableHTML(); });
+  render();
+})();
+</script>
+</body>
+</html>

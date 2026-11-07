@@ -1,0 +1,126 @@
+{
+  "exclude": {
+    "motion.hover-state/micro-lift": "Cards that lift on hover are a listed giveaway, and lift plus tinted shadow is the kit default. Only 13 to 18% of CTAs use a transform at all, and tone-step or fill rows cover this slot better.",
+    "motion.load-sequence/film-opening": "Needs a real rendered film or object, and holds the page for 4 to 6s. A model's version is a cheap imitation in front of the content.",
+    "motion.load-sequence/percent-counter": "Needs real assets to load. A generated page has nothing to load, so the count becomes a fake timer, and load.md already says not to show one then.",
+    "motion.scroll-pin-or-scrub/camera-flight": "Needs real 3D scenes and a page with no conversion job. A model's scenes end up as procedural objects at poster scale.",
+    "motion.scroll-pin-or-scrub/wheel-gated-stage": "Takes the wheel away from the reader, and its own spec says expressive sites only. Expressive hands skip flags, so it stays available there.",
+    "motion.scroll-reveal/rise-stagger-row": "A rise and fade on entry is the fade-up on every block. A model dealt this row spreads it down the page, and only 3 of 66 measured reveal rows are this form.",
+    "section.logo-wall/press-masthead-row": "An 'as seen in' row needs real coverage and real mastheads. On an invented business it is a made-up claim set in letterforms a model cannot draw.",
+    "section.pricing-table/flip-board-price": "A split-flap prop is named as a costume in anti-patterns: a gimmick doing the job of design, on the section that most needs to read plainly.",
+    "section.stats/rating-row": "Invented scores from named platforms. This is the five-star tell from 6 of 16 GPT runs, plus a false source.",
+    "section.team/candid-group-photo": "Real people in a real place cannot be generated. The whole form depends on an asset a model cannot produce.",
+    "section.testimonial/press-quotes": "Invented quotes and scores attributed to real outlets are fabricated proof, and the form depends on publisher marks a model does not have.",
+    "section.testimonial/video-testimonials": "Depends on real footage of real customers. A play ring over a generated still is reliably cheap."
+  },
+  "downweight": {
+    "motion.hover-state/arrow-nudge": {
+      "weight": 0.4,
+      "reason": "Fine on one link, but dealing it invites an arrow on every button, and arrows bolted on are a listed giveaway (16 of 16 GPT runs)."
+    },
+    "motion.hover-state/scale-pop": {
+      "weight": 0.3,
+      "reason": "Scale 1.05 on hover is the kit default. Only 13 to 18% of CTAs use any transform, and most change fill."
+    },
+    "motion.load-sequence/colour-plate-mark": {
+      "weight": 0.3,
+      "reason": "A splash before the page. Fine for a hotel, but preloaders are only 5 to 6% of SaaS and devtool load rows, and load theatre is a measured Opus tell."
+    },
+    "motion.load-sequence/headline-word-cycle": {
+      "weight": 0.3,
+      "reason": "The rotating word is a template move, and it stacks on the marked-word giveaway. Only worth it when the audiences are real."
+    },
+    "motion.load-sequence/iris-or-sheet-reveal": {
+      "weight": 0.3,
+      "reason": "A covered entrance of 1 to 1.5s whose shape must come from the brand, and a model invents the shape. Reads as load theatre."
+    },
+    "motion.load-sequence/mark-performs": {
+      "weight": 0.3,
+      "reason": "Needs an owned mark, which a freshly invented brand lacks, and holds a flat screen for 1.5 to 3s."
+    },
+    "motion.load-sequence/staged-fade-stair": {
+      "weight": 0.4,
+      "reason": "A real Linear-style move, but readable only by about 1.9s and easy to overrun. Models already keep heroes changing past 0.3s."
+    },
+    "motion.load-sequence/title-card-hold": {
+      "weight": 0.2,
+      "reason": "Holds a blank card and 110px type for about 2.5s before the page. Load theatre plus an oversized headline."
+    },
+    "motion.load-sequence/typed-title": {
+      "weight": 0.3,
+      "reason": "The typewriter headline is the cheap version of this idea, and it delays the first readable sentence."
+    },
+    "motion.load-sequence/word-blur-resolve": {
+      "weight": 0.3,
+      "reason": "Headline is not readable until well past 1s. Past the 1.2s limit in load.md for a selling page, and blur reveals are overused."
+    },
+    "motion.load-sequence/wordmark-docks-to-nav": {
+      "weight": 0.3,
+      "reason": "Covers the page for about 2s and locks scroll. Good when chosen for a brand, wrong as a default on a page with a job to do."
+    },
+    "motion.scroll-pin-or-scrub/sticky-card-deck": {
+      "weight": 0.3,
+      "reason": "Translucent cards with 22px blur land on the glass-cards giveaway, and stacked full-screen statements invite one sentence per screen."
+    },
+    "motion.scroll-reveal/blur-front-wipe": {
+      "weight": 0.2,
+      "reason": "Same scrubbed-reading failure as word-ink-scrub, with a gradient band and blurred text on top."
+    },
+    "motion.scroll-reveal/word-ink-scrub": {
+      "weight": 0.2,
+      "reason": "Scrubbed reading is a measured Opus tell: most paused frames show a half-lit sentence. Real on gold sites, but only as a deliberate showpiece."
+    },
+    "section.case-study/brand-poster-tiles": {
+      "weight": 0.4,
+      "reason": "Needs custom art per customer. The spec warns a bare gradient reads as missing, and a gradient is what a model will reach for."
+    },
+    "section.cta-band/character-or-joke-close": {
+      "weight": 0.3,
+      "reason": "Needs a real mascot a model cannot draw well, or a joke that lands in the Opus deadpan tic."
+    },
+    "section.cta-band/floating-object-ring": {
+      "weight": 0.3,
+      "reason": "Scattered tiles around a heading echo the orbiting logo ring from GPT runs, and the objects must be real, which an invented brand lacks."
+    },
+    "section.cta-band/giant-type-sign-off": {
+      "weight": 0.3,
+      "reason": "100 to 250px display type with an accent last word hits two giveaways: the oversized headline and the marked word."
+    },
+    "section.cta-band/inset-colour-panel": {
+      "weight": 0.4,
+      "reason": "The tinted CTA band of the template stack, and the commonest close. Loud bands are 24% of all closes but 10% of gold."
+    },
+    "section.feature-sticky-scroll/scrubbed-statement": {
+      "weight": 0.2,
+      "reason": "Pinned type as the event: scrubbed reading plus one sentence per screen, both measured Opus tells."
+    },
+    "section.footer/ghost-wordmark-crop": {
+      "weight": 0.3,
+      "reason": "Pale ghost wordmarks are named in anti-patterns from a reject and an Opus footer, and models reach for them to add weight cheaply."
+    },
+    "section.footer/giant-wordmark-finish": {
+      "weight": 0.3,
+      "reason": "Real on gold beside a true index, but 7 of 16 Opus runs already end this way. Fine when chosen, overused by default."
+    },
+    "section.footer/object-signoff": {
+      "weight": 0.3,
+      "reason": "Tilted paper labels and stickers are the hero-sticker habit moved to the footer. Its own spec limits it to personal sites and strong concepts."
+    },
+    "section.integrations/orbit-and-arc": {
+      "weight": 0.2,
+      "reason": "Logos orbiting a tile appeared in 3 of 3 GPT PM runs, and the chapter names it as the cheap version."
+    },
+    "section.logo-wall/masked-grey-marquee": {
+      "weight": 0.3,
+      "reason": "The default 'trusted by' strip, the commonest row in the family, though only 31% of walls move. With invented logos it is the template at its most visible."
+    },
+    "section.testimonial/drifting-double-row": {
+      "weight": 0.3,
+      "reason": "The infinite moving cards pattern from component kits. It needs about thirty public quotes, and a model fills it with stock names."
+    },
+    "section.testimonial/portrait-story-cards": {
+      "weight": 0.3,
+      "reason": "The photo must show the real person. Without real portraits the form collapses into generated faces under a scrim."
+    }
+  }
+}

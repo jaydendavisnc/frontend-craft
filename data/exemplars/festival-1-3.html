@@ -1,0 +1,158 @@
+<!doctype html>
+<!-- A lineup that fits 27 acts on one screen and still gives each a stage, a hometown and a specific sentence: hovering a row opens it with flex-grow inside a fixed-height list, so the eight closed rows shrink from 46px to 32px, the open one takes 156px, and the column never changes height or moves the page.
+     Time sits in a fixed 74px column of 13px tabular figures, the name turns accent on hover, and the copy is written per act ("She is 74, plays seated and tells long stories between reels").
+     Extraction note: the stage thumbnails were rendered images on the page; here they are inline SVG on the same four grounds. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hadlock lineup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0f13; --s1:#16171b; --s2:#1d1e22; --s3:#2a2b31;
+  --ink:#e3e5f1; --ink-2:#b4b6c0; --mut:#8b8d94; --accent:#86ec7b; --on-accent:#0c1a0a;
+  --rule:rgba(227,229,241,.11);
+  --m:48px; --in:24px; --nav:0px;
+  --ease:cubic-bezier(.25,.1,.3,1);
+  --font:"TikTok Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font);font-optical-sizing:auto;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);overflow-x:clip}
+a{color:inherit;text-decoration:none}
+img,svg{display:block;max-width:100%;height:auto}
+button,input{font:inherit;color:inherit}
+ul,ol{list-style:none}
+b{font-weight:500}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.g{color:var(--mut)}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.frame{width:100%;max-width:1440px;margin-inline:auto;padding-inline:var(--m)}
+.ruled{--r:linear-gradient(var(--rule),var(--rule));--c:calc((100% - 2*var(--m))/3);
+  background-image:var(--r),var(--r),var(--r),var(--r);background-repeat:no-repeat;background-size:1px 100%;
+  background-position:var(--m) 0,calc(var(--m) + var(--c)) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.ruled.r2{background-image:var(--r),var(--r),var(--r);background-position:var(--m) 0,calc(var(--m) + 2*var(--c)) 0,calc(100% - var(--m)) 0}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.cell{padding-inline:var(--in)}
+.sect>.frame:last-child{padding-bottom:104px}
+h2{font-size:48px;font-weight:400;letter-spacing:-.022em;line-height:1.08}
+.band{position:sticky;top:var(--nav);z-index:20;background:var(--bg);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.band-g{display:grid;grid-template-columns:2fr 1fr;align-items:end;padding-block:22px 20px}
+.aside{font-size:15px;line-height:20px;color:var(--mut);padding-bottom:3px}
+.aside-m{display:none}
+/* Lineup: three days on the three columns; hovered row opens, the column keeps its height */
+.lineup{padding-top:24px}
+.day{padding-inline:var(--in)}
+.day h3{font-size:20px;font-weight:450;letter-spacing:-.01em;line-height:1.3;padding-bottom:16px}
+.acts{--row:46px;display:flex;flex-direction:column;height:calc(9*var(--row));border-bottom:1px solid var(--rule)}
+.act{flex:1 1 0;min-height:0;overflow:hidden;border-top:1px solid var(--rule);transition:flex-grow .42s var(--ease) 80ms}
+.act-h{all:unset;box-sizing:border-box;display:grid;grid-template-columns:74px 1fr;align-items:center;width:100%;min-height:32px;height:var(--row);font-size:16px;line-height:20px;cursor:pointer;transition:height .42s var(--ease) 80ms}
+.act-h .t{font-size:13px;font-weight:500;color:var(--mut);font-variant-numeric:tabular-nums}
+.act-h .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s}
+.act-d{display:flex;gap:14px;padding-bottom:12px}
+.act-d .th{flex:none;width:80px;height:100px}
+.act-d p{font-size:15px;line-height:21px;color:var(--ink-2)}
+.act-d b{color:var(--ink);display:block}
+@media (hover:hover) and (min-width:961px){
+  .act:hover,.act:focus-within{flex-grow:4.84}
+  .act:hover .n,.act:focus-within .n{color:var(--accent)}
+}
+.act.open{flex-grow:4.84}
+@media (min-width:961px){
+  .acts:has(.act:hover) .act:not(:hover) .act-h,.acts:has(.act:focus-within) .act:not(:focus-within) .act-h,.acts:has(.act.open) .act:not(.open) .act-h{height:32px}
+}
+.js .stagger .r{opacity:0;transform:translateY(10px)}
+.js .stagger.in .r{opacity:1;transform:none;transition:opacity .5s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i,0)*70ms)}
+.stagger .r:nth-child(2){--i:1}.stagger .r:nth-child(3){--i:2}.stagger .r:nth-child(4){--i:3}
+@media (max-width:1240px){.act-h{grid-template-columns:72px 1fr}}
+@media (max-width:960px){
+  :root{--m:16px;--in:16px}
+  .ruled,.ruled.r2{background-image:var(--r),var(--r);background-position:var(--m) 0,calc(100% - var(--m)) 0}
+  .g3{grid-template-columns:minmax(0,1fr)}
+  h2{font-size:28px}
+  .band-g{grid-template-columns:1fr;padding-block:13px 12px}
+  .aside{display:none}
+  .aside-m{display:block;padding:14px var(--in) 0;font-size:15px;line-height:21px;color:var(--mut)}
+  .sect>.frame:last-child{padding-bottom:64px}
+  .lineup{padding-top:20px;row-gap:32px}
+  .acts{display:block;height:auto}
+  .act{overflow:visible}
+  .act-d{display:none;padding-top:2px}
+  .act.open .act-d{display:flex}
+  .act-h{height:48px}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="st-bar" viewBox="0 0 80 100"><rect width="80" height="100" fill="#7ad86f"/><path d="M0 22 80 2V58L0 76z" fill="#c4b595"/><path d="M8 14 60 6l4 8-52 9z" fill="#e4e1d8"/><path d="M12 23l48-8v16l-48 8z" fill="#17181c"/><path d="M12 39l54-9v5l-54 9z" fill="#e4e1d8"/><path d="M60 15l14-2v16l-14 2z" fill="#e4e1d8"/><path fill="#17181c" d="M10 50h2v7h-2zM16 48h2v7h-2zM22 52h2v7h-2zM28 47h2v7h-2zM34 51h2v7h-2zM40 45h2v7h-2zM46 49h2v7h-2zM52 44h2v7h-2zM58 47h2v7h-2zM64 42h2v7h-2zM13 59h2v7h-2zM25 60h2v7h-2zM37 57h2v7h-2zM49 56h2v7h-2zM61 53h2v7h-2z"/></symbol>
+  <symbol id="st-slip" viewBox="0 0 80 100"><rect width="80" height="100" fill="#dfb743"/><path d="M0 34c20-4 30 14 22 40L0 92z" fill="#e4e1d8"/><path d="M80 52C56 54 46 72 52 100h28z" fill="#e4e1d8"/><path d="M42 28h26L14 86 2 76z" fill="#a4784a"/><path d="M38 24l30-2v8H38z" fill="#8a6238"/><path d="M42 6l24-2v16l-24 2z" fill="#17181c"/><path d="M38 7h2v20h-2zM68 4h2v20h-2z" fill="#a4784a"/><path fill="#17181c" d="M22 56h2v6h-2zM28 52h2v6h-2zM34 48h2v6h-2zM16 62h2v6h-2zM26 62h2v6h-2zM8 60h2v6H8zM62 62h2v6h-2zM70 70h2v6h-2z"/></symbol>
+  <symbol id="st-loft" viewBox="0 0 80 100"><rect width="80" height="100" fill="#de9baf"/><path d="M0 44 40 26l40 8v44L24 92H0z" fill="#e4e1d8"/><path d="M56 8l7 20H49zM64 4l8 26H56zM72 10l7 22H65z" fill="#14281f"/><path d="M12 48 60 34l10 12-52 16z" fill="#a4784a"/><path stroke="#6e4d2b" stroke-width="1.5" fill="none" d="M20 45l8 13M30 42l8 13M40 39l8 13M50 36l8 13"/><path d="M18 62l52-16v18L18 80z" fill="#f1eee6"/><path d="M34 66l24-7v6l-24 7z" fill="#17181c"/></symbol>
+  <symbol id="st-floor" viewBox="0 0 80 100"><rect width="80" height="100" fill="#2d51d4"/><path d="M0 0h80v18L0 26z" fill="#e4e1d8"/><path d="M0 26l80-8v22L0 50z" fill="#b8b5ac"/><path d="M0 50l80-10v34L0 78z" fill="#3a352c"/><path fill="#e4e1d8" d="M8 49h3v28H8zM36 46h3v30h-3zM64 42h3v33h-3z"/><path fill="#a4784a" d="M0 76l80-4v5L0 81z"/><path fill="#17181c" d="M14 62h2v8h-2zM20 58h2v8h-2zM26 64h2v8h-2zM32 57h2v8h-2zM42 60h2v8h-2zM48 55h2v8h-2zM54 62h2v8h-2zM60 54h2v8h-2zM72 58h2v8h-2z"/><path fill="#a4784a" d="M6 81h2v14H6zM28 80h2v14h-2zM50 79h2v14h-2zM72 78h2v14h-2z"/></symbol>
+</defs></svg>
+<section id="lineup" class="sect">
+<div class="band"><div class="frame ruled r2"><div class="band-g"><h2 class="cell">The 2027 lineup</h2><p class="cell aside">Most festivals make you choose between stages. We book 27 acts, not 80, so that you can see all of them.</p></div></div></div><div class="frame ruled"><p class="aside-m">Most festivals make you choose between stages. We book 27 acts, not 80, so that you can see all of them.</p></div>
+<div class="frame ruled"><div class="g3 lineup stagger">
+<div class="day r"><h3><span>Friday</span> <span class="g">August 20</span></h3>
+<ul class="acts">
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">11:15 am</span><span class="n">The Lubec Steel Orchestra</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Lubec, ME.</b> Eighteen steel pans on a flatbed. It is the first thing you hear as you walk across.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">2:00 pm</span><span class="n">Ines Cardoso</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. New Bedford, MA.</b> Cape Verdean morna with a six-piece band, from the town that has been singing it longest in this country.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">3:15 pm</span><span class="n">Bunny Arsenault</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Moncton, NB.</b> Acadian fiddle. She is 74, plays seated and tells long stories between reels.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">4:30 pm</span><span class="n">Wide Load</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Portland, ME.</b> A noise-rock trio we have asked back three times. Earplugs are free at the token booth.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">5:45 pm</span><span class="n">Hotel Ghana</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Worcester, MA.</b> Eleven-piece highlife band. Their last set here ran 20 minutes over and we let it.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">7:00 pm</span><span class="n">Cold Frame</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Burlington, VT.</b> Two modular synths and a pedal steel. The sun goes down at 7:39, about two-thirds of the way in.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">8:15 pm</span><span class="n">Yusra Haddad</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Dearborn, MI.</b> Oud and tape delay, in a room built to dry nets.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">9:30 pm</span><span class="n">Marlene Aubry</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Montréal, QC.</b> Ninety minutes and a full string section, the longest set she has played in the US.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">11:20 pm</span><span class="n">DJ Bait Shop</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Machias, ME.</b> Vinyl only. Plays as the road dries out and the day tickets walk home.</p></div></li>
+</ul></div>
+<div class="day r"><h3><span>Saturday</span> <span class="g">August 21</span></h3>
+<ul class="acts">
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">12:00 pm</span><span class="n">Bethel Road Singers</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Lewiston, ME.</b> A gospel quartet that started in a church basement in 1988, singing unaccompanied.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">2:45 pm</span><span class="n">The Fourth Cousins</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Floyd, VA.</b> Old-time string band from the Blue Ridge: twin fiddles, clawhammer banjo and a washtub bass.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">4:00 pm</span><span class="n">Nwosu &amp; Holm</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Chicago, IL.</b> Piano and bass clarinet. The piano came over the bar on a hay wagon.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">5:15 pm</span><span class="n">Slow Clutch</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Detroit, MI.</b> Motorik four-piece who tend to play one song for most of the hour.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">6:30 pm</span><span class="n">Wet Season</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Minneapolis, MN.</b> Dance band with two drummers, in the best slot we have: the hour before sunset.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">7:45 pm</span><span class="n">Nadia Sow</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Providence, RI.</b> Kora and electric bass, and the quietest set of the weekend.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">9:00 pm</span><span class="n">Sister Cousteau</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Halifax, NS.</b> Dub from a city with the same tide as ours. The sound system travels in a horse trailer.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">10:15 pm</span><span class="n">The Big Thaw</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Brooklyn, NY.</b> Seven-piece art-rock band playing their first show on an island, and their first without a click track.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">12:05 am</span><span class="n">Vinalhaven Sound System</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Vinalhaven, ME.</b> Three lobstermen and one very large speaker, playing rocksteady from a collection of 45s.</p></div></li>
+</ul></div>
+<div class="day r"><h3><span>Sunday</span> <span class="g">August 22</span></h3>
+<ul class="acts">
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">12:45 pm</span><span class="n">Kenny Dubé’s Accordion Party</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Biddeford, ME.</b> A Franco-American kitchen party, moved outdoors and onto a truck.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">3:30 pm</span><span class="n">Tomasi &amp; Daughter</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Hilo, HI.</b> Slack-key guitar, a father and daughter, on their first trip to the East Coast.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">4:45 pm</span><span class="n">Lake Effect Choir</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Buffalo, NY.</b> Forty singers in a 220-seat loft, with no microphones.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">6:00 pm</span><span class="n">Mirabel Oyelaran</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. Houston, TX.</b> Alt-R&amp;B with a horn section she borrowed from her church.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">7:15 pm</span><span class="n">Loretta Ouellette</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Fort Kent, ME.</b> Country songs in two languages, on her first trip home in nine years.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">8:30 pm</span><span class="n">Jonah Ruiz</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-loft"/></svg><p><b>The Net Loft. Albuquerque, NM.</b> Solo classical guitar, unamplified, in the quietest room on the island.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">9:45 pm</span><span class="n">Las Amaya</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-slip"/></svg><p><b>The Slip. San Antonio, TX.</b> Three sisters playing conjunto as fast as punk.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">11:00 pm</span><span class="n">Rhoda Mae Pettigrew</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-floor"/></svg><p><b>The Packing Floor. Memphis, TN.</b> She is 71 and asked for the 11 pm slot, so she has it.</p></div></li>
+  <li class="act"><button class="act-h" type="button" aria-expanded="false"><span class="t">12:50 am</span><span class="n">The Hadlock Crew Band</span></button><div class="act-d"><svg class="th" viewBox="0 0 80 100" aria-hidden="true"><use href="#st-bar"/></svg><p><b>The Bar. Hadlock Island, ME.</b> The people who built the festival, on the flatbed, until the truck has to go.</p></div></li>
+</ul></div></div></div>
+</section>
+<script>
+(() => {
+  const root = document.documentElement;
+  const moving = !matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window;
+  if (moving) root.classList.add('js');
+  const $ = (s, c = document) => c.querySelector(s), $$ = (s, c = document) => [...c.querySelectorAll(s)];
+
+  /* Rise-stagger: rows of peers only, once. The row is observed so it starts together. */
+  if (moving) {
+    const io = new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); o.unobserve(e.target); } }), { rootMargin: '0px 0px -12% 0px' });
+    $$('.stagger').forEach(el => io.observe(el));
+  }
+
+  /* Lineup rows: hover and focus open them in CSS; touch toggles. */
+  $$('.act-h').forEach(b => b.addEventListener('click', () => {
+    if (matchMedia('(hover:hover) and (min-width:961px)').matches) return;
+    const li = b.parentElement, was = li.classList.contains('open');
+    $$('.act.open', li.parentElement).forEach(x => { x.classList.remove('open'); $('.act-h', x).setAttribute('aria-expanded', 'false'); });
+    if (!was) { li.classList.add('open'); b.setAttribute('aria-expanded', 'true'); }
+  }));
+})();
+</script>
+</body>
+</html>

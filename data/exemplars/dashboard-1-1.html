@@ -1,0 +1,219 @@
+<!doctype html>
+<!-- A working first screen rather than a mockup: 96px signed total over quota, a quota track with a black pace tick, a sentence generated from the numbers that names the gap and who caused it, then the seven deals to chase, stalled ones first. The territory switch at the foot of the rail rescopes every figure, sentence, nav count and table row through a skeleton built from the same boxes. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Q4 sales | Millrace Lighting</title>
+<link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400..500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --ink:#1f1f1f; --ink-2:#6b7280; --accent:#d77600; --bad:#e5484d;
+  --rail:#141416; --rail-line:rgba(255,255,255,.1); --rail-ink:#fff; --rail-ink-2:rgba(255,255,255,.62);
+  --line:color-mix(in srgb,var(--ink) 9%,transparent); --rule:#e4e5e7; --line-strong:color-mix(in srgb,var(--ink) 18%,transparent);
+  --fill-hover:color-mix(in srgb,var(--ink) 4%,transparent); --fill-active:color-mix(in srgb,var(--ink) 7%,transparent);
+  --focus:color-mix(in srgb,var(--accent) 34%,transparent);
+  --font-text:"Zalando Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ease:cubic-bezier(.215,.61,.355,1); --rail-w:280px; --pad:40px;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font:400 14px/20px var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button,input{font:inherit;color:inherit}button{background:none;border:0;padding:0;cursor:pointer;text-align:inherit}
+a{color:inherit;text-decoration:none}
+h1,h2{font-weight:500}table{width:100%;border-collapse:collapse}.i{width:15px;height:15px;flex:none;fill:currentColor}
+.num{font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+:focus{outline:0}:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-radius:4px}
+/* Rail */
+.rail{position:fixed;inset:0 auto 0 0;z-index:30;display:flex;flex-direction:column;width:var(--rail-w);background:var(--rail);color:var(--rail-ink-2);border-right:1px solid var(--rail-line)}
+.brand{display:flex;align-items:center;gap:10px;height:64px;padding:0 16px 0 22px;border-bottom:1px solid var(--rail-line);flex:none;color:var(--rail-ink);font-size:15px;font-weight:500;letter-spacing:-.005em}
+.list{flex:1;min-height:0;overflow:auto;padding:16px 12px 24px;scrollbar-width:none;mask-image:linear-gradient(#000 calc(100% - 56px),transparent)}.list h2{font:400 12px/16px var(--font-text);color:var(--rail-ink-2);padding:8px 10px 6px}
+.list h2:not(:first-child){margin-top:16px}
+.item{display:flex;align-items:center;gap:12px;width:100%;height:33px;padding:0 10px;border-radius:6px;color:var(--rail-ink-2);transition:color .15s var(--ease),background-color .15s var(--ease)}
+.item:hover{color:var(--rail-ink);background:rgba(255,255,255,.05)}.item[aria-current]{color:var(--rail-ink);background:rgba(255,255,255,.08);font-weight:500}.item em{margin-left:auto;font-style:normal;font-size:12px;color:var(--rail-ink-2)}
+.pin{flex:none;border-top:1px solid var(--rail-line);padding:12px;position:relative}
+.switch{display:grid;grid-template-columns:minmax(0,1fr) 15px;align-items:center;gap:8px;width:100%;padding:6px 10px;border-radius:6px;transition:background-color .15s var(--ease)}.switch:hover{background:rgba(255,255,255,.05)}
+.switch b{display:block;font-weight:500;color:var(--rail-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.switch small{display:block;font-size:12px;line-height:16px;color:var(--rail-ink-2)}
+/* Shell */
+.shell{margin-left:var(--rail-w);min-width:0}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;height:64px;padding:0 max(var(--pad),calc((100% - 1280px)/2));background:var(--bg);border-bottom:1px solid var(--rule)}
+.scope{flex:1;min-width:0;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.scope b{font-weight:500;color:var(--ink)}
+.search{display:flex;align-items:center;gap:8px;width:280px;height:36px;padding:0 6px 0 10px;border-radius:6px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2);transition:box-shadow .15s var(--ease)}
+.search:hover{box-shadow:inset 0 0 0 1px var(--line-strong)}.search:focus-within{box-shadow:inset 0 0 0 1px var(--accent),0 0 0 3px var(--focus)}.search input{flex:1;min-width:0;border:0;background:none;height:34px;color:var(--ink);outline:0}
+.search input::placeholder{color:var(--ink-2)}
+kbd{font:400 12px/20px var(--font-text);min-width:20px;text-align:center;height:20px;border-radius:4px;box-shadow:inset 0 0 0 1px var(--rule);color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:36px;padding:0 14px;border-radius:6px;font-weight:500;white-space:nowrap;background:var(--ink);color:var(--bg);transition:background-color .15s var(--ease)}
+.btn:hover{background:color-mix(in srgb,var(--ink) 84%,var(--bg))}.btn:active{background:#000}
+main{padding:32px var(--pad) 56px;max-width:1360px;margin:0 auto}
+/* Verdict */
+.verdict{padding-bottom:36px}
+.when{display:flex;justify-content:space-between;gap:16px;color:var(--ink-2)}
+.folio{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 14px;margin-top:6px;font-size:96px;line-height:1.03;font-weight:400;letter-spacing:-.022em}.folio .den{font-size:48px;letter-spacing:0;color:var(--ink-2)}
+.quota{position:relative;margin-top:22px;padding-top:24px}
+.track{position:relative;height:8px;border-radius:4px;background:var(--fill-active)}.track i{position:absolute;top:0;bottom:0;left:0;transition:width .5s var(--ease),left .5s var(--ease)}
+.track .fill{background:var(--accent);border-radius:4px 0 0 4px}
+.pace-mark{position:absolute;top:0;bottom:-6px;width:1px;background:var(--ink);transition:left .5s var(--ease)}
+.pace-label{position:absolute;top:-2px;margin-left:8px;white-space:nowrap;font-size:12px;line-height:16px;transition:left .5s var(--ease)}.pace-label.flip{margin-left:-8px;transform:translateX(-100%)}
+.key{display:flex;flex-wrap:wrap;gap:4px 24px;margin-top:12px;font-size:12px;line-height:16px;color:var(--ink-2)}.key b{font-weight:500;color:var(--ink);margin-left:4px}
+.say{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 56px;align-items:start;margin-top:24px}
+.lede{font-size:17px;line-height:1.55;max-width:62ch}.lede b{font-weight:500}
+.facts{display:grid;grid-template-columns:repeat(3,auto);gap:0 32px}.facts dt{font-size:12px;line-height:16px;color:var(--ink-2);white-space:nowrap}.facts dd{margin:2px 0 0;font-size:17px;line-height:24px}
+/* Deals table */
+.go{display:inline-flex;align-items:center;gap:4px;font-weight:500;white-space:nowrap;transition:opacity .15s var(--ease)}
+.go svg{width:12px;height:12px;overflow:visible;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.go .stem{opacity:0;transition:opacity .15s var(--ease)}.go .chev{transition:transform .15s var(--ease)}
+.go:hover{opacity:.6}.go:hover .stem{opacity:1}.go:hover .chev{transform:translateX(3px)}
+.block-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:16px}.block-head h2{font-size:17px;line-height:24px}.block-head p{color:var(--ink-2);margin-top:2px}
+.panel{background:var(--rule);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.tbl{overflow-x:auto;background:var(--bg)}.tbl th{height:36px;padding:0 10px;font-size:12px;line-height:16px;font-weight:500;color:var(--ink-2);text-align:left;white-space:nowrap;border-bottom:1px solid var(--rule);background:var(--bg)}
+.tbl td{height:36px;padding:0 10px;white-space:nowrap;border-bottom:1px solid var(--line);max-width:260px;overflow:hidden;text-overflow:ellipsis;transition:background-color .15s var(--ease)}.tbl tbody tr:last-child td{border-bottom:0}
+.tbl th:first-child,.tbl td:first-child{padding-left:24px}.tbl th:last-child,.tbl td:last-child{padding-right:24px}.tbl tbody tr:hover td{background:var(--fill-hover)}.tbl .r{text-align:right}.tbl td.num{font-variant-numeric:tabular-nums}
+.tbl td.strong{font-weight:500}.tbl td.dim{color:var(--ink-2)}
+.pips{display:inline-flex;gap:2px;margin-right:8px;vertical-align:-1px}.pips i{width:3px;height:10px;border-radius:1px;background:var(--fill-active)}.pips i.on{background:var(--ink)}
+.late{display:inline-flex;align-items:center;gap:6px}.late i{width:7px;height:7px;border-radius:50%;background:var(--bad)}
+/* Territory menu */
+.pop{position:fixed;inset:auto;margin:0;border:0;padding:0;background:var(--bg);color:var(--ink);border-radius:10px;box-shadow:0 0 0 1px var(--line),0 8px 24px -8px rgba(0,0,0,.2)}.pop:popover-open{animation:drop .15s var(--ease)}
+@keyframes drop{from{opacity:0;transform:translateY(-4px)}}
+.menu{width:256px;padding:4px}.menu button{display:grid;grid-template-columns:minmax(0,1fr) auto 15px;align-items:center;gap:8px;width:100%;height:33px;padding:0 8px;border-radius:6px;transition:background-color .15s var(--ease)}
+.menu button:hover{background:var(--fill-hover)}.menu small{font-size:12px;color:var(--ink-2)}.menu .i{visibility:hidden}.menu [aria-checked="true"] .i{visibility:visible}.menu hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+/* Skeleton: same boxes as the real thing */
+.sk{display:inline-block;vertical-align:baseline;border-radius:6px;background:var(--fill-active)}
+@media(prefers-reduced-motion:no-preference){.sk{animation:pulse 1.6s ease-in-out infinite}}
+.sk,.sk *{color:transparent!important;fill:transparent}
+.sk-text{display:inline;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+@keyframes pulse{50%{opacity:.5}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-grid" viewBox="0 0 16 16"><path d="M2 2.75C2 2.34 2.34 2 2.75 2h3.5c.41 0 .75.34.75.75v5.5c0 .41-.34.75-.75.75h-3.5A.75.75 0 0 1 2 8.25zM9 2.75c0-.41.34-.75.75-.75h3.5c.41 0 .75.34.75.75v2.5c0 .41-.34.75-.75.75h-3.5A.75.75 0 0 1 9 5.25zM9 7.75c0-.41.34-.75.75-.75h3.5c.41 0 .75.34.75.75v5.5c0 .41-.34.75-.75.75h-3.5a.75.75 0 0 1-.75-.75zM2 10.75c0-.41.34-.75.75-.75h3.5c.41 0 .75.34.75.75v2.5c0 .41-.34.75-.75.75h-3.5a.75.75 0 0 1-.75-.75z"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M3.5 1.5h9c.28 0 .5.22.5.5v12.2c0 .2-.23.31-.39.2L11 13.2l-1.5 1.2a.25.25 0 0 1-.31 0L8 13.2l-1.19 1.2a.25.25 0 0 1-.31 0L5 13.2l-1.61 1.2a.25.25 0 0 1-.39-.2V2c0-.28.22-.5.5-.5zM5.5 4.75v1.25h5V4.75zM5.5 7.75V9h5V7.75z"/></symbol>
+  <symbol id="i-funnel" viewBox="0 0 16 16"><path d="M2 2.5h12c.42 0 .65.48.39.81L9.75 9.1V13c0 .19-.11.36-.28.45l-2.5 1.2a.5.5 0 0 1-.72-.45V9.1L1.61 3.31A.5.5 0 0 1 2 2.5z"/></symbol>
+  <symbol id="i-person" viewBox="0 0 16 16"><path d="M8 1.75a3.25 3.25 0 1 1 0 6.5 3.25 3.25 0 0 1 0-6.5zM2.5 13.6C2.9 11 5.2 9.5 8 9.5s5.1 1.5 5.5 4.1c.04.22-.14.4-.36.4H2.86a.36.36 0 0 1-.36-.4z"/></symbol>
+  <symbol id="i-building" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M2.5 2.25c0-.41.34-.75.75-.75h5.5c.41 0 .75.34.75.75V14.5h-7zM4.25 4v1.5h1.25V4zm2.25 0v1.5h1.25V4zM4.25 7v1.5h1.25V7zm2.25 0v1.5h1.25V7zM4.25 10v1.5h1.25V10zm2.25 0v1.5h1.25V10z"/><path d="M10.5 6h2.75c.41 0 .75.34.75.75v7.75h-3.5z"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 16 16"><path d="M4 1.5h8c.28 0 .5.22.5.5v12.1a.4.4 0 0 1-.64.32L8 11.5l-3.86 2.92a.4.4 0 0 1-.64-.32V2c0-.28.22-.5.5-.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M7 12A5 5 0 1 0 7 2a5 5 0 0 0 0 10zM14 14l-3.4-3.4"/></symbol>
+  <symbol id="i-updown" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M5 6l3-3 3 3M5 10l3 3 3-3"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M8 2.5v11M2.5 8h11"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3 8.5L6.5 12 13 4.5"/></symbol>
+</svg>
+<aside class="rail" aria-label="Main navigation">
+  <a class="brand" href="#/overview" aria-label="Millrace Lighting, sales overview">
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 11.5a7 7 0 0 1 14 0z" fill="#d77600"/><rect x="3" y="13.2" width="14" height="1.6" fill="#d77600"/></svg>
+    <span>Millrace</span>
+  </a>
+  <nav class="list" id="nav"></nav>
+  <div class="pin" id="pin"></div>
+</aside>
+<div class="shell">
+  <header class="top">
+    <p class="scope" id="scope"></p>
+    <form class="search" role="search" onsubmit="return false"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="globalQ" type="search" placeholder="Search POs, accounts" aria-label="Search POs and accounts" autocomplete="off"><kbd>/</kbd></form>
+    <button class="btn"><svg class="i" aria-hidden="true"><use href="#i-plus"/></svg><span>Log a sale</span></button>
+  </header>
+  <main id="main" tabindex="-1"></main>
+</div>
+<div id="terrMenu" class="pop menu" popover="auto" role="menu" aria-label="Territory"></div>
+<script>(function () {
+  'use strict';
+  /* Each scope is what the ledger returns for that territory. DEALS are the open deals on the Dec 11 rebate. */
+  const SCOPES = {
+    'All territories': { quota: 2140000, signed: 900666, pace: 931935, dueOpen: 1326152, need: 35410, run: 36185, multi: 1, worst: ['Wisconsin', -49407], stalled: 12, rebate: 13, big: 4 },
+    'West Michigan': { quota: 520000, signed: 224632, pace: 226452, dueOpen: 204740, need: 8439, run: 11232, multi: 1, worst: ['Ty Bouwman', -13686], stalled: 3, rebate: 2, big: 2 },
+    'Detroit Metro': { quota: 470000, signed: 217356, pace: 204677, dueOpen: 240654, need: 7218, run: 10868, multi: 1, worst: ['Stan Nowak', -9494], stalled: 4, rebate: 3, big: 1 },
+    'Northern Ohio': { quota: 330000, signed: 147824, pace: 143710, dueOpen: 194044, need: 5205, run: 2807, multi: 0, worst: ['Darnell Pruitt', 4114], stalled: 2, rebate: 3, big: 0 },
+    Chicagoland: { quota: 380000, signed: 158364, pace: 165484, dueOpen: 240752, need: 6332, run: 6313, multi: 0, worst: ['Marisol Ibarra', -7120], stalled: 1, rebate: 1, big: 0 },
+    Wisconsin: { quota: 270000, signed: 68174, pace: 117581, dueOpen: 301940, need: 5766, run: 2365, multi: 0, worst: ['Cal Brandt', -49407], stalled: 2, rebate: 3, big: 0 },
+    'Twin Cities': { quota: 170000, signed: 84316, pace: 74032, dueOpen: 144022, need: 2448, run: 2600, multi: 0, worst: ['Kou Vang', 10284], stalled: 0, rebate: 1, big: 1 },
+  };
+  const DEALS = [ // account, project, rep, territory, stage, days since last touch, close by, value
+    ['Cuyahoga Bend Freight', 'Racking aisles, two buildings', 'Darnell Pruitt', 'Northern Ohio', 'Verbal', 3, 'Nov 20', 118264], ['Fox Bend School District', 'Gym high-bays, three schools', 'Cal Brandt', 'Wisconsin', 'Proposal sent', 19, 'Dec 4', 96316],
+    ['Calumet Intermodal', 'Dock and staging', 'Marisol Ibarra', 'Chicagoland', 'Verbal', 6, 'Nov 17', 74902], ['Wolf River Schools', 'Field house', 'Cal Brandt', 'Wisconsin', 'Photometrics', 16, 'Dec 9', 61740],
+    ['Mercy East Hospital', 'Patient floor 3', 'Noor Haddad', 'Detroit Metro', 'Proposal sent', 15, 'Dec 3', 52488], ['St. Brendan Medical Center', 'Loading dock', 'Deb Hoekstra', 'West Michigan', 'Site audit', 7, 'Dec 4', 38948],
+    ['Coopersfield Transit Authority', 'Transit lot', 'Ty Bouwman', 'West Michigan', 'Photometrics', 3, 'Nov 23', 17748], ['Ambassador Freight Terminal', 'Egress path', 'Noor Haddad', 'Detroit Metro', 'Site audit', 1, 'Dec 10', 12238],
+    ['Gratiot Avenue Plating', 'Paint line', 'Noor Haddad', 'Detroit Metro', 'Proposal sent', 17, 'Dec 2', 34240], ['Port Clement Public Works', 'Library reading rooms', 'Darnell Pruitt', 'Northern Ohio', 'Verbal', 17, 'Nov 23', 35616],
+    ['Black River Castings', 'Weld cells', 'Darnell Pruitt', 'Northern Ohio', 'Site audit', 3, 'Nov 17', 21828], ['Lakeland Regional Health', 'Loading dock', 'Cal Brandt', 'Wisconsin', 'Verbal', 0, 'Nov 15', 93304],
+    ['Nicollet Cold Storage', 'Racking aisles', 'Kou Vang', 'Twin Cities', 'Verbal', 9, 'Nov 20', 63986],
+  ].map(([acct, project, rep, terr, stage, touch, close, amount]) => ({ acct, project, rep, terr, stage, touch, close, amount }));
+  const STAGES = ['Site audit', 'Photometrics', 'Proposal sent', 'Verbal'], STALLED = 14, LATENCY = 640;
+  const S = { terr: 'All territories', ready: false };
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = n => (n < 0 ? '−' : '') + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+  const short = n => { const a = Math.abs(n); return a >= 1e6 ? '$' + (n / 1e6).toFixed(a % 1e6 === 0 ? 0 : a % 1e5 === 0 ? 1 : 2) + 'M' : '$' + Math.round(n / 1e3) + 'k'; };
+  const pct = (n, dp = 0) => (n * 100).toFixed(dp) + '%';
+  const ic = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+  const GO = '<svg viewBox="0 0 12 12" aria-hidden="true"><path class="stem" d="M2 6h8"/><path class="chev" d="M5.5 2 9.5 6l-4 4"/></svg>';
+  const sk = inner => S.ready ? inner : `<span class="sk" aria-hidden="true">${inner}</span>`;
+  function verdictCopy(q) {
+    const gap = q.signed - q.pace, [who, short] = q.worst, days = '35 selling days left';
+    const rebate = 'Rebate paperwork closes Dec 11, and a job that misses it usually waits for spring.';
+    if (gap < 0) {
+      const alone = short < 0 && Math.abs(short) >= Math.abs(gap);
+      const lead = short >= 0 ? '' : alone && q.multi ? `${esc(who)} alone is ${money(-short)} short, more than the whole gap. ` : q.multi ? `${esc(who)} is furthest behind, ${money(-short)} short. ` : '';
+      return `We are <b>${money(-gap)} behind pace</b> with ${days}. ${lead}${rebate}`;
+    }
+    return `We are <b>${money(gap)} ahead of pace</b> with ${days}. ${short < 0 ? `${esc(who)} is still ${money(-short)} short. ` : ''}${rebate}`;
+  }
+  function verdictHTML() {
+    const q = SCOPES[S.terr], fill = Math.min(1, q.signed / q.quota), mark = q.pace / q.quota, terr = S.terr === 'All territories' ? '' : ', ' + esc(S.terr);
+    return `<section class="verdict" aria-labelledby="qhead">
+      <p class="when"><span>Q4 2026, signed POs against quota${terr}</span><span>Day 37 of 92</span></p>
+      <h1 class="folio" id="qhead"><span class="sr">Signed this quarter: </span><span class="cur">${sk(money(q.signed))}</span><span class="den"><span class="sr">of quota </span>/${money(q.quota).slice(1)}</span></h1>
+      <div class="quota">
+        <div class="track" role="img" aria-label="${pct(fill)} of quota signed. Pace today is ${pct(mark)}."><i class="fill" style="width:${S.ready ? fill * 100 : 0}%"></i></div>
+        <i class="pace-mark" style="left:${mark * 100}%"></i>
+        <span class="pace-label${mark > .62 ? ' flip' : ''}" style="left:${mark * 100}%">Pace today ${money(q.pace)}</span>
+      </div>
+      <div class="key"><span>Signed<b>${sk(pct(fill, 1))}</b></span><span>Still to sign<b>${sk(money(Math.max(0, q.quota - q.signed)))}</b></span><span>Open, due by Dec 31<b>${sk(money(q.dueOpen))}</b></span></div>
+      <div class="say">
+        <p class="lede">${S.ready ? verdictCopy(q) : `<span class="sk sk-text" aria-hidden="true">${verdictCopy(q)}</span>`}</p>
+        <dl class="facts"><div><dt>Selling days left</dt><dd>35</dd></div><div><dt>Needed per day</dt><dd>${sk(money(q.need))}</dd></div><div><dt>Last 20 days, per day</dt><dd>${sk(money(q.run))}</dd></div></dl>
+      </div>
+    </section>`;
+  }
+  const COLS = [
+    { label: 'Account', cls: 'strong', cell: x => esc(x.acct) }, { label: 'Project', cls: 'dim', cell: x => esc(x.project) }, { label: 'Rep', cell: x => esc(x.rep) },
+    { label: 'Stage', cell: x => { const i = STAGES.indexOf(x.stage); return `<span class="pips" aria-hidden="true">${STAGES.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</span>${esc(x.stage)}`; } },
+    { label: 'Last touch', cell: x => x.touch >= STALLED ? `<span class="late"><i></i>${x.touch} days</span>` : x.touch === 0 ? 'Today' : x.touch === 1 ? '1 day' : `${x.touch} days` },
+    { label: 'Close by', cell: x => x.close }, { label: 'Value', cls: 'r num', cell: x => money(x.amount) },
+    { label: '', cls: 'r', cell: x => `<button class="go">Log PO ${GO}<span class="sr"> for ${esc(x.acct)}</span></button>` },
+  ];
+  function chaseHTML() {
+    const list = DEALS.filter(x => S.terr === 'All territories' || x.terr === S.terr), total = list.reduce((a, x) => a + x.amount, 0);
+    const rows = list.slice().sort((a, b) => (b.touch >= STALLED) - (a.touch >= STALLED) || b.amount - a.amount).slice(0, 7);
+    const body = !S.ready ? Array.from({ length: 7 }, (_, i) => `<tr>${COLS.map((c, k) => `<td class="${c.cls || ''}"><span class="sk" style="width:${/\br\b/.test(c.cls) ? 48 + (i * 7 + k * 5) % 22 : 56 + (i * 13 + k * 17) % 60}px">&nbsp;</span></td>`).join('')}</tr>`).join('')
+      : rows.map(x => `<tr>${COLS.map(c => `<td class="${c.cls || ''}">${c.cell(x)}</td>`).join('')}</tr>`).join('');
+    return `<section aria-labelledby="chead">
+      <div class="block-head"><div><h2 id="chead">Deals to chase before Dec 11</h2><p>${S.ready ? `${list.length} open ${list.length === 1 ? 'deal needs' : 'deals need'} a signed PO to keep the rebate, ${money(total)} in all. Stalled ones first.` : '&nbsp;'}</p></div><a class="go" href="#/pipeline?view=rebate">All rebate deals ${GO}</a></div>
+      <div class="panel"><div class="tbl"><table><thead><tr>${COLS.map(c => `<th scope="col" class="${/\br\b/.test(c.cls) ? 'r' : ''}">${c.label}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div></div>
+    </section>`;
+  }
+  function renderRail() {
+    const q = SCOPES[S.terr], link = (icon, label, extra = '', on = '') => `<a class="item" href="#/${label.toLowerCase().replace(/\W+/g, '-')}"${on}>${ic(icon)}${label}${extra}</a>`;
+    $('#nav').innerHTML = `<h2>Sales</h2>${link('grid', 'Overview', '', ' aria-current="page"')}${link('receipt', 'Orders')}${link('funnel', 'Pipeline')}${link('person', 'Reps')}${link('building', 'Accounts')}
+      <h2>Saved views</h2>${link('bookmark', 'Stalled deals', `<em>${q.stalled}</em>`)}${link('bookmark', 'Rebate deadline', `<em>${q.rebate}</em>`)}${link('bookmark', 'POs over $50k', `<em>${q.big}</em>`)}`;
+    $('#pin').innerHTML = `<button class="switch" data-act="territory" aria-haspopup="menu"><span><b>${esc(S.terr)}</b><small>Annika VanderWal, VP Sales</small></span>${ic('updown')}</button>`;
+    $('#scope').innerHTML = `<b>${esc(S.terr)}</b><span>, sample data through Nov 6, 2026</span>`;
+  }
+  function render() { $('#main').innerHTML = verdictHTML() + chaseHTML(); renderRail(); }
+  let fetchId = 0;
+  function refetch() { const id = ++fetchId; setTimeout(() => { if (id === fetchId) { S.ready = true; render(); } }, LATENCY); }
+  function openTerritory(anchor) {
+    const menu = $('#terrMenu');
+    menu.innerHTML = Object.entries(SCOPES).map(([t, q], i) => `<button role="menuitemradio" aria-checked="${S.terr === t}" data-terr="${esc(t)}"><span>${esc(t)}</span><small class="num">${short(q.quota)}</small>${ic('check')}</button>${i === 0 ? '<hr>' : ''}`).join('');
+    menu.showPopover();
+    const r = anchor.getBoundingClientRect();
+    menu.style.left = Math.max(8, r.left) + 'px'; menu.style.top = Math.max(8, r.top - menu.offsetHeight - 8) + 'px';
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-terr]');
+    if (t) { $('#terrMenu').hidePopover(); S.terr = t.dataset.terr; S.ready = false; render(); refetch(); return; }
+    const a = e.target.closest('[data-act="territory"]'); if (a) openTerritory(a);
+  });
+  document.addEventListener('keydown', e => { if (e.key === '/' && document.activeElement.tagName !== 'INPUT') { e.preventDefault(); $('#globalQ').focus(); } });
+  render(); refetch();
+})();
+</script>
+</body>
+</html>

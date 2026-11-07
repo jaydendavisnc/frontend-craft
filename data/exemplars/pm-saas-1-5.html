@@ -1,0 +1,143 @@
+<!doctype html>
+<!-- Pricing with no tier cards: five "Free" lines mark out who never pays, then one sentence defines the only paid unit, an editor, and the founder's own story carries the sales call. The primary button is real too: it opens a dialog that reads the visitor's CSV in the browser, reports lines and columns, validates the email and confirms with what it read. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fiducial pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Newsreader:opsz,wght@6..72,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffeb;--surface:#e4e4d0;--ink:#1a1a1a;--accent:#034f46;
+  --font-display:'Newsreader',Georgia,'Times New Roman',serif;              /* built with Gambetta (Fontshare); Newsreader stands in here */
+  --font-text:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --ink-2:#66665b;--half:color-mix(in srgb,var(--surface) 42%,var(--bg));--line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --frame:min(1200px,100% - 48px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 var(--font-text);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden}
+h2,p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+.fr{width:var(--frame);margin-inline:auto;border-inline:1px solid var(--line)}
+h2{font:400 38px/1.16 var(--font-display);letter-spacing:-.018em}
+.cta{display:flex;justify-content:center;gap:12px;margin-top:28px}
+.link{font:500 14px/20px var(--font-text);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;color:var(--ink);transition:color .15s}
+.link:hover{color:var(--accent)}
+/* buttons */
+.btn-lit{--lift:color-mix(in oklab,var(--accent) 60%,#fff);display:inline-flex;align-items:center;height:48px;padding:0 20px;border:0;border-radius:14px;white-space:nowrap;background:var(--accent);color:var(--bg);font:550 15px/1 var(--font-text);cursor:pointer;
+  box-shadow:0 2px 6px -1px color-mix(in srgb,var(--accent) 30%,#000 30%),inset 0 6px 14px color-mix(in srgb,var(--lift) 48%,transparent);transition:background-color .15s ease,box-shadow .15s ease,translate .1s}
+.btn-lit:hover{background:color-mix(in oklab,var(--accent) 90%,#fff)}
+.btn-lit:active{translate:0 2px;box-shadow:inset 0 6px 14px color-mix(in srgb,var(--lift) 48%,transparent)}
+.btn-line{display:inline-flex;align-items:center;height:48px;padding:0 20px;border-radius:14px;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 16%,transparent);font:500 15px/1 var(--font-text);white-space:nowrap;transition:color .15s,box-shadow .15s}
+.btn-line:hover{color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+/* close: a tone panel, the pricing stated by repetition */
+.close{padding:24px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.panel{position:relative;overflow:hidden;isolation:isolate;padding:72px;background:var(--surface);border-radius:32px;--warm:#f7e6a8;--cool:#bfe0c6}
+.panel::after{content:"";position:absolute;z-index:-1;left:44%;right:-12%;top:-30%;bottom:-30%;opacity:.62;filter:blur(40px);
+  background:radial-gradient(38% 42% at 56% 52%,var(--warm),transparent),radial-gradient(34% 62% at 26% 50%,var(--cool),transparent),radial-gradient(30% 60% at 92% 46%,var(--cool),transparent)}
+.ana{font:400 52px/66px var(--font-display);letter-spacing:-.02em}
+.ana span{display:block;color:var(--ink)}
+.ana b{font:600 50px/66px var(--font-text);letter-spacing:-.03em;color:var(--accent)}
+.offer{display:grid;grid-template-columns:minmax(0,1.1fr) auto;gap:20px 48px;align-items:center;margin-top:56px;padding-top:28px;border-top:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}
+.price{font-size:17px;line-height:1.5;color:#55554b}
+.price b{font-weight:500;color:var(--ink)}
+.offer .cta{margin:0;justify-content:flex-end}
+.dana{grid-column:1/-1;max-width:44em;font-size:15px;line-height:1.5;color:#55554b;text-wrap:pretty}
+/* import dialog */
+.dlg{width:min(480px,100% - 32px);padding:32px;border:0;border-radius:14px;background:var(--bg);color:var(--ink);box-shadow:0 0 0 1px var(--line),0 24px 60px rgba(30,30,10,.18)}
+.dlg::backdrop{background:rgba(26,26,18,.32)}
+.dlg h2{font-size:32px}
+.dlg-p{margin-top:10px;font-size:15px;line-height:1.5;color:var(--ink-2)}
+.drop{position:relative;display:grid;place-items:center;min-height:112px;margin-top:20px;padding:16px;border-radius:14px;background:var(--half);box-shadow:inset 0 0 0 1px var(--line);font-size:14px;text-align:center;cursor:pointer;transition:box-shadow .15s,color .15s}
+.drop:hover,.drop.over{box-shadow:inset 0 0 0 1px var(--accent);color:var(--accent)}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.field{display:block;margin-top:16px;font-size:14px;font-weight:500}
+.field input{display:block;width:100%;height:44px;margin-top:6px;padding:0 12px;border:0;border-radius:10px;background:var(--bg);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 20%,transparent);font:400 16px var(--font-text);color:var(--ink);transition:box-shadow .15s}
+.field input:hover{box-shadow:inset 0 0 0 1px var(--accent)}
+.field input:focus{outline:0;box-shadow:inset 0 0 0 1.5px var(--accent)}
+.field em{display:block;margin-top:6px;font-style:normal;font-weight:400;color:#8a3314}
+.dlg-foot{display:flex;align-items:center;justify-content:flex-end;gap:16px;margin-top:24px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important}}
+@media (prefers-reduced-motion:no-preference){@supports (animation-timeline:view()){
+  .line{animation:ink linear both;animation-timeline:view();animation-range:entry 12% cover 32%}
+  @keyframes ink{from{opacity:.15}to{opacity:1}}
+}}
+</style>
+</head>
+<body>
+<section class="close fr" id="pricing">
+ <div class="panel">
+  <h2 class="ana" aria-label="Free for your first build, every supplier, your contract manufacturer, anyone who only reads, and to export every line at any time">
+   <span class="line"><b>Free</b> for your first build</span>
+   <span class="line"><b>Free</b> for every supplier</span>
+   <span class="line"><b>Free</b> for your contract manufacturer</span>
+   <span class="line"><b>Free</b> for anyone who only reads</span>
+   <span class="line"><b>Free</b> to export every line, any time</span>
+  </h2>
+  <div class="offer">
+   <p class="price"><b class="num">$18 per editor, per month, billed yearly,</b> from your second build. Editors are the people who change the plan, usually two to six on a hardware team.</p>
+   <div class="cta">
+    <a class="btn-lit" href="#pricing" data-import>Import a BOM</a>
+    <a class="btn-line" href="mailto:dana@fiducial.example">Talk to Dana</a>
+   </div>
+   <p class="dana">Dana Kowalczyk ran 11 builds at a warehouse-robot company before a $0.41 gasket held one up for 19 days. She started Fiducial in March 2022 and still takes the first call with teams over 20 people.</p>
+  </div>
+ </div>
+</section>
+<dialog class="dlg" id="import" aria-labelledby="dlg-t">
+ <form id="import-form" novalidate>
+  <div data-step="form">
+   <h2 id="dlg-t">Import a BOM</h2>
+   <p class="dlg-p">Export a CSV from Altium, KiCad or your spreadsheet. Fiducial reads it in your browser first, so you can check the columns before anything is uploaded.</p>
+   <label class="drop" id="drop"><input type="file" id="bom-file" accept=".csv,.tsv,.txt"><span id="drop-t">Drop a CSV here, or choose a file</span></label>
+   <label class="field"><span>Work email</span><input type="email" id="bom-mail" autocomplete="email" required placeholder="you@company.com"><em id="bom-err" hidden>Enter a work email so we can send your sign-in link.</em></label>
+   <div class="dlg-foot"><button type="button" class="link" data-close>Cancel</button><button class="btn-lit" type="submit">Create workspace</button></div>
+  </div>
+  <div data-step="done" hidden>
+   <h2>Workspace requested</h2>
+   <p class="dlg-p" id="done-t"></p>
+   <div class="dlg-foot"><button type="button" class="btn-line" data-close>Close</button></div>
+  </div>
+ </form>
+</dialog>
+<script>
+/* import dialog: the primary action, read locally so the column check is real */
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var d = $('#import'), form = $('#import-form'), file = $('#bom-file'), mail = $('#bom-mail'), err = $('#bom-err'), drop = $('#drop'), dropT = $('#drop-t'), read = '';
+  if (!d.showModal) return;
+  $$('[data-import]').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); d.showModal(); }); });
+  $$('[data-close]', d).forEach(function (b) { b.addEventListener('click', function () { d.close(); }); });
+  d.addEventListener('click', function (e) { if (e.target === d) d.close(); });
+  function take(f) {
+    if (!f) return;
+    var r = new FileReader();
+    r.onload = function () {
+      var rows = String(r.result).split(/\r?\n/).filter(function (l) { return l.trim(); });
+      var cols = (rows[0] || '').split(/[,\t]/).length, head = (rows[0] || '').toLowerCase();
+      var found = ['part', 'qty', 'quantity', 'supplier', 'vendor', 'lead'].filter(function (w) { return head.indexOf(w) >= 0; });
+      read = Math.max(0, rows.length - 1) + ' lines';
+      dropT.textContent = f.name + ': ' + read + ', ' + cols + ' columns' + (found.length ? '' : '. No part or supplier column found, you can map them next');
+    };
+    r.onerror = function () { dropT.textContent = 'That file could not be read. Try a CSV export.'; };
+    r.readAsText(f);
+  }
+  file.addEventListener('change', function () { take(file.files[0]); });
+  ['dragover', 'dragenter'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+  ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function () { drop.classList.remove('over'); }); });
+  drop.addEventListener('drop', function (e) { e.preventDefault(); take(e.dataTransfer.files[0]); });
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!mail.checkValidity() || !mail.value) { err.hidden = false; mail.focus(); return; }
+    err.hidden = true;
+    $('[data-step=form]', d).hidden = true; $('[data-step=done]', d).hidden = false;
+    $('#done-t').textContent = 'We will send a sign-in link to ' + mail.value + (read ? ', with your ' + read + ' ready to review.' : '.');
+  });
+  d.addEventListener('close', function () { $('[data-step=form]', d).hidden = false; $('[data-step=done]', d).hidden = true; });
+})();
+</script>
+</body>
+</html>

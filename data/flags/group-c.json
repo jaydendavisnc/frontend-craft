@@ -1,0 +1,87 @@
+{
+  "exclude": {
+    "product.app-window/glow-bezel-window": "A soft coloured glow round a dark screen. The chapter's own mistake list calls a coloured glow behind a window the most recognisable AI-template move. Silver and expressive evidence only, no gold.",
+    "product.app-window/tilted-backplates": "Two rotated plates behind a screenshot carry no information, so the tilt false alarm does not cover them. Matches tilted floating fragments, repeated identically on every row. One silver source.",
+    "product.ui-fragment/handled-object": "UI drawn as a perforated note or hanging tag is product in costume at small scale, the same move as the sticky notes, receipt and polaroid in ai-notes/opus-1 (pair 3). Tilted cards are also a measured baseline habit (CSS tilts in 11 of 16 GPT runs).",
+    "product.device-mockup/hand-held-device": "Needs a real photograph of hands holding a device with legible UI. Image generation does not rescue it: the chapter says generated hands fail on sight, and generators cannot render a legible screen.",
+    "product.device-mockup/gradient-stroke-phone-cluster": "Needs real video of a person with pose overlays. Image generation does not supply footage, and a still leaves a stock phone with a fake overlay. One silver source.",
+    "product.annotated-shot/margin-notes-on-code": "Slanted asides joined by curved hand-drawn arrows are a measured tell: a slanted aside with a loose arrow appears in at least 5 of 16 GPT runs by eye. One silver source.",
+    "product.animated-demo/video-stage-with-controls": "Depends on real footage, which neither code nor image generation supplies. Without it the model ships player chrome round nothing. Use a self-playing DOM demo instead.",
+    "media.illustration/flat-geometric-world": "The same objects run from hero to footer and the page ends as a scene, which is the metaphor costume definition (the prop is still there in the footer). No gold evidence, and the chapter files it under needs a real hand.",
+    "media.icon-set/labelled-desktop-icons": "The recipe says only inside a site built as a desktop, so it cannot exist without a metaphor costume. One expressive source.",
+    "media.video/full-bleed-loop": "Hero-scale live footage. Image generation does not supply it, and the stock clip that replaces it is the cheap video the chapter names. Use a still or a code-drawn loop.",
+    "media.video/in-scene-caption": "Depends on lifestyle footage of the product in use, which neither code nor image generation supplies, so it falls back to stock mood.",
+    "media.video/portrait-tile-row": "Needs real people on camera naming real outcomes. Faked, it is invented proof as well as missing footage.",
+    "media.video/product-output-as-footage": "Needs real footage plus real product output registered to it. Neither can be generated, and an invented overlay on stock video is fake evidence."
+  },
+  "downweight": {
+    "product.ui-fragment/float-card-on-wash": {
+      "weight": 0.3,
+      "reason": "The soft white card with a tinted shadow on a pale wash is the lifestyle-app template, and the row's emoji tile breaks SKILL.md's emoji rule. No gold evidence. Fine with an icon or real thumbnail, chosen on purpose."
+    },
+    "product.ui-fragment/metric-card-cluster": {
+      "weight": 0.3,
+      "reason": "Overlapping cards with a metric, chip and spark are dashboard by numbers in a hero, and models fill them with vanity figures. Keep for a real reliability claim with unit and time window."
+    },
+    "product.ui-fragment/layered-panels-on-gradient": {
+      "weight": 0.4,
+      "reason": "Works on Stripe, but the rich gradient is where models land on the purple-to-blue wash, and a pure CSS gradient reads as generated. Keep when the panels hold real plans and prices."
+    },
+    "product.device-mockup/phone-group": {
+      "weight": 0.3,
+      "reason": "Three phones need three distinct real screens, and the chapter calls three identical phones the oldest template. The reject thatspaceformen.com floats three phones on a gradient. Keep for consumer apps with truly different views."
+    },
+    "product.device-mockup/tilted-device": {
+      "weight": 0.3,
+      "reason": "Gold sites commit to steep, cropped, physical tilts. Models produce the gentle CSS version the chapter calls the template look, and tilt is a measured baseline habit."
+    },
+    "product.annotated-shot/floating-tag-pills": {
+      "weight": 0.5,
+      "reason": "Chips floating past an image edge are close to the measured floating-fragments tell, and thin words add little. Keep when each pill states something true of the picture. Needs a strong photograph, so image generation or real assets set the ceiling."
+    },
+    "product.data-viz/dot-globe-with-chips": {
+      "weight": 0.4,
+      "reason": "Canvas is the Opus default (12 of 16 runs) and a globe is the easy global signal, so it arrives as wallpaper. Keep for payments or infrastructure with real places and amounts on the chips."
+    },
+    "product.data-viz/hairline-radial-map": {
+      "weight": 0.3,
+      "reason": "The logo-at-centre and concentric-arc forms are the integrations ring, seen in 3 of 3 GPT PM runs. Keep to replace a long capability list that has real structure, not as a hub of logos."
+    },
+    "product.animated-demo/ambient-signal-rings": {
+      "weight": 0.4,
+      "reason": "Chips on concentric rings read as the same integrations ring tell. Keep for real security or signal products, where the chapter already limits it."
+    },
+    "media.photography/die-cut-shape-mask": {
+      "weight": 0.3,
+      "reason": "Ellipse and shape masks sit beside the arch-top crops measured in at least 4 of 16 GPT runs. Keep when the shape encodes something, such as a waveform. Needs hard-edged subjects, which image generation can make and code cannot."
+    },
+    "media.illustration/mascot-system": {
+      "weight": 0.3,
+      "reason": "High count inflates it, and an SVG mascot drawn by a model is reliably cheap. The chapter says avoid without someone who can draw it well. Reachable with strong image generation if one character holds across scales and poses."
+    },
+    "media.illustration/textured-commissioned-art": {
+      "weight": 0.3,
+      "reason": "Filter-faked gouache or ink is the cheap version, and feTurbulence is already an Opus habit (6 of 16 runs). The chapter says do not fake it. Reachable with real art or tightly style-controlled image generation."
+    },
+    "media.render-3d/glass-plate-isometric": {
+      "weight": 0.3,
+      "reason": "Translucent plates over a blurred accent glow are the stock AI-layers diagram and sit next to the glass giveaway. The chapter calls an empty stack the generic form. Keep for explaining real layers with real text on the plates."
+    },
+    "media.logo-mark/seal-monogram": {
+      "weight": 0.3,
+      "reason": "Tracked caps on a ring are the circular seal sticker (6 of 16 GPT runs by eye). Fine for an atelier or architect, where it is the one decorative object, not as borrowed craft."
+    },
+    "app.dashboard-layout/kpi-tile-row": {
+      "weight": 0.3,
+      "reason": "Four equal KPI tiles are dashboard by numbers, and the evidence is shadcn dashboard-01, the block generated dashboards already copy. Prefer kpi-tab-strip unless four equal numbers are the real answer."
+    },
+    "app.dashboard-layout/inset-console": {
+      "weight": 0.4,
+      "reason": "A real shell, but its content order of four tiles, chart and table is the default admin template. Keep the shell and lead with the decision the screen exists for."
+    },
+    "commerce.collection-grid/product-stage-chapters": {
+      "weight": 0.3,
+      "reason": "One viewport per product on its own ground is the Claude-style failure: a median of 4 full-frame grounds against gold's 1, and few words per screen. Needs one strong image per product, so real assets or image generation set the ceiling. Keep for short ranges or launches."
+    }
+  }
+}

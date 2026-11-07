@@ -1,0 +1,169 @@
+<!doctype html>
+<!-- A chart drawn from the roaster's own log: 27 temperature readings through a monotone cubic so it never overshoots a reading, a stepped gas strip on the same time axis, a live time/temperature readout, and a five-row log that lights up as one state function, paint(p), walks the curve. Page scroll through a 280vh sticky pin scrubs the roast, so the reader sits through first crack instead of glancing at a picture of it. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lot 74 roast curve</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function (h) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  h.classList.add('motion');
+})(document.documentElement);
+</script>
+<style>
+:root{
+  --page-bg:#1d1915; --page-ink:#f1ede1; --page-muted:#a79b89; --page-accent:#e9bb8e;
+  --sans:'Instrument Sans',ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;
+  --rule:color-mix(in srgb,currentColor 24%,transparent);
+  --nav:0px;
+  --gut:24px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--page-bg);color:var(--page-ink)}
+body{margin:0;font:400 17px/1.5 var(--sans);font-feature-settings:'kern','liga';-webkit-font-smoothing:antialiased;background:var(--page-bg)}
+h2,h3,p,ol{margin:0;padding:0}
+ol{list-style:none}
+svg{display:block;max-width:100%}
+.tnum{font-variant-numeric:lining-nums tabular-nums}
+.wrap{max-width:calc(1240px + 2*var(--gut));margin-inline:auto;padding-inline:var(--gut)}
+.row{display:grid;grid-template-columns:minmax(0,360px) minmax(0,880px)}
+.label{font:500 20px/1.3 var(--sans);letter-spacing:-.01em}
+h2{font:500 clamp(36px,3.9vw,56px)/1.04 var(--sans);letter-spacing:-.03em;max-width:15em;text-wrap:balance}
+
+.roast{position:relative}
+.roast-in{padding-block:120px}
+.roast h2{max-width:13em}
+.stops{margin:24px 40px 0 0;border-bottom:1px solid var(--rule)}
+.stops li{display:grid;grid-template-columns:44px 1fr auto;gap:0 10px;padding:10px 0 11px;border-top:1px solid var(--rule)}
+.stops .t,.stops .f{font:500 15px/1.5 var(--sans)}
+.stops .f{color:var(--page-muted)}
+.stops h3{font:500 15px/1.5 var(--sans)}
+.stops p{grid-column:2/-1;margin-top:2px;font-size:15px;line-height:1.4;color:var(--page-muted)}
+.stops li.on p{color:var(--page-ink)}
+.stops li.on h3,.stops li.on .t{color:var(--page-accent)}
+.chart{position:relative;margin-top:36px;height:430px;color:var(--page-ink)}
+.chart svg{width:100%;height:100%;overflow:visible}
+.chart text{font:500 13px var(--sans);fill:currentColor;font-variant-numeric:tabular-nums}
+.chart .dim{fill:var(--page-muted)}
+.log{margin-top:14px;max-width:38em;font-size:15px;color:var(--page-muted)}
+.read{position:absolute;left:0;top:-4px;display:flex;gap:18px;font:500 28px/1 var(--sans);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.read i{font-style:normal;color:var(--page-accent)}
+html.pin .roast{height:280vh}
+html.pin .roast-pin{position:sticky;top:var(--nav);height:calc(100vh - var(--nav));display:flex;align-items:center}
+html.pin .roast-in{padding-block:0;width:100%}
+html.pin .stops li:not(.on) h3,html.pin .stops li:not(.on) .t{color:var(--page-muted)}
+html.pin .chart{height:clamp(300px,calc(100vh - 340px),470px)}
+
+@media (max-width:1120px){.row{grid-template-columns:minmax(0,220px) minmax(0,1fr)}}
+@media (max-width:980px){
+  .row{grid-template-columns:minmax(0,1fr);gap:20px}
+  .roast-left{display:contents}
+  .stops{order:3;margin:8px 0 0}
+}
+@media (max-width:760px){
+  h2{font-size:34px;line-height:1.08}
+  .roast-in{padding-block:72px}
+  .chart{height:330px;margin-top:20px}
+  .read{font-size:22px}
+}
+</style>
+<noscript><style>.chart{display:none}</style></noscript>
+</head>
+<body>
+<section class="roast" id="roast" aria-label="How Lot 74 is roasted">
+  <div class="roast-pin"><div class="roast-in wrap row">
+    <div class="roast-left">
+      <p class="label">The roast</p>
+      <ol class="stops" id="stops">
+        <li class="on" data-t="0"><span class="t tnum">0:00</span><h3>Charge</h3><span class="f tnum">400&deg;F</span><p>We roast on Mondays with the door shut. Twelve kilos go into the hot drum and the probe drops at once.</p></li>
+        <li data-t="1.37"><span class="t tnum">1:22</span><h3>Turning point</h3><span class="f tnum">178&deg;F</span><p>The probe stops falling and the beans start to climb. It's the first number Ren&eacute;e writes in the log.</p></li>
+        <li data-t="4.6"><span class="t tnum">4:36</span><h3>Yellow</h3><span class="f tnum">311&deg;F</span><p>The smell turns from cut hay to toast. Kochere is dense, so the gas stays high for longer than it would for most lots.</p></li>
+        <li data-t="8.07"><span class="t tnum">8:04</span><h3>First crack</h3><span class="f tnum">388&deg;F</span><p>You can hear it from the sidewalk. We cut the gas by a third so the bergamot doesn't roast away.</p></li>
+        <li data-t="9.77"><span class="t tnum">9:46</span><h3>Drop</h3><span class="f tnum">404&deg;F</span><p>The door opens 1:42 after first crack. The beans cool in the tray and rest two days before they reach a grinder.</p></li>
+      </ol>
+    </div>
+    <div>
+      <h2>Lot 74 spends 9 minutes 46 seconds in the drum</h2>
+      <div class="chart" id="chart" role="img" aria-label="Roast curve for Lot 74. Bean temperature starts at 400 degrees, falls to 178 at 1 minute 22, then climbs to 388 at first crack and 404 at the drop, 9 minutes 46 seconds in."></div>
+      <p class="log tnum">Batch 6 of 20, Monday, November 2. 12.0 kg in, 10.2 kg out, 15% loss.</p>
+    </div>
+  </div></div>
+</section>
+
+<script>
+/* roast curve: real log data, drawn at true size, scrubbed by the page */
+(function(){
+  var box=document.getElementById('chart'),stops=[].slice.call(document.querySelectorAll('#stops li'));
+  var root=document.documentElement,motion=root.classList.contains('motion');
+  var D=[[0,400],[.15,345],[.33,300],[.5,262],[.67,235],[.85,210],[1,195],[1.2,182],[1.37,178],[1.55,179.5],[1.8,187],[2,197],[2.5,223],[3,247],[3.5,269],[4,289],[4.6,311],[5,323.5],[5.5,337.5],[6,350],[6.5,361],[7,371],[7.5,380],[8.07,388],[8.67,394.5],[9.17,399.5],[9.77,404]];
+  var GAS=[[0,60],[1.5,100],[6,80],[8.07,55],[9.77,0]];
+  var STOP=[[0,'Charge'],[1.37,'Turning point'],[4.6,'Yellow'],[8.07,'First crack'],[9.77,'Drop']];
+  var TMAX=9.77,AX=11;
+  /* monotone cubic so the curve never overshoots the logged readings */
+  var n=D.length,dx=[],m=[],c=[];
+  for(var i=0;i<n-1;i++){dx[i]=D[i+1][0]-D[i][0];m[i]=(D[i+1][1]-D[i][1])/dx[i];}
+  c[0]=m[0];c[n-1]=m[n-2];
+  for(i=1;i<n-1;i++){c[i]=m[i-1]*m[i]<=0?0:3*(dx[i-1]+dx[i])/((2*dx[i]+dx[i-1])/m[i-1]+(dx[i]+2*dx[i-1])/m[i]);}
+  function at(t){var k=0;while(k<n-2&&t>D[k+1][0])k++;var h=dx[k],s=(t-D[k][0])/h,s2=s*s,s3=s2*s;
+    return (2*s3-3*s2+1)*D[k][1]+(s3-2*s2+s)*h*c[k]+(-2*s3+3*s2)*D[k+1][1]+(s3-s2)*h*c[k+1];}
+  var W,H,PL,PR,PT,PB,GH,head,clip,readT,readF,x,y;
+  function draw(){
+    W=box.clientWidth;H=box.clientHeight;var small=W<520;
+    PL=small?38:46;PR=small?6:12;PT=44;GH=small?30:40;PB=GH+34;
+    x=function(t){return PL+t/AX*(W-PL-PR);};
+    y=function(f){return PT+(430-f)/(430-150)*(H-PT-PB);};
+    var s='<svg viewBox="0 0 '+W+' '+H+'" aria-hidden="true"><defs><clipPath id="drawn"><rect id="clipR" x="0" y="-20" width="0" height="'+(H+40)+'"/></clipPath></defs>';
+    [200,300,400].forEach(function(f){s+='<line x1="'+PL+'" x2="'+(W-PR)+'" y1="'+y(f)+'" y2="'+y(f)+'" stroke="currentColor" stroke-opacity=".16"/><text class="dim" x="0" y="'+(y(f)+4)+'">'+f+'&deg;</text>';});
+    for(var t=0;t<=10;t+=2){s+='<text class="dim" text-anchor="middle" x="'+x(t)+'" y="'+(H-GH-12)+'">'+t+(t===10?' min':'')+'</text>';}
+    /* gas strip */
+    var gy=H-GH,gp='M'+x(0)+' '+H;
+    GAS.forEach(function(g,i){var yy=H-g[1]/100*GH;gp+='L'+x(g[0])+' '+yy;if(GAS[i+1])gp+='L'+x(GAS[i+1][0])+' '+yy;});
+    gp+='L'+x(TMAX)+' '+H+'Z';
+    s+='<path d="'+gp+'" fill="currentColor" fill-opacity=".16"/><text class="dim" x="0" y="'+(H-GH/2+4)+'">Gas</text>';
+    if(!small)[[0,'60%'],[1.5,'100%'],[6,'80%'],[8.07,'55%']].forEach(function(g){s+='<text x="'+(x(g[0])+6)+'" y="'+(H-7)+'" class="dim">'+g[1]+'</text>';});
+    /* curve */
+    var d='';for(var q=0;q<=240;q++){var tt=q/240*TMAX;d+=(q?'L':'M')+x(tt).toFixed(1)+' '+y(at(tt)).toFixed(1);}
+    s+='<path d="'+d+'" fill="none" stroke="currentColor" stroke-opacity=".24" stroke-width="1.5"/>';
+    s+='<path d="'+d+'" fill="none" stroke="var(--page-accent)" stroke-width="3" clip-path="url(#drawn)"/>';
+    STOP.forEach(function(p,i){var px=x(p[0]),py=y(at(p[0]));
+      s+='<circle class="st" cx="'+px+'" cy="'+py+'" r="4.5" fill="var(--page-bg)" stroke="var(--page-accent)" stroke-width="2"/>';
+      if(!small){var anchor=i===0?'start':(i===4?'middle':'middle'),dy=i===1?22:-14,dx0=i===0?10:(i===4?-4:0);
+        s+='<text x="'+(px+dx0)+'" y="'+(py+dy)+'" text-anchor="'+anchor+'">'+p[1]+'</text>';}
+    });
+    s+='<circle id="head" r="6" fill="var(--page-accent)"/></svg><div class="read" aria-hidden="true"><span id="rT">0:00</span><i id="rF">400&deg;F</i></div>';
+    box.innerHTML=s;
+    head=document.getElementById('head');clip=document.getElementById('clipR');readT=document.getElementById('rT');readF=document.getElementById('rF');
+    paint(cur);
+  }
+  /* Standalone only: rest on first crack until the first scroll, then scroll owns the curve as it does on the page. */
+  var REST=8.07/TMAX,moved=false;
+  var cur=motion?REST:1,goal=cur,raf=0;
+  function paint(p){
+    var t=p*TMAX,px=x(t),py=y(at(t));
+    clip.setAttribute('width',px);head.setAttribute('cx',px);head.setAttribute('cy',py);
+    var sec=Math.round(t*60);readT.textContent=Math.floor(sec/60)+':'+String(sec%60).padStart(2,'0');
+    readF.textContent=Math.round(at(t))+'°F';
+    var act=0;stops.forEach(function(li,i){if(t>=+li.dataset.t-.01)act=i;});
+    stops.forEach(function(li,i){li.classList.toggle('on',i===act);});
+    [].forEach.call(box.querySelectorAll('.st'),function(c,i){c.setAttribute('fill',t>=STOP[i][0]-.01?'var(--page-accent)':'var(--page-bg)');});
+  }
+  function pinOK(){var l=document.querySelector('.roast-left');return motion&&innerWidth>980&&l.offsetHeight+24<=innerHeight;}
+  function setPin(){root.classList.remove('pin');if(pinOK())root.classList.add('pin');}
+  function target(){
+    if(!moved)return REST;
+    var s=document.getElementById('roast'),r=s.getBoundingClientRect();
+    if(root.classList.contains('pin'))return Math.min(1,Math.max(0,-r.top/(r.height-innerHeight+64)*1.06));
+    var b=box.getBoundingClientRect();return Math.min(1,Math.max(0,(innerHeight*.82-b.top)/(b.height+innerHeight*.28)));
+  }
+  function tick(){raf=0;goal=target();cur+=(goal-cur)*.2;if(Math.abs(goal-cur)<.0008)cur=goal;paint(cur);if(cur!==goal)raf=requestAnimationFrame(tick);}
+  function onScroll(){if(!raf)raf=requestAnimationFrame(tick);}
+  setPin();draw();
+  if(motion){addEventListener('scroll',function(){moved=true;},{passive:true,once:true});addEventListener('scroll',onScroll,{passive:true});onScroll();}
+  addEventListener('resize',function(){setPin();draw();onScroll();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){setPin();draw();});
+})();
+</script>
+</body>
+</html>

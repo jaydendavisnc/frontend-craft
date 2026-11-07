@@ -1,0 +1,129 @@
+<!doctype html>
+<!-- What makes it good: the form is shown part way through being drafted, not empty, with real field values, a selected casualty type, attachments and a narrative where the lawyer strikes a phrase, inserts a safer one and leaves a margin note, so the service is demonstrated inside the UI. On entry the strike draws, then the insert fades in, then the note arrives. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redlined report form</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400&family=Public+Sans:wght@400..500&display=swap">
+<script>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion-on')</script>
+<style>
+:root{
+  --bg:#fff;--surface:#f5f5f4;--ink:#101114;--muted:#868677;
+  --ink-2:#55564d;--ink-3:#6c6d61;--tone-3:#e2e0d2;
+  --line:color-mix(in srgb,var(--ink) 11%,transparent);
+  --display:'Literata',Georgia,serif;
+  --sans:'Public Sans',system-ui,-apple-system,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --g:24px;--gap:12px;
+  --r-l:20px;--r-m:12px;--r-s:6px;
+  --ease:cubic-bezier(.2,0,0,1);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4,p,ul,ol,dl,dd,figure{margin:0;padding:0}
+ul,ol{list-style:none}
+img,svg,canvas{display:block}
+h1,h2,h3{text-wrap:balance}
+p{text-wrap:pretty}
+.mono{font-family:var(--mono)}
+/* anchored rows on black plates */
+body{padding:40px var(--g)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);margin-top:var(--gap)}
+.row.flip .plate{order:2}
+.plate{position:relative;height:616px;overflow:hidden;border-radius:var(--r-l);background:#000}
+.copy{align-self:end;padding:0 24px 4px}
+.copy h3{max-width:21em;font:400 30px/1.14 var(--display);letter-spacing:-.022em}
+.copy h3 span{display:block;color:var(--muted)}
+.copy p{max-width:31em;margin-top:12px;color:var(--ink-2)}
+.sheet{position:absolute;left:44px;right:44px;top:44px;height:600px;padding:0 8px;background:var(--surface);border-radius:var(--r-m);font:400 13px/1.4 var(--sans);overflow:hidden}
+.sh-body{min-height:100%;border-radius:8px 8px 0 0;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+.sheet.off-r .form{padding-right:84px}
+.sheet.off-r{right:-60px}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:16px;height:44px;padding:0 10px}
+.sheet.off-r .sh-top{padding-right:70px}
+.sh-top b{font-weight:500}
+.sh-top .mono{font-size:11.5px;color:var(--ink-3)}
+.ic{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.av{width:20px;height:20px;border-radius:50%;flex:none;display:grid;place-items:center;font:500 9px/1 var(--sans);color:var(--ink);background:var(--tone-3)}
+/* the form, drafted and redlined */
+.form{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px 18px}
+.form label span,.nature>span,.narr>span{display:block;margin-bottom:5px;font-size:12px;color:var(--ink-3)}
+.form label i{display:flex;align-items:center;height:32px;padding:0 10px;border-radius:var(--r-s);box-shadow:inset 0 0 0 1px var(--line);font-style:normal}
+.form label i.mono{font-size:12.5px}
+.nature,.narr{grid-column:1/-1;position:relative}
+.nature{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.nature>span{width:100%;margin-bottom:0}
+.nature b{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 9px;border-radius:var(--r-s);font-weight:400;color:var(--ink-3);box-shadow:inset 0 0 0 1px var(--line)}
+.nature b.on{background:var(--ink);color:var(--bg);box-shadow:none}
+.nature .ic{width:12px;height:12px}
+.narr>p{padding:10px 12px 12px;border-radius:var(--r-s);box-shadow:inset 0 0 0 1px var(--ink);line-height:1.55;font-size:13.5px}
+del{text-decoration:none;color:var(--ink-3);background:linear-gradient(var(--ink-3),var(--ink-3)) 0 58%/100% 1px no-repeat;transition:background-size .7s var(--ease) .5s}
+ins{text-decoration:none;background:var(--tone-3);padding:0 2px;border-radius:2px;transition:opacity .35s var(--ease) 1.2s}
+.caret{display:inline-block;width:1px;height:1.05em;margin-left:1px;vertical-align:-2px;background:var(--ink);animation:blink 1.1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.note{display:flex;gap:10px;margin:10px 0 0 40px;padding:10px 12px;border-radius:var(--r-s);background:var(--surface);transition:opacity .4s var(--ease) 1.6s,translate .4s var(--ease) 1.6s}
+.note p{font-size:12.5px;color:var(--ink-2)}
+.note b{font-weight:500;color:var(--ink)}
+.trio{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.attach{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.attach>span{width:100%;font-size:12px;color:var(--ink-3)}
+.attach b{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 9px;border-radius:var(--r-s);font-weight:400;color:var(--ink-2);box-shadow:inset 0 0 0 1px var(--line)}
+.attach .ic{width:13px;height:13px}
+/* only applied once motion is confirmed, so everything is visible without it */
+.motion-on [data-live]:not(.live) del{background-size:0 1px}
+.motion-on [data-live]:not(.live) ins{opacity:0}
+.motion-on [data-live]:not(.live) .note{opacity:0;translate:0 8px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-check" viewBox="0 0 16 16"><path d="M3 8.500l3.200 3L13 4.500"/></symbol>
+<symbol id="i-doc" viewBox="0 0 16 16"><path d="M4 2.500h5.500L12.500 5.500v8h-8.500zM9.500 2.500v3h3"/></symbol>
+</defs></svg>
+  <article class="row flip" data-live>
+    <div class="plate">
+      <div class="sheet off-r">
+        <div class="sh-top"><b>Report of Marine Casualty</b><span class="mono">CG-2692, draft 2, day 3 of 5</span></div>
+        <div class="sh-body">
+        <div class="form">
+          <label><span>Vessel</span><i>F/V Alder Point</i></label>
+          <label><span>Official number</span><i class="mono">1089342</i></label>
+          <label><span>Casualty, local time</span><i class="mono">Nov 3, 02:41 AKST</i></label>
+          <label><span>Position</span><i class="mono">57&deg;56.1&prime;N 152&deg;47.8&prime;W</i></label>
+          <div class="nature"><span>Nature of casualty</span>
+            <b class="on"><svg class="ic"><use href="#i-check"/></svg>Grounding</b><b>Collision</b><b>Flooding</b><b>Loss of propulsion</b>
+          </div>
+          <div class="narr">
+            <span>Narrative</span>
+            <p>On a flood tide and a heading of 318&deg;, the vessel <del>struck an uncharted rock</del> <ins>touched bottom</ins> at 02:41 while transiting Whale Passage. The master stopped engines, took soundings and found no ingress. <em class="caret"></em></p>
+            <div class="note"><span class="av">TA</span><p><b>Trish Aquino</b> Stay with what the log shows. Charted or uncharted is the surveyor&rsquo;s question.</p></div>
+          </div>
+          <div class="trio">
+            <label><span>Persons on board</span><i class="mono">4</i></label>
+            <label><span>Injuries</span><i>None</i></label>
+            <label><span>Pollution</span><i>None observed</i></label>
+          </div>
+          <div class="attach"><span>Attachments</span>
+            <b><svg class="ic"><use href="#i-doc"/></svg>Deck log, Nov 2 to 3</b><b><svg class="ic"><use href="#i-doc"/></svg>Plotter photo, 02:58</b><b><svg class="ic"><use href="#i-doc"/></svg>Soundings sheet</b>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+    <div class="copy">
+      <h3><span>We write the Coast Guard report with you</span> and file it by day five, after counsel has read every line</h3>
+      <p>Form CG-2692 is the first account of the casualty that anyone outside the boat will read. We draft it from the log with the master, keep it to what the log shows, and file before 46 CFR 4.05-10 runs out.</p>
+    </div>
+  </article>
+<script>
+/* Product surfaces run once when they come into view. */
+(function(){
+  var live=[].slice.call(document.querySelectorAll('[data-live]'));
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('live');io.unobserve(e.target)})},{threshold:.3});
+  live.forEach(function(el){io.observe(el)});
+})();
+</script>
+</body>
+</html>
