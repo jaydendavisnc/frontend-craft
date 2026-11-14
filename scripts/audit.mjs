@@ -152,10 +152,11 @@ const score = m => {
   // Each rule is one thing a filled-in template does. Limits come from the calibration in references/template-audit.md
   const shaped = m.blocks >= 3;  // single-page apps can hide their structure from this check, so these rules only apply when scenes were found
   const rules = [
-    ['pictures carry the page', m.imageShare >= .28, `${Math.round(Math.min(m.imageShare, 1) * 100)}% of the page is imagery. Real sites have a median of 38%. Aim for 28% or more unless this is a tool`, 2],
-    ['type and image share space', m.typeOnImage >= 2, `${m.typeOnImage} display text blocks sit on a picture. At least 2 should`, 2],
-    ['a big picture moment', m.bigImages >= 2, `${m.bigImages} pictures at 60% width or 70% height. At least 2`, 1],
-    ['real scale contrast', m.maxType / m.bodySize >= 5, `largest type is ${m.maxType}px on ${m.bodySize}px body, a ratio of ${(m.maxType / m.bodySize).toFixed(1)}. At least 5`, 1],
+    // Weight 0 rules are notes, not targets. Blind panels marked pages down when builders forced type onto photos and stock images in to pass them.
+    ['pictures carry the page', m.imageShare >= .28, `${Math.round(Math.min(m.imageShare, 1) * 100)}% of the page is imagery. Real sites have a median of 38%, but a real product interface counts as much as a photo, and a weak stock photo counts against you`, 0],
+    ['type and image share space', m.typeOnImage >= 2, `${m.typeOnImage} display text blocks sit on a picture. Only where the picture has a calm zone; never let type collide with the subject`, 0],
+    ['a big picture moment', m.bigImages >= 1, `${m.bigImages} pictures at 60% width or 70% height. At least 1`, 1],
+    ['clear lead in scale', m.maxType / m.bodySize >= 3, `largest type is ${m.maxType}px on ${m.bodySize}px body, a ratio of ${(m.maxType / m.bodySize).toFixed(1)}. At least 3`, 1],
     ['sections open differently', m.sameHeading <= .6 || m.headCount < 3, `${Math.round(m.sameHeading * 100)}% of section headings share one size and one position. Keep it to 60%`, 1],
     ['no card rows by default', m.equalRows <= 1, `${m.equalRows} rows of equal cells. One at most`, 1],
     ['no ruled lists by default', m.ruled === 0, `${m.ruled} ruled lists (${m.ruledRows} rows). Real sites have a median of 0`, 3],
@@ -168,7 +169,7 @@ const score = m => {
     ['no rules everywhere', m.linesMed <= 1, `${m.linesMed} hairlines on a typical screen. Real sites have a median of 0`, 1],
     ['no chips and tags', m.chipsMed === 0, `${m.chipsMed} chips on a typical screen. Real sites have a median of 0`, 1],
     ['no kit parts', m.genericKinds <= 1, `${m.genericKinds} kinds of kit part: ${Object.keys(m.generic).join(', ') || 'none'}. One at most`, 2],
-    ['pictures are sharp', m.soft === 0, `${m.soft} pictures are under 1.4x their display size`, 1],
+    ['pictures are sharp', m.soft === 0, `${m.soft} pictures are under 1.4x their display size. Soft photos cost more than no photos`, 2],
   ];
   const total = rules.reduce((n, r) => n + r[3], 0), got = rules.reduce((n, r) => n + (r[1] ? r[3] : 0), 0);
   return { score: Math.round(got / total * 100), rules };
@@ -209,7 +210,8 @@ const score = m => {
   if (json) console.log(JSON.stringify({ ...m, score: sc, fails: rules.filter(r => !r[1]).map(r => r[0]) }));
   else {
     console.log(`template audit: ${sc}/100  (scenes ${m.blocks}, height ${m.height}px)`);
-    for (const r of rules) console.log(`${r[1] ? 'ok  ' : 'FIX '} ${r[0]}: ${r[2]}`);
+    for (const r of rules) console.log(`${r[3] === 0 ? 'note' : r[1] ? 'ok  ' : 'FIX '} ${r[0]}: ${r[2]}`);
+    console.log('This is a floor, not a target. A page can score 100 here and still lose a blind review: do not change the design just to move this number.');
     console.log(`info per screen, median: ${m.blocksMed} text blocks, ${m.wordsMed} words, ${m.smallMed} small labels, ${m.chipsMed} chips, ${m.linesMed} rules, ${m.ctaMed} filled buttons`);
     if (m.genericKinds) console.log(`info kit parts: ${Object.entries(m.generic).map(([k, v]) => `${k} x${v}`).join(', ')}`);
     console.log(`info scene shapes: ${m.shapes.join(' ')}`);

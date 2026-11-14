@@ -133,6 +133,17 @@ const CHECK = (medium) => `(() => {
     const prices = kids.every(k => /[$£€¥]\\s?\\d/.test(snip(k) + ' ' + (k.innerText || '')));  // plans side by side are a real comparison
     if (same && boxed2 && !prices && kids.every(k => k.querySelector('h2,h3,h4,b,strong') && snip(k).length > 30) && ![...rows].some(x => x.contains(p))) rows.add(p); }
   rows.forEach(p => add('CHANGE', 'equal row of ' + p.children.length + ' cards', p, 'the template ladder: rebuild from an object this subject really has, not nicer cards'));
+  // Stock layouts blind panels kept naming in round two
+  if (MED === 'page') {
+    for (const p of rows) { const kids = [...p.children].filter(vis); if (kids.every(k => /[“"«]/.test(k.innerText || '') || k.querySelector('blockquote,q'))) add('REMOVE', 'three quote cards in a row', p, 'one quote at a real size with the person and detail, or the actual artefact they sent'); }
+    const qs = texty.filter(e => /\\?\\s*$/.test(snip(e)) && snip(e).length > 12 && fsz(e) >= 15 && fsz(e) <= 30);
+    if (qs.length >= 4) { const lefts = new Set(qs.map(e => Math.round(e.getBoundingClientRect().left / 40))); if (lefts.size >= 2) { const tops = qs.map(e => Math.round(e.getBoundingClientRect().top + scrollY)); const sameRow = tops.some((t, i) => tops.some((u, j) => i !== j && Math.abs(t - u) < 20)); if (sameRow) add('CHANGE', 'FAQ set as a grid of questions', qs[0], 'a single column of questions with the answers in plain sight reads faster and looks less like a kit'); } }
+    for (const p of shown) { const kids = [...p.children].filter(vis); if (kids.length !== 3) continue; if (!kids.every(k => /[$£€¥]\\s?\\d/.test(k.innerText || ''))) continue; const rs = kids.map(k => k.getBoundingClientRect()), cs = kids.map(k => getComputedStyle(k)); if (Math.abs(rs[0].width - rs[2].width) > 12 || rs[0].width < 200 || rs[0].height < 200 || Math.abs(rs[0].top - rs[2].top) > 8) continue; if (!cs.every(c => c.backgroundColor !== 'rgba(0, 0, 0, 0)' || parseFloat(c.borderTopWidth) > 0 || c.boxShadow !== 'none')) continue; const mid = cs[1].backgroundColor !== cs[0].backgroundColor && cs[0].backgroundColor === cs[2].backgroundColor || rs[1].height > rs[0].height + 24 || cs[1].transform !== 'none'; if (mid) add('CHANGE', 'highlighted middle pricing card', kids[1], 'say which plan suits whom in a sentence, or compare plans in one table; the raised middle card is the stock pricing page'); }
+    let bounce = null; for (const e of shown) { const c = getComputedStyle(e), fns = (c.transitionTimingFunction + ',' + c.animationTimingFunction).match(/cubic-bezier\\(([^)]+)\\)/g) || []; for (const f of fns) { const v = f.slice(13, -1).split(',').map(parseFloat); if (v[1] > 1.02 || v[3] > 1.02 || v[1] < -0.02 || v[3] < -0.02) { bounce = [e, f]; break; } } if (bounce) break; }
+    const scripts = [...document.scripts].map(s => s.textContent).join(' '); if (!bounce && /\\b(back|elastic|bounce)\\.(out|inOut|in)\\b/.test(scripts)) bounce = [null, 'GSAP back/elastic ease'];
+    if (bounce) add('CHANGE', 'overshoot or bounce easing', bounce[0], 'use a calm ease-out; panels flagged bouncing motion as cheap', bounce[1]);
+    const h1 = document.querySelector('h1'); if (h1 && h1.getBoundingClientRect().top < vh) { const prev = h1.previousElementSibling; const btns = [...document.querySelectorAll('a,button')].filter(b => { const r = b.getBoundingClientRect(), c = getComputedStyle(b); return r.top < vh && r.top > h1.getBoundingClientRect().bottom && r.height >= 34 && r.height <= 64 && (c.backgroundColor !== 'rgba(0, 0, 0, 0)' || parseFloat(c.borderTopWidth) > 0); }); const label = prev && vis(prev) && fsz(prev) <= 15 && snip(prev).length < 48; if (label && btns.length >= 2) add('CHANGE', 'stock hero: label, headline, two buttons', h1, 'lead with the real thing working on the first screen, and one clear action'); }
+  }
   const confetti = shown.filter(e => { const r = e.getBoundingClientRect(), c = getComputedStyle(e); return !snip(e) && !e.closest('a,button,li,label,svg,[role]') && r.width > 6 && r.width < 160 && r.height < 160 && (c.position === 'absolute' || c.position === 'fixed') && (c.backgroundColor !== 'rgba(0, 0, 0, 0)' || parseFloat(c.borderTopWidth) > 0) && !e.querySelector('img,svg,canvas,video'); });
   if (confetti.length >= 6) confetti.slice(0, 8).forEach(e => add('REMOVE', 'decorative confetti (' + confetti.length + ' loose shapes)', e, 'delete all of them; one deliberate shape beats a scatter'));
   // Web chrome on a piece that is not a web page
@@ -161,7 +172,7 @@ const CHECK = (medium) => `(() => {
   if (families.size >= 4) add('CHANGE', families.size + ' typefaces', null, 'one family, or two that clearly disagree', [...families].join(', '));
   const body = texty.filter(e => own(e).length > 60).map(fsz).sort((a, b) => a - b)[0] || texty.map(fsz).sort((a, b) => a - b)[Math.floor(texty.length / 2)] || 16;
   const ratio = (bigText[0] ? fsz(bigText[0]) : 16) / body;
-  if (ratio < (piece ? 6 : 2.6)) add('CHANGE', 'polite scale: largest type is ' + ratio.toFixed(1) + 'x the text', bigText[0], piece ? 'a poster wants 10 to 1 or more: make one thing enormous' : 'spend one loud moment: the largest type should be far bigger than the text');
+  if (ratio < (piece ? 6 : 2.6)) add('CHANGE', 'polite scale: largest type is ' + ratio.toFixed(1) + 'x the text', bigText[0], piece ? 'a poster wants 10 to 1 or more: make one thing enormous' : 'give the page a clear lead: one headline or picture should be plainly the first read');
   // Composition: the centred stack
   const first = texty.filter(e => { const r = e.getBoundingClientRect(); return r.top < vh && r.bottom > 0 && fsz(e) >= 13; });
   const centred = first.filter(e => { const r = e.getBoundingClientRect(); return Math.abs(r.left + r.width / 2 - vw / 2) < 28 && r.width < vw * .9 && getComputedStyle(e).textAlign === 'center'; });
@@ -173,6 +184,21 @@ const CHECK = (medium) => `(() => {
   const rounded = shown.filter(e => { const c = getComputedStyle(e), r = e.getBoundingClientRect(); return r.width > 120 && r.height > 60 && (c.backgroundColor !== 'rgba(0, 0, 0, 0)' || parseFloat(c.borderTopWidth) > 0); });
   const same = rounded.filter(e => { const v = parseFloat(getComputedStyle(e).borderTopLeftRadius); return v >= 12 && v <= 28; });
   if (rounded.length >= 10 && same.length / rounded.length > .8) add('CHANGE', 'the same rounded box ' + same.length + ' times', null, 'vary the surfaces: edges, full bleed, objects, not one card shape everywhere');
+  // Tells blind panels flagged again and again on generated pages (Nov 2026)
+  if (MED === 'page') {
+    const foot = document.querySelector('footer') || [...document.querySelectorAll('body > *, main > *')].filter(vis).pop();
+    if (foot) for (const e of texty.filter(e => foot.contains(e))) { if (fsz(e) >= Math.max(110, vw * .085) && snip(e).length <= 28) { add('REMOVE', 'giant wordmark footer', e, 'end on a useful footer at text size; blind panels flagged the giant name in the footer on page after page'); break; } }
+    for (const e of texty) { const c = getComputedStyle(e), col = rgb(c.color), t = own(e); if (fsz(e) >= 150 && /^[\\d.,:%£$€x×+\\-\\s]{1,8}$/.test(t) && (+c.opacity < .35 || (col && col.a < .35))) add('REMOVE', 'ghost giant numeral', e, 'delete it; a faded number behind content is decoration'); }
+    const ph = (document.body.innerText || '').match(/(?:\\(\\d{3}\\)\\s?|\\b\\d{3}[ .-])555[ .-]\\d{4}\\b/); if (ph) add('REMOVE', 'placeholder 555 phone number', null, 'use a believable number in the local format, or a booking link instead', ph[0]);
+    for (const e of shown) { if (e.closest('svg')) continue; const c = getComputedStyle(e); const m = c.transform.match(/matrix\\(([^)]+)\\)/); if (!m) continue; const v = m[1].split(',').map(parseFloat), deg = Math.abs(Math.atan2(v[1], v[0]) * 180 / Math.PI), r = e.getBoundingClientRect(); if (deg >= .8 && deg <= 15 && snip(e).length > 24 && r.width < vw * .6 && r.width > 120) add('REMOVE', 'tilted note card', e, 'set it straight on the grid; a rotated note or polaroid is a costume'); }
+    const SCRIPT = /cursive|Caveat|Dancing Script|Homemade Apple|Mrs Saint Delafield|Pinyon|Great Vibes|Allura|La Belle Aurore|Reenie Beanie|Kalam|Satisfy|Sacramento|Parisienne|Alex Brush|Herr Von|Monsieur La Doulaise|Nothing You Could Do|Rock Salt|Shadows Into Light|Indie Flower|Gloria Hallelujah|Yellowtail|Mr Dafoe|Kristi|Zeyada|Cedarville|Over the Rainbow|Waterfall|Birthstone|Ballet|Imperial Script/i;
+    const scr = texty.filter(e => SCRIPT.test(getComputedStyle(e).fontFamily) && snip(e).length < 40); if (scr.length) add('CHANGE', 'script signature or handwriting accent', scr[0], 'drop the handwriting; let the type system carry the voice');
+    const big = shown.filter(e => { const r = e.getBoundingClientRect(); return e.tagName === 'IMG' && r.width * r.height > vw * vh * .08; });
+    const srcs = {}; for (const e of big) { const k = (e.currentSrc || e.src || '').split('?')[0].replace(/[-_@](?:\\d{3,4}w?|\\dx)(?=\\.\\w+$)/, ''); (srcs[k] = srcs[k] || []).push(e); }
+    for (const k in srcs) if (k && srcs[k].length >= 2) add('REMOVE', 'same photo used ' + srcs[k].length + ' times', srcs[k][1], 'every large picture should be a different photograph; find another or cut one', k.split('/').pop());
+    if (big.length >= 4) { const fx = big.map(e => { const c = getComputedStyle(e); return (c.filter === 'none' ? '' : c.filter) + '|' + (c.mixBlendMode === 'normal' ? '' : c.mixBlendMode); }); const cnt = {}; fx.filter(f => f !== '|').forEach(f => cnt[f] = (cnt[f] || 0) + 1); const best = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0]; if (best && best[1] >= big.length * .8) add('CHANGE', 'one filter on every photo', big[0], 'match the set in the grade, but let photographs keep their own colour; a duotone on everything flattens them', best[0]); }
+    for (const p of shown) { const kids = [...p.children].filter(k => k.tagName === 'SPAN' && (k.textContent || '').trim().split(/\\s+/).length <= 2); if (kids.length >= 12 && kids.length >= p.children.length * .9 && snip(p).length > 50) { const looks = new Set(kids.map(k => getComputedStyle(k).opacity + getComputedStyle(k).color)); if (looks.size >= 2) { add('CHANGE', 'word-by-word scroll fill', p, 'set the paragraph in full ink; nobody should wait for words to light up'); break; } } }
+  }
   // Filters doing the work
   for (const e of shown) { const c = getComputedStyle(e), r = e.getBoundingClientRect(); if ((c.position === 'fixed' || c.position === 'absolute') && r.width >= vw * .95 && r.height >= vh * .9 && c.pointerEvents === 'none' && !snip(e) && (/url\\(|radial-gradient/.test(c.backgroundImage)) && c.mixBlendMode !== 'normal') add('CHANGE', 'noise or vignette overlay across the page', e, 'texture belongs to a material, not a filter laid over everything'); }
   // Group and cap: say it once per rule with a count, then the elements
@@ -204,13 +230,18 @@ const CHECK = (medium) => `(() => {
   const ev = async js => { const r = await s('Runtime.evaluate', { expression: js, awaitPromise: true, returnByValue: true }); if (r.exceptionDetails) throw new Error(r.exceptionDetails.exception?.description || r.exceptionDetails.text); return r.result.value; };
   await s('Page.enable'); await s('Runtime.enable');
   await s('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
-  await s('Page.navigate', { url }); await sleep(3500);
+  const SNAP = `(() => { const all = [...document.querySelectorAll('body *')]; return all.map((e, i) => { const r = e.getBoundingClientRect(), t = [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim(); return r.top < innerHeight && r.bottom > 0 && parseFloat(getComputedStyle(e).fontSize) >= 56 && /\\d/.test(t) && t.length <= 14 ? [i, t] : null; }).filter(Boolean); })()`;
+  await s('Page.navigate', { url }); await sleep(450);
+  const early = await ev(SNAP).catch(() => []); await sleep(3050);
+  const late = Object.fromEntries((await ev(SNAP).catch(() => [])).map(([i, t]) => [i, t]));
+  const counted = early.filter(([i, t]) => late[i] !== undefined && late[i] !== t && /\d/.test(late[i])).map(([i, t]) => t + ' to ' + late[i]);
   if (!medium) { const one = await ev(`document.documentElement.scrollHeight <= innerHeight * 1.25 && !document.querySelector('nav') && document.querySelectorAll('a').length <= 3`); medium = one ? 'single-frame piece' : 'page'; }
   // let scroll-driven pages show everything once, then judge the top of the page as the first screen
   await ev(`(async () => { const h = document.documentElement.scrollHeight; for (let y = 0; y < h; y += innerHeight * .8) { scrollTo(0, y); await new Promise(r => setTimeout(r, 60)); } scrollTo(0, 0); await new Promise(r => setTimeout(r, 400)); })()`);
   const broken = await ev(`/can.t be reached|ERR_|404 Not Found/.test(document.title + ' ' + (document.body ? document.body.innerText.slice(0, 300) : ''))`);
   if (broken) { console.error('slop.mjs could not load ' + url + '. Start the page first.'); process.exit(2); }
   const r = await ev(CHECK(medium));
+  if (counted.length && r.medium === 'page') r.findings.unshift({ level: 'REMOVE', rule: 'count-up number on the first screen', where: 'page', text: counted[0], fix: 'show the final number from the start; counting up on load is a template animation' });
   const rem = r.findings.filter(f => f.level === 'REMOVE'), chg = r.findings.filter(f => f.level === 'CHANGE');
   if (json) console.log(JSON.stringify(r));
   else {

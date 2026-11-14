@@ -1,6 +1,8 @@
 # Composition: pictures and display type in one space
 
-Read this before you lay out any scene. It is the chapter that separates a designed page from a filled-in one.
+Read this before you lay out a scene that has a photograph in it.
+
+**The limit, from blind reviews.** Type may share space with a picture only in a calm zone, and only where the picture was chosen for it. It must never touch, cross or hide behind the picture's subject, and a headline must never be split around a photograph. Do this once or twice on a page, not in every scene. Panels marked down collisions, clipped headlines and cut-outs on empty grounds more than they marked down pictures and words set side by side with care.
 
 A template keeps pictures and words apart. Heading goes here, picture goes there, each in its own rectangle, with a gutter between them to keep the peace. Almost every generated page does this, and tidy spacing cannot hide it. On the pages people remember, the two share one space. The word goes behind the shoulder. The photograph opens through a letter. A price sits on the wood it is talking about. The caption hangs from the thing it describes, and when you scroll the picture and the sentence move together because they are one object.
 

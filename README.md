@@ -35,12 +35,14 @@ GPT models also receive coaching, worked examples from top-scoring pages, specif
 
 ## Results
 
-Scored blind by panels of Claude models, out of 10, with real top-tier sites mixed in. See [RESULTS.md](RESULTS.md) for the numbers and their limits. These were measured before version 1.5, which has not been scored blind yet. See [CHANGELOG.md](CHANGELOG.md) for what changed.
+Scored blind by panels of Claude models, out of 10, with real top-tier sites mixed in. See [RESULTS.md](RESULTS.md) for the numbers and their limits. See [CHANGELOG.md](CHANGELOG.md) for what changed.
 
 | Test | Without | With | Real sites |
 |---|---|---|---|
 | GPT-6, 6 briefs never tuned on | 5.67 | 6.72 | 7.92 |
 | Claude Opus, 12 tuning briefs | 6.33 | 7.93 | 7.85 |
 | GPT-6, 12 tuning briefs | 5.21 | 5.99 | 7.85 |
+
+Version 1.5 against 1.0, Claude Opus, the same 12 briefs rebuilt and judged blind in a fresh panel: 7.17 for 1.0, 7.46 for 1.5 (gain +0.29, 95% interval +0.06 to +0.52, better on 10 of 12), with real sites at 6.69 in the same panel. Our first draft of 1.5 lost on all twelve; RESULTS.md has every round.
 
 There is no clean held-out result for Claude.

@@ -516,7 +516,7 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
         return {"slot": label, "el": chosen["el"], "variant": chosen["variant"], "spec": chosen.get("spec", ""), "evidence": [e["name"] for e in chosen.get("evidence", [])[:3]]}
 
     # The page: one real page's jobs, in that page's order, so the choices belong together.
-    lead, sections, scenes = None, [], []
+    lead, sections, scenes, signature, sig_job = None, [], [], None, None
     if surface in FIXED:
         wanted = FIXED[surface]
         pool = [m for m in load("moves.jsonl") if "tool" in m.get("jobs", []) or m.get("surface") == surface]
@@ -563,8 +563,24 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
         while len(steps) < TARGET_SECTIONS.get(surface, 6) and set(common) - set(steps):
             extra = pick(rng, sorted(set(common) - set(steps)), lambda x: common[x], 1)[0]
             steps.insert(rng.randint(1, len(steps)), extra)
-        scenes = scenes_for(steps, rng, load("moves.jsonl"), used.get("moves", set()), "none" if no_images else images, genre, surface)
-        wanted = [("Navigation", ["nav.top-bar", "nav.floating-pill"]), ("Footer", ["section.footer"])]
+        # Every section gets an exact recipe from a real page, and the page gets one signature idea, not a trick per section.
+        # Blind panels scored pages built from a move per section well below pages built from measured recipes (Nov 2026).
+        sig = [x for x in scenes_for(steps, rng, load("moves.jsonl"), used.get("moves", set()), "none" if no_images else images, genre, surface)
+               if x.get("move") and x["job"] not in ("stop", "act") and not x["move"].get("loud") and not x["move"].get("cutout")]
+        # The signature is something a visitor can use: an operable component built from real content, not a transition or a type trick.
+        comp = [x for x in sig if x["move"].get("kind") == "component"]
+        if not comp:
+            pool = [m for m in load("moves.jsonl") if m.get("kind") == "component" and not m.get("loud") and set(m.get("jobs", [])) & {"what", "how", "proof"}
+                    and not (no_images and m.get("needs_image")) and m["name"] not in used.get("moves", set())]
+            if pool:
+                m = rng.choice(pool)
+                comp = [{"job": next(j for j in ("what", "how", "proof") if j in m.get("jobs", [])), "move": m}]
+        pick_sig = (comp or sig)[:1]
+        if pick_sig:
+            signature, sig_job = pick_sig[0]["move"], pick_sig[0]["job"]
+        wanted = [("Navigation", ["nav.top-bar", "nav.floating-pill"])] + [(human(step) if not step.startswith("hero.") else "Hero", [step]) for step in steps]
+        if "section.footer" not in steps:
+            wanted.append(("Footer", ["section.footer"]))
 
     for label, patterns in wanted:
         taken = {s["el"] for s in sections}
@@ -658,7 +674,7 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
                 seen_kinds.add(x.get("kind"))
                 examples.append(x)
 
-    record = {"brief": brief[:80], "register": register, "moves": [x["move"]["name"] for x in scenes if x.get("move")], "angles": [angle["business"]] if angle else [], "examples": [x.get("file") for x in examples], "voices": [voice], "plans": [lead["slug"]] if lead else [], "refs": [r["slug"] for r in chosen], "types": [type_system["id"]],
+    record = {"brief": brief[:80], "register": register, "moves": [x["move"]["name"] for x in scenes if x.get("move")] + ([signature["name"]] if signature else []), "angles": [angle["business"]] if angle else [], "examples": [x.get("file") for x in examples], "voices": [voice], "plans": [lead["slug"]] if lead else [], "refs": [r["slug"] for r in chosen], "types": [type_system["id"]],
               "variants": [s["variant"] for s in sections + system]}
     floor = HEIGHTS.get(surface)
     clarity = [m for m in load("moves.jsonl") if m.get("kind") == "clarity"]
@@ -666,7 +682,7 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
     ideas = load("page-ideas.jsonl")
     page_ideas = pick(rng, ideas, lambda i: 1 + closeness(genre, i["genre"]), min(3, len(ideas))) if ideas and scenes else []
     return {"page_ideas": page_ideas, "clarity": clarity_move, "seed": seed, "genre": genre, "surface": surface, "register": register, "lead": lead, "modelled": bool(modelled), "references": chosen, "type_system": type_system, "palette": {"from": source["name"], "palette": palette}, "no_images": no_images, "renderer": bool(renderer),
-            "voice": voice, "shape": shape, "sections": sections, "scenes": scenes, "images": "none" if no_images else images, "system": system, "angle": angle, "named": named, "subject": subject, "site": site, "asked": asked, "brief": brief, "coach": coach, "examples": examples, "minHeight": floor[0] if floor else None, "heightRange": floor[1] if floor else None}, record
+            "voice": voice, "shape": shape, "sections": sections, "scenes": scenes, "signature": signature, "sig_job": sig_job, "images": "none" if no_images else images, "system": system, "angle": angle, "named": named, "subject": subject, "site": site, "asked": asked, "brief": brief, "coach": coach, "examples": examples, "minHeight": floor[0] if floor else None, "heightRange": floor[1] if floor else None}, record
 
 
 def load_folder(name):
@@ -733,7 +749,7 @@ def render(d):
     if a2.get("fonts"):
         lines.append("- **Type:** " + ", ".join(a2["fonts"]) + ". Use these; the dealt type system is only a fallback for roles they did not cover.")
     if a2.get("sections"):
-        lines.append("- **They asked for:** " + ", ".join(a2["sections"]) + ". Build each one, as the most ambitious version of itself, inside the scenes below.")
+        lines.append("- **They asked for:** " + ", ".join(a2["sections"]) + ". Build each one, and build it well, inside the page below.")
     if a2.get("effects"):
         lines.append("- **Effects:** " + "; ".join(a2["effects"]) + ".")
     out += ["## What they asked for", "", f"> {d.get('brief', '')[:400]}", ""]
@@ -745,7 +761,7 @@ def render(d):
                 "Take moves, not looks. The result must not be identifiable as a copy of any reference, so change the content, the pictures and the details freely.", ""]
     else:
         out += ["**This hand is a push away from your usual page.** It was drawn from real top-tier pages so that no two projects look alike. Follow it where the person left things open, and do not drift back towards your habits.", "",
-                "Swap a slot when it is plainly wrong for this business or for what the person asked, and say which and why. Keep the register, the type system, the palette and the section order unless the person or an existing brand points elsewhere.", ""]
+                "Swap a slot when it is plainly wrong for this business or for what the person asked, and say which and why. Keep the register and the section order unless the person or an existing brand points elsewhere. The type system and palette are a starting point: if your review calls them generic, default or muddy, change them to suit this business.", ""]
     out += ["When recipes disagree, the type system decides type, the palette decides colour, and the Copy section below decides wording. Add weights to the font URL if you need them.", "",
             "If something needs proof you do not have, such as a quote or a statistic, read Proof in `references/copy.md`. If this is the user's real business, never invent customers or numbers. If you invented the business yourself, its customers are part of the same fiction, so keep them plausible and small and list them in your closing note.", ""]
     if d.get("scenes") and d.get("images") != "none":
@@ -818,6 +834,15 @@ def render(d):
         out += [heading, ""]
         for n, s in enumerate(d["sections"], 1):
             out.append(f"{n}. {s['slot']}: `{s['el']}/{s['variant']}`")
+        mv = d.get("signature")
+        if mv:
+            where = f' It belongs to the job "{JOBS[d["sig_job"]][0]}", in whichever section does that job.' if d.get("sig_job") in JOBS else ""
+            out += ["", "## One signature idea", "",
+                    f"This is the page's signature: the idea that gets the most room and the most finish.{where} Build it from this business's real content. Every other section still gets its own idea that shows real content rather than describing it, built on its recipe below. Ideas everywhere, tricks nowhere.", "",
+                    f"**Move: `{mv['name']}`**", "", mv["what_you_see"], "", f"- Build: {mv['recipe']}"]
+            if mv.get("transfer"):
+                out.append(f"- For an ordinary business: {mv['transfer']}")
+            out += ["", "You may replace it with a better idea from `references/taste.md` that suits this business. Blind panels rewarded an idea in every section and marked pages down hard for tricks: split headlines, type crashing into photographs, count-up numbers, ghost numerals, tilted notes, word-by-word reveals, giant wordmark footers."]
     if d.get("minHeight"):
         out += ["", f"Top {d['surface']} pages run {d['heightRange']} tall at 1440, so build every scene in full with real content."]
     t = d["type_system"]
@@ -827,7 +852,7 @@ def render(d):
             f"- Text: {te.get('size')}/{te.get('leading')}. UI: {ui.get('family')} {ui.get('size')} {ui.get('weight')}. Label: {(t.get('label') or {}).get('note', '')}",
             f"- Load: {' '.join(t.get('css', []))}"]
     p = d["palette"]
-    out += ["", "## Palette", "", f"From {p['from']}: " + ", ".join(f"{k} {v}" for k, v in p["palette"].items() if v) + ". Keep its structure and value steps. You may move the accent's hue to suit the business, but not the ground."]
+    out += ["", "## Palette", "", f"From {p['from']}: " + ", ".join(f"{k} {v}" for k, v in p["palette"].items() if v) + ". Keep its structure and value steps as a starting point. Take the accent from this business's real materials, and change the palette if the review calls it generic or default."]
     out += ["", "## Copy", "", f"Voice: **{d['voice']}**. Headline shape: **{d['shape']}**. Both are explained in `references/copy.md`, under Choose a voice and Six shapes.", "",
             "These decide whether the page reads as written by a person:", "",
             "- **No paired fragments.** `Good coffee. Better days.` and `Keep the thought. Lose the busywork.` are the strongest sign of generated copy: 14 of 15 generated headlines against 5 of 81 real ones. Write one plain sentence containing a noun only this business has.",

@@ -67,7 +67,7 @@ For every part of what you are making, write three "wouldn't it be cool if" idea
 
 ## Ideas for every part of a site
 
-Treat each part as its own small project with its own idea. For each one, here is its job, the template version to avoid, and directions that lead somewhere better. They are starting points for your own idea, not a menu to pick from.
+Use this to find the page's one signature, and to make sure no part falls back to its template version. It is not a list of tricks to put in every section. Blind panels marked pages down hard when every section had its own idea: the page read as a sample book. Pick one part for the signature, and build every other part as the quiet, exact, well-made version of itself, with real content. For each part, here is its job, the template version to avoid, and directions that lead somewhere better.
 
 **Navigation.** Job: get anywhere in one move, and say whose site this is. Template: logo left, five links centre, pill button right, glass blur. Better: a nav that is part of the composition, such as the wordmark at full width that shrinks into the bar on scroll; links that show where you are as a live position in the page; a menu that opens as a full scene with pictures of each destination; a nav made from the brand's own object, such as a ticket stub or a tab in a binder, if the brand earns it.
 
@@ -147,7 +147,7 @@ Type carries most of what people read and much of what they feel. It is where ta
 3. **Hierarchy changes one thing at a time.** Size, or weight, or ink. Changing all three at every level makes noise.
 4. **Display type is an image.** At display size, letters are shapes. Set tracking tighter as the size grows, kern by eye, break lines by meaning, and compose the block with the picture beside it.
 5. **Reading type is invisible.** 15 to 20px, 45 to 75 characters a line, leading of 1.4 to 1.6, real quotation marks and apostrophes, no widows. Nobody should notice it.
-6. **One reckless moment is allowed.** Most of the page at measured sizes, and one place where type is enormous, or composed into the photograph, or moving. Not every heading.
+6. **At most one display moment.** Most of the page at measured sizes, and at most one place where type is very large. It sits in a calm zone of a picture or on its own ground, never touching the picture's subject. Blind panels marked down huge headlines doing all the work, and type crashing into photographs.
 
 **Details that separate good from cheap.** Tabular figures in anything that aligns. `text-wrap: balance` on headings and `pretty` on paragraphs. Hanging punctuation in large quotes. Optical size axes where the font has them. Small caps for runs of capitals. A real en dash in number ranges. Numerals that match the face's character.
 
@@ -192,7 +192,7 @@ Rate every part of the page on this ladder, honestly, before you call it done.
 4. **Signature.** An idea only this subject could have, which explains the subject better than words would.
 5. **Award.** The signature idea, executed perfectly: seamless motion, finished edges, every state, a designed phone version, and real content that rewards reading.
 
-Every part should reach level 3. Most should reach 4. Two or three should reach 5. A part stuck at 1 or 2 is the next thing to fix, whatever else is good.
+Every part should reach level 3. One part, the signature, should reach 4 or 5. Several parts at level 4 read as a sample book, not a page: in blind tests that cost more than any single weak section. A part stuck at 1 or 2 is the next thing to fix, whatever else is good.
 
 ## Outside the browser
 
