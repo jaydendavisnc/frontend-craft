@@ -1,4 +1,4 @@
 interface:
   display_name: "Frontend Craft"
-  short_description: "Build pages that look made by a professional design team"
+  short_description: "Build pages people stop for, with real pictures, composed type and directed motion"
   default_prompt: "Use $frontend-craft to design and build this page."

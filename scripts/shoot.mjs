@@ -378,25 +378,25 @@ async function main() {
   if (!['app', 'docs', 'pricing'].includes(dealtHand.surface)) line(report.scrollMoved >= 3, `elements that moved during the scroll: ${report.scrollMoved}. Scrolling should visibly do something beyond the page sliding`);
   if (!snaps) line(c.controls === 0 || c.eased >= c.controls * .6, `links and buttons with a hover transition: ${c.eased} of ${c.controls}`);
   if (hand?.sections?.length && hand.minHeight) {
-    let ideas = ''; try { ideas = fs.readFileSync(path.join(path.dirname(handFile), 'ideas.md'), 'utf8'); } catch {}
-    const count = (ideas.match(/wouldn.?t it be cool/gi) || []).length;
-    line(count >= hand.sections.length * 2, `section ideas in .frontend-craft/ideas.md: ${count}. Write three "wouldn't it be cool if" lines for each of the ${hand.sections.length} sections, and build the best`);
+    let cards = ''; try { cards = fs.readFileSync(path.join(path.dirname(handFile), 'scenes.md'), 'utf8'); } catch {}
+    const count = (cards.match(/picture and type/gi) || []).length;
+    line(count >= hand.sections.length - 1, `scene cards in .frontend-craft/scenes.md: ${count} of ${hand.sections.length}. Write one per scene before building, in the format printed in the hand`);
   }
-  if (hand?.coach) {
+  if (hand?.minHeight) {
     const counter = path.join(path.dirname(handFile), 'rounds.json');
-    const complete = !hand.minHeight || report.height >= hand.minHeight;
+    const complete = report.height >= hand.minHeight;
     let round = 0; try { round = JSON.parse(fs.readFileSync(counter, 'utf8')).round; } catch {}
-    const defects = (report.craftFixes || 0);
     console.log('--- rounds');
-    if (!complete) console.log(`KEEP BUILDING. The page is ${report.height}px and the sections you were dealt are not all built with real content. Rounds begin when it reaches ${hand.minHeight}px.`);
+    if (!complete) console.log(`KEEP BUILDING. The page is ${report.height}px and not every scene is built with real content. Rounds begin when it reaches ${hand.minHeight}px.`);
     else {
       round += 1; try { fs.writeFileSync(counter, JSON.stringify({ round })); } catch {}
       const steps = {
-        1: `ROUND 1 OF 3: REBUILD. Passing checks is the floor. Open the sheet and full-size frames. Name the three weakest sections and rebuild each from scratch with more real content: more rows, more states, real interaction.${hand.components?.length ? ` Check these are built in full, with at least a dozen rows of data: ${hand.components.join('; ')}.` : ''} Then shoot again.`,
-        2: 'ROUND 2 OF 3: DEPTH AND MOTION. Read every section at full size. Count distinct real facts on the page and aim for 80 or more. Rewrite any heading a competitor could use. Build the staged first screen, one section where scrolling does real work, and product surfaces that animate as if in use. Then shoot again.',
-        3: 'ROUND 3 OF 3: EDIT. Cut clutter: any chip, label or divider without a job. Close holes in the spacing. Check the phone frames, and use --at 0,2400 --width 820 for tablet. Find the single weakest thing left and fix it. Then shoot once more.',
+        1: 'ROUND 1 OF 4: THE TEMPLATE. Run audit.mjs and fix every FIX line by changing the design, not by nudging numbers. Then open the sheet and name the two scenes nobody would stop for. Rebuild them from a new idea, not a better version of the same idea. Shoot again.',
+        2: 'ROUND 2 OF 4: PICTURES AND TYPE. Open every scene at full size. Cover the text: does the picture still have a reason to be that shape? Cover the picture: does the text still have a reason to be that size? Anything merely adjacent gets recomposed with references/composition.md. Crop tighter. Make the loud moments louder. Shoot again.',
+        3: 'ROUND 3 OF 4: PLAY AND MOTION. Use every component for real with a pointer, keyboard and thumb. Anything below rung 3 that could be higher gets rebuilt. Scroll the page with a wheel and feel it: are there at least three handoffs, does the signature land, does anything feel like a trap? Shoot again.',
+        4: 'ROUND 4 OF 4: EDIT. Get an independent critique if you can: see references/template-audit.md. Cut anything without a job. Check phone frames and --at 0,2400 --width 820 for tablet. Check every text-over-picture pairing at phone width. Find the single weakest thing left and fix it. Shoot once more.',
       };
-      console.log(steps[round] || 'All rounds are done. Finish only when no FIX line remains and you can find nothing honest to criticise. Then delete .frontend-craft and .shots.');
+      console.log(steps[round] || 'All rounds are done. Finish only when no FIX line remains in shoot or audit and you can find nothing honest to criticise. Then delete .frontend-craft and .shots.');
     }
   }
   fs.writeFileSync(path.join(outDir, `${prefix}report.json`), JSON.stringify(report, null, 1));

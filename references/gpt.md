@@ -36,7 +36,7 @@ These are the most frequent notes from blind reviewers on your pages, with what 
 | Blue-tinted dark, glowing button, gradient cards | Neutral black, flat surfaces, a solid button. Let colour come from real content |
 | Correct but boring, flat panels | Add light and depth to the ground, presence to the type, one confident colour, and custom-built components |
 | Too much text, reads like a slide deck | Cut copy hard. If a sentence explains what the page could show, build it and delete the sentence |
-| Every section is heading, paragraph, picture | Give each section its own idea. Brainstorm it in `ideas.md` and build the hardest good one |
+| Every section is heading, paragraph, picture | Give each scene its own idea, written as a card in `.frontend-craft/scenes.md`, and build the hardest good one |
 | Rows of date, name and note on hairlines, again and again | One plain list at most. Stylise the others: an object per row, size carrying value, a real axis, rows that open |
 | Self-quoted or obviously invented testimonials | Use proof that needs no customers: policies, numbers, method, a named person |
 

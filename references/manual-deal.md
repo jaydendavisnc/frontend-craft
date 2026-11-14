@@ -24,7 +24,7 @@ The point of a hand is to stop you landing on your favourite look. Do not browse
 
 3. **Find the files.** Each is named `<surface>-<genre>-<n>.md`. If that exact pair has no file, use the same surface with the nearest genre. `data/decks/index.json` lists them all.
 4. **Choose `n` by counting, not by taste.** Count the characters in the user's request, divide by the number of hands available for that pair, and take the remainder plus one. A 41-character brief with 4 hands gives remainder 1, so hand 2.
-5. **Read that one file** and treat it exactly as `SKILL.md` describes in step 2. Adapt anything that does not suit the brief, and say why in one line.
+5. **Read that one file** and take its register, type system, palette and voice. These decks predate v1.5, so their section lists are sections, not scenes. Turn each one into a job, as `SKILL.md` describes, and choose a move for it from `references/composition.md` and `references/components.md`. Never build the section type as named.
 
 If the hand is wrong for the brief as a whole, for example a dark technical register for a children's bakery, move to the next number. Do that once at most.
 

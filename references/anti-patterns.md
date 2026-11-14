@@ -14,6 +14,9 @@ Read this during critique, once you have a page to look at. It names the ways a 
 
 ## How to use this
 
+`scripts/slop.mjs` finds many of the entries below automatically and names the exact element for each one. Run it first, fix what it lists, then read on for the ones a script cannot see: concept, costume and copy that is merely bland.
+
+
 1. Read [Model collapse](#2-model-collapse) first and find your own column. Your likeliest failures are measured there.
 2. Walk the [catalogue](#1-the-vibe-code-good-catalogue) against your contact sheet, stage by stage. Run each **Detect** line as a real check. Do not answer from memory of what you built.
 3. Pick the [pair](#3-real-versus-imitation) closest to your brief and repeat its comparison on your own page.

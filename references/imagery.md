@@ -6,17 +6,34 @@ Read this before reaching for any image. It covers how to get images and what to
 
 ## Find your route
 
-Check what you actually have. Do not assume either way.
+Pictures are what most generated pages lack, so this is the first job of a build, not the last. Check what you actually have. Do not assume either way. In one real run a model skipped this step, built without photographs, and the page looked correct and dead. The same brief with real photography looked like a different class of work.
 
 1. **The client supplied assets.** Use them, and ask for what is missing in your closing note.
-2. **You have an image generation tool.** Use it for anything physical. Go to [With image generation](#with-image-generation).
-3. **You can run a 3D renderer.** Look for Blender before you give up on photography (`/Applications/Blender.app`, or `blender` on the path). Go to [Render your own set](#render-your-own-set).
-4. **You can browse the web and check files.** Go to [Real photos from the web](#real-photos-from-the-web).
-5. **None of these.** Go to [Without image generation](#without-image-generation). This is not a fallback in the sense of a lesser page. Plenty of gold sites carry no photographs at all.
+2. **You have an image generation tool.** Use it for anything physical, and ask first if it costs money. Go to [With image generation](#with-image-generation).
+3. **You can run a script and reach the web.** Run `scripts/photos.py`. Go to [Real photos from the web](#real-photos-from-the-web).
+4. **You can run a 3D renderer.** Look for Blender (`/Applications/Blender.app`, or `blender` on the path). Go to [Render your own set](#render-your-own-set). Use this as well as photographs when the business has an object worth owning, such as a card, a key, a bottle or a tool.
+5. **None of these.** Go to [Without image generation](#without-image-generation). This is a real loss, so say so at the end.
 
-Software products rarely need any of this. A real interface built in HTML outranks any picture of one. See the foundations of `elements/product.md`.
+Software products often need less of this, because a real interface built in HTML outranks a picture of one. But a software page of nothing but interface is its own template. People use software, and a strong picture of the world the product lives in can do what no screenshot can.
 
-The source sets the ceiling. In testing, no treatment lifted a weak image, and demos built on stock stand-ins looked clearly cheaper than the real sites beside them, whatever the CSS did. Spend your effort on what is in the frame.
+The source sets the ceiling. In testing, no treatment lifted a weak image. Spend your effort on what is in the frame.
+
+### What excellent means
+
+A picture earns its place if you can answer yes to these.
+
+- **It has one subject.** You can say what it is in three words.
+- **It has a calm zone.** There is room for type, or it can be cropped to make some.
+- **It has real light.** One direction, with shadows. Flat, even light reads as stock.
+- **It has a hand in it.** Wear, steam, ink, a chipped edge, a coffee ring. Something happened here.
+- **Nobody is posing for you.** People look at their work, not at the camera.
+- **It is sharp at twice the size you will show it.** Full-bleed needs at least 2400px wide. `scripts/imgset.py` warns you when it does not.
+
+Reject anything with a laptop on a desk, people pointing at a screen, handshakes, a diverse team laughing at a salad, or a coin stack. Those are the stock photographs everyone has already seen.
+
+### Search like a picture editor
+
+Search for concrete subjects from this business's own world, several at once, and compare. For a clinic, `nurse adjusting a drip line`, `stethoscope on a steel tray` and `clinic corridor at night` will beat `healthcare professional` every time. For a developer tool, `developer at a desk at night`, `whiteboard covered in arrows`, `hands on a mechanical keyboard`. For a florist, `florist stripping rose stems`, `buckets of tulips at dawn`. These are examples only: take the method, never the trade or the subject. Try the verb, the material and the place. Libraries are uneven: some subjects have a superb set and others have nothing usable. Never change the business to suit the library. If the business's own world has no strong photographs, use renders, a smaller set of better pictures, or a type-led scene. If a library has several frames by one photographer from one shoot, take them, because they already belong together. That is worth more than a better topic.
 
 ## With image generation
 
@@ -94,6 +111,9 @@ A model with no image generator and access to Blender can make a better set than
 - **Add imperfection on purpose.** Slight bevels on every edge, uneven glaze, creased paper, dust and roughness variation. Perfectly smooth surfaces are what give CGI away.
 - **Put real labels on packaging.** Render the label as an HTML page, screenshot it, and map it on as a texture, so the type is correct and matches the site.
 - **Preview cheaply, finish slowly.** Render small with few samples while composing, and only render the final at full size. Run it in the background.
+- **Shoot on a transparent ground.** `film_transparent` and a shadow catcher plane give you an object you can set over anything, including over type. Lights with `use_shadow = False` stop soft area lights from staining the catcher with grey haze, so only the sun casts a shadow. Fade the alpha at the image's edges afterwards, or a faint rectangle shows on tinted grounds.
+- **Lift the object off the ground.** A flat card on a plane casts almost no shadow and looks like a vector. Tilt it and raise it, and it casts a long soft shadow that gives the whole first screen its depth.
+- **Metal needs something to reflect.** Put a long, thin area light exactly in the reflection path: reflect the camera vector about the surface normal and place the light along it. Without this, metal renders as flat grey or blows out to white.
 - **Grade once, in one script,** with the same curve and fine grain on every frame, so nothing is done on the page.
 
 Without Blender, three.js can do the same for one or two hero objects: render in a headless browser with path tracing or good environment light, and save a still. See `media.render-3d` in `elements/media.md`.
@@ -126,14 +146,23 @@ Never paper over a missing photo with a gradient box, an emoji, a stock icon in 
 
 ## Real photos from the web
 
-Use this only when you can actually fetch and look at the file.
+`scripts/photos.py` searches Burst, Openverse (with a commercial-use filter) and the quality category of Wikimedia Commons, and draws one numbered contact sheet. Unsplash and Pexels block automated clients, so do not use them this way, and never try to get past a bot check.
 
-1. Prefer sources with clear licences, such as Unsplash, Pexels, Wikimedia Commons public-domain files, and museum open-access collections. Check the licence on the image's own page.
-2. Download each image and look at it. Never use a URL from memory: remembered image links are usually dead or show something else.
-3. Save it in the project rather than hotlinking, resize it, and treat the group as a set using `elements/media.md`. Sets from different photographers rarely match, so replace outliers instead of grading them harder. A grade narrows a set but cannot create one.
-4. List sources and licences in your closing note, and say that these stand in for the business's own photographs.
+```bash
+python3 scripts/photos.py "<a person doing the work>" "<a macro of the material>" --out .frontend-craft/photos
+python3 scripts/photos.py --get 3,7,12 --out .frontend-craft/photos --to assets/src
+swift scripts/cutout.swift assets/src/<photo>.jpg assets/src/<photo>-subject.png
+python3 scripts/imgset.py assets/src --to assets/img --grade warm
+```
 
-Do not use anyone else's brand images, product shots or identifiable people from a real company's site. Do not present a stock person as a named customer or employee.
+1. Open the sheet and read it at full size before choosing. Never pick from a title.
+2. `--get` saves the originals and writes `CREDITS.md` with each picture's source and licence. Check the licence on the picture's own page before relying on it, because libraries change terms. Burst uses its own licence and Creative Commons on different pictures. CC BY and CC BY-SA need a credit on the page.
+3. `cutout.swift` lifts the subject out on macOS 14 or newer, with no network. It writes a PNG the same size as the photograph, so the two layers register exactly. Look at the edges at full size. Clean silhouettes against plain grounds cut best.
+4. `imgset.py` gives every picture the same curve and fine grain, writes 960, 1600 and 2400px WebP, and writes `manifest.json` with sizes, the average colour and a blurred placeholder. Use `srcset`, `sizes`, `width` and `height` on every image, and the placeholder as a CSS background, so nothing shifts or pops in.
+5. Treat the group as a set using `elements/media.md`. Replace outliers instead of grading them harder. A grade narrows a set but cannot create one.
+6. List sources and licences in your closing note, and say that these stand in for the business's own photographs.
+
+Do not use anyone else's brand images, product shots or identifiable people from a real company's site. Do not present a stock person as a named customer or employee. Quotes go beside hands, tools and places, not beside a stranger's face.
 
 ## Plans by business
 

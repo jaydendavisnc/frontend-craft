@@ -30,20 +30,20 @@ GENRE_WORDS = {
     "food-drink": "coffee cafe recipe recipes restaurant bakery bar brewery wine tea pizza kitchen food roastery bistro deli menu catering",
     "hospitality": "hotel resort lodge hostel inn travel airbnb cabin spa retreat",
     "health": "dentist dental clinic doctor medical health therapy therapist wellness yoga pilates fitness gym physio pharmacy care nutrition sleep",
-    "finance": "bank fintech finance payments invoice accounting tax crypto wallet trading invest insurance loan payroll",
+    "finance": "bank banks banking mortgage mortgages savings credit-union fintech finance payments invoice accounting tax crypto wallet trading invest insurance loan payroll",
     "ai": "ai llm agent assistant copilot gpt model chatbot generative",
     "devtool": "api sdk developer devtool database hosting cli infrastructure deploy observability open-source",
-    "saas": "saas software platform tool crm workflow project management productivity b2b analytics",
+    "saas": "saas software platform tool crm workflow project management productivity b2b analytics hiring recruiting recruitment",
     "ecommerce": "store shop ecommerce e-commerce candles boutique marketplace products merch",
     "fashion": "fashion clothing apparel jewelry jewellery shoes sneakers streetwear",
     "brand": "brand consumer hardware device gadget cosmetics skincare beauty",
     "architecture": "architecture architect interior construction real-estate realtor property homes",
     "agency": "agency studio consultancy marketing creative",
     "portfolio": "portfolio personal resume photographer designer engineer freelancer artist",
-    "culture": "museum gallery festival theatre theater music band concert film magazine publisher art event conference",
+    "culture": "museum gallery festival theatre theater music band concert film magazine publisher art event conference chess game games gaming esports podcast newsletter",
     "nonprofit": "nonprofit non-profit charity foundation ngo donate volunteer climate",
     "education": "school university course education learn tutoring academy kids",
-    "local-business": "law lawyer attorney plumber detailing salon barber landscaping cleaning repair garage local electrician",
+    "local-business": "law lawyer attorney plumber detailing salon barber landscaping cleaning repair garage local electrician florist tattoo vet wedding",
 }
 SURFACE_WORDS = {
     "app": "dashboard admin app ui crm tracker panel console inbox settings",
@@ -67,6 +67,23 @@ PAIRING_REGISTERS = {"light-precision": {"rational", "technical", "quiet", "futu
                      "bold-colour": {"loud", "retro", "cultural"}, "expressive": {"loud", "retro", "cultural", "crafted"}}
 OPEN_GENRES = {"saas": 3, "ai": 3, "devtool": 2, "finance": 2, "brand": 2, "ecommerce": 1, "hospitality": 1, "food-drink": 1, "culture": 1, "education": 1, "health": 1}
 FILLER = set("build make create design website site landing page home homepage web a an the for my our me i im it its with and of to in on that clean modern good nice great best high quality looks feels like".split())
+# Words about the page or the request. Whatever survives them is what the brief is about.
+NOT_SUBJECT = FILLER | set("""
+    a about after again all also am an another any are as at be been but by can could did do does doing done dont either else even every everything from get gets getting
+    give gives go going got had has have he her here him his how if into is isnt just keep let lets may maybe more most much must need needs no not now of off ok okay once one only or other our out over own
+    please pls put really same say see seem seems she should show so some something still such than then there these they thing things this those through too try trying under until up us use used uses using
+    very want wanna was we were what when where which while who why will would yes yet you your youre hey hi hello
+    code coded codes coding build builds building built make makes making made create creates creating created generate generates generating write writes writing draft mock mockup prototype redesign
+    design designs designed designing test tests testing ship shipping
+    website websites web webpage webpages site sites page pages landing homepage homepages app apps application store shop startup company companies business businesses brand platform portfolio dashboard product
+    stunning beautiful gorgeous pretty elegant sleek slick polished simple minimal minimalist premium professional luxury fancy bold loud dark light black white colourful colorful bright fresh sharp
+    awesome amazing insane sick dope cool neat lovely perfect excellent world-class top-tier award award-winning winning production production-grade grade new old simple single one-page full big small
+    ui ux layout typography typographic font fonts icon icons component components compoenents animation animations animated motion 3d responsive interactive scroll scrolling hero section sections footer nav
+    personal style styled styles look feel vibe aesthetic inspired inspiration similar generic template templatey templates slop natural craft element elements detail details skill review reviews
+    """.split())
+PAGE_WORD = r"websites?|web site|sites?|landing pages?|landing|homepage|home page|web ?pages?|pages?|apps?|stores?|shops?|startup|company|business|brand|platform|portfolio|dashboard"
+TLDS = "com|io|ai|app|co|org|net|dev|gg|tv|so|xyz"
+CLAUSE_END = r"\b(?:but|that|which|with|using|use|so|it|have|has|where|and|in the style|inspired|like)\b"
 NOT_PORTFOLIO = {"section.team", "section.pricing-table", "section.logo-wall", "section.comparison-table", "section.integrations"}
 SOFTWARE_ONLY = {"section.integrations", "section.logo-wall", "section.changelog"}
 PLACE = {"food-drink", "hospitality", "local-business"}  # somewhere you can walk into
@@ -89,13 +106,38 @@ SOFTWARE_VARIANTS = {"search-led-bar", "command-bar-nav"}
 DARK_REGISTERS = {"dark-precision", "render-3d"}
 EXPRESSIVE_WORDS = "experimental bold loud wild brutalist weird avant-garde playful festival art poster crazy unconventional awwwards"
 
+# v1.5: a page is a set of jobs. A section type names a solution, and naming the solution is how a page becomes a template.
+JOBS = {
+    "stop": ("Stop them", "The first screen. In two seconds a stranger knows what this is and has seen something they want to keep looking at.", "a heading and two buttons beside a picture, or centred over a soft gradient"),
+    "what": ("Show what you get", "What someone actually receives, shown as the thing itself rather than described.", "a grid of icon cards, or picture and paragraph taking turns down the page"),
+    "how": ("Show how it works", "Let them watch it happen, or better, do it themselves.", "three numbered steps, or tabs around the same screenshot"),
+    "proof": ("Let someone else say it", "Evidence from people. The person and the detail matter more than the praise.", "quote cards in a row, or a wall of logos"),
+    "scale": ("Show the size of it", "A number that means something, made physical or drawn to scale.", "stat tiles, or a row of big numbers with captions"),
+    "people": ("Show who is behind it", "The humans, with something of their own.", "a grid of headshots with names under them"),
+    "work": ("Show the work", "The best examples at a size where they can be enjoyed.", "a grid of equal thumbnails"),
+    "writing": ("Keep them reading", "What is new, and why someone would come back.", "three article cards, or a ruled list of dated rows"),
+    "cost": ("Say what it costs", "The real price, in a form someone can test against their own situation.", "three pricing columns with the middle one highlighted"),
+    "worry": ("Answer the worry", "The awkward questions, answered like a person would.", "a stack of grey accordion rows on its own"),
+    "place": ("Say where", "Where it is, and what being there is like.", "address cards, or a ruled list of locations"),
+    "catalog": ("Let them browse", "Everything on offer, arranged so browsing is a pleasure.", "a grid of equal product cards"),
+    "act": ("Ask for the thing", "The one action, at the moment they are most sure.", "a coloured band with a heading and one button"),
+    "tool": ("Make the tool feel made", "Someone uses this every day. One part of it should be a pleasure they would point out to a colleague.", "a stock sidebar, a stock table and a row of metric cards"),
+}
+JOB_OF = {"section.feature-grid": "what", "section.feature-alternating": "what", "section.feature-tabs": "what", "section.feature-sticky-scroll": "what", "product.app-window": "what", "product.ui-fragment": "what",
+          "product.device-mockup": "what", "product.annotated-shot": "what", "section.comparison-table": "what", "section.integrations": "what", "section.steps-process": "how", "product.animated-demo": "how",
+          "product.code-block": "how", "product.terminal": "how", "section.testimonial": "proof", "section.logo-wall": "proof", "section.case-study": "proof", "section.stats": "scale", "product.data-viz": "scale",
+          "section.team": "people", "section.gallery-portfolio": "work", "layout.full-bleed-break": "work", "section.blog-index": "writing", "section.changelog": "writing", "section.pricing-table": "cost",
+          "section.faq": "worry", "section.location-hours": "place", "section.menu-or-catalog": "catalog", "commerce.product-card": "catalog", "commerce.collection-grid": "catalog", "commerce.product-detail": "catalog",
+          "section.newsletter": "act", "section.contact-form": "act"}
+LOUD_SCENES = 3  # moments at full volume. More than this and nothing is loud
+
 # Which elements a page needs a choice for, in build order. A trailing * matches a whole group.
 LADDERS = ["atmosphere.dark-surface-ladder", "atmosphere.light-surface-ladder"]
 DEVICES = ["atmosphere.gradient-field", "atmosphere.glow-or-light", "atmosphere.grid-or-lines", "atmosphere.image-backdrop", "atmosphere.mesh-or-3d-backdrop", "atmosphere.pattern", "atmosphere.texture"]
 MOTION = [("Load", ["motion.load-sequence"]), ("Scroll", ["motion.scroll-reveal", "motion.scroll-pin-or-scrub"]), ("Hover", ["motion.hover-state", "button.hover-response"])]
-SYSTEM = [("Headline", ["type.display-headline"]), ("Section headings", ["type.section-heading"]), ("Primary button", ["button.primary"]),
+SYSTEM = [("Headline", ["type.display-headline"]), ("Primary button", ["button.primary"]),
           ("Surfaces", ["surface.card", "surface.panel", "surface.border-treatment"]), ("Surface ladder", LADDERS), ("Logo", ["media.logo-mark"]), ("Icons", ["media.icon-set"]),
-          ("Page rhythm", ["layout.section-rhythm", "layout.grid-system"]), *MOTION, ("Phone menu", ["nav.mobile-menu", "mobile.phone-nav"])]
+          *MOTION, ("Phone menu", ["nav.mobile-menu", "mobile.phone-nav"])]
 # Surfaces whose shape is fixed by the job get a fixed list. Landing, store and portfolio pages take their sections from a real page.
 FIXED = {
     "app": [("App shell", ["app.dashboard-layout", "app.app-sidebar", "nav.sidebar-nav"]), ("Data table", ["app.data-table"]), ("Charts", ["app.chart", "product.data-viz"]), ("Controls", ["app.form-control"]),
@@ -190,13 +232,88 @@ def legible(muted, text, bg):
 def model_site(brief, plans):
     """A brief that says 'like Linear' or 'Stripe style' has named its model, so use that real page rather than a random one."""
     text = brief.lower()
-    said = re.findall(r"(?:like|inspired by|style of|similar to|feel of|look of|vibe of)\s+(?:a |an |the )?([a-z0-9.-]+)", text) + re.findall(r"([a-z0-9.-]+)[- ](?:like|style|inspired|esque)\b", text)
+    said = re.findall(r"(?:like|inspired by|style of|similar to|feel of|look of|vibe of)\s+(?:like\s+)?(?:a |an |the )?([a-z0-9.-]+)", text) + re.findall(r"([a-z0-9.-]+)[- ](?:like|style|inspired|esque)\b", text)
     names = {p["name"].lower(): p for p in plans if " " not in p["name"] and len(p["name"]) >= 4}
     for word in said:
-        close = difflib.get_close_matches(word.strip(".-"), list(names), n=1, cutoff=.84)
+        close = difflib.get_close_matches(re.sub(rf"\.(?:{TLDS})$", "", word.strip(".-")), list(names), n=1, cutoff=.84)
         if close:
             return names[close[0]]
     return None
+
+
+# What the person said outranks the hand. These are read out of the brief before anything is dealt.
+LOOK_WORDS = [  # (pattern, register it points to or None, how to read it)
+    (r"\b(brutalist|brutal|raw|anti-design)\b", "mono-technical", "brutalist: honest structure, visible grid, hard edges, done with craft"),
+    (r"\b(editorial|magazine|newspaper|journal)\b", "type-led", "editorial: typography leads, real photography, a visible grid"),
+    (r"\b(luxury|luxurious|high-end|upscale|elegant)\b", "photo-led", "premium: restraint, real material, generous scale, slow confident motion"),
+    (r"\b(retro|vintage|y2k|80s|90s|nostalgic)\b", "expressive", "retro: the era's real moves, not a costume"),
+    (r"\b(colou?rful|vibrant|bright colou?rs?|bold colou?rs?|loud)\b", "bold-colour", "colourful: colour as a building material, chosen as a set"),
+    (r"\b(playful|fun|quirky|whimsical|cute)\b", "illustrated", "playful: personality in motion and copy, things that respond"),
+    (r"\b(warm|cosy|cozy|homely)\b", "warm-neutral", "warm: real people and light, a human voice"),
+    (r"\b(minimal|minimalist)\b", None, "minimal: few elements, each excellent, with strong scale contrast"),
+    (r"\b(clean)\b", None, "clean: control, one idea per screen, nothing without a job"),
+    (r"\b(premium)\b", None, "premium: restraint, real material, perfect details"),
+    (r"\b(modern)\b", None, "modern: current product craft, nothing dated"),
+    (r"\b(professional|corporate)\b", None, "professional: trustworthy, clear, finished"),
+]
+COLOUR_WORDS = r"\b(red|crimson|scarlet|orange|amber|yellow|gold|golden|lime|green|emerald|olive|teal|turquoise|cyan|blue|navy|cobalt|indigo|violet|purple|lilac|lavender|pink|magenta|coral|peach|brown|tan|beige|cream|black|white|grey|gray|silver|neon)\b"
+SECTION_WORDS = [(r"\bpric(e|es|ing)\b|\bplans?\b", "pricing"), (r"\btestimonials?\b|\breviews?\b", "reviews"), (r"\bfaqs?\b|\bquestions\b", "FAQ"),
+                 (r"\bteam\b|\babout us\b|\bfounders?\b", "team"), (r"\bblog\b|\bnews\b|\barticles\b", "blog"), (r"\bgallery\b|\bportfolio\b|\bcase stud(y|ies)\b", "gallery or work"),
+                 (r"\bcontact\b|\bform\b", "contact form"), (r"\bnewsletter\b|\bsign ?up\b|\bwaitlist\b", "sign-up"), (r"\bmap\b|\blocations?\b", "location"),
+                 (r"\bbook(ing)?\b|\breservations?\b|\bappointments?\b", "booking"), (r"\bmenu\b", "menu"), (r"\bdemo\b|\bvideo\b", "demo or video"), (r"\bcareers\b|\bjobs\b", "careers")]
+EFFECT_WORDS = [(r"\b3d\b|\bthree\.?js\b|\bwebgl\b", "3D that belongs to the subject"), (r"\bscroll(ing)? (animations?|effects?|story|storytelling)\b|\bparallax\b|\bscrollytelling\b", "scroll-driven motion"),
+                (r"\banimat(ed|ions?)\b|\bmotion\b", "real motion: a score, not fades"), (r"\binteractive\b", "things the visitor can operate"), (r"\bdark mode\b|\btheme toggle\b", "a dark mode")]
+
+
+def stated(brief, fonts):
+    """Everything explicit in the brief: look, colours, fonts, sections, effects. The hand must not overrule any of it."""
+    low, out = brief.lower(), {"look": [], "register": None, "colours": [], "fonts": [], "sections": [], "effects": []}
+    for pat, reg, note in LOOK_WORDS:
+        if re.search(pat, low):
+            out["look"].append(note)
+            out["register"] = out["register"] or reg
+    out["colours"] = list(dict.fromkeys(re.findall(COLOUR_WORDS, low) + re.findall(r"#[0-9a-f]{3,6}\b", low)))
+    out["colours"] = [c for c in out["colours"] if not (c in ("black", "white") and re.search(r"\b(black|white) (and|&) (white|black)\b", low) is None and c in ("black", "white") and re.search(r"\bdark|light\b", low))]
+    for name in fonts:
+        n = name.lower()
+        if len(n) >= 4 and re.search(r"\b" + re.escape(n) + r"\b", low) and (re.search(r"\b" + re.escape(name) + r"\b", brief) or re.search(re.escape(n) + r"\W+(font|typeface|type)\b|\b(font|typeface)\W+" + re.escape(n), low)):
+            out["fonts"].append(name)
+    out["sections"] = list(dict.fromkeys(label for pat, label in SECTION_WORDS if re.search(pat, low)))
+    out["effects"] = list(dict.fromkeys(label for pat, label in EFFECT_WORDS if re.search(pat, low)))
+    return out
+
+
+def known_sites(refs):
+    """Names the corpus knows, so 'like framer.com' is treated as a design reference and not as the business."""
+    out = set()
+    for r in refs:
+        out.add(re.sub(r"[^a-z0-9]", "", r["name"].lower().split()[0]))
+        host = re.sub(r"^https?://(www\.)?", "", r.get("url", "")).split("/")[0].split(".")[0]
+        if host:
+            out.add(host.lower())
+    return out
+
+
+def subject_of(brief, known, model=None):
+    """What the brief is about, in its own words, or None for a brief that names nothing. Returns (subject, site)."""
+    text = re.sub(r"[^a-z0-9&'.\s-]", " ", brief.lower())
+    for domain, root in re.findall(rf"\b(([a-z0-9-]+)\.(?:{TLDS}))\b", text):
+        if root.replace("-", "") not in known:
+            return root.replace("-", " "), domain
+    text = text.replace(".", " ")
+    drop = NOT_SUBJECT | ({model} if model else set())
+
+    def clean(chunk):
+        kept = [w.strip("'-") for w in re.findall(r"[a-z0-9&'-]+", re.split(CLAUSE_END, chunk)[0])]
+        kept = [w for w in kept if len(w) > 1 and w not in drop and not (model and difflib.SequenceMatcher(None, w, model).ratio() >= .84)]
+        return " ".join(kept)
+
+    found = [clean(m.group(1)) for m in re.finditer(rf"\b(?:{PAGE_WORD})\s+(?:for|about|selling|on)\s+((?:[a-z0-9&'-]+\s*){{1,6}})", text)]
+    found += [clean(m.group(1)) for m in re.finditer(r"\b(?:for|tracking)\s+((?:[a-z0-9&'-]+\s*){1,5})", text)]
+    found += [clean(m.group(1)) for m in re.finditer(rf"\b((?:[a-z0-9&'-]+\s+){{1,3}})(?:{PAGE_WORD})\b", text)]
+    found += [clean(m.group(1)) for m in re.finditer(r"\b(?:a|an)\s+((?:[a-z0-9&'-]+\s+){1,3})(?:like|similar to|inspired by|in the style of)\b", text)]
+    found = [f for f in found if f]
+    return (max(found, key=len), None) if found else (None, None)
 
 
 def pairing_systems(pairings, fonts, registers, expressive):
@@ -228,7 +345,51 @@ def human(el):
     return el.split(".", 1)[1].replace("-", " ").capitalize()
 
 
-def deal(brief, seed, surface=None, register=None, explore=False, no_images=False, coach=False):
+def scenes_for(steps, rng, moves, used, images, genre="", surface="landing", recent_kinds=()):
+    """Turn one real page's sections into jobs, then deal each job a move from pages that do not look like templates."""
+    jobs = ["stop"]
+    for step in steps:
+        job = "stop" if step.startswith("hero.") else JOB_OF.get(step)
+        if job and job not in jobs:
+            jobs.append(job)
+    for must in ("what", "how", "proof"):
+        if must not in jobs:
+            jobs.insert(min(len(jobs), 2), must)
+    jobs = [j for j in jobs if j != "act"][:7] + ["act"]
+    picked, names, last_kind, loud = [], set(), None, 0
+
+    def usable(m, job):
+        if job not in m.get("jobs", []) or m["name"] in names:
+            return False
+        return not (images == "none" and m.get("needs_image"))
+
+    for n, job in enumerate(jobs):
+        pool = [m for m in moves if usable(m, job)] or [m for m in moves if m["name"] not in names and not (images == "none" and m.get("needs_image"))]
+        if not pool:
+            picked.append({"job": job, "move": None})
+            continue
+
+        def weight(m):
+            w = {"lab": 1.2, "observed": 1.0, "atlas": 0.3}.get(m.get("source"), 1.0)  # moves seen on a live site, or tested here, outrank catalogue recipes
+            w *= 0.08 if m["name"] in used else 1
+            w *= 3 if surface != "landing" and m.get("surface") == surface else 1
+            w *= 0.25 if m.get("kind") == last_kind else 1
+            w *= 0.4 if m.get("kind") in recent_kinds else 1
+            if n == 0:
+                w *= 4 if m.get("kind") == "image-type" and images != "none" else 1
+            w *= 0.02 if m.get("loud") and loud >= LOUD_SCENES else 1
+            w *= 3 if genre in ("saas", "devtool", "ai") and job in ("what", "how") and not m.get("needs_image") else 1  # the product is the picture here
+            return w
+
+        chosen = pick(rng, pool, weight, 1)[0]
+        names.add(chosen["name"])
+        last_kind = chosen.get("kind")
+        loud += 1 if chosen.get("loud") else 0
+        picked.append({"job": job, "move": chosen})
+    return picked
+
+
+def deal(brief, seed, surface=None, register=None, explore=False, no_images=False, coach=False, images="photo"):
     rng = random.Random(seed)
     refs, elements, systems, plans = load("refs.jsonl"), load("elements.jsonl"), load("type-systems.jsonl"), load("page-plans.jsonl")
     flags = load_flags()
@@ -239,13 +400,16 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
     if not refs:
         raise SystemExit(f"No data found in {DATA}. Read references/manual-deal.md instead.")
     history = read_history()
-    used = {key: {x for row in history for x in row.get(key, [])} for key in ("refs", "types", "variants", "voices", "plans", "angles", "examples")}
+    used = {key: {x for row in history for x in row.get(key, [])} for key in ("refs", "types", "variants", "voices", "plans", "angles", "examples", "moves")}
     recent_registers = [row.get("register") for row in history[-3:]]
 
     genre = guess(brief, GENRE_WORDS, "saas")
     words = set(re.findall(r"[a-z][a-z-]+", brief.lower().replace("non profit", "nonprofit")))
-    named = any(words & set(v.split()) for v in GENRE_WORDS.values())
-    if not named:  # no business in the brief, so deal one: a page about nothing in particular is the safest and weakest page there is
+    in_vocab = any(words & set(v.split()) for v in GENRE_WORDS.values())
+    modelled = model_site(brief, plans)
+    subject, site = subject_of(brief, known_sites(refs), modelled["name"].lower() if modelled else None)
+    named = in_vocab or bool(subject)
+    if not in_vocab:  # the look comes from the wider corpus, and if nothing was named the business is dealt too: a page about nothing is the weakest page there is
         genre = pick(rng, list(OPEN_GENRES), lambda g: OPEN_GENRES[g])[0]
     surface = surface or guess(brief, SURFACE_WORDS, "landing")
     if surface == "app" and re.search(r"\b(website|web site|site|landing|homepage|home page|marketing)\b", brief.lower()):
@@ -253,6 +417,9 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
     if re.search(r"\bonline (shop|store)\b", brief.lower()):
         surface = "store"
     expressive = explore or bool(set(re.findall(r"[a-z-]+", brief.lower())) & set(EXPRESSIVE_WORDS.split()))
+    asked = stated(brief, [f.get("name") or f.get("family") or "" for f in load("fonts.jsonl")])
+    if asked["register"] in ("expressive", "bold-colour", "illustrated"):
+        expressive = True
 
     # Register prior: what strong sites in this genre really do, blended with the corpus overall.
     usable = [r for r in refs if r["tier"] in ("gold", "silver") or (expressive and r["tier"] == "expressive")]
@@ -263,11 +430,15 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
     if not expressive:  # loud colour is a choice a brief should ask for
         for loud in ("bold-colour", "expressive", "illustrated"):
             prior[loud] = prior.get(loud, 0) * 0.3
+    if not no_images:  # pictures are what most generated pages lack. Lean towards them unless the page is a tool
+        prior["photo-led"] = prior.get("photo-led", 0) * 2.5
+        prior["render-3d"] = prior.get("render-3d", 0) * 1.5
+        if genre not in ("saas", "devtool", "ai"):
+            prior["light-precision"] = prior.get("light-precision", 0) * 0.4
     if no_images:  # a hand built on photography is no use to a model that cannot get any
         prior["photo-led"] = prior.get("photo-led", 0) * 0.15
         for capable in ("type-led", "warm-neutral", "light-precision", "illustrated"):
             prior[capable] = prior.get(capable, 0) * 1.5
-    modelled = model_site(brief, plans)
     if modelled and not re.search(r"\b(dark|black|night|white|light mode|light theme)\b", brief.lower()):
         register = register or modelled["register"]
     # A brief that names a look has decided the register. Anything else would be dealing against the user.
@@ -275,6 +446,8 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
         register = "dark-precision"
     elif not register and re.search(r"\b(white|light mode|light theme)\b", brief.lower()):
         register = "light-precision"
+    if not register and asked["register"] and prior.get(asked["register"], 0) > 0:
+        register = asked["register"]  # their look word decides the register
     if not register:
         register = pick(rng, list(prior), lambda x: prior[x] * (0.3 if x in recent_registers else 1))[0]
 
@@ -342,10 +515,13 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
         chosen = pick(rng, options, weight, 1)[0]
         return {"slot": label, "el": chosen["el"], "variant": chosen["variant"], "spec": chosen.get("spec", ""), "evidence": [e["name"] for e in chosen.get("evidence", [])[:3]]}
 
-    # The page: one real page's sections, in that page's order, so the choices belong together.
-    lead, sections = None, []
+    # The page: one real page's jobs, in that page's order, so the choices belong together.
+    lead, sections, scenes = None, [], []
     if surface in FIXED:
         wanted = FIXED[surface]
+        pool = [m for m in load("moves.jsonl") if "tool" in m.get("jobs", []) or m.get("surface") == surface]
+        for m in pick(rng, pool, lambda m: 0.1 if m["name"] in used.get("moves", set()) else 1, min(3, len(pool))) if pool else []:
+            scenes.append({"job": "tool", "move": m})
     else:
         pool = [p for p in plans if p["surface"] == surface] or [p for p in plans if p["surface"] == "landing"]
         pool = [p for p in pool if closeness(genre, p["genre"]) >= 3] or pool
@@ -387,8 +563,8 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
         while len(steps) < TARGET_SECTIONS.get(surface, 6) and set(common) - set(steps):
             extra = pick(rng, sorted(set(common) - set(steps)), lambda x: common[x], 1)[0]
             steps.insert(rng.randint(1, len(steps)), extra)
-        wanted = [("Navigation", ["nav.top-bar", "nav.floating-pill"])] + [(human(step) if not step.startswith("hero.") else "Hero", [step]) for step in steps]
-        wanted += [("Closing section", ["section.cta-band"]), ("Footer", ["section.footer"])]
+        scenes = scenes_for(steps, rng, load("moves.jsonl"), used.get("moves", set()), "none" if no_images else images, genre, surface)
+        wanted = [("Navigation", ["nav.top-bar", "nav.floating-pill"]), ("Footer", ["section.footer"])]
 
     for label, patterns in wanted:
         taken = {s["el"] for s in sections}
@@ -482,11 +658,15 @@ def deal(brief, seed, surface=None, register=None, explore=False, no_images=Fals
                 seen_kinds.add(x.get("kind"))
                 examples.append(x)
 
-    record = {"brief": brief[:80], "register": register, "angles": [angle["business"]] if angle else [], "examples": [x.get("file") for x in examples], "voices": [voice], "plans": [lead["slug"]] if lead else [], "refs": [r["slug"] for r in chosen], "types": [type_system["id"]],
+    record = {"brief": brief[:80], "register": register, "moves": [x["move"]["name"] for x in scenes if x.get("move")], "angles": [angle["business"]] if angle else [], "examples": [x.get("file") for x in examples], "voices": [voice], "plans": [lead["slug"]] if lead else [], "refs": [r["slug"] for r in chosen], "types": [type_system["id"]],
               "variants": [s["variant"] for s in sections + system]}
     floor = HEIGHTS.get(surface)
-    return {"seed": seed, "genre": genre, "surface": surface, "register": register, "lead": lead, "modelled": bool(modelled), "references": chosen, "type_system": type_system, "palette": {"from": source["name"], "palette": palette}, "no_images": no_images, "renderer": bool(renderer),
-            "voice": voice, "shape": shape, "sections": sections, "system": system, "angle": angle, "named": named, "coach": coach, "examples": examples, "minHeight": floor[0] if floor else None, "heightRange": floor[1] if floor else None}, record
+    clarity = [m for m in load("moves.jsonl") if m.get("kind") == "clarity"]
+    clarity_move = pick(rng, clarity, lambda m: 0.1 if m["name"] in used.get("moves", set()) else 1, 1)[0] if clarity else None
+    ideas = load("page-ideas.jsonl")
+    page_ideas = pick(rng, ideas, lambda i: 1 + closeness(genre, i["genre"]), min(3, len(ideas))) if ideas and scenes else []
+    return {"page_ideas": page_ideas, "clarity": clarity_move, "seed": seed, "genre": genre, "surface": surface, "register": register, "lead": lead, "modelled": bool(modelled), "references": chosen, "type_system": type_system, "palette": {"from": source["name"], "palette": palette}, "no_images": no_images, "renderer": bool(renderer),
+            "voice": voice, "shape": shape, "sections": sections, "scenes": scenes, "images": "none" if no_images else images, "system": system, "angle": angle, "named": named, "subject": subject, "site": site, "asked": asked, "brief": brief, "coach": coach, "examples": examples, "minHeight": floor[0] if floor else None, "heightRange": floor[1] if floor else None}, record
 
 
 def load_folder(name):
@@ -543,19 +723,47 @@ def recipe(index, slot):
 
 def render(d):
     out = [f"# Your direction (seed {d['seed']})", "",
-           f"Reads as **{d['genre']}**, surface **{d['surface']}**, register **{d['register']}** (see `references/registers.md`).", "",
-           "**This hand is your brief. Build what was dealt.** It was drawn at random from real top-tier pages so that no two projects look alike, and that only works if you follow it. "
-           "Your own taste will pull you back to your usual page: a split hero, a short row of features, a warm or dark palette, four brief sections and a footer. Do not adapt the hand towards that.", "",
-           "You may swap at most two slots, and only where a slot is plainly impossible for this business. Say which and why. You may also add a section the business cannot work without, such as a festival's lineup or a restaurant's menu. That is not a swap. Keep the register, the type system, the palette and the section order unless the user or an existing brand requires otherwise. "
-           "Take moves, not looks: the result should not be identifiable as a copy of any reference, so change the content, the imagery and the details freely.", "",
-           "When recipes disagree, the type system decides size and weight, the palette decides colour, the Surfaces slot decides radius, and the Copy section below decides wording. Add weights to the font URL if you need them.", "",
-           "If a slot needs proof you do not have, such as a testimonial, a logo wall or a statistic, read Proof in `references/copy.md`. If this is the user's real business, never invent customers or numbers: fill the slot with what you can truthfully show. If you invented the business yourself, its customers are part of the same fiction, so keep them plausible and small and list them in your closing note.", ""]
+           f"Reads as **{d['genre']}**, surface **{d['surface']}**, register **{d['register']}** (see `references/registers.md`).", ""]
+    a2 = d.get("asked") or {}
+    lines = []
+    if a2.get("look"):
+        lines.append("- **Look:** " + "; ".join(a2["look"]) + ".")
+    if a2.get("colours"):
+        lines.append("- **Colour:** " + ", ".join(a2["colours"]) + ". Use these as the palette's colours; the dealt palette below supplies only what they leave open, such as the ground and the neutrals.")
+    if a2.get("fonts"):
+        lines.append("- **Type:** " + ", ".join(a2["fonts"]) + ". Use these; the dealt type system is only a fallback for roles they did not cover.")
+    if a2.get("sections"):
+        lines.append("- **They asked for:** " + ", ".join(a2["sections"]) + ". Build each one, as the most ambitious version of itself, inside the scenes below.")
+    if a2.get("effects"):
+        lines.append("- **Effects:** " + "; ".join(a2["effects"]) + ".")
+    out += ["## What they asked for", "", f"> {d.get('brief', '')[:400]}", ""]
+    out += (lines + [""] if lines else [])
+    out += ["Everything the person said outranks this hand. Read `references/intent.md`, write one sentence of the form \"they want X, for Y, that feels like Z\", and keep it in front of you. The hand below fills only what their words leave open. Where it disagrees with them, follow them, and say what you set aside.", ""]
+    if d.get("scenes"):
+        out += ["**This hand is a push, not a cage.** It names the jobs this page has to do and deals one move for each, drawn from real sites that do not look like templates, to pull you away from your usual page. It exists because a page built from section types such as hero, features, stats, testimonials, FAQ and footer is a template however well it is finished.", "",
+                "Keep the register, type system and palette unless the person's words point elsewhere. For each job, build the dealt move or something more ambitious that suits this business better: `references/taste.md` has the idea engine and `references/moves/` the whole library. Never fall back to the template version named beside a move. Say which moves you replaced and why.", "",
+                "Take moves, not looks. The result must not be identifiable as a copy of any reference, so change the content, the pictures and the details freely.", ""]
+    else:
+        out += ["**This hand is a push away from your usual page.** It was drawn from real top-tier pages so that no two projects look alike. Follow it where the person left things open, and do not drift back towards your habits.", "",
+                "Swap a slot when it is plainly wrong for this business or for what the person asked, and say which and why. Keep the register, the type system, the palette and the section order unless the person or an existing brand points elsewhere.", ""]
+    out += ["When recipes disagree, the type system decides type, the palette decides colour, and the Copy section below decides wording. Add weights to the font URL if you need them.", "",
+            "If something needs proof you do not have, such as a quote or a statistic, read Proof in `references/copy.md`. If this is the user's real business, never invent customers or numbers. If you invented the business yourself, its customers are part of the same fiction, so keep them plausible and small and list them in your closing note.", ""]
+    if d.get("scenes") and d.get("images") != "none":
+        route = {"photo": "Real photographs from `scripts/photos.py`. Search for concrete subjects, read the contact sheet at full size, and pick for a calm zone and a clear subject, not for topic.", "render": "A Blender render set: one scene, one light, many cameras. Read Render your own set in `references/imagery.md`.", "supplied": "The pictures the user supplied.", "generated": "Your image generator, art-directed as one set."}.get(d.get("images"), "")
+        out += ["## Pictures come first", "", f"Route: {route}", "",
+                "Choose pictures before you write copy or layout, because this is what the page will be made of. Plan a set of at least six, in two distances. Cut out at least one subject with `scripts/cutout.swift` so type can sit behind it. Run the set through `scripts/imgset.py` so it is graded as one and sized for 2x. Read `references/imagery.md` and `references/composition.md` now.", ""]
     if d.get("no_images"):
         out += [("You have no image source, so this hand avoids photography. Blender is installed here, which is worth using: read Render your own set in `references/imagery.md`." if d.get("renderer") else "You have no image source, so this hand avoids photography. Build from type, real information, interface, drawing and procedural images, as in `references/imagery.md`."), ""]
     if d.get("coach"):
         guide = ROOT / "references" / "gpt.md"
         if guide.exists():
             out += [re.sub(r"^# Coaching for GPT models\n+", "## Read this first\n\n", guide.read_text()).replace("\n## ", "\n### ").replace("### Read this first", "## Read this first"), ""]
+    if d.get("subject"):
+        out += ["## The business", ""]
+        if d.get("site"):
+            out += [f"The brief models this page on {d['site']}, so the business is the same kind of product: **{d['subject']}**. Invent your own brand for it. Take the job, the audience and what works, never its name, logo, colours or copy.", ""]
+        else:
+            out += [f"The brief names it: **{d['subject']}**. Keep that business, and invent only what it leaves open: a name, a place, a price, a point of view.", ""]
     a = d.get("angle")
     if a:
         if not d.get("named"):
@@ -576,16 +784,42 @@ def render(d):
             out.append(f"- **{c.get('name')}.** {c.get('shows')} Data: {c.get('data')} Behaviour: {c.get('moves')}")
         out.append("")
     all_slots = d["sections"] + d["system"]
-    heading = "## The page, in order" if d.get("lead") else f"## What to build for this {d['surface']} surface"
-    if d.get("modelled"):
-        out += [f"The brief names {d['lead']['name']} as its model, so its real page structure leads this hand. Take its qualities, precision and sequence. Do not reproduce its content, branding or artwork.", ""]
-    if d.get("lead"):
-        heading += f" (structure from {d['lead']['name']}, a {d['lead']['tier']} {d['lead']['genre']} page)"
-    out += [heading, ""]
-    for n, s in enumerate(d["sections"], 1):
-        out.append(f"{n}. {s['slot']}: `{s['el']}/{s['variant']}`")
+    if d.get("scenes"):
+        all_slots = [x for x in all_slots if x["slot"] not in ("Load", "Scroll", "Showpiece")]
+        if d.get("lead"):
+            out += [f"The order of jobs comes from {d['lead']['name']}, a {d['lead']['tier']} {d['lead']['genre']} page. Take the order, not the page.", ""]
+        if d.get("page_ideas"):
+            out += ["## Your page needs one organising idea", "", "Before the scenes, decide the one idea the whole page hangs on, in a sentence that could only be about this business. These three real pages each had one. They show the size of idea to look for. Do not reuse them.", ""]
+            out += [f"- {i['idea']}" for i in d["page_ideas"]] + [""]
+        out += ["## The jobs, and a move for each", ""]
+        for n, x in enumerate(d["scenes"], 1):
+            label, job, ban = JOBS[x["job"]]
+            out.append(f"### Scene {n}: {label}")
+            out += ["", f"{job} Not {ban}.", ""]
+            mv = x.get("move")
+            if mv:
+                tags = ", ".join(t for t in (mv.get("kind"), "loud" if mv.get("loud") else "quiet", "needs a cut-out" if mv.get("cutout") else "") if t)
+                out += [f"**Move: `{mv['name']}`** ({tags})", "", mv["what_you_see"], ""]
+                if mv.get("why"):
+                    out.append(f"- Why no template produces this: {mv['why']}")
+                out.append(f"- Build: {mv['recipe']}")
+                if mv.get("transfer"):
+                    out.append(f"- For an ordinary business: {mv['transfer']}")
+                if mv.get("depends_on"):
+                    out.append(f"- Depends on: {mv['depends_on']}")
+                out.append("")
+        out += ["A navigation and a footer are also needed. Their recipes are below. Everything else on the page must earn its place in one of these scenes.", ""]
+    else:
+        heading = "## The page, in order" if d.get("lead") else f"## What to build for this {d['surface']} surface"
+        if d.get("modelled"):
+            out += [f"The brief names {d['lead']['name']} as its model, so its real page structure leads this hand. Take its qualities, precision and sequence. Do not reproduce its content, branding or artwork.", ""]
+        if d.get("lead"):
+            heading += f" (structure from {d['lead']['name']}, a {d['lead']['tier']} {d['lead']['genre']} page)"
+        out += [heading, ""]
+        for n, s in enumerate(d["sections"], 1):
+            out.append(f"{n}. {s['slot']}: `{s['el']}/{s['variant']}`")
     if d.get("minHeight"):
-        out += ["", f"Build every section with real content. Top {d['surface']} pages run {d['heightRange']} tall at 1440. A short page reads as a template however clean it is."]
+        out += ["", f"Top {d['surface']} pages run {d['heightRange']} tall at 1440, so build every scene in full with real content."]
     t = d["type_system"]
     di, te, ui = t.get("display", {}), t.get("text", {}), t.get("ui", {})
     out += ["", "## Type system", "", f"**{di.get('family')}** with **{te.get('family')}**. {t.get('why', '')}",
@@ -604,20 +838,27 @@ def render(d):
     if any(s["el"].startswith("product.") for s in all_slots):
         out += ["", "## Product frames", "", "Every product frame is a working screen at believable density: named people, real numbers and dates, statuses, at least a dozen distinct rows or labels, all readable at 100%. Build it in HTML with real text and let it move as if someone were using it. Three grey bars and a few pills fail, however well framed. This is where most of your effort should go."]
     motion = {s["slot"]: s["variant"] for s in all_slots if s["slot"] in ("Load", "Scroll", "Hover")}
-    if motion.get("Load") and motion.get("Scroll"):
-        out += ["", "## Motion is required", "", f"A still page fails, however clean it is. Build all of this, as one language: **Load** `{motion.get('Load')}`, **Scroll** `{motion.get('Scroll')}`, **Hover** `{motion.get('Hover')}`. Their recipes are below. "
-                "Stage the first screen, make scrolling visibly do something on at least three sections, and give every link, button and card an answer to the pointer. Product surfaces should animate as if someone were using them. Keep content visible without JavaScript and under reduced motion: `references/motion/foundations.md`, recipe 1, shows how."]
+    if d.get("scenes"):
+        out += ["", "## Write the scene cards before any code", "",
+                "Write `.frontend-craft/scenes.md`, one card per scene, and hold every scene to it. A card is six lines:", "",
+                "- **Job:** which job this scene does, in one sentence about this business",
+                "- **On screen:** what a visitor sees, described as a picture, with no mention of headings or sections",
+                "- **Picture and type:** which picture, its subject and calm zone, and exactly how the type and the picture share the space",
+                "- **Component:** the noun, the verb and the rung from `references/components.md`",
+                "- **Motion:** its part in the score from `references/motion/score.md`",
+                "- **Volume:** loud or quiet, dark or light, picture-led or type-led, pinned or free", "",
+                "Then write the score: the seven parts in `references/motion/score.md`. Read the cards in order and fix these before building: two neighbours with the same volume line, more than three loud scenes, a scene that opens with a heading followed by content twice in a row, a component below rung 2.", "",
+                "**One idea per screen.** Read `references/clarity.md` before you build a scene and again before you finish it. At every scroll position a stranger should be able to say what the screen is about in five words. No pills above headings, no labels beside everything, no corner notes, no two buttons side by side, and no small lists in a sidebar. When in doubt, take it out, make one thing bigger, or show it only when someone asks.",
+                *([f"**A way to stay calm: `{d['clarity']['name']}`.** {d['clarity']['what_you_see']}", ""] if d.get("clarity") else [""]),
+                "**This is a website, not a slide deck.** Under 25 words around the first headline, and under 35 words of prose in a scene. Text inside real content such as a product view or a price list does not count. If a sentence explains something the page could show, build the thing and delete the sentence.", "",
+                "**Every part has to be worth stopping for.** Before you move on from a scene, ask whether someone would pause here, and whether they would show it to a friend. If the honest answer is no, the scene is not finished, however correct it is."]
+    elif motion.get("Load") and motion.get("Scroll"):
+        out += ["", "## Motion is required", "", f"A still page fails, however clean it is. Build all of this, as one language: **Load** `{motion.get('Load')}`, **Scroll** `{motion.get('Scroll')}`, **Hover** `{motion.get('Hover')}`. Their recipes are below. Stage the first screen, make scrolling visibly do something on at least three sections, and give every link, button and card an answer to the pointer. Keep content visible without JavaScript and under reduced motion: `references/motion/foundations.md`, recipe 1, shows how."]
     elif motion:
         out += ["", "## Motion", "", "Keep this surface quick. Data does not animate in on load. Controls answer the pointer in about 150ms, and open states settle in about 200ms. Keep it to what helps someone work."]
-    if d.get("lead"):
-        out += ["", "## Every section is its own project", "", "Award-winning sites feel made because each part had its own idea. Do not fill sections. Design them.", "",
-                "Before any code, write `.frontend-craft/ideas.md`. For every section, write three lines that begin `Wouldn't it be cool if`, and make at least one of them involve no text at all: something that moves, responds, can be dragged or tried, or is drawn or built. Pick the one that best makes a visitor understand or want this, even if it is harder to build, and mark it. `shoot.mjs` checks this file.", "",
-                "**This is a website, not a slide deck.** A page of heading, paragraph, picture, repeated, exhausts people. Keep the headline, then let things carry the meaning. If a sentence explains something the page could show, build the thing and delete the sentence. As a guide: under 25 words of copy around the hero headline, and under 35 words of prose in a section. Text inside real content such as a product view, a table or a menu does not count. No two adjacent sections should share a skeleton.", "",
-                "**Do not stop at correct.** Right structure and motion can still look boring. Give the ground light and depth, give type real presence, use one confident colour, and make every component look custom-built, with edges, states and detail. The first screen should be a lit, composed scene with one hook and one striking object, not a heading and two buttons on a flat panel.", "",
-                "**Showpieces.** The two Showpiece recipes are the moments someone would send to a colleague. Give them real scale and real effort, and let the page be quieter around them."]
     out += ["", "## Density and edges", "", "Decide each section's density on purpose. Density belongs inside real content, while the chrome around it stays calm. Cut any chip, dot, label or divider a visitor could not name a job for. A gap should separate two ideas, not fill time. "
             "Never box the page: grounds and bands reach the viewport edge, with no rail lines down the sides and no dead strips at 1920 wide.", "",
-            "**Plain ruled rows are a default now, so treat them as one.** Rows of date, name and note on hairlines look tidy once and redundant by the second time. Use at most one plain list on a page. Anything else that is a list gets a real treatment: give each row its own object, such as a thumbnail, a small drawing or a proportional bar; let size carry value; plot items on a real axis or timeline; or make rows open, or show an image that follows the pointer."]
+            "**Plain ruled rows are a default, so treat them as one.** Rows of label and value on hairlines look tidy and read as a template. Rates, prices, branches, dates and news all fall into this by habit, including small lists in a sidebar. Use at most one plain list on a page. Anything else that is a list gets a real treatment: give each row its own object, such as a thumbnail, a small drawing or a proportional bar; let size carry value; plot items on a real axis or timeline; or make rows open, or show an image that follows the pointer."]
     out += ["", "## References", "", "Study what each is doing. Open them if you can browse. Do not reproduce them.", ""]
     for r in d["references"]:
         out += [f"**{r['name']}** ({r['genre']}, {r['tier']}) {r['url']}", f"- Doing: {r.get('thesis', '')}", f"- Why it feels made: {r.get('why_made', '')}", f"- If imitated badly: {r.get('watch_out', '')}", ""]
@@ -639,7 +880,74 @@ def render(d):
             except OSError:
                 continue
             out += [f"### {x.get('kind', 'component')}: {x.get('why', '')}", "", "```html", code.rstrip(), "```", ""]
-    out += ["After the build, `shoot.mjs` compares the page with this hand and reports any drift. A copy of this hand is in `.frontend-craft/hand.md`, so reread the recipes while you build."]
+    out += ["After the build, run `shoot.mjs` and `audit.mjs`. The audit measures whether the page has the shape of a template. A copy of this hand is in `.frontend-craft/hand.md`, so reread it while you build."]
+    return "\n".join(out)
+
+
+# Work that is not a web page gets a taste hand, not page sections. Landing-page training applied to a poster is how a poster comes out trashy.
+ARTEFACTS = [
+    ("poster", r"\b(poster|posters|flyer|flyers|gig poster|placard|billboard)\b"),
+    ("cover", r"\b(album cover|album art|cover art|book cover|record sleeve|podcast cover|cover)\b"),
+    ("editorial", r"\b(zine|magazine spread|editorial spread|spread|broadsheet)\b"),
+    ("generative", r"\b(generative|algorithmic|p5|creative coding|shader art|artwork|art piece|wallpaper|pattern)\b"),
+    ("illustration", r"\b(illustration|svg scene|svg drawing|drawing|draw me|draw a|painting)\b"),
+    ("identity", r"\b(logo|logotype|wordmark|monogram|brand mark|identity|emblem)\b"),
+    ("game interface", r"\b(game ui|hud|game menu|main menu|inventory screen|game interface)\b"),
+    ("slides", r"\b(slides|slide deck|deck|presentation|keynote|powerpoint|power point|pptx|google slides)\b"),
+    ("document", r"\b(report|annual report|whitepaper|white paper|document|memo|one-pager|one pager|case study pdf|ebook|e-book|brochure|proposal doc|resume|r[ée]sum[ée]|cv)\b"),
+    ("email", r"\b(email newsletter|newsletter email|email template|marketing email|welcome email|email campaign|html email|email design|an email)\b"),
+    ("social graphic", r"\b(instagram post|instagram story|social post|social media post|social graphic|carousel post|linkedin post|youtube thumbnail|thumbnail|tiktok cover)\b"),
+    ("data graphic", r"\b(infographic|data viz|dataviz|visuali[sz]ation|chart)\b"),
+    ("motion piece", r"\b(title sequence|motion graphic|motion graphics|intro animation|animated logo)\b"),
+    ("print piece", r"\b(invitation|business card|ticket|label|packaging|postcard)\b"),
+]
+WEB_WORDS = r"\b(website|web site|landing|homepage|home page|web page|webpage|site|dashboard|web app|store|online shop)\b"
+FORMAL_IDEAS = ["Type is the image: the words are the picture, at a scale that breaks the edges", "One object, enormous, cropped by two edges",
+                "A strict grid, set up and then broken exactly once", "Repetition with one difference", "A diagram that is also a picture",
+                "Two images in collision, cut along one hard line", "Negative space as the main shape", "One line that travels through everything",
+                "A pattern built from the subject's own shape", "A photograph or render cut through by type", "A 20-to-1 scale contrast between two elements",
+                "Everything aligned to one strong diagonal", "One colour field split by one hard edge", "A detail of the subject at macro scale",
+                "The system shown: many variations of one mark"]
+PALETTE_IDEAS = ["Two inks plus the paper, nothing else", "One saturated colour across most of the surface and a small amount of its opposite",
+                 "Near-monochrome, with one pure accent used once", "A complementary pair at equal value, so the edge between them vibrates",
+                 "Black, paper and one fluorescent spot colour", "Colours sampled from one real object in the subject, and only those"]
+CONSTRAINTS = ["One typeface, in two sizes only", "Nothing centred", "The main element touches at least two edges", "No outlines, shadows or glows anywhere",
+               "Three elements at most", "All text sits in one block, smaller than you think", "One element is rotated, everything else is square to the frame",
+               "Every colour must also work printed as one-colour black"]
+
+
+def artefact(brief):
+    text = brief.lower()
+    for name, pattern in ARTEFACTS:
+        if re.search(pattern, text):
+            return None if re.search(WEB_WORDS, text) else name  # a page that mentions a pattern or a chart is still a page
+    return None
+
+
+def taste_hand(brief, seed, medium):
+    rng = random.Random(seed)
+    trad = [json.loads(l) for l in (DATA / "traditions.jsonl").read_text().splitlines() if l.strip()] if (DATA / "traditions.jsonl").exists() else []
+    fits = [x for x in trad if medium in x.get("media", [])] or trad
+    t = rng.choice(fits) if fits else None
+    idea, palette, rule = rng.choice(FORMAL_IDEAS), rng.choice(PALETTE_IDEAS), rng.choice(CONSTRAINTS)
+    noun = {"generative": "generative piece", "identity": "identity", "data graphic": "data graphic", "slides": "slide deck"}.get(medium, medium)
+    guide = {"slides": "slides-and-decks", "document": "documents-and-reports", "email": "email", "social graphic": "social-graphics", "poster": "posters-flyers-covers",
+             "cover": "posters-flyers-covers", "data graphic": "data-graphics", "identity": "identity-and-logos", "game interface": "game-interfaces",
+             "motion piece": "motion-and-title-sequences", "print piece": "packaging-and-labels"}.get(medium)
+    asked = stated(brief, [f.get("name") or f.get("family") or "" for f in load("fonts.jsonl")])
+    noun = ("an " if noun[0] in "aeiou" else "a ") + f"**{noun}**"
+    out = [f"# A taste hand (seed {seed})", "", f"This is {noun}, not a web page. " + ("Leave the landing-page habits behind: no hero, no card grids, no web navigation, no web type sizes." if medium in ("slides", "document", "email", "social graphic") else "Leave the page rules behind: no sections, no navigation, no buttons, no cards, no measured web type sizes.")
+           + (f" Read `references/beyond-web.md#{guide}` first for this medium's first principles, then" if guide else " Read") + " `references/taste.md`, starting with the idea engine and Outside the browser.", ""]
+    said = [f"- **{k}:** " + ", ".join(v) for k, v in (("Look", [x.split(":")[0] for x in asked["look"]]), ("Colour", asked["colours"]), ("Type", asked["fonts"])) if v]
+    out += ["## What they asked for", "", f"> {brief[:400]}", ""] + (said + [""] if said else []) + [
+        "Their words outrank everything below. Read `references/intent.md` and write \"they want X, for Y, that feels like Z\" before you start. The ancestor and the dealt idea fill only what they left open.", ""]
+    if t:
+        out += ["## An ancestor", "", f"**{t['name']}.** {t['move']}", "", f"Palette habit: {t['palette']}. Type habit: {t['type']}.", "",
+                "Take the move, not the look. Find two more ancestors yourself, from other decades and places, and write one line on each move.", ""]
+    out += ["## Dealt", "", f"- **Formal idea:** {idea}.", f"- **Colour:** {palette}.", f"- **Constraint:** {rule}.", "",
+            "The idea and constraint are a starting push, not a cage. If the subject plainly wants another idea, say which and why.", "",
+            "## Before you build", "", "Write `.frontend-craft/concepts.md`: how the piece is met, three ancestors, and five concepts that differ in formal idea, one line each. Cross out the two that came first. Build the one that makes you slightly nervous.", "",
+            "Then build at real size, push one variable to its limit, and keep whichever version is more alive. Run `node <skill-dir>/scripts/slop.mjs <file>` and fix every REMOVE line, then run the Critique questions in `references/taste.md` at full size and at thumbnail size. Real content still matters: a real date, place, name or detail beats any ornament.", ""]
     return "\n".join(out)
 
 
@@ -647,7 +955,7 @@ def save_hand(d):
     """Leave the hand beside the work so shoot.mjs can hold the page to it."""
     t = d["type_system"]
     fonts = list(dict.fromkeys(f for f in (t.get("display", {}).get("family"), t.get("text", {}).get("family")) if f))
-    hand = {"seed": d["seed"], "surface": d["surface"], "register": d["register"], "fonts": fonts, "palette": d["palette"]["palette"], "sections": [s["slot"] for s in d["sections"]],
+    hand = {"seed": d["seed"], "surface": d["surface"], "register": d["register"], "fonts": fonts, "palette": d["palette"]["palette"], "sections": [JOBS[x["job"]][0] for x in d.get("scenes", [])] or [s["slot"] for s in d["sections"]],
             "minHeight": d["minHeight"], "heightRange": d["heightRange"], "motion": {s["slot"]: s["variant"] for s in d["sections"] + d["system"] if s["slot"] in ("Load", "Scroll", "Hover")}, "coach": bool(d.get("coach")),
             "components": [c.get("name") for c in (d.get("angle") or {}).get("components", [])]}
     try:
@@ -668,7 +976,8 @@ def main():
     ap.add_argument("--explore", action="store_true", help="include expressive registers")
     ap.add_argument("--coach", action="store_true", help="print coaching and worked examples in the hand; on by default under Codex")
     ap.add_argument("--no-coach", action="store_true", help="leave coaching out")
-    ap.add_argument("--no-images", action="store_true", help="you cannot generate images or fetch photos, so avoid hands that depend on them")
+    ap.add_argument("--images", default="photo", choices=["photo", "render", "supplied", "generated", "none"], help="where the pictures come from. Decide this before dealing: see the Images step in SKILL.md")
+    ap.add_argument("--no-images", action="store_true", help="last resort: same as --images none. Only after photos.py and Blender have both failed")
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--no-history", action="store_true", help="do not read or record past deals")
     ap.add_argument("--no-save", action="store_true", help="do not leave .frontend-craft/direction.json in this folder")
@@ -678,7 +987,17 @@ def main():
         HISTORY = Path("/nonexistent/history.json")
     seed = a.seed if a.seed is not None else (time.time_ns() ^ zlib.crc32(a.brief.encode())) % 2**31
     coach = (a.coach or any(k.startswith("CODEX") for k in os.environ)) and not a.no_coach
-    d, record = deal(a.brief, seed, a.surface, a.register, a.explore, a.no_images, coach)
+    medium = None if a.surface else artefact(a.brief)
+    if medium:
+        hand = taste_hand(a.brief, seed, medium)
+        if not a.no_save:
+            try:
+                folder = Path.cwd() / ".frontend-craft"; folder.mkdir(exist_ok=True); (folder / "hand.md").write_text(hand)
+            except OSError:
+                pass
+        print(hand)
+        return
+    d, record = deal(a.brief, seed, a.surface, a.register, a.explore, a.no_images or a.images == "none", coach, a.images)
     if not a.no_history:
         write_history(read_history() + [record])
     if not a.no_save:
